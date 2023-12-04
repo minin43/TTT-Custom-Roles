@@ -35,103 +35,103 @@ end
 
 local mat_dir = "vgui/ttt/"
 
-local frostbiteEquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_FROSTBITE = EQUIP_ELEMENTALIST_FROSTBITE or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = frostbiteEquipmentId,
+    id          = EQUIP_ELEMENTALIST_FROSTBITE,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Frostbite", --Mirrors functionality from CTDM
     desc        = "Shoot players to slow down their movement, strength and duration of slow depending on damage done."
 })
 -- How to get this to show only after version 1 has been purchased?
-local frostbite2EquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_FROSTBITE_UP = EQUIP_ELEMENTALIST_FROSTBITE_UP or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = frostbite2EquipmentId,
+    id          = EQUIP_ELEMENTALIST_FROSTBITE_UP,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Frostbite Upgrade", --Just extends Frostbite slow to 0
     desc        = "Players who have been slowed have a chance to freeze, losing all movement."
 })
 
-local pyroEquipmentId = GenerateNewEquipmentID()
-table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
+EQUIP_ELEMENTALIST_PYROMANCER = EQUIP_ELEMENTALIST_PYROMANCER or GenerateNewEquipmentID()
+table.insert(EQUIP_ELEMENTALIST_PYROMANCER[ROLE_ELEMENTALIST], {
     id          = pyroEquipmentId,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Pyromancer", --Mirrors functionality from CTDM
     desc        = "Shoot players to ignite them, duration scaling with damage done."
 })
-local pyro2EquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_PYROMANCER_UP = EQUIP_ELEMENTALIST_PYROMANCER_UP or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = pyro2EquipmentId,
+    id          = EQUIP_ELEMENTALIST_PYROMANCER_UP,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Pyromancer Upgrade", --Mirrors functionaliy from CTDM
     desc        = "Ignited players have a chance to explode, doing damage to everyone around them."
 })
 
-local windEquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_WINDBURN = EQUIP_ELEMENTALIST_WINDBURN or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = windEquipmentId,
+    id          = EQUIP_ELEMENTALIST_WINDBURN,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Windburn", --I think you can add force push to the dmginfo in EntityTakeDamage?
     desc        = "Shooting players pushes them backwards and away from you, force of push scaling with damage done."
 })
-local wind2EquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_WINDBURN_UP = EQUIP_ELEMENTALIST_WINDBURN_UP or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = wind2EquipmentId,
+    id          = EQUIP_ELEMENTALIST_WINDBURN_UP,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Windburn Upgrade", --Can duplicate the functionality from the grenade from CTDM
     desc        = "Instead of pushing, occaisonally launches shot players into the air, for a hard, painful landing" --should rob them of their second jump
 })
 
-local dischargeEquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_DISCHARGE = EQUIP_ELEMENTALIST_DISCHARGE or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = dischargeEquipmentId,
+    id          = EQUIP_ELEMENTALIST_DISCHARGE,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Discharge", --Mirror functionality from the discombob grenade?
     desc        = "Shoot players to shock them, punching their view and disorienting them."
 })
-local discharge2EquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_DISCHARGE_UP = EQUIP_ELEMENTALIST_DISCHARGE_UP or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = discharge2EquipmentId,
+    id          = EQUIP_ELEMENTALIST_DISCHARGE_UP,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Discharge Upgrade",
     desc        = "" --What should be?
 })
 
-local midEquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_MIDNIGHT = EQUIP_ELEMENTALIST_MIDNIGHT or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = midEquipmentId,
+    id          = EQUIP_ELEMENTALIST_MIDNIGHT,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Midnight", --Should use an overlay, gradient to center
     desc        = "Shoot players to begin to blind them, dimming their screen and making it difficult for them to see."
 })
-local mid2EquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_MIDNIGHT_UP = EQUIP_ELEMENTALIST_MIDNIGHT_UP or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = mid2EquipmentId,
+    id          = EQUIP_ELEMENTALIST_MIDNIGHT_UP,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Midnight Upgrade", --No overlay, completely black screen that fades out
     desc        = "Players with dimmed screens have a chance to go completely blind, seeing nothing."
 })
 
-local lifeEquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_LIFESTEAL = EQUIP_ELEMENTALIST_LIFESTEAL or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = lifeEquipmentId,
+    id          = EQUIP_ELEMENTALIST_LIFESTEAL,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Lifesteal", --Easy to do
     desc        = "Shoot players to steal their life force, one bullet at a time."
 })
-local life2EquipmentId = GenerateNewEquipmentID()
+EQUIP_ELEMENTALIST_LIFESTEAL_UP = EQUIP_ELEMENTALIST_LIFESTEAL_UP or GenerateNewEquipmentID()
 table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
-    id          = life2EquipmentId,
+    id          = EQUIP_ELEMENTALIST_LIFESTEAL_UP,
     type        = "item_passive",
     material    = mat_dir .. "",
     name        = "Lifesteal Upgrade", --Easy to do
