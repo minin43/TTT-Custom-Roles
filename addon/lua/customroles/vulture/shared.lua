@@ -19,7 +19,7 @@ ROLE.team = ROLE_TEAM_TRAITOR
 
 ROLE.shop = {}
 ROLE.loadout = {}
-ROLE.shopsyncroles = {ROLE_TRAITOR} --This or something else?
+ROLE.shopsyncroles = {ROLE_TRAITOR}
 
 ROLE.translations = {}
 
