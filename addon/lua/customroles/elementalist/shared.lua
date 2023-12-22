@@ -39,7 +39,7 @@ hook.Add("Initialize", "MadScientist_DeathRadar_Initialize", function()
         id          = EQUIP_ELEMENTALIST_FROSTBITE,
         type        = "item_passive",
         material    = "vgui/ttt/",
-        name        = "Frostbite", --Mirrors functionality from CTDM
+        name        = "Frostbite",
         desc        = "Shoot players to slow down their movement, strength and duration of slow depending on damage done."
     })
     -- How to get this to show only after version 1 has been purchased?
@@ -48,7 +48,7 @@ hook.Add("Initialize", "MadScientist_DeathRadar_Initialize", function()
         id          = EQUIP_ELEMENTALIST_FROSTBITE_UP,
         type        = "item_passive",
         material    = "vgui/ttt/",
-        name        = "Frostbite Upgrade", --Just extends Frostbite slow to 0
+        name        = "Frostbite+",
         desc        = "Players who have been slowed have a chance to freeze, losing all movement."
     })
 
@@ -57,7 +57,7 @@ hook.Add("Initialize", "MadScientist_DeathRadar_Initialize", function()
         id          = pyroEquipmentId,
         type        = "item_passive",
         material    = "vgui/ttt/",
-        name        = "Pyromancer", --Mirrors functionality from CTDM
+        name        = "Pyromancer",
         desc        = "Shoot players to ignite them, duration scaling with damage done."
     })
     EQUIP_ELEMENTALIST_PYROMANCER_UP = EQUIP_ELEMENTALIST_PYROMANCER_UP or GenerateNewEquipmentID()
@@ -65,7 +65,7 @@ hook.Add("Initialize", "MadScientist_DeathRadar_Initialize", function()
         id          = EQUIP_ELEMENTALIST_PYROMANCER_UP,
         type        = "item_passive",
         material    = "vgui/ttt/",
-        name        = "Pyromancer Upgrade", --Mirrors functionaliy from CTDM
+        name        = "Pyromancer+",
         desc        = "Ignited players have a chance to explode, doing damage to everyone around them."
     })
 
@@ -82,7 +82,7 @@ hook.Add("Initialize", "MadScientist_DeathRadar_Initialize", function()
         id          = EQUIP_ELEMENTALIST_WINDBURN_UP,
         type        = "item_passive",
         material    = "vgui/ttt/",
-        name        = "Windburn Upgrade", --Can duplicate the functionality from the grenade from CTDM
+        name        = "Windburn+", --Can duplicate the functionality from the grenade from CTDM
         desc        = "Instead of pushing, occaisonally launches shot players into the air, for a hard, painful landing" --should rob them of their second jump
     })
 
@@ -99,7 +99,7 @@ hook.Add("Initialize", "MadScientist_DeathRadar_Initialize", function()
         id          = EQUIP_ELEMENTALIST_DISCHARGE_UP,
         type        = "item_passive",
         material    = "vgui/ttt/",
-        name        = "Discharge Upgrade",
+        name        = "Discharge+",
         desc        = "" --What should be?
     })
 
@@ -109,14 +109,14 @@ hook.Add("Initialize", "MadScientist_DeathRadar_Initialize", function()
         type        = "item_passive",
         material    = "vgui/ttt/",
         name        = "Midnight", --Should use an overlay, gradient to center
-        desc        = "Shoot players to begin to blind them, dimming their screen and making it difficult for them to see."
+        desc        = "Shoot players to begin blinding them, dimming their screen and making it difficult for them to see."
     })
     EQUIP_ELEMENTALIST_MIDNIGHT_UP = EQUIP_ELEMENTALIST_MIDNIGHT_UP or GenerateNewEquipmentID()
     table.insert(EquipmentItems[ROLE_ELEMENTALIST], {
         id          = EQUIP_ELEMENTALIST_MIDNIGHT_UP,
         type        = "item_passive",
         material    = "vgui/ttt/",
-        name        = "Midnight Upgrade", --No overlay, completely black screen that fades out
+        name        = "Midnight+", --No overlay, completely black screen that fades out
         desc        = "Players with dimmed screens have a chance to go completely blind, seeing nothing."
     })
 
@@ -133,7 +133,7 @@ hook.Add("Initialize", "MadScientist_DeathRadar_Initialize", function()
         id          = EQUIP_ELEMENTALIST_LIFESTEAL_UP,
         type        = "item_passive",
         material    = "vgui/ttt/",
-        name        = "Lifesteal Upgrade", --Easy to do
+        name        = "Lifesteal+", --Easy to do
         desc        = "Executes targets instead if they get too low hp, killing them instantly."
     })
 end)
