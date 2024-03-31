@@ -846,10 +846,10 @@ function WEPS.HandleRoleEquipment(ply)
 
         if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 then
             net.Start("TTT_BuyableWeapons")
-            net.WriteInt(id, 16)
-            net.WriteTable(roleBuyables, true)
-            net.WriteTable(roleExcludes, true)
-            net.WriteTable(roleNoRandoms, true)
+                net.WriteInt(id, 16)
+                net.WriteTable(roleBuyables, true)
+                net.WriteTable(roleExcludes, true)
+                net.WriteTable(roleNoRandoms, true)
             if ply then
                 net.Send(ply)
             else
