@@ -211,7 +211,7 @@ function SWEP:SecondaryAttack()
     -- Sync this jump override to the other players so they can see it too
     if SERVER then
         net.Start("TTT_ZombieLeapStart")
-        net.WriteEntity(owner)
+            net.WritePlayer(owner)
         net.Broadcast()
     end
 end
@@ -229,7 +229,7 @@ function SWEP:Think()
         -- Sync clearing the override to the other players as well
         if SERVER then
             net.Start("TTT_ZombieLeapEnd")
-            net.WriteEntity(owner)
+                net.WritePlayer(owner)
             net.Broadcast()
         end
     end
@@ -331,7 +331,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_ZombieLeapStart", function()
-        local ply = net.ReadEntity()
+        local ply = net.ReadPlayer()
         if not IsPlayer(ply) then return end
 
         hook.Run("DoAnimationEvent", ply, PLAYERANIMEVENT_JUMP)
@@ -343,7 +343,7 @@ if CLIENT then
     end)
 
     net.Receive("TTT_ZombieLeapEnd", function()
-        local ply = net.ReadEntity()
+        local ply = net.ReadPlayer()
         if not IsPlayer(ply) then return end
 
         local wep = ply:GetActiveWeapon()

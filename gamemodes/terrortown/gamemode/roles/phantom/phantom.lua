@@ -323,13 +323,13 @@ hook.Add("PlayerFootstep", "Phantom_PlayerFootstep", function(ply, pos, foot, so
 
     -- This player killed a Phantom. Tell everyone where their foot steps should go
     net.Start("TTT_PlayerFootstep")
-    net.WriteEntity(ply)
-    net.WriteVector(pos)
-    net.WriteAngle(ply:GetAimVector():Angle())
-    net.WriteBit(foot)
-    net.WriteTable(Color(138, 4, 4))
-    net.WriteUInt(killer_footstep_time, 8)
-    net.WriteFloat(1) -- Scale
+        net.WritePlayer(ply)
+        net.WriteVector(pos)
+        net.WriteAngle(ply:GetAimVector():Angle())
+        net.WriteBit(foot)
+        net.WriteTable(Color(138, 4, 4))
+        net.WriteUInt(killer_footstep_time, 8)
+        net.WriteFloat(1) -- Scale
     net.Broadcast()
 end)
 

@@ -53,8 +53,8 @@ if SERVER then
             end
 
             net.Start("TTT_Zombificator_Hide")
-            net.WriteEntity(ply)
-            net.WriteBool(true)
+                net.WritePlayer(ply)
+                net.WriteBool(true)
             net.Send(plys)
         end
 
@@ -65,7 +65,7 @@ if SERVER then
         hook.Call("TTTPlayerRoleChangedByItem", nil, owner, ply, self)
 
         net.Start("TTT_Zombified")
-        net.WriteString(ply:Nick())
+            net.WriteString(ply:Nick())
         net.Broadcast()
 
         ply:SpawnForRound(true)
@@ -104,7 +104,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_Zombificator_Hide", function()
-        local hply = net.ReadEntity()
+        local hply = net.ReadPlayer()
         hply.MadZomHide = net.ReadBool()
     end)
 

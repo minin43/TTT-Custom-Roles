@@ -41,7 +41,7 @@ end)
 ----------------------
 
 net.Receive("TTT_HiveMindChatDupe", function()
-    local source = net.ReadEntity()
+    local source = net.ReadPlayer()
     local text = net.ReadString()
 
     for _, ply in ipairs(GetAllPlayers()) do

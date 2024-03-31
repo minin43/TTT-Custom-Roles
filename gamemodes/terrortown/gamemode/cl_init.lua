@@ -676,7 +676,7 @@ function AddFootstep(ply, pos, ang, foot, col, fade_time, scale)
 end
 
 net.Receive("TTT_PlayerFootstep", function()
-    local ply = net.ReadEntity()
+    local ply = net.ReadPlayer()
     local pos = net.ReadVector()
     local ang = net.ReadAngle()
     local foot = net.ReadBit()

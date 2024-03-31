@@ -30,8 +30,8 @@ AddHook("PlayerSay", "HiveMind_PlayerSay", function(ply, text, team_only)
     if team_only then return end
 
     net.Start("TTT_HiveMindChatDupe")
-    net.WriteEntity(ply)
-    net.WriteString(text)
+        net.WritePlayer(ply)
+        net.WriteString(text)
     net.Broadcast()
 end)
 

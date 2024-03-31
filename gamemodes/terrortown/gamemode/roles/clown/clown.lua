@@ -46,7 +46,7 @@ local function ActivateClown(clown)
         end
     end
     net.Start("TTT_ClownActivate")
-    net.WriteEntity(clown)
+        net.WritePlayer(clown)
     net.Broadcast()
 
     -- Give the clown their shop items if purchase was delayed

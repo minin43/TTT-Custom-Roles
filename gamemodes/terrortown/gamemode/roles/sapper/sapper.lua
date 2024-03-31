@@ -42,7 +42,7 @@ hook.Add("EntityTakeDamage", "Sapper_EntityTakeDamage", function(ent, dmginfo)
             dmginfo:SetDamage(0)
 
             net.Start("Sapper_ShowDamageAura")
-            net.WriteEntity(sapper)
+                net.WritePlayer(sapper)
             net.Broadcast()
         end
     end

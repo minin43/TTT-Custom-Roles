@@ -48,7 +48,7 @@ end
 
 net.Receive("Sapper_ShowDamageAura", function()
     local client = LocalPlayer()
-    local sapper = net.ReadEntity()
+    local sapper = net.ReadPlayer()
     local sapperPos = sapper:GetPos()
     local pos = sapperPos + Vector(0, 0, 30)
     if client:GetPos():Distance(pos) > 3000 then return end

@@ -73,8 +73,8 @@ if SERVER then
             end
 
             net.Start("TTT_Hypnotised_Hide")
-            net.WriteEntity(ply)
-            net.WriteBool(true)
+                net.WritePlayer(ply)
+                net.WriteBool(true)
             net.Send(plys)
         end
 
@@ -85,8 +85,8 @@ if SERVER then
         hook.Call("TTTPlayerRoleChangedByItem", nil, owner, ply, self)
 
         net.Start("TTT_Hypnotised")
-        net.WriteString(ply:Nick())
-        net.WriteString(owner:SteamID64())
+            net.WriteString(ply:Nick())
+            net.WriteString(owner:SteamID64())
         net.Broadcast()
 
         ply:SpawnForRound(true)
@@ -134,7 +134,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_Hypnotised_Hide", function()
-        local hply = net.ReadEntity()
+        local hply = net.ReadPlayer()
         hply.HypnotisedHide = net.ReadBool()
     end)
 

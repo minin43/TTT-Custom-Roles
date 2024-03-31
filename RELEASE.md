@@ -3,7 +3,8 @@
 ## 2.1.10 (Beta)
 **Released:**
 
-### Changes
+### Developer
+- Updated most net methods to use net.Read/WritePlayer where appropriate
 - Ported "TTT: Use new game.CleanUpMap argument"
 - Ported "TTT: Use net.Read/WritePlayer"
 

@@ -1679,9 +1679,9 @@ if SERVER then
 
             if play_sound or show_confetti then
                 net.Start("TTT_JesterDeathCelebration")
-                net.WriteEntity(victim)
-                net.WriteBool(play_sound)
-                net.WriteBool(show_confetti)
+                    net.WritePlayer(victim)
+                    net.WriteBool(play_sound)
+                    net.WriteBool(show_confetti)
                 net.Send(ply)
             end
         end
@@ -1690,7 +1690,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_JesterDeathCelebration", function()
-        local ent = net.ReadEntity()
+        local ent = net.ReadPlayer()
         local play_sound = net.ReadBool()
         local show_confetti = net.ReadBool()
 
