@@ -567,6 +567,21 @@
             <li><em>client</em> - The local player</li>
         </ul>
 
+        <h3><a id="tttradioplayernamesender-target" href="#tttradioplayernamesender-target"></a>TTTRadioPlayerName(sender, target)</a></h3>
+        <p>
+            Called when a player is using the in-game quickchat radio. Used to override the name shown.<br>
+            <em>Realm:</em> Client and Server<br>
+            <em>Added in:</em> 2.1.9<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>sender</em> - The player who is sending the message</li>
+            <li><em>target</em> - The player who the message being sent is about</li>
+        </ul>
+        <p>
+            <em>Return:</em> The player name to show, if it should be overridden. Otherwise do not return anything.
+        </p>
+
         <h3><a id="tttrewarddetectivetraitordeathamountvictim-attacker-amount" href="#tttrewarddetectivetraitordeathamountvictim-attacker-amount">TTTRewardDetectiveTraitorDeathAmount(victim, attacker, amount)</a></h3>
         <p>
             Called before all detectives are awarded credits for a traitor being killed.<br>

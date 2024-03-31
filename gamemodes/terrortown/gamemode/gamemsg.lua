@@ -11,6 +11,7 @@ local string = string
 local table = table
 
 local GetAllPlayers = player.GetAll
+local CallHook = hook.Call
 
 -- NOTE: most uses of the Msg functions here have been moved to the LANG
 -- functions. These functions are essentially deprecated, though they won't be
@@ -70,7 +71,7 @@ local function GetRoleChatTargets(sender, msg, from_chat)
         targets = GetMonsterTeamFilter()
     end
 
-    local result = hook.Call("TTTTeamChatTargets", nil, sender, msg, targets, from_chat)
+    local result = CallHook("TTTTeamChatTargets", nil, sender, msg, targets, from_chat)
     if type(result) == "boolean" and not result then return nil end
 
     return targets
@@ -305,12 +306,12 @@ function GM:PlayerCanHearPlayersVoice(listener, speaker)
         return true, false
     end
 
-    local listenerCanUseTraitorVoice = hook.Call("TTTCanUseTraitorVoice", nil, listener)
+    local listenerCanUseTraitorVoice = CallHook("TTTCanUseTraitorVoice", nil, listener)
     if type(listenerCanUseTraitorVoice) ~= "boolean" then
         listenerCanUseTraitorVoice = listener:IsActiveTraitorTeam()
     end
 
-    local speakerCanUseTraitorVoice = hook.Call("TTTCanUseTraitorVoice", nil, speaker)
+    local speakerCanUseTraitorVoice = CallHook("TTTCanUseTraitorVoice", nil, speaker)
     if type(speakerCanUseTraitorVoice) ~= "boolean" then
         speakerCanUseTraitorVoice = speaker:IsActiveTraitorTeam()
     end
@@ -351,7 +352,7 @@ local function GetVoiceChatTargets(speaker)
         targets = GetTraitorTeamFilterWithExcludes(true)
     end
 
-    local result = hook.Call("TTTTeamVoiceChatTargets", nil, speaker, targets)
+    local result = CallHook("TTTTeamVoiceChatTargets", nil, speaker, targets)
     if type(result) == "boolean" and not result then return nil end
 
     return targets
@@ -375,7 +376,7 @@ local function TraitorGlobalVoice(ply, cmd, args)
     if not IsValid(ply) then return end
     if #args ~= 1 then return end
 
-    local canUseTraitorVoice = hook.Call("TTTCanUseTraitorVoice", nil, ply)
+    local canUseTraitorVoice = CallHook("TTTCanUseTraitorVoice", nil, ply)
     if type(canUseTraitorVoice) ~= "boolean" then
         canUseTraitorVoice = ply:IsActiveTraitorTeam()
     end
@@ -504,6 +505,17 @@ function GM:TTTPlayerRadioCommand(ply, msg_name, msg_target)
     ply.LastRadioCommand = CurTime()
 end
 
+local function GetRadioPlayerName(sender, target)
+    local name = CallHook("TTTRadioPlayerName", nil, sender, target)
+    if not name or #name == 0 then
+        name = target:GetNWString("PlayerName", "")
+    end
+    if not name or #name == 0 then
+        name = target:Nick()
+    end
+    return name
+end
+
 local function RadioCommand(ply, cmd, args)
     if IsValid(ply) and ply:IsTerror() and #args == 2 then
         local msg_name = args[1]
@@ -517,7 +529,7 @@ local function RadioCommand(ply, cmd, args)
             local ent = Entity(tonumber(msg_target))
             if IsValid(ent) then
                 if ent:IsPlayer() then
-                    name = ent:Nick()
+                    name = GetRadioPlayerName(ply, ent)
                 elseif ent:GetClass() == "prop_ragdoll" then
                     name = LANG.NameParam("quick_corpse_id")
                     rag_name = CORPSE.GetPlayerNick(ent, "A Terrorist")
@@ -530,7 +542,7 @@ local function RadioCommand(ply, cmd, args)
             name = LANG.NameParam(msg_target)
         end
 
-        if hook.Call("TTTPlayerRadioCommand", GAMEMODE, ply, msg_name, msg_target) then
+        if CallHook("TTTPlayerRadioCommand", GAMEMODE, ply, msg_name, msg_target) then
             return
         end
 

@@ -23,7 +23,7 @@ local GetAllPlayers = player.GetAll
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 
-local function GetPlayerName(ply, team_chat)
+local function GetChatPlayerName(ply, team_chat)
     local name = CallHook("TTTChatPlayerName", nil, ply, team_chat or false)
     if not name or #name == 0 then
         name = ply:GetNWString("PlayerName", "")
@@ -39,7 +39,7 @@ local function LastWordsRecv()
     local words = net.ReadString()
 
     local was_detective = IsValid(sender) and sender:IsDetectiveTeam()
-    local nick = IsValid(sender) and GetPlayerName(sender) or "<Unknown>"
+    local nick = IsValid(sender) and GetChatPlayerName(sender) or "<Unknown>"
 
     chat.AddText(Color(150, 150, 150),
             Format("(%s) ", string.upper(GetTranslation("last_words"))),
@@ -58,7 +58,7 @@ local function RoleChatRecv()
 
     local text = net.ReadString()
 
-    local name = GetPlayerName(sender, true)
+    local name = GetChatPlayerName(sender, true)
     local visible_role = role
     if role == ROLE_DEPUTY and sender:IsRoleActive() then
         visible_role = ROLE_DETECTIVE
@@ -90,7 +90,7 @@ end
 -- Detectives have a blue name, in both chat and radio messages
 local function AddDetectiveText(ply, text)
     chat.AddText(ROLE_COLORS[ROLE_DETECTIVE],
-        GetPlayerName(ply),
+        GetChatPlayerName(ply),
         COLOR_WHITE,
         ": " .. text)
 end
@@ -111,7 +111,7 @@ local function OnPlayerChat(ply, strText, bTeamOnly, bPlayerIsDead)
     end
 
     if IsValid(ply) then
-        table.insert(tab, GetPlayerName(ply, bTeamOnly))
+        table.insert(tab, GetChatPlayerName(ply, bTeamOnly))
     else
         table.insert(tab, "Console")
     end
@@ -327,12 +327,23 @@ function RADIO:GetTargetType()
     end
 end
 
+local function GetRadioPlayerName(sender, target)
+    local name = CallHook("TTTRadioPlayerName", nil, sender, target)
+    if not name or #name == 0 then
+        name = target:GetNWString("PlayerName", "")
+    end
+    if not name or #name == 0 then
+        name = target:Nick()
+    end
+    return name
+end
+
 function RADIO.ToPrintable(target)
     if isstring(target) then
         return GetTranslation(target)
     elseif IsValid(target) then
         if target:IsPlayer() then
-            return target:Nick()
+            return GetRadioPlayerName(LocalPlayer(), target)
         elseif target:GetClass() == "prop_ragdoll" then
             return GetPTranslation("quick_corpse_id", { player = CORPSE.GetPlayerNick(target, "A Terrorist") })
         end
