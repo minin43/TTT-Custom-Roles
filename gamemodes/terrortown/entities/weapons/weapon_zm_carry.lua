@@ -10,7 +10,6 @@ local pairs = pairs
 local player = player
 local timer = timer
 local util = util
-local player = player
 
 local PlayerIterator = player.Iterator
 local CurTime = CurTime
