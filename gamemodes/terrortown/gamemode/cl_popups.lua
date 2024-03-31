@@ -4,10 +4,12 @@ local concommand = concommand
 local draw = draw
 local hook = hook
 local ipairs = ipairs
+local player = player
 local table = table
 local timer = timer
 local vgui = vgui
 
+local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 
