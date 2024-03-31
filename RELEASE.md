@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.1.10 (Beta)
+**Released:**
+
+### Changes
+- Ported "TTT: Use new game.CleanUpMap argument"
+
 ## 2.1.9
 **Released: March 30th, 2024**
 

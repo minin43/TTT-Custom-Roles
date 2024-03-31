@@ -548,9 +548,7 @@ local function CleanUp()
 
     et.FixParentedPreCleanup()
 
-    game.CleanUpMap()
-
-    et.FixParentedPostCleanup()
+    game.CleanUpMap(false, nil, function() et.FixParentedPostCleanup() end)
 
     -- Strip players now, so that their weapons are not seen by ReplaceEntities
     for k, v in ipairs(GetAllPlayers()) do
