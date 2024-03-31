@@ -2,12 +2,13 @@ AddCSLuaFile()
 
 local hook = hook
 local net = net
-local pairs = pairs
 local player = player
 local surface = surface
 local string = string
 local table = table
 local util = util
+
+local PlayerIterator = player.Iterator
 
 if CLIENT then
     SWEP.PrintName = "Zombification Device"
@@ -46,7 +47,7 @@ if SERVER then
         if ply:IsTraitor() and CORPSE.GetFound(body, false) == true then
             local plys = {}
 
-            for _, v in pairs(player.GetAll()) do
+            for _, v in PlayerIterator() do
                 if not v:IsTraitor() then
                     table.insert(plys, v)
                 end
@@ -114,7 +115,7 @@ if CLIENT then
     end)
 
     hook.Add("TTTEndRound", "RemoveZombificatorHide", function()
-        for _, v in pairs(player.GetAll()) do v.MadZomHide = nil end
+        for _, v in PlayerIterator() do v.MadZomHide = nil end
     end)
 
     local oldScoreGroup = ScoreGroup

@@ -10,7 +10,7 @@ local table = table
 local timer = timer
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_ParasiteInfect")
 
@@ -58,7 +58,7 @@ end
 
 local deadParasites = {}
 hook.Add("TTTPrepareRound", "Parasite_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("ParasiteInfected", false)
         ClearParasiteState(v)
     end

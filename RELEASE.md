@@ -4,9 +4,11 @@
 **Released:**
 
 ### Developer
-- Updated most net methods to use net.Read/WritePlayer where appropriate
+- Updated most net methods to use `net.Read/WritePlayer` where appropriate
+- Updated many places in the codebase to use `player.Iterator`
 - Ported "TTT: Use new game.CleanUpMap argument"
 - Ported "TTT: Use net.Read/WritePlayer"
+- Ported "TTT: Use player.Iterator"
 
 ## 2.1.9
 **Released: March 30th, 2024**

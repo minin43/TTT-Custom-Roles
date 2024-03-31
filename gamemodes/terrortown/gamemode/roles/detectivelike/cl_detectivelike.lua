@@ -1,11 +1,11 @@
 local halo = halo
 local hook = hook
-local ipairs = ipairs
 local net = net
+local player = player
 local surface = surface
 local table = table
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local HaloAdd = halo.Add
 local AddHook = hook.Add
 local RemoveHook = hook.Remove
@@ -113,7 +113,7 @@ local client = nil
 local function EnableDetectiveLikeHighlights()
     AddHook("PreDrawHalos", "DetectiveLike_Highlight_PreDrawHalos", function()
         local detectives = {}
-        for _, v in ipairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if not v:IsActiveDetectiveLike() then continue end
             -- Don't highlight players who are already highlighted by things like traitor vision
             if client:IsTargetHighlighted(v) then continue end

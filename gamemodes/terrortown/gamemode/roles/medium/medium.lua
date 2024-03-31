@@ -7,7 +7,7 @@ local player = player
 local table = table
 local ents = ents
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local CreateEntity = ents.Create
 local FindEntsByClass = ents.FindByClass
 
@@ -65,7 +65,7 @@ end)
 hook.Add("PlayerDeath", "Medium_Spirits_PlayerDeath", function(victim, infl, attacker)
     -- Create spirit for the medium
     local mediumCount = 0
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsMedium() then
             mediumCount = mediumCount + 1
         end
@@ -104,7 +104,7 @@ end)
 -------------
 
 hook.Add("TTTPrepareRound", "Medium_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWInt("TTTMediumSeanceStage", MEDIUM_SCANNED_NONE)
         v:SetNWInt("TTTMediumSeanceState", MEDIUM_SEANCE_IDLE)
         v:SetNWString("TTTMediumSeanceTarget", "")

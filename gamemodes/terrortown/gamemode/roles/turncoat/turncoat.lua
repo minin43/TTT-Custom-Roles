@@ -6,7 +6,7 @@ local hook = hook
 local player = player
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_TurncoatTeamChange")
 
@@ -36,7 +36,7 @@ function plymeta:ChangeTurncoatTeam(extra)
         message = message .. extra
     end
     message = message .. "!"
-    for _, ply in ipairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         ply:QueueMessage(MSG_PRINTBOTH, message)
     end
 

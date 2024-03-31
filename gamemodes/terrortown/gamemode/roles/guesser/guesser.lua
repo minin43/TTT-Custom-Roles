@@ -5,7 +5,7 @@ local net = net
 local player = player
 local hook = hook
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local AddHook = hook.Add
 
 util.AddNetworkString("TTT_GuesserSelectRole")
@@ -90,10 +90,8 @@ hook.Add("TTTBeginRound", "Guesser_Announce_TTTBeginRound", function()
     if not guesser_warn_all:GetBool() then return end
 
     timer.Simple(1.5, function()
-        local plys = GetAllPlayers()
-
         local hasGuesser = false
-        for _, v in ipairs(plys) do
+        for _, v in PlayerIterator() do
             if v:IsGuesser() then
                 hasGuesser = true
             end
@@ -101,7 +99,7 @@ hook.Add("TTTBeginRound", "Guesser_Announce_TTTBeginRound", function()
 
         if not hasGuesser then return end
 
-        for _, v in ipairs(plys) do
+        for _, v in PlayerIterator() do
             if not v:IsGuesser() then
                 v:QueueMessage(MSG_PRINTBOTH, "There is " .. ROLE_STRINGS_EXT[ROLE_GUESSER] .. ".")
             end
@@ -114,7 +112,7 @@ end)
 -------------
 
 AddHook("TTTPrepareRound", "Guesser_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWInt("TTTGuesserSelection", ROLE_NONE)
         v:SetNWBool("TTTGuesserWasGuesser", false)
         v:SetNWString("TTTGuesserGuessedBy", "")

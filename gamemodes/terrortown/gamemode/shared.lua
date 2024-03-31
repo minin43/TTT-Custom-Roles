@@ -5,6 +5,7 @@ local IsValid = IsValid
 local math = math
 local net = net
 local pairs = pairs
+local player = player
 local string = string
 local table = table
 
@@ -12,7 +13,7 @@ local FileExists = file.Exists
 local FileFind = file.Find
 local CallHook = hook.Call
 local RunHook = hook.Run
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local StringUpper = string.upper
 local StringLower = string.lower
 local StringFind = string.find
@@ -1669,7 +1670,7 @@ if SERVER then
         local mode = GetConVar("ttt_" .. cvar_role .. "_notify_mode"):GetInt()
         local play_sound = GetConVar("ttt_" .. cvar_role .. "_notify_sound"):GetBool()
         local show_confetti = GetConVar("ttt_" .. cvar_role .. "_notify_confetti"):GetBool()
-        for _, ply in pairs(GetAllPlayers()) do
+        for _, ply in PlayerIterator() do
             if ply == attacker then
                 local role_string = ROLE_STRINGS[role]
                 ply:QueueMessage(MSG_PRINTCENTER, "You killed the " .. role_string .. "!")

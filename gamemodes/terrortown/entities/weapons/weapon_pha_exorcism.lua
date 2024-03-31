@@ -1,10 +1,11 @@
 AddCSLuaFile()
 
-local pairs = pairs
 local player = player
 local string = string
 local timer = timer
 local util = util
+
+local PlayerIterator = player.Iterator
 
 SWEP.HoldType               = "slam"
 
@@ -60,7 +61,7 @@ if SERVER then
         ply:EmitSound(cured)
 
         if ply:GetNWBool("PhantomHaunted", false) then
-            for _, v in pairs(player.GetAll()) do
+            for _, v in PlayerIterator() do
                 if v:GetNWString("PhantomHauntingTarget", "") == ply:SteamID64() then
                     ply:SetNWBool("PhantomHaunted", false)
                     v:SetNWBool("PhantomHaunting", false)

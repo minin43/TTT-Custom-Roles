@@ -19,7 +19,7 @@ local vgui = vgui
 
 local AddHook = hook.Add
 local CallHook = hook.Call
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 
@@ -554,7 +554,7 @@ function GM:PlayerStartVoice(ply)
             end
 
             local hasGlitch = false
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if v:IsGlitch() then hasGlitch = true end
             end
 

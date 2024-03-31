@@ -4,12 +4,12 @@ local hook = hook
 local ipairs = ipairs
 local IsValid = IsValid
 local net = net
-local pairs = pairs
+local player = player
 local table = table
 local timer = timer
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_SwapperSwapped")
 
@@ -258,7 +258,7 @@ hook.Add("TTTCupidShouldLoverSurvive", "Swapper_TTTCupidShouldLoverSurvive", fun
 end)
 
 hook.Add("TTTPrepareRound", "Swapper_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWString("SwappedWith", "")
         v:SetNWBool("IsSwapping", false)
     end

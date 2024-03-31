@@ -1,14 +1,13 @@
 AddCSLuaFile()
 
 local hook = hook
-local ipairs = ipairs
 local IsValid = IsValid
 local net = net
-local pairs = pairs
+local player = player
 local timer = timer
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_BeggarConverted")
 util.AddNetworkString("TTT_BeggarKilled")
@@ -38,7 +37,7 @@ local beggar_announce_delay = GetConVar("ttt_beggar_announce_delay")
 -------------------
 
 local function AnnounceTeamChange(ply, role)
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v ~= ply and v:ShouldRevealBeggar(ply) then
             v:QueueMessage(MSG_PRINTBOTH, "The beggar has joined the " .. ROLE_STRINGS[role] .. " team")
         end
@@ -85,7 +84,7 @@ end)
 
 -- Disable tracking that this player was a beggar at the start of a new round or if their role changes again (e.g. if they go beggar -> innocent -> dead -> hypnotist res to traitor)
 hook.Add("TTTPrepareRound", "Beggar_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("WasBeggar", false)
         v:SetNWBool("BeggarIsRespawning", false)
         timer.Remove(v:Nick() .. "BeggarRespawn")
@@ -191,7 +190,7 @@ end)
 ----------------
 
 local function HasBeggar()
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsBeggar() then
             return true
         end
@@ -200,7 +199,7 @@ local function HasBeggar()
 end
 
 hook.Add("TTTPrepareRound", "Beggar_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWInt("TTTBeggarScanStage", BEGGAR_UNSCANNED)
         v:SetNWInt("TTTBeggarScannerState", BEGGAR_SCANNER_IDLE)
         v:SetNWString("TTTBeggarScannerTarget", "")
@@ -234,7 +233,7 @@ hook.Add("TTTPlayerRoleChanged", "Beggar_Informant_TTTPlayerRoleChanged", functi
     if HasBeggar() then
         -- Only notify if there is an beggar and the player had some info being reset
         if scanStage > BEGGAR_UNSCANNED then
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if v:IsActiveBeggar() then
                     v:PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has changed roles. You will need to rescan them.")
                 end

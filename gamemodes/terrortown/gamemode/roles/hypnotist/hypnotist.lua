@@ -2,9 +2,9 @@ AddCSLuaFile()
 
 local hook = hook
 local IsValid = IsValid
-local pairs = pairs
+local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 ------------------
 -- ROLE WEAPONS --
@@ -25,7 +25,7 @@ end)
 ----------------
 
 hook.Add("TTTPrepareRound", "Hypnotist_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("WasHypnotised", false)
     end
 end)

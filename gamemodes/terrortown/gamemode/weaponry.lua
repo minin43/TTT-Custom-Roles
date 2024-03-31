@@ -19,7 +19,7 @@ local weapons = weapons
 
 local CallHook = hook.Call
 local CreateEntity = ents.Create
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local IsEquipment = WEPS.IsEquipment
 local StringLower = string.lower
 local StringSub = string.sub
@@ -252,7 +252,7 @@ function GM:PlayerLoadout(ply)
 end
 
 function GM:UpdatePlayerLoadouts()
-    for _, ply in ipairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         hook.Call("PlayerLoadout", GAMEMODE, ply)
     end
 end
@@ -622,7 +622,7 @@ concommand.Add("ttt_order_equipment", OrderEquipment)
 concommand.Add("ttt_order_for_someone", function(ply, cmd, args)
     local target_name = args[1]
     local target = nil
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if target_name == v:Nick() then
             target = v
             break

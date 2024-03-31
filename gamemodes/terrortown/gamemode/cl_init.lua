@@ -21,7 +21,7 @@ local CallHook = hook.Call
 local AddHook = hook.Add
 local RunHook = hook.Run
 local RemoveHook = hook.Remove
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathRand = math.Rand
 local MathRandom = math.random
 local StringUpper = string.upper
@@ -168,7 +168,7 @@ local function RoundStateChange(o, n)
         CLSCORE:ClearPanel()
 
         -- people may have died and been searched during prep
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             p.search_result = nil
         end
 
@@ -193,7 +193,7 @@ local function RoundStateChange(o, n)
     end
 
     -- whatever round state we get, clear out the voice flags
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v.traitor_gvoice = false
     end
 end
@@ -304,7 +304,7 @@ function GM:ClearClientState()
 
     VOICE.InitBattery()
 
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if IsValid(p) then
             p.sb_tag = nil
             p:SetRole(ROLE_INNOCENT)
@@ -394,7 +394,7 @@ function GM:DrawDeathNotice() end
 
 function GM:Think()
     local client = LocalPlayer()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:Alive() and not v:IsSpec() then
             CallHook("TTTPlayerAliveClientThink", nil, client, v)
 
@@ -537,7 +537,7 @@ function OnPlayerHighlightEnabled(client, alliedRoles, showJesters, hideEnemies,
     local enemies = {}
     local friends = {}
     local jesters = {}
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if IsValid(v) and v:Alive() and not v:IsSpec() and v ~= client and not ShouldHideFromHighlight(v, client) then
             local hideBeggar = v:GetNWBool("WasBeggar", false) and not client:ShouldRevealBeggar(v)
             local hideBodysnatcher = v:GetNWBool("WasBodysnatcher", false) and not client:ShouldRevealBodysnatcher(v)

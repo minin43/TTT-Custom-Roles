@@ -1,8 +1,8 @@
 local hook = hook
 local net = net
-local pairs = pairs
+local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 ------------------
 -- ROLE CONVARS --
@@ -121,7 +121,7 @@ hook.Add("TTTScoreboardPlayerName", "Parasite_TTTScoreboardPlayerName", function
     -- Show Assassin and Parasite logic if necessary
     local infected = ply:GetNWBool("ParasiteInfected", false)
     if shouldShowTraitor then
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if ply:SteamID64() == v:GetNWString("AssassinTarget", "") then
                 local newText = " ("
                 if infected then

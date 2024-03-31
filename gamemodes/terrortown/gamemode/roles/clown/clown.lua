@@ -7,7 +7,7 @@ local resource = resource
 local table = table
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_ClownTeamChange")
 util.AddNetworkString("TTT_ClownActivate")
@@ -74,7 +74,7 @@ hook.Add("PostPlayerDeath", "Clown_ActivationPercent_PostPlayerDeath", function(
     local total_players = 0
     local living_players = 0
     local clowns = {}
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         -- Keep track of the clowns
         if p:IsClown() then
             table.insert(clowns, p)

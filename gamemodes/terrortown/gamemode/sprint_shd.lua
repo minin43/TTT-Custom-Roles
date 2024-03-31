@@ -1,11 +1,10 @@
 local hook = hook
-local ipairs = ipairs
 local math = math
 local player = player
 
 local AddHook = hook.Add
 local CallHook = hook.Call
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathClamp = math.Clamp
 
 local staminaMax = 100
@@ -91,7 +90,7 @@ AddHook("TTTPrepareRound", "TTTSprintPrepareRound", function()
     consumption = GetConVar("ttt_sprint_consume"):GetFloat()
 
     if SERVER then
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             ResetPlayerSprintState(p)
         end
     else -- CLIENT

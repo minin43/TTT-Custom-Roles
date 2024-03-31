@@ -3,11 +3,10 @@ AddCSLuaFile()
 local hook = hook
 local IsValid = IsValid
 local net = net
-local pairs = pairs
+local player = player
 local table = table
 
-local GetAllPlayers = player.GetAll
-
+local PlayerIterator = player.Iterator
 -------------
 -- CONVARS --
 -------------
@@ -29,7 +28,7 @@ hook.Add("PlayerFootstep", "Tracker_PlayerFootstep", function(ply, pos, foot, so
     if footstep_time <= 0 then return end
 
     local tab = {}
-    for k, p in pairs(GetAllPlayers()) do
+    for k, p in PlayerIterator() do
         if p:IsActiveTracker() then
             table.insert(tab, p)
         end

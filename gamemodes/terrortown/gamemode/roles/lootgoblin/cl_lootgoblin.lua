@@ -1,12 +1,13 @@
 local hook = hook
 local net = net
+local player = player
 local surface = surface
 local string = string
 local table = table
 local util = util
 
 local MathMax = math.max
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local TableInsert = table.insert
 
 LOOTGOBLIN_RADAR_BEEP_OVERRIDE_NONE = 0
@@ -94,7 +95,7 @@ local function SetLootGoblinPosition()
     if not cli:IsActiveLootGoblin() then
         lootgoblins = {}
         local beepSoundOverride = lootgoblin_radar_beep_sound_override:GetInt()
-        for k, v in ipairs(GetAllPlayers()) do
+        for k, v in PlayerIterator() do
             if v:IsActiveLootGoblin() and v:IsRoleActive() then
                 lootgoblins[k] = { pos = v:GetNWVector("TTTLootGoblinRadar", vector_origin) }
                 if cli:IsActive() and beepSoundOverride == LOOTGOBLIN_RADAR_BEEP_OVERRIDE_ON or (beepSoundOverride ~= LOOTGOBLIN_RADAR_BEEP_OVERRIDE_OFF and lootgoblin_radar_beep_sound:GetBool()) then surface.PlaySound(beep_success) end

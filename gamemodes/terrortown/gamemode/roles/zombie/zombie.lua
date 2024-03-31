@@ -3,7 +3,6 @@ AddCSLuaFile()
 local plymeta = FindMetaTable("Player")
 
 local hook = hook
-local ipairs = ipairs
 local IsValid = IsValid
 local math = math
 local net = net
@@ -12,7 +11,7 @@ local player = player
 local table = table
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathRandom = math.random
 
 util.AddNetworkString("TTT_Zombified")
@@ -45,7 +44,7 @@ hook.Add("PlayerDisconnected", "Zombie_Prime_PlayerDisconnected", function(ply)
     if not ply:IsZombiePrime() then return end
 
     local zombies = {}
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActiveZombie() and v ~= ply then
             -- If we already have another prime, we're all set
             if v:IsZombiePrime() then
@@ -72,7 +71,7 @@ function plymeta:SetZombiePrime(p) self:SetNWBool("zombie_prime", p) end
 -----------------
 
 hook.Add("TTTBeginRound", "Zombie_RoleFeatures_BeginRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsZombie() then
             v:SetZombiePrime(true)
         end
@@ -80,7 +79,7 @@ hook.Add("TTTBeginRound", "Zombie_RoleFeatures_BeginRound", function()
 end)
 
 hook.Add("TTTPrepareRound", "Zombie_RoleFeatures_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v.WasZombieColored = false
         v:SetNWBool("IsZombifying", false)
         -- Keep previous naming scheme for backwards compatibility
@@ -104,7 +103,7 @@ hook.Add("TTTWinCheckBlocks", "Zombie_TTTWinCheckBlocks", function(win_blocks)
     if not zombie_respawn_block_win:GetBool() then return end
 
     table.insert(win_blocks, function(win)
-        for _, v in ipairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if v:IsZombifying() then
                 return WIN_NONE
             end
@@ -118,7 +117,7 @@ hook.Add("TTTCheckForWin", "Zombie_TTTCheckForWin", function()
 
     local zombie_alive = false
     local other_alive = false
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActive() then
             if v:IsZombie() or v:IsMadScientist() then
                 zombie_alive = true
@@ -377,7 +376,7 @@ hook.Add("SetupPlayerVisibility", "Zombie_SetupPlayerVisibility", function(ply)
     local hasFangs = ply.GetActiveWeapon and IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon():GetClass() == "weapon_zom_claws"
     if not hasFangs then return end
 
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if ply:TestPVS(v) then continue end
 
         local pos = v:GetPos()

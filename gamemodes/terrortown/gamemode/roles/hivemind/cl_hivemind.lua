@@ -1,10 +1,10 @@
 local halo = halo
 local hook = hook
 local IsValid = IsValid
-local pairs = pairs
+local player = player
 
 local AddHook = hook.Add
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local RemoveHook = hook.Remove
 local StringUpper = string.upper
 
@@ -44,7 +44,7 @@ net.Receive("TTT_HiveMindChatDupe", function()
     local source = net.ReadPlayer()
     local text = net.ReadString()
 
-    for _, ply in ipairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         if ply:IsActiveHiveMind() and source ~= ply then
             chat.AddText(ply, COLOR_WHITE, ": ", text)
         end
@@ -113,7 +113,7 @@ local client = nil
 local function EnableHiveMindHighlights()
     AddHook("PreDrawHalos", "HiveMind_Highlight_PreDrawHalos", function()
         local hivemind = {}
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if IsValid(v) and v:IsActiveHiveMind() and v ~= client then
                 table.insert(hivemind, v)
             end

@@ -1,8 +1,7 @@
-local ipairs = ipairs
 local player = player
 local vgui = vgui
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 --- Credit transfer tab for equipment menu
 local GetTranslation = LANG.GetTranslation
@@ -38,7 +37,7 @@ function CreateTransferMenu(parent)
 
     -- fill combobox
     local r = client:GetRole()
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if (IsValid(p) and p ~= client) and
                 -- Same role
                 (p:IsActiveRole(r) or

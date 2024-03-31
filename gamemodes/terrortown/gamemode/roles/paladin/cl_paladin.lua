@@ -1,9 +1,10 @@
 local hook = hook
 local math = math
+local player = player
 
 local MathCos = math.cos
 local MathSin = math.sin
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -72,7 +73,7 @@ hook.Add("HUDPaintBackground", "Paladin_HUDPaintBackground", function()
     if client:IsPaladin() then return end
 
     local inside = false
-    for _, p in pairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsActive() and p:GetDisplayedRole() == ROLE_PALADIN and client:GetPos():Distance(p:GetPos()) <= (paladin_aura_radius:GetFloat() * UNITS_PER_METER) then
             inside = true
             break

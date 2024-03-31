@@ -4,14 +4,15 @@ AddCSLuaFile()
 
 local draw = draw
 local ents = ents
-local ipairs = ipairs
 local IsValid = IsValid
 local math = math
 local pairs = pairs
 local player = player
 local timer = timer
 local util = util
+local player = player
 
+local PlayerIterator = player.Iterator
 local CurTime = CurTime
 
 DEFINE_BASECLASS "weapon_tttbase"
@@ -156,7 +157,7 @@ function SWEP:CheckValidity()
 end
 
 local function PlayerStandsOn(ent)
-    for _, ply in ipairs(player.GetAll()) do
+    for _, ply in PlayerIterator() do
         if ply:GetGroundEntity() == ent and ply:IsTerror() then
             return true
         end

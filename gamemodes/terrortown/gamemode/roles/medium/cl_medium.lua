@@ -1,12 +1,12 @@
 local hook = hook
 local math = math
-local pairs = pairs
+local player = player
 local table = table
 local string = string
 local ents = ents
 
 local StringUpper = string.upper
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathRand = math.Rand
 local MathRandom = math.random
 local TableInsert = table.insert
@@ -75,7 +75,7 @@ local function ShouldSeeSpirits(ply)
     cacheTime = CurTime()
 
     -- Only allow dead people to see spirits if there is a medium
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsMedium() then
             lastResult = true
             return true

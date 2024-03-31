@@ -1,9 +1,10 @@
 local hook = hook
 local math = math
+local player = player
 
 local MathCos = math.cos
 local MathSin = math.sin
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -95,7 +96,7 @@ hook.Add("HUDPaintBackground", "Sapper_HUDPaintBackground", function()
     if client:IsSapper() then return end
 
     local inside = false
-    for _, p in pairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsActive() and p:GetDisplayedRole() == ROLE_SAPPER and client:GetPos():Distance(p:GetPos()) <= (sapper_aura_radius:GetInt() * UNITS_PER_METER) then
             inside = true
             break

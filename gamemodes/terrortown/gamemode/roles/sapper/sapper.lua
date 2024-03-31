@@ -1,11 +1,10 @@
 AddCSLuaFile()
 
 local hook = hook
-local pairs = pairs
 local player = player
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 resource.AddFile("materials/particle/sap_barrel.vmt")
 
@@ -31,7 +30,7 @@ hook.Add("EntityTakeDamage", "Sapper_EntityTakeDamage", function(ent, dmginfo)
     if dmginfo:IsExplosionDamage() or (sapper_fire_immune:GetBool() and dmginfo:IsDamageType(DMG_BURN)) then
         local sapper = nil
         local radius = sapper_aura_radius:GetInt() * UNITS_PER_METER
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if v:IsActiveSapper() and (v ~= ent or sapper_protect_self:GetBool()) and v:GetPos():Distance(ent:GetPos()) <= radius then
                 sapper = v
                 break

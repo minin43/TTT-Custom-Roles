@@ -1,10 +1,11 @@
 local hook = hook
 local math = math
+local player = player
 
 local MathCos = math.cos
 local MathSin = math.sin
 local StringUpper = string.upper
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -72,7 +73,7 @@ hook.Add("TTTPlayerAliveClientThink", "Sponge_RoleFeatures_TTTPlayerAliveClientT
         end
         shouldDraw = true
     elseif ply ~= client then
-        for _, p in pairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:IsActiveSponge() then
                 if sponge_aura_mode:GetInt() == SPONGE_ATTACKER_AND_VICTIM then
                     local cliAuraEndTime = client:GetNWFloat("SpongeAuraEndTime", -1)
@@ -129,7 +130,7 @@ hook.Add("HUDPaintBackground", "Sponge_HUDPaintBackground", function()
 
     local inside = false
     local allInside = false
-    for _, p in pairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsActiveSponge() then
             local auraEndTime = client:GetNWFloat("SpongeAuraEndTime", -1)
             if client:GetPos():Distance(p:GetPos()) <= GetGlobalFloat("ttt_sponge_aura_radius", UNITS_PER_FIVE_METERS) or (auraEndTime ~= -1 and auraEndTime > CurTime()) then

@@ -6,11 +6,11 @@ local ipairs = ipairs
 local IsValid = IsValid
 local math = math
 local net = net
-local pairs = pairs
+local player = player
 local string = string
 local table = table
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local CallHook = hook.Call
 
 -- NOTE: most uses of the Msg functions here have been moved to the LANG
@@ -93,7 +93,7 @@ concommand.Add("ttt_team_chat_as_player", function(ply, cmd, args)
     local target_name = args[1]
     local text = args[2]
     local target = nil
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:Nick() == target_name then
             target = p
             break
@@ -112,7 +112,7 @@ end, nil, "Sends a chat message as another player", FCVAR_CHEAT)
 
 -- Round start info popup
 function ShowRoundStartPopup()
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if IsValid(v) and v:Team() == TEAM_TERROR and v:Alive() then
             v:ConCommand("ttt_cl_startpopup")
         end
@@ -121,7 +121,7 @@ end
 
 function GetPlayerFilter(pred)
     local filter = {}
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if IsValid(v) and pred(v) then
             table.insert(filter, v)
         end
@@ -246,7 +246,7 @@ function GM:PlayerSay(ply, text, team_only)
             return table.concat(filtered, " ")
         elseif team_only and not team and (ply:IsTraitorTeam() or ply:IsDetectiveLike() or ply:IsMonsterTeam()) then
             local hasGlitch = false
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if v:IsGlitch() then hasGlitch = true end
             end
             if ply:IsTraitorTeam() and hasGlitch then
@@ -319,7 +319,7 @@ function GM:PlayerCanHearPlayersVoice(listener, speaker)
     -- Traitors "team" chat by default, non-locationally
     if speakerCanUseTraitorVoice and not speaker.traitor_gvoice then
         local hasGlitch = false
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if v:IsGlitch() then hasGlitch = true end
         end
 
@@ -387,7 +387,7 @@ local function TraitorGlobalVoice(ply, cmd, args)
     ply.traitor_gvoice = (state == 1)
 
     local hasGlitch = false
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsGlitch() then hasGlitch = true end
     end
 

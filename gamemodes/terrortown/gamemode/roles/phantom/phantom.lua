@@ -10,7 +10,7 @@ local table = table
 local timer = timer
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_PhantomHaunt")
 
@@ -40,7 +40,7 @@ local phantom_haunt_saves_lover = CreateConVar("ttt_phantom_haunt_saves_lover", 
 
 local deadPhantoms = {}
 hook.Add("TTTPrepareRound", "Phantom_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("PhantomHaunted", false)
         v:SetNWBool("PhantomHaunting", false)
         v:SetNWString("PhantomHauntingTarget", "")
@@ -113,7 +113,7 @@ hook.Add("PlayerDeath", "Phantom_PlayerDeath", function(victim, infl, attacker)
         end
 
         if phantom_announce_death:GetBool() then
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if v ~= attacker and v:IsActiveDetectiveLike() and v:SteamID64() ~= loverSID then
                     v:QueueMessage(MSG_PRINTCENTER, "The " .. ROLE_STRINGS[ROLE_PHANTOM] .. " has been killed.")
                 end
@@ -297,7 +297,7 @@ hook.Add("DoPlayerDeath", "Phantom_DoPlayerDeath", function(ply, attacker, dmgin
         end
 
         if respawn and phantom_announce_death:GetBool() then
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if v:IsActiveDetectiveLike() then
                     v:QueueMessage(MSG_PRINTCENTER, "The " .. ROLE_STRINGS[ROLE_PHANTOM] .. " has been respawned.")
                 end

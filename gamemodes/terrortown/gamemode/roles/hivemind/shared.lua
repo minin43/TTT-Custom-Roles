@@ -5,7 +5,7 @@ local player = player
 local table = table
 
 local AddHook = hook.Add
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local TableInsert = table.insert
 
 ------------------
@@ -85,7 +85,7 @@ AddHook("TTTPlayerRoleChanged", "HiveMind_ShopSync_TTTPlayerRoleChanged", functi
 
         if SERVER and WEPS.DoesRoleHaveWeapon(oldRole) then
             -- Bust the weapons cache for all players so the weapons show in the shop and they can buy them
-            for _, p in ipairs(GetAllPlayers()) do
+            for _, p in PlayerIterator() do
                 if not p:IsHiveMind() then continue end
                 -- Bust the shop cache
                 p:ConCommand("ttt_reset_weapons_cache")
