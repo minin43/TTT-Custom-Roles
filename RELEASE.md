@@ -5,6 +5,7 @@
 
 ### Changes
 - Ported "TTT: Use new game.CleanUpMap argument"
+- Ported "TTT: Use net.Read/WritePlayer"
 
 ## 2.1.9
 **Released: March 30th, 2024**

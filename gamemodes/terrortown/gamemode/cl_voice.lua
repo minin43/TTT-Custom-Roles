@@ -35,7 +35,7 @@ local function GetChatPlayerName(ply, team_chat)
 end
 
 local function LastWordsRecv()
-    local sender = net.ReadEntity()
+    local sender = net.ReadPlayer()
     local words = net.ReadString()
 
     local was_detective = IsValid(sender) and sender:IsDetectiveTeam()
@@ -53,7 +53,7 @@ net.Receive("TTT_LastWordsMsg", LastWordsRecv)
 local function RoleChatRecv()
     -- virtually always our role, but future equipment might allow listening in
     local role = net.ReadInt(8)
-    local sender = net.ReadEntity()
+    local sender = net.ReadPlayer()
     if not IsValid(sender) then return end
 
     local text = net.ReadString()
@@ -439,7 +439,7 @@ end
 concommand.Add("ttt_radio", RadioCommand, RadioComplete)
 
 local function RadioMsgRecv()
-    local sender = net.ReadEntity()
+    local sender = net.ReadPlayer()
     local msg = net.ReadString()
     local param = net.ReadString()
 

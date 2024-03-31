@@ -82,9 +82,9 @@ local function RoleChatMsg(sender, msg)
     if not targets then return end
 
     net.Start("TTT_RoleChat")
-    net.WriteInt(sender:GetRole(), 8)
-    net.WriteEntity(sender)
-    net.WriteString(msg)
+        net.WriteInt(sender:GetRole(), 8)
+        net.WritePlayer(sender)
+        net.WriteString(msg)
     net.Send(targets)
 end
 concommand.Add("ttt_team_chat_as_player", function(ply, cmd, args)
@@ -447,8 +447,8 @@ local function LastWordsMsg(ply, words)
     local context = LastWordContext[ply.death_type] or ""
 
     net.Start("TTT_LastWordsMsg")
-    net.WriteEntity(ply)
-    net.WriteString(words .. (final and "" or "--") .. context)
+        net.WritePlayer(ply)
+        net.WriteString(words .. (final and "" or "--") .. context)
     net.Broadcast()
 end
 
@@ -547,12 +547,12 @@ local function RadioCommand(ply, cmd, args)
         end
 
         net.Start("TTT_RadioMsg")
-        net.WriteEntity(ply)
-        net.WriteString(msg_name)
-        net.WriteString(name)
-        if rag_name then
-            net.WriteString(rag_name)
-        end
+            net.WritePlayer(ply)
+            net.WriteString(msg_name)
+            net.WriteString(name)
+            if rag_name then
+                net.WriteString(rag_name)
+            end
         net.Broadcast()
     end
 end
