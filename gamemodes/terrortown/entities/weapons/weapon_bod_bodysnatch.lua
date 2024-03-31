@@ -299,3 +299,13 @@ if CLIENT then
         end
     end)
 end
+
+-- Override the player's name in radio messages too
+hook.Add("TTTRadioPlayerName", "Bodysnatcher_TTTRadioPlayerName", function(sender, target)
+    if not IsPlayer(sender) or not IsPlayer(target) then return end
+
+    local disguiseName = target:GetNWString("TTTBodysnatcherName", "")
+    if not disguiseName or #disguiseName == 0 then return end
+
+    return disguiseName
+end)

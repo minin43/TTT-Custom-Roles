@@ -42,7 +42,7 @@ end)
 ------------------
 
 CreateConVar("ttt_spy_steal_model", "1", FCVAR_REPLICATED)
-CreateConVar("ttt_spy_steal_name", "1", FCVAR_REPLICATED)
+local spy_steal_name = CreateConVar("ttt_spy_steal_name", "1", FCVAR_REPLICATED)
 local spy_flare_gun_loadout = CreateConVar("ttt_spy_flare_gun_loadout", "1", FCVAR_REPLICATED)
 local spy_flare_gun_shop = CreateConVar("ttt_spy_flare_gun_shop", "0", FCVAR_REPLICATED)
 local spy_flare_gun_shop_rebuyable = CreateConVar("ttt_spy_flare_gun_shop_rebuyable", "0", FCVAR_REPLICATED)
@@ -98,4 +98,21 @@ hook.Add("TTTUpdateRoleState", "Spy_Shared_TTTUpdateRoleState", function()
         spy_flare_gun.CanBuy = nil
         spy_flare_gun.LimitedStock = true
     end
+end)
+
+----------------
+-- ROLE STATE --
+----------------
+
+-- Override the player's name in radio messages too
+hook.Add("TTTRadioPlayerName", "Spy_TTTRadioPlayerName", function(sender, target)
+    if not IsPlayer(sender) or not IsPlayer(target) then return end
+
+    if not spy_steal_name:GetBool() then return end
+    if not target:IsActiveSpy() then return end
+
+    local disguiseName = target:GetNWString("TTTSpyDisguiseName", "")
+    if not disguiseName or #disguiseName == 0 then return end
+
+    return disguiseName
 end)
