@@ -704,7 +704,7 @@ concommand.Add("ttt_transfer_credits", TransferCredits)
 
 local function FakeTransferCredits(ply, cmd, args)
     if (not IsValid(ply)) or (not ply:IsActiveSpecial()) then return end
-    if #args ~= 1 then return end
+    if #args ~= 2 then return end
 
     local sid = tostring(args[1])
     local credits = tonumber(args[2])

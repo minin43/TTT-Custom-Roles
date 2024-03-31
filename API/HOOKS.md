@@ -370,6 +370,16 @@ Called after non-player radar points are rendered and before players are rendere
 *Parameters:*
 - *client* - The local player
 
+### TTTRadioPlayerName(sender, target)
+Called when a player is using the in-game quickchat radio. Used to override the name shown.\
+*Realm:* Client and Server\
+*Added in:* 2.1.9\
+*Parameters:*
+- *sender* - The player who is sending the message
+- *target* - The player who the message being sent is about
+
+*Return:* The player name to show, if it should be overridden. Otherwise do not return anything.
+
 ### TTTRewardDetectiveTraitorDeathAmount(victim, attacker, amount)
 Called before all detectives are awarded credits for a traitor being killed.\
 *Realm:* Server\

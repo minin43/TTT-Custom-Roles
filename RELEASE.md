@@ -7,6 +7,11 @@
 - Fixed rare error in defib-like devices when used on a corpse that doesn't have a Steam ID property set
 - Fixed freeze caused by the spy's flaregun when running CR4TTT alongside wget's TTT Weapons Rework
 - Fixed footprints sometimes being giant and sometimes not showing at all
+- Fixed transferring credits to the glitch as a member of the traitor team not doing anything, revealing the glitch to the traitors
+- Fixed disguised spy or bodysnatcher being revealed by the quickchat radio menu and messages
+
+### Developer
+- Added new `TTTRadioPlayerName` hook to allow changing the name of a player shown in the quickchat radio menu and messages
 
 ## 2.1.8
 **Released: March 17th, 2024**
