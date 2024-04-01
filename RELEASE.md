@@ -3,6 +3,10 @@
 ## 2.1.10 (Beta)
 **Released:**
 
+### Fixes
+- Fixed vindicator who's killer is made into their lover by a cupid not being able to win with their new lover
+- Fixed clown not being able to win with their cupid lover
+
 ### Developer
 - Updated to use `net.Read/WritePlayer` where appropriate
 - Updated many places in the codebase to use `player.Iterator`

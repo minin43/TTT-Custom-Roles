@@ -253,6 +253,10 @@ local function HandleVindicatorWinBlock(win_type)
     local target = player.GetBySteamID64(sid64)
     if not IsPlayer(target) or not target:Alive() then return win_type end
 
+    -- If the vindicator is paired with their target and they would win together, let that happen
+    local lover = vindicator:GetNWString("TTTCupidLover", "")
+    if win_type == WIN_CUPID and #lover > 0 and lover == sid64 then return win_Type end
+
     return WIN_NONE
 end
 
