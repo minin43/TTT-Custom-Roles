@@ -255,7 +255,7 @@ local function HandleVindicatorWinBlock(win_type)
 
     -- If the vindicator is paired with their target and they would win together, let that happen
     local lover = vindicator:GetNWString("TTTCupidLover", "")
-    if win_type == WIN_CUPID and #lover > 0 and lover == sid64 then return win_Type end
+    if win_type == WIN_CUPID and #lover > 0 and lover == sid64 then return win_type end
 
     return WIN_NONE
 end
