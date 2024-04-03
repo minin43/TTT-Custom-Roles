@@ -69,11 +69,11 @@ if SERVER then
             net.WriteString(ply:Nick())
         net.Broadcast()
 
+        ply:SetRole(ROLE_ZOMBIE)
         ply:SpawnForRound(true)
         ply:SetCredits(credits)
         ply:SetPos(self.Location or body:GetPos())
         ply:SetEyeAngles(Angle(0, body:GetAngles().y, 0))
-        ply:SetRole(ROLE_ZOMBIE)
         ply:StripRoleWeapons()
         ply:QueueMessage(MSG_PRINTCENTER, "You have been turned into a zombie.")
         SetRoleHealth(ply)

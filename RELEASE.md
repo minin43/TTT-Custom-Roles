@@ -6,6 +6,7 @@
 ### Fixes
 - Fixed vindicator who's killer is made into their lover by a cupid not being able to win with their new lover
 - Fixed clown not being able to win with their cupid lover
+- Fixed mad scientist zombifying players sometimes giving them their previous role weapons instead of zombie claws
 
 ### Developer
 - Updated to use `net.Read/WritePlayer` where appropriate
