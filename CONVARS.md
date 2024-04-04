@@ -488,6 +488,7 @@ ttt_marshal_credits_starting                1       // The number of credits a m
 
 // Quartermaster
 ttt_quartermaster_limited_loot              0       // Whether players should be limited to looting a single quartermaster crate per round
+ttt_quartermaster_set_crate_owner           0       // Whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar)
 ttt_quartermaster_credits_starting          3       // The number of credits a quartermaster should start with
 
 // ----------------------------------------

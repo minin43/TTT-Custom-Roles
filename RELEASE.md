@@ -3,6 +3,9 @@
 ## 2.1.10 (Beta)
 **Released:**
 
+### Additions
+- Added ability to set whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar) (disabled by default)
+
 ### Fixes
 - Fixed vindicator who's killer is made into their lover by a cupid not being able to win with their new lover
 - Fixed clown not being able to win with their cupid lover
