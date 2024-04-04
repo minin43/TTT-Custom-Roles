@@ -555,6 +555,7 @@ ttt_beggar_scan_time                        15      // The amount of time (in se
 ttt_beggar_scan_float_time                  1       // The amount of time (in seconds) it takes for the beggar's scanner to lose it's target without line of sight
 ttt_beggar_scan_cooldown                    3       // The amount of time (in seconds) the beggar's tracker goes on cooldown for after losing it's target
 ttt_beggar_scan_distance                    2500    // The maximum distance away the scanner target can be
+ttt_beggar_transfer_ownership               0       // Whether the ownership of a shop item should transfer each time its picked up by a non-beggar
 ttt_beggar_can_see_jesters                  0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the beggar (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_update_scoreboard                0       // Whether the beggar shows dead players as missing in action (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_announce_delay                   0       // How long the delay between role change and announcement should be

@@ -23,6 +23,7 @@ CreateConVar("ttt_beggar_notify_confetti", "0", FCVAR_NONE, "Whether to throw co
 local beggar_scan_float_time = CreateConVar("ttt_beggar_scan_float_time", "1", FCVAR_NONE, "The amount of time (in seconds) it takes for the beggar's scanner to lose it's target without line of sight", 0, 60)
 local beggar_scan_cooldown = CreateConVar("ttt_beggar_scan_cooldown", "3", FCVAR_NONE, "The amount of time (in seconds) the beggar's tracker goes on cooldown for after losing it's target", 0, 60)
 local beggar_scan_distance = CreateConVar("ttt_beggar_scan_distance", "2500", FCVAR_NONE, "The maximum distance away the scanner target can be", 1000, 10000)
+local beggar_transfer_ownership = CreateConVar("ttt_beggar_transfer_ownership", "0", FCVAR_NONE, "Whether the ownership of a shop item should transfer each time its picked up by a non-beggar", 0, 1)
 
 local beggar_respawn = GetConVar("ttt_beggar_respawn")
 local beggar_respawn_limit = GetConVar("ttt_beggar_respawn_limit")
@@ -48,9 +49,7 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
     if not IsValid(wep) or not IsPlayer(ply) then return end
     if not wep.CanBuy or wep.AutoSpawnable then return end
 
-    if not wep.BoughtBy then
-        wep.BoughtBy = ply
-    elseif ply:IsBeggar() and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
+    if ply:IsBeggar() and wep.BoughtBy and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
         local role
         if wep.BoughtBy:IsTraitorTeam() then
             role = ROLE_TRAITOR
@@ -79,6 +78,8 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
         net.WriteString(ROLE_STRINGS_EXT[role])
         net.WriteString(ply:SteamID64())
         net.Broadcast()
+    elseif not wep.BoughtBy or beggar_transfer_ownership:GetBool() then
+        wep.BoughtBy = ply
     end
 end)
 
