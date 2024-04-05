@@ -1736,9 +1736,42 @@ DefaultEquipment = {
 -- Old ConVars --
 -----------------
 
---local function OldCVarWarning(oldName, newName)
---    cvars.AddChangeCallback(oldName, function(convar, oldValue, newValue)
---        RunConsoleCommand(newName, newValue)
---        ErrorNoHalt("WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
---    end)
---end
+local function AddOldCVarWarning(oldName, newName)
+    cvars.AddChangeCallback(oldName, function(convar, oldValue, newValue)
+        RunConsoleCommand(newName, newValue)
+        ErrorNoHalt("WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
+    end)
+end
+
+-- Add entries to this table in the form of: { "old_convar_name", "new_convar_name" }
+local deprecatedConVars = {}
+
+for _, c in ipairs(deprecatedConVars) do
+    -- Create the old convar with the same default value as the new one
+    local oldName = c[1]
+    local newName = c[2]
+    local newCvar = GetConVar(newName)
+    if newCvar == nil then continue end
+
+    CreateConVar(oldName, newCvar:GetString(), FCVAR_REPLICATED, "DEPRECATED! Please use \"" .. newName .. "\" instead!", newCvar:GetMin(), newCvar:GetMax())
+
+    -- Add the change warning to the old convar to warn each time it's changed
+    AddOldCVarWarning(c[1], c[2])
+end
+
+hook.Add("PlayerInitialSpawn", "ConVarDeprecation_PlayerInitialSpawn", function(ply, transition)
+    if not IsValid(ply) then return end
+    if not ply:IsAdmin() and not ply:IsSuperAdmin() then return end
+
+    for _, c in ipairs(deprecatedConVars) do
+        local oldName = c[1]
+        local newName = c[2]
+        local oldCvar = GetConVar(oldName)
+        if oldCvar == nil then continue end
+
+        -- If the old convar has a value other than the default then warn the admin
+        if oldCvar:GetDefault() ~= oldCvar:GetString() then
+            ply:PrintMessage(HUD_PRINTTALK, "[CR4TTT] WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
+        end
+    end
+end)

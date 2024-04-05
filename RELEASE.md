@@ -18,6 +18,7 @@
 - Fixed conflict between marshal and roles with custom round popup string logic
 
 ### Developer
+- Added new semi-automated convar deprecation system
 - Updated to use `net.Read/WritePlayer` where appropriate
 - Updated many places in the codebase to use `player.Iterator`
 - Updated to use sequential `net.Read/WriteTable` where appropriate
