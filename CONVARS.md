@@ -231,6 +231,7 @@ ttt_hypnotist_device_shop                   0       // Whether the hypnotist's d
 ttt_hypnotist_device_shop_rebuyable         0       // Whether the hypnotist's defib should be purchaseable multiple times (requires "ttt_hypnotist_device_shop" to be enabled). Server must be restarted for changes to take effect
 ttt_hypnotist_convert_detectives            0       // Whether to convert detectives and deputies (only if ttt_deputy_use_detective_icon is enabled) to impersonator instead of just a regular traitor. Target will be automatically promoted to appear as a detective if appropriate
 ttt_hypnotist_device_time                   8       // The amount of time (in seconds) the hypnotist's device takes to use
+ttt_hypnotist_brainwash_muted               0       // Whether players brainwashed by the hypnotist should be muted
 ttt_single_paramedic_hypnotist              0       // Whether only a single paramedic or hypnotist should spawn in a round
 ttt_single_paramedic_hypnotist_chance       0.5     // The chance that a paramedic should have an opportunity to spawn instead of a hypnotist (e.g. 0.7 = 70% chance for paramedic, 30% chance for hypnotist. Only applies if ttt_single_paramedic_hypnotist is enabled)
 
@@ -385,6 +386,7 @@ ttt_paramedic_device_loadout                1       // Whether the paramedic's d
 ttt_paramedic_device_shop                   0       // Whether the paramedic's defib should be purchasable in the shop (requires "ttt_shop_for_all" to be enabled). Server must be restarted for changes to take effect
 ttt_paramedic_device_shop_rebuyable         0       // Whether the paramedic's defib should be purchaseable multiple times (requires "ttt_paramedic_device_shop" to be enabled). Server must be restarted for changes to take effect
 ttt_paramedic_defib_time                    8       // The amount of time (in seconds) the paramedic's defib takes to use
+ttt_paramedic_revive_muted                  0       // Whether players revived by the paramedic should be muted"
 
 // Trickster
 ttt_trickster_credits_starting              0       // The number of credits a trickster should start with

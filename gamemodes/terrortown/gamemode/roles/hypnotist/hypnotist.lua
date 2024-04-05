@@ -20,6 +20,46 @@ hook.Add("PlayerCanPickupWeapon", "Hypnotist_Weapons_PlayerCanPickupWeapon", fun
     end
 end)
 
+-------------------
+-- ROLE FEATURES --
+-------------------
+
+local hypnotist_brainwash_muted = CreateConVar("ttt_hypnotist_brainwash_muted", 0, FCVAR_NONE, "Whether players brainwashed by the hypnotist should be muted", 0, 1)
+
+hook.Add("PlayerCanHearPlayersVoice", "Hypnotist_PlayerCanHearPlayersVoice", function(listener, speaker)
+    if GetRoundState() ~= ROUND_ACTIVE then return end
+
+    if not IsPlayer(listener) then return end
+    if not listener:Alive() or listener:IsSpec() then return end
+
+    if not IsPlayer(speaker) then return end
+    if not speaker:Alive() or speaker:IsSpec() then return end
+
+    if speaker == listener then return end
+
+    if not hypnotist_brainwash_muted:GetBool() then return end
+    if not GetConVar("sv_voiceenable"):GetBool() then return end
+    if not speaker:GetNWBool("WasHypnotised", false) then return end
+    if speaker.NextHypnotistMuteWarning and speaker.NextHypnotistMuteWarning > CurTime() then return end
+
+    speaker.NextHypnotistMuteWarning = CurTime() + 1
+    speaker:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
+    return false, false
+end)
+
+hook.Add("PlayerSay", "Hypnotist_PlayerSay", function(ply, text, team_only)
+    if GetRoundState() ~= ROUND_ACTIVE then return end
+
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if not hypnotist_revive_muted:GetBool() then return end
+    if not ply:GetNWBool("WasHypnotised", false) then return end
+
+    ply:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
+    return ""
+end)
+
 ----------------
 -- ROLE STATE --
 ----------------
@@ -27,5 +67,6 @@ end)
 hook.Add("TTTPrepareRound", "Hypnotist_PrepareRound", function()
     for _, v in PlayerIterator() do
         v:SetNWBool("WasHypnotised", false)
+        v.NextHypnotistMuteWarning = nil
     end
 end)

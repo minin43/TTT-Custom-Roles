@@ -7,6 +7,8 @@
 - Added ability to set whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar) (disabled by default)
 - Added ability to have weapons transfer ownership each time they are picked up by a non-beggar, meaning the beggar will join the team of the last player who picked up the weapon rather than the person who originally bought it (disabled by default)
 - Added ability to control whether a phantom respawns when their killer is killed (enabled by default)
+- Added ability for players revived by the paramedic to be muted for the remainder of the round (disabled by default)
+- Added ability for players brainwashed by the hypnotist to be muted for the remainder of the round (disabled by default)
 
 ### Changes
 - Changed phantom round start popup message to reflect which features are currently enabled
