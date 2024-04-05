@@ -15,6 +15,7 @@ local phantom_killer_haunt_drop_cost = GetConVar("ttt_phantom_killer_haunt_drop_
 local phantom_weaker_each_respawn = GetConVar("ttt_phantom_weaker_each_respawn")
 local phantom_announce_death = GetConVar("ttt_phantom_announce_death")
 local phantom_killer_footstep_time = GetConVar("ttt_phantom_killer_footstep_time")
+local phantom_respawn = GetConVar("ttt_phantom_respawn")
 
 ------------------
 -- TRANSLATIONS --
@@ -40,9 +41,10 @@ hook.Add("Initialize", "Phantom_Translations_Initialize", function()
     LANG.AddToLanguage("english", "exor_desc", "Use on a player to exorcise a {phantom}")
 
     -- Popup
-    LANG.AddToLanguage("english", "info_popup_phantom", [[You are {role}! Try to survive and help your {innocent} friends!
-You will haunt the player who kills you causing black smoke to appear.
-If the player you are haunting dies you will be respawned!]])
+    LANG.AddToLanguage("english", "info_popup_phantom", [[You are {role}! Try to survive and help your {innocent} friends!{abilities}]])
+    LANG.AddToLanguage("english", "info_popup_phantom_haunt", "You will haunt the player who kills you.")
+    LANG.AddToLanguage("english", "info_popup_phantom_smoke", "Haunted players will be enveloped by black smoke.")
+    LANG.AddToLanguage("english", "info_popup_phantom_respawn", "If the player you are haunting dies you will be respawned!")
 end)
 
 -------------
@@ -157,6 +159,35 @@ hook.Add("TTTShouldPlayerSmoke", "Phantom_Haunting_TTTShouldPlayerSmoke", functi
     end
 end)
 
+-----------
+-- POPUP --
+-----------
+
+hook.Add("TTTRolePopupParams", "Phantom_TTTRolePopupParams", function(cli)
+    if not cli:IsPhantom() then return end
+
+    local abilities = {}
+    if phantom_killer_haunt:GetBool() then
+        table.insert(abilities, LANG.GetTranslation("info_popup_phantom_haunt"))
+    end
+    if phantom_killer_smoke:GetBool() then
+        table.insert(abilities, LANG.GetTranslation("info_popup_phantom_smoke"))
+    end
+    if phantom_respawn:GetBool() then
+        table.insert(abilities, LANG.GetTranslation("info_popup_phantom_respawn"))
+    end
+
+    local abilitiesString = table.concat(abilities, "\n")
+    -- If we have something here, make sure to add a newline before it
+    if #abilitiesString > 0 then
+        abilitiesString = "\n" .. abilitiesString
+    end
+
+    return {
+        abilities = abilitiesString
+    }
+end)
+
 --------------
 -- TUTORIAL --
 --------------
@@ -167,11 +198,13 @@ hook.Add("TTTTutorialRoleText", "Phantom_TTTTutorialRoleText", function(role, ti
         local html = "The " .. ROLE_STRINGS[ROLE_PHANTOM] .. " is a member of the <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>innocent team</span> whose goal is to help defeat their team's enemies."
 
         -- Respawn
-        html = html .. "<span style='display: block; margin-top: 10px;'>If the " .. ROLE_STRINGS[ROLE_PHANTOM] .. " is killed, they will <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>be resurrected</span> if the person that killed them then dies.</span>"
+        if phantom_respawn:GetBool() then
+            html = html .. "<span style='display: block; margin-top: 10px;'>If the " .. ROLE_STRINGS[ROLE_PHANTOM] .. " is killed, they will <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>be resurrected</span> if the person that killed them then dies.</span>"
 
-        -- Weaker each respawn
-        if phantom_weaker_each_respawn:GetBool() then
-            html = html .. "<span style='display: block; margin-top: 10px;'>Each time the " .. ROLE_STRINGS[ROLE_PHANTOM] .. " is killed, they will respawn with <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>half as much health</span>, down to a minimum of 1hp.</span>"
+            -- Weaker each respawn
+            if phantom_weaker_each_respawn:GetBool() then
+                html = html .. "<span style='display: block; margin-top: 10px;'>Each time the " .. ROLE_STRINGS[ROLE_PHANTOM] .. " is killed, they will respawn with <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>half as much health</span>, down to a minimum of 1hp.</span>"
+            end
         end
 
         -- Announce death
@@ -183,7 +216,7 @@ hook.Add("TTTTutorialRoleText", "Phantom_TTTTutorialRoleText", function(role, ti
         local has_footsteps = phantom_killer_footstep_time:GetInt() > 0
         -- Smoke and Killer footsteps
         if has_smoke or has_footsteps then
-            html = html .. "<span style='display: block; margin-top: 10px;'>Before the " .. ROLE_STRINGS[ROLE_PHANTOM] .. " is respawned, their killer "
+            html = html .. "<span style='display: block; margin-top: 10px;'>After the " .. ROLE_STRINGS[ROLE_PHANTOM] .. " is killed, their killer "
             if has_smoke then
                 html = html .. "is enveloped in a <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>shroud of smoke</span>"
             end

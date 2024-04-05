@@ -27,6 +27,7 @@ local phantom_killer_haunt_drop_cost = GetConVar("ttt_phantom_killer_haunt_drop_
 local phantom_weaker_each_respawn = GetConVar("ttt_phantom_weaker_each_respawn")
 local phantom_announce_death = GetConVar("ttt_phantom_announce_death")
 local phantom_killer_footstep_time = GetConVar("ttt_phantom_killer_footstep_time")
+local phantom_respawn = GetConVar("ttt_phantom_respawn")
 
 local phantom_respawn_health = CreateConVar("ttt_phantom_respawn_health", "50", FCVAR_NONE, "The amount of health a phantom will respawn with", 1, 100)
 local phantom_killer_haunt_power_rate = CreateConVar("ttt_phantom_killer_haunt_power_rate", "10", FCVAR_NONE, "The amount of power to regain per second when a phantom is haunting their killer", 1, 25)
@@ -255,58 +256,64 @@ end)
 
 hook.Add("DoPlayerDeath", "Phantom_DoPlayerDeath", function(ply, attacker, dmginfo)
     if ply:IsSpec() then return end
+    if not ply:GetNWBool("PhantomHaunted", false) then return end
 
-    if ply:GetNWBool("PhantomHaunted", false) then
-        local respawn = false
-        local phantomUsers = table.GetKeys(deadPhantoms)
-        for _, key in pairs(phantomUsers) do
-            local phantom = deadPhantoms[key]
-            if phantom.attacker == ply:SteamID64() and IsValid(phantom.player) then
-                local deadPhantom = phantom.player
-                deadPhantom:SetNWBool("PhantomHaunting", false)
-                deadPhantom:SetNWString("PhantomHauntingTarget", "")
-                deadPhantom:SetNWBool("PhantomPossessing", false)
-                deadPhantom:SetNWInt("PhantomPossessingPower", 0)
-                timer.Remove(deadPhantom:Nick() .. "PhantomPossessingPower")
-                timer.Remove(deadPhantom:Nick() .. "PhantomPossessingSpectate")
-                if deadPhantom:IsPhantom() and not deadPhantom:Alive() then
-                    -- Find the Phantom's corpse
-                    local phantomBody = deadPhantom.server_ragdoll or deadPhantom:GetRagdollEntity()
-                    if IsValid(phantomBody) then
-                        deadPhantom:SpawnForRound(true)
-                        deadPhantom:SetPos(FindRespawnLocation(phantomBody:GetPos()) or phantomBody:GetPos())
-                        deadPhantom:SetEyeAngles(Angle(0, phantomBody:GetAngles().y, 0))
+    local respawn = false
+    local phantomUsers = table.GetKeys(deadPhantoms)
+    for _, key in pairs(phantomUsers) do
+        local phantom = deadPhantoms[key]
+        if phantom.attacker ~= ply:SteamID64() then continue end
 
-                        local health = phantom_respawn_health:GetInt()
-                        if phantom_weaker_each_respawn:GetBool() then
-                            -- Don't reduce them the first time since 50 is already reduced
-                            for _ = 1, phantom.times - 1 do
-                                health = health / 2
-                            end
-                            health = math.max(1, math.Round(health))
-                        end
-                        deadPhantom:SetHealth(health)
-                        phantomBody:Remove()
-                        deadPhantom:QueueMessage(MSG_PRINTBOTH, "Your attacker died and you have been respawned.")
-                        respawn = true
-                    else
-                        deadPhantom:QueueMessage(MSG_PRINTBOTH, "Your attacker died but your body has been destroyed.")
+        local deadPhantom = phantom.player
+        if not IsValid(deadPhantom) then continue end
+
+        deadPhantom:SetNWBool("PhantomHaunting", false)
+        deadPhantom:SetNWString("PhantomHauntingTarget", "")
+        deadPhantom:SetNWBool("PhantomPossessing", false)
+        deadPhantom:SetNWInt("PhantomPossessingPower", 0)
+        timer.Remove(deadPhantom:Nick() .. "PhantomPossessingPower")
+        timer.Remove(deadPhantom:Nick() .. "PhantomPossessingSpectate")
+
+        if not deadPhantom:IsPhantom() or deadPhantom:Alive() then continue end
+
+        if not phantom_respawn:GetBool() then
+            deadPhantom:QueueMessage(MSG_PRINTBOTH, "Your attacker died and your spirit is now free to roam.")
+        else
+            -- Find the Phantom's corpse
+            local phantomBody = deadPhantom.server_ragdoll or deadPhantom:GetRagdollEntity()
+            if IsValid(phantomBody) then
+                deadPhantom:SpawnForRound(true)
+                deadPhantom:SetPos(FindRespawnLocation(phantomBody:GetPos()) or phantomBody:GetPos())
+                deadPhantom:SetEyeAngles(Angle(0, phantomBody:GetAngles().y, 0))
+
+                local health = phantom_respawn_health:GetInt()
+                if phantom_weaker_each_respawn:GetBool() then
+                    -- Don't reduce them the first time since 50 is already reduced
+                    for _ = 1, phantom.times - 1 do
+                        health = health / 2
                     end
+                    health = math.max(1, math.Round(health))
                 end
+                deadPhantom:SetHealth(health)
+                phantomBody:Remove()
+                deadPhantom:QueueMessage(MSG_PRINTBOTH, "Your attacker died and you have been respawned.")
+                respawn = true
+            else
+                deadPhantom:QueueMessage(MSG_PRINTBOTH, "Your attacker died but your body has been destroyed.")
             end
         end
-
-        if respawn and phantom_announce_death:GetBool() then
-            for _, v in PlayerIterator() do
-                if v:IsActiveDetectiveLike() then
-                    v:QueueMessage(MSG_PRINTCENTER, "The " .. ROLE_STRINGS[ROLE_PHANTOM] .. " has been respawned.")
-                end
-            end
-        end
-
-        ply:SetNWBool("PhantomHaunted", false)
-        SendFullStateUpdate()
     end
+
+    if respawn and phantom_announce_death:GetBool() then
+        for _, v in PlayerIterator() do
+            if v:IsActiveDetectiveLike() then
+                v:QueueMessage(MSG_PRINTCENTER, "The " .. ROLE_STRINGS[ROLE_PHANTOM] .. " has been respawned.")
+            end
+        end
+    end
+
+    ply:SetNWBool("PhantomHaunted", false)
+    SendFullStateUpdate()
 end)
 
 ---------------
