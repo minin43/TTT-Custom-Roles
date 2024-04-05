@@ -706,6 +706,13 @@ Called when a player buys a random item from the shop.\
 - *client* - The player who is buying a random item
 - *item* - The random item that was selected
 
+### TTTShowSearchScreen(search)
+Called when a body search screen would be shown.\
+*Realm:* Client\
+*Added in:* 2.1.10\
+*Parameters:*
+- *search* - The body's search info
+
 ### TTTSmokeGrenadeExtinguish(ent_class, ent_pos)
 Called when a smoke grenade extinguishes a fire entity.\
 *Realm:* Server\

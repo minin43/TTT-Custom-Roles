@@ -19,6 +19,7 @@
 
 ### Developer
 - Added new semi-automated convar deprecation system
+- Added new `TTTShowSearchScreen` hook to allow changing body search data or replacing the dialog (Thanks @wget!)
 - Updated to use `net.Read/WritePlayer` where appropriate
 - Updated many places in the codebase to use `player.Iterator`
 - Updated to use sequential `net.Read/WriteTable` where appropriate
