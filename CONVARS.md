@@ -810,6 +810,8 @@ ttt_shadow_sprint_recovery                  0.1     // The minimum amount of sta
 ttt_shadow_sprint_recovery_max              0.5     // The maximum amount of stamina to recover per tick when the shadow is FAR outside of their target radius
 ttt_shadow_target_jester                    1       // Whether the shadow should be able to target a member of the jester team
 ttt_shadow_target_independent               1       // Whether the shadow should be able to target an independent player
+ttt_shadow_target_monster                   1       // Whether the shadow should be able to target a member of the monster team
+ttt_shadow_target_traitor                   1       // Whether the shadow should be able to target a member of the traitor team
 ttt_shadow_target_notify_mode               0       // How the shadow's target should be notified they have a shadow. 0 - Don't notify. 1 - Anonymously notify. 2 - Identify the shadow.
 ttt_shadow_soul_link                        0       // Whether the shadow's soul should be linked to their target. 0 - Disable. 1 - Both shadow and target die if either is killed. 2 - The shadow dies if their target is killed.
 ttt_shadow_weaken_health_to                 0       // How low to reduce the Shadow's health to when they are outside of the target circle instead of their normal punishment. (Setting to 0 will use "ttt_shadow_failure_mode" instead.)

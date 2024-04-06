@@ -167,6 +167,14 @@ table.insert(ROLE_CONVARS[ROLE_SHADOW], {
     type = ROLE_CONVAR_TYPE_BOOL
 })
 table.insert(ROLE_CONVARS[ROLE_SHADOW], {
+    cvar = "ttt_shadow_target_traitor",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SHADOW], {
+    cvar = "ttt_shadow_target_monster",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SHADOW], {
     cvar = "ttt_shadow_target_notify_mode",
     type = ROLE_CONVAR_TYPE_DROPDOWN,
     choices = {"Don't notify", "Anonymously notify", "Identify the shadow"},
