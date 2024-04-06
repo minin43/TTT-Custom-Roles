@@ -53,7 +53,7 @@ hook.Add("PlayerSay", "Hypnotist_PlayerSay", function(ply, text, team_only)
     if not IsPlayer(ply) then return end
     if not ply:Alive() or ply:IsSpec() then return end
 
-    if not hypnotist_revive_muted:GetBool() then return end
+    if not hypnotist_brainwash_muted:GetBool() then return end
     if not ply:GetNWBool("WasHypnotised", false) then return end
 
     ply:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
