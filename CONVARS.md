@@ -473,6 +473,7 @@ ttt_medium_seance_max_info                  0       // The maximum amount of inf
 ttt_medium_credits_starting                 1       // The number of credits a medium should start with
 
 // Sapper
+ttt_sapper_is_innocent                      0       // Whether the sapper should be treated as a special innocent
 ttt_sapper_aura_radius                      5       // The radius of the sapper's aura in meters
 ttt_sapper_protect_self                     1       // Whether the sapper's protection aura will protect themselves or not
 ttt_sapper_fire_immune                      0       // Whether sapper's protection aura also grands fire immunity

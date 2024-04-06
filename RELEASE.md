@@ -9,6 +9,7 @@
 - Added ability to control whether a phantom respawns when their killer is killed (enabled by default)
 - Added ability for players revived by the paramedic to be muted for the remainder of the round (disabled by default)
 - Added ability for players brainwashed by the hypnotist to be muted for the remainder of the round (disabled by default)
+- Added ability for the sapper to be a special innocent instead of a special detective (disabled by default)
 
 ### Changes
 - Changed phantom round start popup message to reflect which features are currently enabled
