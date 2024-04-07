@@ -84,7 +84,7 @@ local function GetReadableDistance(distance)
     elseif unit == DISTANCE_UNIT_FEET then
         return math.ceil(distance * feet_per_unit) .. "ft"
     end
-    return math.ceil(distance) .. "u"
+    return math.ceil(distance)
 end
 
 function RADAR:DrawTarget(tgt, size, offset, no_shrink)
