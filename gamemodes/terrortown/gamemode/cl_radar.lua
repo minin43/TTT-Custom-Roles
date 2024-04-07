@@ -68,6 +68,25 @@ function RADAR.Bought(is_item, id)
 end
 hook.Add("TTTBoughtItem", "RadarBoughtItem", RADAR.Bought)
 
+local DISTANCE_UNIT_SOURCE = 0
+local DISTANCE_UNIT_METERS = 1
+local DISTANCE_UNIT_FEET = 2
+
+local distance_unit = CreateClientConVar("ttt_distance_unit", "1", true, false, "What unit to use when displaying distance. 0 - None (Source). 1 - Meters. 2 - Feet", DISTANCE_UNIT_SOURCE, DISTANCE_UNIT_FEET)
+
+local meters_per_unit = 1 / 52.6027397260274
+local feet_per_unit = 1 / 16.0427807486631
+
+local function GetReadableDistance(distance)
+    local unit = distance_unit:GetInt()
+    if unit == DISTANCE_UNIT_METERS then
+        return math.ceil(distance * meters_per_unit) .. "m"
+    elseif unit == DISTANCE_UNIT_FEET then
+        return math.ceil(distance * feet_per_unit) .. "ft"
+    end
+    return math.ceil(distance) .. "u"
+end
+
 function RADAR:DrawTarget(tgt, size, offset, no_shrink)
     local scrpos = tgt.pos:ToScreen() -- sweet
     local sz = (IsOffScreen(scrpos) and (not no_shrink)) and size / 2 or size
@@ -81,7 +100,7 @@ function RADAR:DrawTarget(tgt, size, offset, no_shrink)
 
     -- Drawing full size?
     if sz == size then
-        local text = math.ceil((LocalPlayer():GetPos():Distance(tgt.pos)) * 0.01905) .. "m"
+        local text = GetReadableDistance(LocalPlayer():GetPos():Distance(tgt.pos))
         local w, h = surface.GetTextSize(text)
 
         -- Show range to target

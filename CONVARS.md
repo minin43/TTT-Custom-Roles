@@ -1111,6 +1111,11 @@ ttt_beggar_show_scan_radius                 0       // Whether to show the ring 
 
 // Loot Goblin
 ttt_lootgoblin_radar_beep_sound             1       // Whether to play a sound when the loot goblin radar location updates
+
+// ----------------------------------------
+// Misc.
+// ----------------------------------------
+ttt_distance_unit                           1       // What unit to use when displaying distance. 0 - None (Source). 1 - Meters. 2 - Feet
 ```
 
 ## Role Weapon Shop
