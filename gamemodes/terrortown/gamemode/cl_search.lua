@@ -653,7 +653,7 @@ local function ReceiveRagdollSearch()
         util.BitSet = origBitSet
     end)
 
-    if search.show and hook.Call("TTTShowSearchScreen", nil, search) == nil then
+    if search.show and hook.Call("TTTShowSearchScreen", nil, search) ~= false then
         ShowSearchScreen(search)
     end
 
