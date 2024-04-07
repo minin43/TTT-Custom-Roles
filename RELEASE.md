@@ -12,6 +12,7 @@
 - Added ability for the sapper to be a special innocent instead of a special detective (disabled by default)
 - Added ability to control whether the shadow target can be a traitor or a monster (enabled by default)
 - Added ability for a player to control what unit distances are displayed in (defaults to meters)
+- Added ability for the role of a player's killer to be hidden when there is a medium in the round (disabled by default)
 
 ### Changes
 - Changed phantom round start popup message to reflect which features are currently enabled

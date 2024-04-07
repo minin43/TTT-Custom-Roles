@@ -470,6 +470,7 @@ ttt_medium_seance_float_time                1       // The amount of time (in se
 ttt_medium_seance_cooldown                  3       // The amount of time (in seconds) the Medium's seance goes on cooldown for after losing it's target
 ttt_medium_seance_distance                  150     // The maximum distance away the seance target can be
 ttt_medium_seance_max_info                  0       // The maximum amount of information the Medium can learn from performing a seance. 0 - None, 1 - Name, 2 - Team, 3 - Role
+ttt_medium_hide_killer_role                 0       // Whether to hide the role of a player's killer when there is a medium in the round
 ttt_medium_credits_starting                 1       // The number of credits a medium should start with
 
 // Sapper

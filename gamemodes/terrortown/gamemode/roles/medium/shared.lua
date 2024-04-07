@@ -39,6 +39,7 @@ CreateConVar("ttt_medium_spirit_vision", "1", FCVAR_REPLICATED)
 CreateConVar("ttt_medium_dead_notify", "1", FCVAR_REPLICATED)
 CreateConVar("ttt_medium_seance_time", "8", FCVAR_REPLICATED, "The amount of time (in seconds) the Medium's seance takes to use", 0, 60)
 CreateConVar("ttt_medium_seance_max_info", "0", FCVAR_REPLICATED, "The maximum amount of information the Medium can learn from performing a seance. 0 - None, 1 - Name, 2 - Team, 3 - Role", 0, 3)
+CreateConVar("ttt_medium_hide_killer_role", "0", FCVAR_REPLICATED, "Whether to hide the role of a player's killer when there is a medium in the round", 0, 1)
 
 ROLE_CONVARS[ROLE_MEDIUM] = {}
 table.insert(ROLE_CONVARS[ROLE_MEDIUM], {
@@ -78,4 +79,8 @@ table.insert(ROLE_CONVARS[ROLE_MEDIUM], {
     type = ROLE_CONVAR_TYPE_DROPDOWN,
     choices = {"None", "Name", "Role", "Team"},
     isNumeric = true
+})
+table.insert(ROLE_CONVARS[ROLE_MEDIUM], {
+    cvar = "ttt_medium_hide_killer_role",
+    type = ROLE_CONVAR_TYPE_BOOL
 })

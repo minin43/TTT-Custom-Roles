@@ -25,6 +25,7 @@ local medium_spirit_color = GetConVar("ttt_medium_spirit_color")
 local medium_dead_notify = GetConVar("ttt_medium_dead_notify")
 local medium_seance_time = GetConVar("ttt_medium_seance_time")
 local medium_seance_max_info = GetConVar("ttt_medium_seance_max_info")
+local medium_hide_killer_role = GetConVar("ttt_medium_hide_killer_role")
 
 -------------------
 -- ROLE FEATURES --
@@ -97,6 +98,27 @@ hook.Add("PlayerDeath", "Medium_Spirits_PlayerDeath", function(victim, infl, att
         -- Reset the Medium's scans on this player if they were killed then revived and killed again
         victim:SetNWInt("TTTMediumSeanceStage", MEDIUM_SCANNED_NONE)
     end
+end)
+
+-- Hide the role of the player that killed the victim if there is a medium in the round and that feature is enabled
+hook.Add("TTTDeathNotifyOverride", "Medium_TTTDeathNotifyOverride", function(victim, inflictor, attacker, reason, killerName, role)
+    if GetRoundState() ~= ROUND_ACTIVE then return end
+    if not IsValid(inflictor) or not IsValid(attacker) then return end
+    if not attacker:IsPlayer() then return end
+    if victim == attacker then return end
+    if not medium_hide_killer_role:GetBool() then return end
+
+    local medium = false
+    for _, p in PlayerIterator() do
+        if p:IsMedium() then
+            medium = true
+            break
+        end
+    end
+
+    if not medium then return end
+
+    return reason, killerName, ROLE_NONE
 end)
 
 -------------

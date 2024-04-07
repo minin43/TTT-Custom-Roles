@@ -20,6 +20,7 @@ local medium_spirit_color = GetConVar("ttt_medium_spirit_color")
 local medium_spirit_vision = GetConVar("ttt_medium_spirit_vision")
 local medium_seance_time = GetConVar("ttt_medium_seance_time")
 local medium_seance_max_info = GetConVar("ttt_medium_seance_max_info")
+local medium_hide_killer_role = GetConVar("ttt_medium_hide_killer_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -348,6 +349,11 @@ hook.Add("TTTTutorialRoleText", "Medium_TTTTutorialRoleText", function(role, tit
             end
         end
         html = html .. ".</span>"
+
+        -- Killer role hiding
+        if medium_hide_killer_role:GetBool() then
+            html = html .. "<span style='display: block; margin-top: 10px;'>When there is " .. ROLE_STRINGS_EXT[ROLE_MEDIUM] .. " in the round, players who kill others <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>will have their role hidden</span> in death notifications.</span>"
+        end
 
         return html
     end
