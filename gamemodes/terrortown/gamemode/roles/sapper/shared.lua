@@ -63,6 +63,5 @@ hook.Add("TTTUpdateRoleState", "Sapper_TTTUpdateRoleState", function()
     ROLE_CAN_SEE_C4[ROLE_SAPPER] = sapper_can_see_c4:GetBool()
 
     local is_innocent = sapper_is_innocent:GetBool()
-    INNOCENT_ROLES[ROLE_SAPPER] = is_innocent
     DETECTIVE_ROLES[ROLE_SAPPER] = not is_innocent
 end)
