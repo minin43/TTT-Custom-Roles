@@ -5,7 +5,7 @@ local player = player
 local timer = timer
 
 local AddHook = hook.Add
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_HiveMindChatDupe")
 
@@ -30,8 +30,8 @@ AddHook("PlayerSay", "HiveMind_PlayerSay", function(ply, text, team_only)
     if team_only then return end
 
     net.Start("TTT_HiveMindChatDupe")
-    net.WriteEntity(ply)
-    net.WriteString(text)
+        net.WritePlayer(ply)
+        net.WriteString(text)
     net.Broadcast()
 end)
 
@@ -75,7 +75,7 @@ local currentCredits = 0
 
 local function HandleCreditsSync(amt)
     currentCredits = currentCredits + amt
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if not p:IsHiveMind() then continue end
         if p:GetCredits() ~= currentCredits then
             p:SetCredits(currentCredits)
@@ -98,7 +98,7 @@ AddHook("TTTBodyCreditsLooted", "HiveMind_CreditsSync_TTTBodyCreditsLooted", fun
     if not IsPlayer(deadPly) or not deadPly:IsHiveMind() then return end
 
     -- Find all corpses that belong to hive minds and remove their credits
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if not p:IsHiveMind() then continue end
         p:SetCredits(0)
         local p_rag = p.server_ragdoll or p:GetRagdollEntity()
@@ -147,7 +147,7 @@ AddHook("TTTPlayerRoleChanged", "HiveMind_HealthSync_TTTPlayerRoleChanged", func
             currentHealth = currentHealth + healAmt
         end
 
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if not p:IsHiveMind() then continue end
             p:SetMaxHealth(maxHealth)
             -- If we're being healed, update everyone's health too
@@ -170,7 +170,7 @@ local function HandleHealthSync(ply, newHealth)
     currentHealth = newHealth
 
     -- Sync it to every other member
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p == ply then continue end
         if not p:IsActiveHiveMind() then continue end
 
@@ -192,7 +192,7 @@ end)
 AddHook("PostPlayerDeath", "HiveMind_PostPlayerDeath", function(ply)
     if not IsPlayer(ply) or not ply:IsHiveMind() then return end
 
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p == ply then continue end
         if not p:IsActiveHiveMind() then continue end
 
@@ -216,7 +216,7 @@ ROLE_ON_ROLE_ASSIGNED[ROLE_HIVEMIND] = function(ply)
 
     timer.Create("HiveMindHealthRegen", regen_timer, 0, function()
         local hivemind_count = 0
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:IsHiveMind() then
                 hivemind_count = hivemind_count + 1
             end
@@ -275,7 +275,7 @@ AddHook("TTTCheckForWin", "HiveMind_TTTCheckForWin", function()
 
     local hivemind_alive = false
     local other_alive = false
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActive() then
             if v:IsHiveMind() then
                 hivemind_alive = true
@@ -310,7 +310,7 @@ AddHook("SetupPlayerVisibility", "HiveMind_SetupPlayerVisibility", function(ply)
     if not ply:IsActiveHiveMind() then return end
     if not hivemind_vision_enabled:GetBool() then return end
 
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if ply:TestPVS(v) then continue end
         if not v:IsActiveHiveMind() then continue end
 
@@ -326,7 +326,7 @@ end)
 -------------
 
 AddHook("TTTPrepareRound", "HiveMind_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         timer.Remove("HiveMindRespawn_" .. v:SteamID64())
         v.PreviousMaxHealth = nil
     end

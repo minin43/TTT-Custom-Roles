@@ -1,6 +1,8 @@
 AddCSLuaFile()
 
-local GetAllPlayers = player.GetAll
+local player = player
+
+local PlayerIterator = player.Iterator
 
 resource.AddFile("materials/particle/sponge.vmt")
 
@@ -52,7 +54,7 @@ hook.Add("EntityTakeDamage", "Sponge_EntityTakeDamage", function(target, dmginfo
     if target:IsSponge() then return end
 
     -- Check if this player is within the radius of any living sponge
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p == target then continue end
         if not p:Alive() or p:IsSpec() then continue end
         if not p:IsSponge() then continue end
@@ -76,7 +78,7 @@ hook.Add("TTTDrawHitMarker", "Sponge_TTTDrawHitMarker", function(victim, dmginfo
         return true, false, false, true
     end
 
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p == victim then continue end
         if not p:Alive() or p:IsSpec() then continue end
         if not p:IsSponge() then continue end
@@ -132,12 +134,12 @@ hook.Add("Think", "Sponge_Aura_Think", function()
     local radius = GetGlobalFloat("ttt_sponge_aura_radius", UNITS_PER_FIVE_METERS)
     local alive_players = #util.GetAlivePlayers()
     local floatTime = sponge_aura_float_time:GetInt()
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if not p:Alive() or p:IsSpec() then continue end
         if not p:IsSponge() then continue end
 
         local playersInRadius = 1
-        for _, v in ipairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if not p:Alive() or p:IsSpec() then continue end
             if v == p then continue end
             if v:GetPos():Distance(p:GetPos()) <= radius then
@@ -227,7 +229,7 @@ end)
 hook.Add("TTTPrepareRound", "Sponge_PrepareRound", function()
     spongeWinTime = nil
 
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWString("SpongeKiller", "")
         v:SetNWString("SpongeProtecting", "")
         v:SetNWFloat("SpongeAuraEndTime", -1)

@@ -1,9 +1,8 @@
 AddCSLuaFile()
 
-local ipairs = ipairs
 local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 if CLIENT then
     SWEP.PrintName          = "Igniter"
@@ -101,7 +100,7 @@ function SWEP:PrimaryAttack()
 
     local corpseIgniteTime = GetConVar("ttt_arsonist_corpse_ignite_time"):GetInt()
     local igniteCount = 0
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p == owner then continue end
         if p:GetNWInt("TTTArsonistDouseStage", ARSONIST_UNDOUSED) ~= ARSONIST_DOUSED then continue end
 

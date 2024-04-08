@@ -231,6 +231,7 @@ ttt_hypnotist_device_shop                   0       // Whether the hypnotist's d
 ttt_hypnotist_device_shop_rebuyable         0       // Whether the hypnotist's defib should be purchaseable multiple times (requires "ttt_hypnotist_device_shop" to be enabled). Server must be restarted for changes to take effect
 ttt_hypnotist_convert_detectives            0       // Whether to convert detectives and deputies (only if ttt_deputy_use_detective_icon is enabled) to impersonator instead of just a regular traitor. Target will be automatically promoted to appear as a detective if appropriate
 ttt_hypnotist_device_time                   8       // The amount of time (in seconds) the hypnotist's device takes to use
+ttt_hypnotist_brainwash_muted               0       // Whether players brainwashed by the hypnotist should be muted
 ttt_single_paramedic_hypnotist              0       // Whether only a single paramedic or hypnotist should spawn in a round
 ttt_single_paramedic_hypnotist_chance       0.5     // The chance that a paramedic should have an opportunity to spawn instead of a hypnotist (e.g. 0.7 = 70% chance for paramedic, 30% chance for hypnotist. Only applies if ttt_single_paramedic_hypnotist is enabled)
 
@@ -331,6 +332,7 @@ ttt_glitch_mode                             0       // The way in which the glit
 ttt_glitch_use_traps                        0       // Whether glitches can see and use traitor traps. This also allows them to loot credits for traps that require them.
 
 // Phantom
+ttt_phantom_respawn                         1       // Whether the phantom should respawn when their killer is killed
 ttt_phantom_respawn_health                  50      // The amount of health a phantom will respawn with
 ttt_phantom_weaker_each_respawn             0       // Whether a phantom respawns weaker (1/2 as much HP) each time they respawn, down to a minimum of 1
 ttt_phantom_announce_death                  0       // Whether to announce to detectives (and promoted deputies and impersonators) that a phantom has been killed or respawned
@@ -384,6 +386,7 @@ ttt_paramedic_device_loadout                1       // Whether the paramedic's d
 ttt_paramedic_device_shop                   0       // Whether the paramedic's defib should be purchasable in the shop (requires "ttt_shop_for_all" to be enabled). Server must be restarted for changes to take effect
 ttt_paramedic_device_shop_rebuyable         0       // Whether the paramedic's defib should be purchaseable multiple times (requires "ttt_paramedic_device_shop" to be enabled). Server must be restarted for changes to take effect
 ttt_paramedic_defib_time                    8       // The amount of time (in seconds) the paramedic's defib takes to use
+ttt_paramedic_revive_muted                  0       // Whether players revived by the paramedic should be muted
 
 // Trickster
 ttt_trickster_credits_starting              0       // The number of credits a trickster should start with
@@ -467,9 +470,11 @@ ttt_medium_seance_float_time                1       // The amount of time (in se
 ttt_medium_seance_cooldown                  3       // The amount of time (in seconds) the Medium's seance goes on cooldown for after losing it's target
 ttt_medium_seance_distance                  150     // The maximum distance away the seance target can be
 ttt_medium_seance_max_info                  0       // The maximum amount of information the Medium can learn from performing a seance. 0 - None, 1 - Name, 2 - Team, 3 - Role
+ttt_medium_hide_killer_role                 0       // Whether to hide the role of a player's killer when there is a medium in the round
 ttt_medium_credits_starting                 1       // The number of credits a medium should start with
 
 // Sapper
+ttt_sapper_is_innocent                      0       // Whether the sapper should be treated as a special innocent
 ttt_sapper_aura_radius                      5       // The radius of the sapper's aura in meters
 ttt_sapper_protect_self                     1       // Whether the sapper's protection aura will protect themselves or not
 ttt_sapper_fire_immune                      0       // Whether sapper's protection aura also grands fire immunity
@@ -488,6 +493,7 @@ ttt_marshal_credits_starting                1       // The number of credits a m
 
 // Quartermaster
 ttt_quartermaster_limited_loot              0       // Whether players should be limited to looting a single quartermaster crate per round
+ttt_quartermaster_set_crate_owner           0       // Whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar)
 ttt_quartermaster_credits_starting          3       // The number of credits a quartermaster should start with
 
 // ----------------------------------------
@@ -554,6 +560,7 @@ ttt_beggar_scan_time                        15      // The amount of time (in se
 ttt_beggar_scan_float_time                  1       // The amount of time (in seconds) it takes for the beggar's scanner to lose it's target without line of sight
 ttt_beggar_scan_cooldown                    3       // The amount of time (in seconds) the beggar's tracker goes on cooldown for after losing it's target
 ttt_beggar_scan_distance                    2500    // The maximum distance away the scanner target can be
+ttt_beggar_transfer_ownership               0       // Whether the ownership of a shop item should transfer each time its picked up by a non-beggar
 ttt_beggar_can_see_jesters                  0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the beggar (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_update_scoreboard                0       // Whether the beggar shows dead players as missing in action (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_announce_delay                   0       // How long the delay between role change and announcement should be
@@ -804,6 +811,8 @@ ttt_shadow_sprint_recovery                  0.1     // The minimum amount of sta
 ttt_shadow_sprint_recovery_max              0.5     // The maximum amount of stamina to recover per tick when the shadow is FAR outside of their target radius
 ttt_shadow_target_jester                    1       // Whether the shadow should be able to target a member of the jester team
 ttt_shadow_target_independent               1       // Whether the shadow should be able to target an independent player
+ttt_shadow_target_monster                   1       // Whether the shadow should be able to target a member of the monster team
+ttt_shadow_target_traitor                   1       // Whether the shadow should be able to target a member of the traitor team
 ttt_shadow_target_notify_mode               0       // How the shadow's target should be notified they have a shadow. 0 - Don't notify. 1 - Anonymously notify. 2 - Identify the shadow.
 ttt_shadow_soul_link                        0       // Whether the shadow's soul should be linked to their target. 0 - Disable. 1 - Both shadow and target die if either is killed. 2 - The shadow dies if their target is killed.
 ttt_shadow_weaken_health_to                 0       // How low to reduce the Shadow's health to when they are outside of the target circle instead of their normal punishment. (Setting to 0 will use "ttt_shadow_failure_mode" instead.)
@@ -1103,6 +1112,11 @@ ttt_beggar_show_scan_radius                 0       // Whether to show the ring 
 
 // Loot Goblin
 ttt_lootgoblin_radar_beep_sound             1       // Whether to play a sound when the loot goblin radar location updates
+
+// ----------------------------------------
+// Misc.
+// ----------------------------------------
+ttt_distance_unit                           1       // What unit to use when displaying distance. 0 - None (Source). 1 - Meters. 2 - Feet
 ```
 
 ## Role Weapon Shop

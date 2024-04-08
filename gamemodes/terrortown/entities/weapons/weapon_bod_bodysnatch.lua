@@ -10,7 +10,7 @@ local util = util
 local AddHook = hook.Add
 local CallHook = hook.Call
 local RunHook = hook.Run
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local SetMDL = FindMetaTable("Entity").SetModel
 
 if CLIENT then
@@ -193,7 +193,7 @@ if SERVER then
     end
 
     local function ClearFullState()
-        for _, ply in ipairs(GetAllPlayers()) do
+        for _, ply in PlayerIterator() do
             ClearPlayerInfoOverride(ply)
 
             if ply:GetNWBool("TTTBodysnatcherForceDuck", false) and ply:Crouching() then
@@ -207,7 +207,7 @@ if SERVER then
 
     AddHook("TTTEndRound", "Bodysnatcher_InfoOverride_TTTEndRound", ClearFullState)
     AddHook("TTTPrepareRound", "Bodysnatcher_InfoOverride_TTTPrepareRound", function()
-        for _, ply in ipairs(GetAllPlayers()) do
+        for _, ply in PlayerIterator() do
             -- We want this info to show up in the round summary so we can't clear it on round end
             ply:SetNWString("TTTBodysnatcherSwappedWith", "")
         end

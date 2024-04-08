@@ -1,5 +1,9 @@
 AddCSLuaFile()
 
+local player = player
+
+local PlayerIterator = player.Iterator
+
 ENT.Type      = "anim"
 ENT.Spawnable = false
 
@@ -152,7 +156,7 @@ function ENT:Touch(ent)
 
                         local mode = GetConVar("ttt_cupid_lovers_notify_mode"):GetInt()
                         if mode ~= ANNOUNCE_REVEAL_NONE then
-                            for _, v in pairs(player.GetAll()) do
+                            for _, v in PlayerIterator() do
                                 if v == ent or v == ent2 or v == owner then
                                     continue
                                 end

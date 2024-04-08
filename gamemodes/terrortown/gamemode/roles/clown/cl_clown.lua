@@ -64,7 +64,7 @@ hook.Add("Initialize", "Clown_Scoring_Initialize", function()
 end)
 
 net.Receive("TTT_ClownActivate", function()
-    local ent = net.ReadEntity()
+    local ent = net.ReadPlayer()
     if not IsPlayer(ent) then return end
 
     -- Set the traitor button availability state to match the setting

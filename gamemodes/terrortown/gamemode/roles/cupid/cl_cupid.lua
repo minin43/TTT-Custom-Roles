@@ -1,9 +1,9 @@
 local halo = halo
 local hook = hook
-local ipairs = ipairs
+local player = player
 local table = table
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local HaloAdd = halo.Add
 local AddHook = hook.Add
 local RemoveHook = hook.Remove
@@ -73,7 +73,7 @@ end)
 AddHook("TTTScoringSecondaryWins", "Cupid_TTTScoringSecondaryWins", function(wintype, secondary_wins)
     if wintype == WIN_CUPID then return end
 
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         local lover = p:GetNWString("TTTCupidLover", "")
         if p:Alive() and not p:IsSpec() and #lover > 0 then
             local loverPly = player.GetBySteamID64(lover)
@@ -107,7 +107,7 @@ AddHook("TTTEventFinishIconText", "Cupid_TTTEventFinishIconText", function(e, wi
 end)
 
 AddHook("TTTEndRound", "Cupid_SecondaryWinEvent_TTTEndRound", function()
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         local lover = p:GetNWString("TTTCupidLover", "")
         if p:IsActive() and #lover > 0 then
             local loverPly = player.GetBySteamID64(lover)

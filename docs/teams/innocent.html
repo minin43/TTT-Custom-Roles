@@ -441,6 +441,12 @@
                             <td>Whether the Paramedic's defib should be purchaseable multiple times. <i>(requires <code>ttt_paramedic_device_shop</code> to be enabled. Server must be restarted for changes to take effect.)</i></td>
                         </tr>
                         <tr>
+                            <td>ttt_paramedic_revive_muted <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether players revived by the paramedic should be muted.</td>
+                        </tr>
+                        <tr>
                             <td>ttt_single_paramedic_hypnotist</td>
                             <td>0</td>
                             <td>Boolean</td>
@@ -573,6 +579,12 @@
                             <td>0</td>
                             <td>Boolean</td>
                             <td>Whether to show smoke on the player who killed the Phantom.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_phantom_respawn</td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether the phantom should respawn when their killer is killed.</td>
                         </tr>
                         <tr>
                             <td>ttt_phantom_respawn_health</td>
@@ -905,6 +917,12 @@
                     </table>
                     <p>A list of ConVars shared by every role and instructions for using ConVars can be found on the <a href="../tutorials/configuring_convars.html">Configuring ConVars</a> tutorial page.</p>
                 </div>
+            </div>
+        </div>
+        <div class="noncollapsible">
+            <button class="header" style="cursor: default; background-color:var(--special-innocent);"><i class="icon-team"></i>Configurable Innocents  <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></button>
+            <div class="content">
+                <p>The following roles can be configured to be a <span style="color:var(--special-innocent);">special innocent</span> instead of their default team: <span class="inline-icon" style="color:var(--special-detective);"><i class="icon-sapper"></i><a href="../teams/detective.html#sapper">Sapper</a></span>.</p>
             </div>
         </div>
     </div>

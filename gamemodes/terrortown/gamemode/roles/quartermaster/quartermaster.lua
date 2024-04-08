@@ -4,7 +4,7 @@ local hook = hook
 local player = player
 
 local AddHook = hook.Add
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------------
 -- ROLE FEATURES --
@@ -38,7 +38,7 @@ local blockedEvents = {
 AddHook("TTTRandomatCanEventRun", "Quartermaster_TTTRandomatCanEventRun", function(event)
     if not blockedEvents[event.Id] then return end
 
-    for _, ply in ipairs(player.GetAll()) do
+    for _, ply in PlayerIterator() do
         if ply:IsQuartermaster() then
             return false, "There is " .. ROLE_STRINGS_EXT[ROLE_QUARTERMASTER] .. " in the round and this event " .. blockedEvents[event.Id]
         end
@@ -50,7 +50,7 @@ end)
 -------------
 
 AddHook("TTTPrepareRound", "Quartermaster_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("TTTQuartermasterLooted", false)
     end
 end)

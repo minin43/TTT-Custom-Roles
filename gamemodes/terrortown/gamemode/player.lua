@@ -6,6 +6,7 @@ local IsValid = IsValid
 local math = math
 local net = net
 local pairs = pairs
+local player = player
 local string = string
 local table = table
 local timer = timer
@@ -14,6 +15,7 @@ local util = util
 local CallHook = hook.Call
 local RunHook = hook.Run
 local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local CreateEntity = ents.Create
 local FindEntsInBox = ents.FindInBox
 local FindEntsByClass = ents.FindByClass
@@ -59,7 +61,7 @@ end
 
 function GM:NetworkIDValidated(name, steamid)
     -- edge case where player authed after initspawn
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if IsValid(p) and p:SteamID() == steamid and p.delay_karma_recall then
             KARMA.LateRecallAndSet(p)
             return
@@ -596,7 +598,7 @@ local function CheckCreditAward(victim, attacker)
                 return p:IsActiveDetectiveTeam() or (p:IsActiveDeputy() and p:IsRoleActive())
             end
 
-            for _, ply in ipairs(GetAllPlayers()) do
+            for _, ply in PlayerIterator() do
                 if predicate(ply) then
                     ply:AddCredits(amt)
                 end
@@ -611,7 +613,7 @@ local function CheckCreditAward(victim, attacker)
         local inno_alive = 0
         local inno_dead = 0
 
-        for _, ply in ipairs(GetAllPlayers()) do
+        for _, ply in PlayerIterator() do
             if not ply:IsTraitorTeam() then
                 if ply:IsTerror() then
                     inno_alive = inno_alive + 1
@@ -654,7 +656,7 @@ local function CheckCreditAward(victim, attacker)
                 end
                 LANG.Msg(GetPlayerFilter(predicate), "credit_all", { role = ROLE_STRINGS_PLURAL[ROLE_TRAITOR], num = amt })
 
-                for _, ply in ipairs(GetAllPlayers()) do
+                for _, ply in PlayerIterator() do
                     if predicate(ply) then
                         ply:AddCredits(amt)
                     end
@@ -1266,13 +1268,10 @@ end
 function GM:OnNPCKilled() end
 
 -- Drowning and such
+local tm = nil
 function GM:Tick()
-    -- three cheers for micro-optimizations
-    local plys = GetAllPlayers()
-    local tm
-    local ply
-    for i = 1, #plys do
-        ply = plys[i]
+    for _, ply in PlayerIterator() do
+        -- three cheers for micro-optimizations
         tm = ply:Team()
         if tm == TEAM_TERROR and ply:Alive() then
             -- Drowning
@@ -1401,7 +1400,7 @@ local function PlayerAutoComplete(cmd, args)
 
     -- Find player options that match the given value (or all if there is no given value)
     local options = {}
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if #name == 0 or string.find(string.lower(v:Nick()), name) then
             table.insert(options, cmd .. other_args .. " \"" .. v:Nick() .. "\"")
         end

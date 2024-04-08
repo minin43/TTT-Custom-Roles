@@ -2,9 +2,10 @@ AddCSLuaFile()
 
 local vgui = vgui
 local net = net
+local player = player
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local StringLower = string.lower
 local StringFind = string.find
@@ -114,7 +115,7 @@ function SWEP:PrimaryAttack()
                     return
                 end
 
-                for _, v in pairs(GetAllPlayers()) do
+                for _, v in PlayerIterator() do
                     v:SetNWFloat("TTTGuesserDamageDealt", 0)
                 end
 

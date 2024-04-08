@@ -2,10 +2,10 @@ AddCSLuaFile()
 
 local hook = hook
 local math = math
-local pairs = pairs
+local player = player
 local timer = timer
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local CallHook = hook.Call
 
 resource.AddFile("materials/particle/shield.vmt")
@@ -30,9 +30,9 @@ hook.Add("TTTBeginRound", "Paladin_RoleFeatures_TTTBeginRound", function()
     local paladinHealSelf = paladin_heal_self:GetBool()
     local paladinRadius = paladin_aura_radius:GetFloat() * UNITS_PER_METER
     timer.Create("paladinheal", 1, 0, function()
-        for _, p in pairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:IsActivePaladin() then
-                for _, v in pairs(GetAllPlayers()) do
+                for _, v in PlayerIterator() do
                     if v:IsActive() and (not v:IsPaladin() or paladinHealSelf) and v:GetPos():Distance(p:GetPos()) <= paladinRadius and v:Health() < v:GetMaxHealth() then
                         local health = math.min(v:GetMaxHealth(), v:Health() + paladinHeal)
                         CallHook("TTTPaladinAuraHealed", nil, p, v, health - v:Health())
@@ -60,7 +60,7 @@ hook.Add("ScalePlayerDamage", "Paladin_ScalePlayerDamage", function(ply, hitgrou
 
     local withPaladin = false
     local radius = paladin_aura_radius:GetFloat() * UNITS_PER_METER
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActivePaladin() and v:GetPos():Distance(ply:GetPos()) <= radius then
             withPaladin = true
             break

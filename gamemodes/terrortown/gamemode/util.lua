@@ -9,6 +9,7 @@ local ipairs = ipairs
 local IsValid = IsValid
 local math = math
 local pairs = pairs
+local player = player
 local scripted_ents = scripted_ents
 local string = string
 local table = table
@@ -18,7 +19,7 @@ local hook = hook
 
 local FileExists = file.Exists
 local FileRead = file.Read
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local StringUpper = string.upper
 local StringFormat = string.format
 local StringSub = string.sub
@@ -73,7 +74,7 @@ end
 
 function util.GetAlivePlayers()
     local alive = {}
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if IsValid(p) and p:Alive() and p:IsTerror() then
             table.insert(alive, p)
         end

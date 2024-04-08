@@ -1,12 +1,12 @@
 AddCSLuaFile()
 
 local hook = hook
-local ipairs = ipairs
 local math = math
 local pairs = pairs
+local player = player
 local table = table
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -26,7 +26,7 @@ local veteran_announce = GetConVar("ttt_veteran_announce")
 hook.Add("PlayerDeath", "Veteran_RoleFeatures_PlayerDeath", function(victim, infl, attacker)
     local innocents_alive = 0
     local veterans = {}
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActiveInnocentTeam() then innocents_alive = innocents_alive + 1 end
         if v:IsActiveVeteran() then table.insert(veterans, v) end
     end
@@ -38,7 +38,7 @@ hook.Add("PlayerDeath", "Veteran_RoleFeatures_PlayerDeath", function(victim, inf
 
                 v:QueueMessage(MSG_PRINTBOTH, "You are the last " .. ROLE_STRINGS[ROLE_INNOCENT] .. " alive!")
                 if veteran_announce:GetBool() then
-                    for _, p in ipairs(GetAllPlayers()) do
+                    for _, p in PlayerIterator() do
                         if p ~= v and p:IsActive() then
                             p:QueueMessage(MSG_PRINTBOTH, "The last " .. ROLE_STRINGS[ROLE_INNOCENT] .. " alive is " .. ROLE_STRINGS_EXT[ROLE_VETERAN] .. "!")
                         end
@@ -78,7 +78,7 @@ hook.Add("ScalePlayerDamage", "Veteran_ScalePlayerDamage", function(ply, hitgrou
 end)
 
 hook.Add("TTTPrepareRound", "Veteran_RoleFeatures_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("VeteranActive", false)
     end
 end)

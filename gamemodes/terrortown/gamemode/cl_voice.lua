@@ -19,7 +19,7 @@ local vgui = vgui
 
 local AddHook = hook.Add
 local CallHook = hook.Call
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 
@@ -35,7 +35,7 @@ local function GetChatPlayerName(ply, team_chat)
 end
 
 local function LastWordsRecv()
-    local sender = net.ReadEntity()
+    local sender = net.ReadPlayer()
     local words = net.ReadString()
 
     local was_detective = IsValid(sender) and sender:IsDetectiveTeam()
@@ -53,7 +53,7 @@ net.Receive("TTT_LastWordsMsg", LastWordsRecv)
 local function RoleChatRecv()
     -- virtually always our role, but future equipment might allow listening in
     local role = net.ReadInt(8)
-    local sender = net.ReadEntity()
+    local sender = net.ReadPlayer()
     if not IsValid(sender) then return end
 
     local text = net.ReadString()
@@ -439,7 +439,7 @@ end
 concommand.Add("ttt_radio", RadioCommand, RadioComplete)
 
 local function RadioMsgRecv()
-    local sender = net.ReadEntity()
+    local sender = net.ReadPlayer()
     local msg = net.ReadString()
     local param = net.ReadString()
 
@@ -554,7 +554,7 @@ function GM:PlayerStartVoice(ply)
             end
 
             local hasGlitch = false
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if v:IsGlitch() then hasGlitch = true end
             end
 

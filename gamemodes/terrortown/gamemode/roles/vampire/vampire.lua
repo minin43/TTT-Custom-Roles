@@ -3,7 +3,6 @@ AddCSLuaFile()
 local plymeta = FindMetaTable("Player")
 
 local hook = hook
-local ipairs = ipairs
 local IsValid = IsValid
 local math = math
 local net = net
@@ -13,7 +12,7 @@ local resource = resource
 local table = table
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathRandom = math.random
 
 util.AddNetworkString("TTT_VampirePrimeDeath")
@@ -62,7 +61,7 @@ hook.Add("DoPlayerDeath", "Vampire_Credits_DoPlayerDeath", function(victim, atta
         local ply_alive = 0
         local ply_dead = 0
 
-        for _, ply in pairs(GetAllPlayers()) do
+        for _, ply in PlayerIterator() do
             if not ply:IsVampireAlly() then
                 if ply:IsTerror() then
                     ply_alive = ply_alive + 1
@@ -92,7 +91,7 @@ hook.Add("DoPlayerDeath", "Vampire_Credits_DoPlayerDeath", function(victim, atta
             if amt > 0 then
                 LANG.Msg(GetVampireFilter(true), "credit_all", { role = ROLE_STRINGS[ROLE_VAMPIRE], num = amt })
 
-                for _, ply in pairs(GetAllPlayers()) do
+                for _, ply in PlayerIterator() do
                     if ply:IsActiveVampire() then
                         ply:AddCredits(amt)
                     end
@@ -117,7 +116,7 @@ hook.Add("PlayerDeath", "Vampire_PrimeDeath_PlayerDeath", function(victim, infl,
         local living_vampire_primes = 0
         local vampires = {}
         -- Find all the living vampires anmd count the primes
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if v:IsActiveVampire() then
                 if v:IsVampirePrime() then
                     living_vampire_primes = living_vampire_primes + 1
@@ -168,7 +167,7 @@ hook.Add("PlayerDisconnected", "Vampire_Prime_PlayerDisconnected", function(ply)
     if not ply:IsVampirePrime() then return end
 
     local vampires = {}
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActiveVampire() and v ~= ply then
             -- If we already have another prime, we're all set
             if v:IsVampirePrime() then
@@ -196,7 +195,7 @@ function plymeta:SetVampirePreviousRole(r) self:SetNWInt("vampire_previous_role"
 -----------------
 
 hook.Add("TTTBeginRound", "Vampire_RoleFeatures_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsVampire() then
             v:SetVampirePrime(true)
         end
@@ -204,7 +203,7 @@ hook.Add("TTTBeginRound", "Vampire_RoleFeatures_PrepareRound", function()
 end)
 
 hook.Add("TTTPrepareRound", "Vampire_RoleFeatures_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWInt("VampireFreezeCount", 0)
         -- Keep previous naming scheme for backwards compatibility
         v:SetNWBool("vampire_prime", false)
@@ -229,7 +228,7 @@ hook.Add("TTTCheckForWin", "Vampire_TTTCheckForWin", function()
 
     local vampire_alive = false
     local other_alive = false
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActive() then
             if v:IsVampire() then
                 vampire_alive = true
@@ -368,7 +367,7 @@ hook.Add("SetupPlayerVisibility", "Vampire_SetupPlayerVisibility", function(ply)
     local hasFangs = ply.GetActiveWeapon and IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon():GetClass() == "weapon_vam_fangs"
     if not hasFangs then return end
 
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if ply:TestPVS(v) then continue end
 
         local pos = v:GetPos()

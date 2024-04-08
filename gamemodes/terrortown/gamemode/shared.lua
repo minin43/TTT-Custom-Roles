@@ -5,6 +5,7 @@ local IsValid = IsValid
 local math = math
 local net = net
 local pairs = pairs
+local player = player
 local string = string
 local table = table
 
@@ -12,7 +13,7 @@ local FileExists = file.Exists
 local FileFind = file.Find
 local CallHook = hook.Call
 local RunHook = hook.Run
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local StringUpper = string.upper
 local StringLower = string.lower
 local StringFind = string.find
@@ -23,7 +24,7 @@ local StringSub = string.sub
 include("player_class/player_ttt.lua")
 
 -- Version string for display and function for version checks
-CR_VERSION = "2.1.9"
+CR_VERSION = "2.1.10"
 CR_BETA = true
 CR_WORKSHOP_ID = CR_BETA and "2404251054" or "2421039084"
 
@@ -1669,7 +1670,7 @@ if SERVER then
         local mode = GetConVar("ttt_" .. cvar_role .. "_notify_mode"):GetInt()
         local play_sound = GetConVar("ttt_" .. cvar_role .. "_notify_sound"):GetBool()
         local show_confetti = GetConVar("ttt_" .. cvar_role .. "_notify_confetti"):GetBool()
-        for _, ply in pairs(GetAllPlayers()) do
+        for _, ply in PlayerIterator() do
             if ply == attacker then
                 local role_string = ROLE_STRINGS[role]
                 ply:QueueMessage(MSG_PRINTCENTER, "You killed the " .. role_string .. "!")
@@ -1679,9 +1680,9 @@ if SERVER then
 
             if play_sound or show_confetti then
                 net.Start("TTT_JesterDeathCelebration")
-                net.WriteEntity(victim)
-                net.WriteBool(play_sound)
-                net.WriteBool(show_confetti)
+                    net.WritePlayer(victim)
+                    net.WriteBool(play_sound)
+                    net.WriteBool(show_confetti)
                 net.Send(ply)
             end
         end
@@ -1690,7 +1691,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_JesterDeathCelebration", function()
-        local ent = net.ReadEntity()
+        local ent = net.ReadPlayer()
         local play_sound = net.ReadBool()
         local show_confetti = net.ReadBool()
 
@@ -1735,9 +1736,42 @@ DefaultEquipment = {
 -- Old ConVars --
 -----------------
 
---local function OldCVarWarning(oldName, newName)
---    cvars.AddChangeCallback(oldName, function(convar, oldValue, newValue)
---        RunConsoleCommand(newName, newValue)
---        ErrorNoHalt("WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
---    end)
---end
+local function AddOldCVarWarning(oldName, newName)
+    cvars.AddChangeCallback(oldName, function(convar, oldValue, newValue)
+        RunConsoleCommand(newName, newValue)
+        ErrorNoHalt("WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
+    end)
+end
+
+-- Add entries to this table in the form of: { "old_convar_name", "new_convar_name" }
+local deprecatedConVars = {}
+
+for _, c in ipairs(deprecatedConVars) do
+    -- Create the old convar with the same default value as the new one
+    local oldName = c[1]
+    local newName = c[2]
+    local newCvar = GetConVar(newName)
+    if newCvar == nil then continue end
+
+    CreateConVar(oldName, newCvar:GetString(), FCVAR_REPLICATED, "DEPRECATED! Please use \"" .. newName .. "\" instead!", newCvar:GetMin(), newCvar:GetMax())
+
+    -- Add the change warning to the old convar to warn each time it's changed
+    AddOldCVarWarning(c[1], c[2])
+end
+
+hook.Add("PlayerInitialSpawn", "ConVarDeprecation_PlayerInitialSpawn", function(ply, transition)
+    if not IsValid(ply) then return end
+    if not ply:IsAdmin() and not ply:IsSuperAdmin() then return end
+
+    for _, c in ipairs(deprecatedConVars) do
+        local oldName = c[1]
+        local newName = c[2]
+        local oldCvar = GetConVar(oldName)
+        if oldCvar == nil then continue end
+
+        -- If the old convar has a value other than the default then warn the admin
+        if oldCvar:GetDefault() ~= oldCvar:GetString() then
+            ply:PrintMessage(HUD_PRINTTALK, "[CR4TTT] WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
+        end
+    end
+end)

@@ -1,11 +1,10 @@
 AddCSLuaFile()
 
 local hook = hook
-local pairs = pairs
 local player = player
 local timer = timer
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local HookCall = hook.Call
 
 resource.AddFile("materials/particle/heart.vmt")
@@ -28,7 +27,7 @@ local cupid_lovers_can_damage_cupid = GetConVar("ttt_cupid_lovers_can_damage_cup
 
 hook.Add("TTTBeginRound", "Cupid_TTTBeginRound", function()
     timer.Create("TTTCupidTimer", 0.1, 0, function()
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if not v:IsActive() then continue end
 
             local lover_sid64 = v:GetNWString("TTTCupidLover", "")
@@ -51,7 +50,7 @@ end)
 -------------
 
 hook.Add("TTTPrepareRound", "Cupid_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWString("TTTCupidShooter", "")
         v:SetNWString("TTTCupidLover", "")
         v:SetNWString("TTTCupidTarget1", "")
@@ -83,7 +82,7 @@ end)
 hook.Add("PlayerDisconnected", "Cupid_PlayerDisconnected", function(ply)
     local sid64 = ply:SteamID64()
 
-    for _, p in pairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:GetNWString("TTTCupidLover", "") == sid64 then
             p:QueueMessage(MSG_PRINTBOTH, "Your lover has disappeared ;_;")
             p:SetNWString("TTTCupidLover", "")
@@ -112,7 +111,7 @@ end)
 hook.Add("PlayerDeath", "Cupid_PlayerDeath", function(ply)
     local sid64 = ply:SteamID64()
 
-    for _, p in pairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         local target2 = p:GetNWString("TTTCupidTarget2", "")
         if p:GetNWString("TTTCupidTarget1", "") == sid64 and #target2 == 0 then
             p:QueueMessage(MSG_PRINTBOTH, "The player hit by your arrow has died")
@@ -129,7 +128,7 @@ end)
 hook.Add("TTTCheckForWin", "Cupid_TTTCheckForWin", function()
     local cupidWin = true
     local loverAlive = false
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if not v:Alive() or v:IsSpec() then
             continue
         end

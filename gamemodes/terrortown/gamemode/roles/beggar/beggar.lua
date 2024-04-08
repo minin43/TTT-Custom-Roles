@@ -1,14 +1,13 @@
 AddCSLuaFile()
 
 local hook = hook
-local ipairs = ipairs
 local IsValid = IsValid
 local net = net
-local pairs = pairs
+local player = player
 local timer = timer
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_BeggarConverted")
 util.AddNetworkString("TTT_BeggarKilled")
@@ -24,6 +23,7 @@ CreateConVar("ttt_beggar_notify_confetti", "0", FCVAR_NONE, "Whether to throw co
 local beggar_scan_float_time = CreateConVar("ttt_beggar_scan_float_time", "1", FCVAR_NONE, "The amount of time (in seconds) it takes for the beggar's scanner to lose it's target without line of sight", 0, 60)
 local beggar_scan_cooldown = CreateConVar("ttt_beggar_scan_cooldown", "3", FCVAR_NONE, "The amount of time (in seconds) the beggar's tracker goes on cooldown for after losing it's target", 0, 60)
 local beggar_scan_distance = CreateConVar("ttt_beggar_scan_distance", "2500", FCVAR_NONE, "The maximum distance away the scanner target can be", 1000, 10000)
+local beggar_transfer_ownership = CreateConVar("ttt_beggar_transfer_ownership", "0", FCVAR_NONE, "Whether the ownership of a shop item should transfer each time its picked up by a non-beggar", 0, 1)
 
 local beggar_respawn = GetConVar("ttt_beggar_respawn")
 local beggar_respawn_limit = GetConVar("ttt_beggar_respawn_limit")
@@ -38,7 +38,7 @@ local beggar_announce_delay = GetConVar("ttt_beggar_announce_delay")
 -------------------
 
 local function AnnounceTeamChange(ply, role)
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v ~= ply and v:ShouldRevealBeggar(ply) then
             v:QueueMessage(MSG_PRINTBOTH, "The beggar has joined the " .. ROLE_STRINGS[role] .. " team")
         end
@@ -49,9 +49,7 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
     if not IsValid(wep) or not IsPlayer(ply) then return end
     if not wep.CanBuy or wep.AutoSpawnable then return end
 
-    if not wep.BoughtBy then
-        wep.BoughtBy = ply
-    elseif ply:IsBeggar() and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
+    if ply:IsBeggar() and wep.BoughtBy and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
         local role
         if wep.BoughtBy:IsTraitorTeam() then
             role = ROLE_TRAITOR
@@ -80,12 +78,14 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
         net.WriteString(ROLE_STRINGS_EXT[role])
         net.WriteString(ply:SteamID64())
         net.Broadcast()
+    elseif not wep.BoughtBy or beggar_transfer_ownership:GetBool() then
+        wep.BoughtBy = ply
     end
 end)
 
 -- Disable tracking that this player was a beggar at the start of a new round or if their role changes again (e.g. if they go beggar -> innocent -> dead -> hypnotist res to traitor)
 hook.Add("TTTPrepareRound", "Beggar_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("WasBeggar", false)
         v:SetNWBool("BeggarIsRespawning", false)
         timer.Remove(v:Nick() .. "BeggarRespawn")
@@ -191,7 +191,7 @@ end)
 ----------------
 
 local function HasBeggar()
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsBeggar() then
             return true
         end
@@ -200,7 +200,7 @@ local function HasBeggar()
 end
 
 hook.Add("TTTPrepareRound", "Beggar_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWInt("TTTBeggarScanStage", BEGGAR_UNSCANNED)
         v:SetNWInt("TTTBeggarScannerState", BEGGAR_SCANNER_IDLE)
         v:SetNWString("TTTBeggarScannerTarget", "")
@@ -234,7 +234,7 @@ hook.Add("TTTPlayerRoleChanged", "Beggar_Informant_TTTPlayerRoleChanged", functi
     if HasBeggar() then
         -- Only notify if there is an beggar and the player had some info being reset
         if scanStage > BEGGAR_UNSCANNED then
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if v:IsActiveBeggar() then
                     v:PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has changed roles. You will need to rescan them.")
                 end

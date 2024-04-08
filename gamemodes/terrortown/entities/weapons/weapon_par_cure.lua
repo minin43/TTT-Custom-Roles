@@ -1,11 +1,12 @@
 AddCSLuaFile()
 
 local IsValid = IsValid
-local pairs = pairs
 local player = player
 local string = string
 local timer = timer
 local util = util
+
+local PlayerIterator = player.Iterator
 
 SWEP.HoldType               = "slam"
 
@@ -79,7 +80,7 @@ if SERVER then
         ply:EmitSound(cured)
 
         if ply:GetNWBool("ParasiteInfected", false) then
-            for _, v in pairs(player.GetAll()) do
+            for _, v in PlayerIterator() do
                 if v:GetNWString("ParasiteInfectingTarget", "") == ply:SteamID64() then
                     ply:SetNWBool("ParasiteInfected", false)
                     v:SetNWBool("ParasiteInfecting", false)

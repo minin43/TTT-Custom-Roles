@@ -1,13 +1,13 @@
 AddCSLuaFile()
 
 local hook = hook
-local ipairs = ipairs
 local net = net
-local pairs = pairs
+local player = player
 local util = util
 
 local CallHook = hook.Call
-local GetAllPlayers = player.GetAll
+
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_Promotion")
 
@@ -33,7 +33,7 @@ function ShouldPromoteDetectiveLike()
     end
 
     local alive, dead = 0, 0
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsDetectiveTeam() then
             if not p:IsSpec() and p:Alive() then
                 alive = alive + 1
@@ -62,7 +62,7 @@ local function BeginRoleChecks(ply)
 end
 
 local function FindAndPromoteDetectiveLike()
-    for _, ply in pairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         if ply:IsDetectiveLikePromotable() then
             local alive = ply:IsActive()
             if alive then
@@ -71,7 +71,7 @@ local function FindAndPromoteDetectiveLike()
 
             -- If the player is a member of the traitor team, tell all their team members when they get promoted
             if ply:IsTraitorTeam() then
-                for _, v in pairs(GetAllPlayers()) do
+                for _, v in PlayerIterator() do
                     if v ~= ply and v:IsActiveTraitorTeam() then
                         local message = "The " .. ROLE_STRINGS[ply:GetRole()] .. " has been promoted to " .. ROLE_STRINGS[ROLE_DETECTIVE] .. "!"
                         if not alive then
@@ -91,7 +91,7 @@ ROLE_ON_ROLE_ASSIGNED[ROLE_DEPUTY] = BeginRoleChecks
 ROLE_ON_ROLE_ASSIGNED[ROLE_IMPERSONATOR] = BeginRoleChecks
 
 hook.Add("TTTPrepareRound", "DetectiveLike_RoleState_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("HasPromotion", false)
     end
 end)
@@ -117,7 +117,7 @@ hook.Add("TTTBeginRound", "DetectiveLike_TTTBeginRound", function()
     if credit_timer <= 0 then return end
 
     timer.Create("DetectiveCreditTimer", credit_timer, 0, function()
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if v:IsActiveDetectiveLike() then
                 v:AddCredits(1)
                 LANG.Msg(v, "credit_all", { role = ROLE_STRINGS[v:GetRole()], num = 1 })

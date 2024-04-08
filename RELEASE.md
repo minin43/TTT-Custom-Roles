@@ -1,5 +1,38 @@
 # Release Notes
 
+## 2.1.10 (Beta)
+**Released:**
+
+### Additions
+- Added ability to set whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar) (disabled by default)
+- Added ability to have weapons transfer ownership each time they are picked up by a non-beggar, meaning the beggar will join the team of the last player who picked up the weapon rather than the person who originally bought it (disabled by default)
+- Added ability to control whether a phantom respawns when their killer is killed (enabled by default)
+- Added ability for players revived by the paramedic to be muted for the remainder of the round (disabled by default)
+- Added ability for players brainwashed by the hypnotist to be muted for the remainder of the round (disabled by default)
+- Added ability for the sapper to be a special innocent instead of a special detective (disabled by default)
+- Added ability to control whether the shadow target can be a traitor or a monster (enabled by default)
+- Added ability for a player to control what unit distances are displayed in (defaults to meters)
+- Added ability for the role of a player's killer to be hidden when there is a medium in the round (disabled by default)
+
+### Changes
+- Changed phantom round start popup message to reflect which features are currently enabled
+
+### Fixes
+- Fixed vindicator who's killer is made into their lover by a cupid not being able to win with their new lover
+- Fixed clown not being able to win with their cupid lover
+- Fixed mad scientist zombifying players sometimes giving them their previous role weapons instead of zombie claws
+- Fixed conflict between marshal and roles with custom round popup string logic
+
+### Developer
+- Added new semi-automated convar deprecation system
+- Added new `TTTShowSearchScreen` hook to allow changing body search data or replacing the dialog (Thanks @wget!)
+- Updated to use `net.Read/WritePlayer` where appropriate
+- Updated many places in the codebase to use `player.Iterator`
+- Updated to use sequential `net.Read/WriteTable` where appropriate
+- Ported "TTT: Use new game.CleanUpMap argument"
+- Ported "TTT: Use net.Read/WritePlayer"
+- Ported "TTT: Use player.Iterator"
+
 ## 2.1.9
 **Released: March 30th, 2024**
 

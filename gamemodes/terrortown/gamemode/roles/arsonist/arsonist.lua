@@ -7,7 +7,7 @@ local math = math
 local player = player
 
 local FindEntsByClass = ents.FindByClass
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathRandom = math.random
 
 -------------
@@ -36,7 +36,7 @@ local function FindArsonistTarget(arsonist, douse_distance)
     local doused_count = 0
     local alive_count = 0
     local douse_require_lost = arsonist_douse_require_los:GetBool()
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p == arsonist then continue end
         if not p:Alive() or p:IsSpec() then continue end
 
@@ -102,7 +102,7 @@ hook.Add("Think", "Arsonist_Douse_Think", function()
         douse_notify_delay_min = douse_notify_delay_max
     end
 
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if not p:IsActiveArsonist() then continue end
         if p:GetNWBool("TTTArsonistDouseComplete", false) then continue end
 
@@ -232,7 +232,7 @@ hook.Add("PostPlayerDeath", "Arsonist_PostPlayerDeath", function(ply)
 end)
 
 hook.Add("TTTPrepareRound", "Arsonist_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWInt("TTTArsonistDouseStage", ARSONIST_UNDOUSED)
         v:SetNWInt("TTTArsonistDouseTime", -1)
         v:SetNWString("TTTArsonistDouseTarget", "")
@@ -250,7 +250,7 @@ hook.Add("TTTPlayerSpawnForRound", "Arsonist_TTTPlayerSpawnForRound", function(p
     if ply:GetNWInt("TTTArsonistDouseStage", ARSONIST_UNDOUSED) == ARSONIST_UNDOUSED then
         local message = "You've detected a new target player! Douse them in gasoline!"
         -- Reset any arsonist who has been flagged as "complete"
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if not p:IsArsonist() then continue end
             -- Don't reset the flag on a player that already used their igniter
             if not p:HasWeapon("weapon_ars_igniter") then continue end
@@ -310,7 +310,7 @@ end)
 hook.Add("TTTCheckForWin", "Arsonist_TTTCheckForWin", function()
     local arsonist_alive = false
     local other_alive = false
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActive() then
             if v:IsArsonist() then
                 arsonist_alive = true
