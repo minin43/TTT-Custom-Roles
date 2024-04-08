@@ -386,7 +386,7 @@ ttt_paramedic_device_loadout                1       // Whether the paramedic's d
 ttt_paramedic_device_shop                   0       // Whether the paramedic's defib should be purchasable in the shop (requires "ttt_shop_for_all" to be enabled). Server must be restarted for changes to take effect
 ttt_paramedic_device_shop_rebuyable         0       // Whether the paramedic's defib should be purchaseable multiple times (requires "ttt_paramedic_device_shop" to be enabled). Server must be restarted for changes to take effect
 ttt_paramedic_defib_time                    8       // The amount of time (in seconds) the paramedic's defib takes to use
-ttt_paramedic_revive_muted                  0       // Whether players revived by the paramedic should be muted"
+ttt_paramedic_revive_muted                  0       // Whether players revived by the paramedic should be muted
 
 // Trickster
 ttt_trickster_credits_starting              0       // The number of credits a trickster should start with
