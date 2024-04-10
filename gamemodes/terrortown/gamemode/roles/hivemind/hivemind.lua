@@ -9,9 +9,15 @@ local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_HiveMindChatDupe")
 
+local CHAT_MODE_NONE = 0
+local CHAT_DUPE_ALL = 1
+local CHAT_DUPE_PRIME = 2
+
 -------------
 -- CONVARS --
 -------------
+
+local hivemind_chat_mode = CreateConVar("ttt_hivemind_chat_mode", CHAT_DUPE_ALL, FCVAR_NONE, "How to handle chat by the hive mind. 0 - Do nothing. 1 - Force all members to duplicate when any member chats. 2 - Force all members to duplicate when only the first member chats.", CHAT_MODE_NONE, CHAT_DUPE_PRIME)
 
 local hivemind_vision_enabled = GetConVar("ttt_hivemind_vision_enabled")
 local hivemind_friendly_fire = GetConVar("ttt_hivemind_friendly_fire")
@@ -25,8 +31,11 @@ local hivemind_regen_max_pct = GetConVar("ttt_hivemind_regen_max_pct")
 ----------------------
 
 AddHook("PlayerSay", "HiveMind_PlayerSay", function(ply, text, team_only)
+    local chat_mode = hivemind_chat_mode:GetInt()
+    if chat_mode <= CHAT_MODE_NONE then return end
     if not IsPlayer(ply) then return end
     if not ply:IsHiveMind() then return end
+    if chat_mode == CHAT_DUPE_PRIME and not ply.HiveMindPrime then return end
     if team_only then return end
 
     net.Start("TTT_HiveMindChatDupe")
@@ -50,7 +59,7 @@ AddHook("PlayerDeath", "HiveMind_PlayerDeath", function(victim, infl, attacker)
         if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
 
         local body = victim.server_ragdoll or victim:GetRagdollEntity()
-        victim.PreviousMaxHealth = victim:GetMaxHealth()
+        victim.HiveMindPreviousMaxHealth = victim:GetMaxHealth()
         victim:SpawnForRound(true)
         victim:SetRole(ROLE_HIVEMIND)
         victim:StripRoleWeapons()
@@ -132,9 +141,9 @@ AddHook("TTTPlayerRoleChanged", "HiveMind_HealthSync_TTTPlayerRoleChanged", func
     else
         local roleMaxHealth = 100
         -- This player should have their previous max health saved in the death hook above, but just make sure
-        if ply.PreviousMaxHealth then
-            roleMaxHealth = ply.PreviousMaxHealth
-            ply.PreviousMaxHealth = nil
+        if ply.HiveMindPreviousMaxHealth then
+            roleMaxHealth = ply.HiveMindPreviousMaxHealth
+            ply.HiveMindPreviousMaxHealth = nil
         -- If it's not there, for whatever reason, use the old role's configured max health instead
         elseif oldRole > ROLE_NONE and oldRole <= ROLE_MAX then
             roleMaxHealth = cvars.Number("ttt_" .. ROLE_STRINGS_RAW[oldRole] .. "_max_health", 100)
@@ -205,7 +214,12 @@ end)
 -- HEALTH REGEN --
 ------------------
 
+local primeAssigned = false
 ROLE_ON_ROLE_ASSIGNED[ROLE_HIVEMIND] = function(ply)
+    if not primeAssigned then
+        ply.HiveMindPrime = true
+        primeAssigned = true
+    end
     if timer.Exists("HiveMindHealthRegen") then return end
 
     local regen_timer = hivemind_regen_timer:GetInt()
@@ -326,9 +340,11 @@ end)
 -------------
 
 AddHook("TTTPrepareRound", "HiveMind_PrepareRound", function()
+    primeAssigned = false
     for _, v in PlayerIterator() do
         timer.Remove("HiveMindRespawn_" .. v:SteamID64())
-        v.PreviousMaxHealth = nil
+        v.HiveMindPreviousMaxHealth = nil
+        v.HiveMindPrime = nil
     end
     timer.Remove("HiveMindHealthRegen")
 end)

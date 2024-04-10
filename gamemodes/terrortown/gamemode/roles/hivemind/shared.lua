@@ -53,6 +53,12 @@ table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 2
 })
+table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+    cvar = "ttt_hivemind_chat_mode",
+    type = ROLE_CONVAR_TYPE_DROPDOWN,
+    choices = {"None", "Duplicate All", "Duplicate Prime"},
+    isNumeric = true
+})
 
 -------------------
 -- ROLE FEATURES --
