@@ -645,7 +645,7 @@ local function BuildWeaponConfig(dsheet, packName, tab)
     local dlist = vgui.Create("EquipSelect", dweapons)
     dlist:SetPos(0, dsearchheight + dsearchpadding)
     dlist:SetSize(dlistw, dlisth - dsearchheight - dsearchpadding)
-    dlist:EnableVerticalScrollbar(true)
+    dlist:EnableVerticalScrollbar()
     dlist:EnableHorizontal(true)
 
     local bw, bh = 126, 25

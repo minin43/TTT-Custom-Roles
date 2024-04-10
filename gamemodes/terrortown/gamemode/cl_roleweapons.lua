@@ -86,7 +86,7 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
     local dlist = vgui.Create("EquipSelect", droleweapons)
     dlist:SetPos(0, dsearchheight + dsearchpadding)
     dlist:SetSize(dlistw, dlisth - dsearchheight - dsearchpadding)
-    dlist:EnableVerticalScrollbar(true)
+    dlist:EnableVerticalScrollbar()
     dlist:EnableHorizontal(true)
 
     local bw, bh = 126, 25

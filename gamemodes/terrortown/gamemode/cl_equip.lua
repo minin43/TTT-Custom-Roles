@@ -649,7 +649,7 @@ local function TraitorMenuPopup()
         -- local dlistw = 288
         dlist:SetPos(0, dsearchheight + dsearchpadding)
         dlist:SetSize(dlistw, dlisth - dsearchheight - dsearchpadding)
-        dlist:EnableVerticalScrollbar(true)
+        dlist:EnableVerticalScrollbar()
         dlist:EnableHorizontal(true)
 
         local bw, bh = 102, 25
