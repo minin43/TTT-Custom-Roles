@@ -13,6 +13,7 @@ SWAPPER_WEAPON_ALL = 2
 
 CreateConVar("ttt_swapper_healthstation_reduce_max", "1", FCVAR_REPLICATED, "Whether the swappers's max health should be reduced to match their current health", 0, 1)
 CreateConVar("ttt_swapper_killer_health", "100", FCVAR_REPLICATED, "The amount of health the swapper's killer should set to. Set to \"0\" to kill them", 0, 200)
+CreateConVar("ttt_swapper_killer_swap", "1", FCVAR_REPLICATED, "Whether to the swapper's killer should become the new swapper")
 
 ROLE_CONVARS[ROLE_SWAPPER] = {}
 table.insert(ROLE_CONVARS[ROLE_SWAPPER], {
@@ -56,5 +57,9 @@ table.insert(ROLE_CONVARS[ROLE_SWAPPER], {
 })
 table.insert(ROLE_CONVARS[ROLE_SWAPPER], {
     cvar = "ttt_swapper_swap_lovers",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SWAPPER], {
+    cvar = "ttt_swapper_killer_swap",
     type = ROLE_CONVAR_TYPE_BOOL
 })

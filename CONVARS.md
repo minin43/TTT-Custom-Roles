@@ -521,8 +521,9 @@ ttt_swapper_weapon_mode                     1       // How to handle weapons whe
 ttt_swapper_notify_mode                     0       // The logic to use when notifying players that a swapper is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
 ttt_swapper_notify_sound                    0       // Whether to play a cheering sound when a swapper is killed
 ttt_swapper_notify_confetti                 0       // Whether to throw confetti when a swapper is a killed
-ttt_swapper_killer_health                   100     // The amount of health the swapper's killer should set to. Set to "0" to kill them
-ttt_swapper_killer_max_health               0       // The maximum health value to set on the swapper's killer. Set to "0" to use the swapper's default
+ttt_swapper_killer_swap                     1       // Whether to the swapper's killer should become the new swapper
+ttt_swapper_killer_health                   100     // The amount of health the swapper's killer should set to. Set to "0" to kill them (Only applies if ttt_swapper_killer_swap is enabled)
+ttt_swapper_killer_max_health               0       // The maximum health value to set on the swapper's killer. Set to "0" to use the swapper's default (Only applies if ttt_swapper_killer_swap is enabled)
 ttt_swapper_credits_starting                0       // The number of credits a swapper should start with
 ttt_swapper_healthstation_reduce_max        1       // Whether the swapper's max health should be reduced to match their current health when using a health station, instead of being healed
 ttt_swapper_swap_lovers                     1       // Whether the swapper should swap lovers with their attacker or not
