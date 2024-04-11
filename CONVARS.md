@@ -846,6 +846,7 @@ ttt_hivemind_regen_timer                    0       // The amount of time (in se
 ttt_hivemind_regen_per_member_amt           1       // The amount of health per-member of the hive mind that they should regenerate over time
 ttt_hivemind_regen_max_pct                  0.5     // The percentage of the hive mind's maximum health to heal them up to (e.g. 0.5 = 50% of their max health)
 ttt_hivemind_chat_mode                      1       // How to handle chat by the hive mind. 0 - Do nothing. 1 - Force all members to duplicate when any member chats. 2 - Force all members to duplicate when only the first member chats
+ttt_hivemind_block_environmental            0       // Whether to block environmental damage to the hive mind
 ttt_hivemind_can_see_jesters                1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the hive mind
 ttt_hivemind_update_scoreboard              1       // Whether the hive mind shows dead players as missing in action
 // ----------------------------------------

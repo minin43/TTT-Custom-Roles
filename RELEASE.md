@@ -15,6 +15,7 @@
 - Added ability for the role of a player's killer to be hidden when there is a medium in the round (disabled by default)
 - Added ability to control whether the swapper's killer becomes the new swapper (enabled by default)
 - Added ability to control the hive mind's chat duplication (all hive mind chat duplication is enabled by default)
+- Added ability for hive mind to block environmental damage (disabled by default)
 
 ### Changes
 - Changed phantom round start popup message to reflect which features are currently enabled

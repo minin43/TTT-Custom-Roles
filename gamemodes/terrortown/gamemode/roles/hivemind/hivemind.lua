@@ -18,6 +18,7 @@ local CHAT_DUPE_PRIME = 2
 -------------
 
 local hivemind_chat_mode = CreateConVar("ttt_hivemind_chat_mode", CHAT_DUPE_ALL, FCVAR_NONE, "How to handle chat by the hive mind. 0 - Do nothing. 1 - Force all members to duplicate when any member chats. 2 - Force all members to duplicate when only the first member chats.", CHAT_MODE_NONE, CHAT_DUPE_PRIME)
+local hivemind_block_environmental = CreateConVar("ttt_hivemind_block_environmental", "0", FCVAR_NONE, "Whether to block environmental damage to the hive mind", 0, 1)
 
 local hivemind_vision_enabled = GetConVar("ttt_hivemind_vision_enabled")
 local hivemind_friendly_fire = GetConVar("ttt_hivemind_friendly_fire")
@@ -186,6 +187,23 @@ local function HandleHealthSync(ply, newHealth)
         p:SetHealth(currentHealth)
     end
 end
+
+AddHook("EntityTakeDamage", "HiveMind_EntityTakeDamage", function(ent, dmginfo)
+    if GetRoundState() ~= ROUND_ACTIVE then return end
+    if not hivemind_block_environmental:GetBool() then return end
+    if not IsPlayer(ent) then return end
+    if not ent:IsActiveHiveMind() then return end
+
+    -- Block environmental damage to this hive mind as long as it isn't a map trigger doing it
+    -- Damage type DMG_GENERIC is "0" which doesn't seem to work with IsDamageType
+    local att = dmginfo:GetAttacker()
+    if (not IsValid(att) or att:GetClass() ~= "trigger_hurt") and
+        (dmginfo:IsExplosionDamage() or dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_CRUSH) or
+         dmginfo:IsDamageType(DMG_DROWN) or dmginfo:GetDamageType() == 0 or dmginfo:IsDamageType(DMG_DISSOLVE)) then
+        dmginfo:ScaleDamage(0)
+        dmginfo:SetDamage(0)
+    end
+end)
 
 AddHook("PostEntityTakeDamage", "HiveMind_PostEntityTakeDamage", function(ent, dmginfo, taken)
     if not taken then return end
