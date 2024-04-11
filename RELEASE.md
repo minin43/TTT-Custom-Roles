@@ -18,6 +18,7 @@
 - Added ability for hive mind to block environmental damage (disabled by default)
 - Added icons to show role weapon state (Buyable, Exclude, No Random) in the `ttt_roleweapons` dialog and the weapons tab of the `ttt_rolepacks` dialog
 - Added ability to copy/merge a role weapon configuration from one role to another via the new `ttt_roleweapons copy FROM TO [OVERWRITE]` command
+- Added ability to hide the killer role's role in death notification messages (disabled by default)
 
 ### Changes
 - Changed phantom round start popup message to reflect which features are currently enabled

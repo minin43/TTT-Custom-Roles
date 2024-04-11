@@ -18,6 +18,7 @@ local killer_damage_reduction = CreateConVar("ttt_killer_damage_reduction", "0",
 local killer_credits_award_pct = CreateConVar("ttt_killer_credits_award_pct", "0.35")
 local killer_credits_award_size = CreateConVar("ttt_killer_credits_award_size", "1")
 local killer_credits_award_repeat = CreateConVar("ttt_killer_credits_award_repeat", "1")
+local killer_hide_death_notify_role = CreateConVar("ttt_killer_hide_death_notify_role", "0", FCVAR_NONE, "Whether to hide the killer's role in death notification messages", 0, 1)
 
 local killer_knife_enabled = GetConVar("ttt_killer_knife_enabled")
 local killer_crowbar_enabled = GetConVar("ttt_killer_crowbar_enabled")
@@ -298,6 +299,17 @@ hook.Add("TTTBeginRound", "Killer_Announce_TTTBeginRound", function()
             end
         end
     end)
+end)
+
+-- Hide the role of the killer if that feature is enabled
+hook.Add("TTTDeathNotifyOverride", "Killer_TTTDeathNotifyOverride", function(victim, inflictor, attacker, reason, killerName, role)
+    if GetRoundState() ~= ROUND_ACTIVE then return end
+    if not IsPlayer(attacker) then return end
+    if not attacker:IsKiller() then return end
+    if victim == attacker then return end
+    if not killer_hide_death_notify_role:GetBool() then return end
+
+    return reason, killerName, ROLE_NONE
 end)
 
 ----------------
