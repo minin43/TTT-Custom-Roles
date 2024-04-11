@@ -175,7 +175,3 @@ table.insert(ROLE_CONVARS[ROLE_KILLER], {
     cvar = "ttt_killer_credits_award_repeat",
     type = ROLE_CONVAR_TYPE_BOOL
 })
-table.insert(ROLE_CONVARS[ROLE_KILLER], {
-    cvar = "ttt_killer_hide_death_notify_role",
-    type = ROLE_CONVAR_TYPE_BOOL
-})

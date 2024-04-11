@@ -748,7 +748,6 @@ ttt_killer_show_target_icon                 1       // Whether killers have an i
 ttt_killer_damage_penalty                   0.25    // The fraction a killer's damage will be scaled by when they are attacking without using their knife
 ttt_killer_damage_reduction                 0       // The fraction an attacker's bullet damage will be reduced by when they are shooting a killer
 ttt_killer_warn_all                         0       // Whether to warn all players if there is a killer. If 0, only traitors will be warned
-ttt_killer_hide_death_notify_role           0       // Whether to hide the killer's role in death notification messages
 ttt_killer_vision_enabled                   1       // Whether killers have their special vision highlights enabled
 ttt_killer_credits_starting                 2       // The number of credits a killer should start with
 ttt_killer_can_see_jesters                  1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the killer
@@ -1086,6 +1085,7 @@ ttt_round_summary_tabs                      summary,hilite,events,scores // The 
 
 // Misc.
 ttt_death_notifier_enabled                  1       // Whether the name and role of a player's killer should be shown to the victim
+ttt_death_notifier_show_role                1       // Whether to show the killer's role in death notification messages
 ttt_smokegrenade_extinguish                 1       // Whether smoke grenades should extinguish fire
 ttt_player_set_color                        1       // Whether player colors are set each time that player spawns
 ttt_dna_scan_on_dialog                      1       // Whether to show a button to open the DNA scanner on the body search dialog
