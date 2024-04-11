@@ -37,6 +37,16 @@ local function Reload()
     net.SendToServer()
 end
 
+local function Copy(from, to, overwrite)
+    print("[ROLEWEAPONS] Sending configuration copy command [" .. from .. ", " .. to .. ", " .. tostring(overwrite) .. "]... Please check server console for results")
+
+    net.Start("TTT_RoleWeaponsCopy")
+    net.WriteString(from)
+    net.WriteString(to)
+    net.WriteBit(overwrite)
+    net.SendToServer()
+end
+
 local function ItemIsWeapon(item) return not tonumber(item.id) end
 
 local function DoesValueMatch(item, data, value)
@@ -655,6 +665,8 @@ local function PrintHelp()
     print("ttt_roleweapons [OPTION]")
     print("If no options provided, default of 'open' will be used")
     print("\tclean\t-\tRemoves any invalid configurations. WARNING: This CANNOT be undone!")
+    print("\tcopy FROM TO [REPLACE]\t-\tDuplicates a role configuration. If \"true\" is provided for the REPLACE parameter, any existing configuration will be removed")
+    print("\tduplicate FROM TO [REPLACE]\t")
     print("\thelp\t-\tPrints this message")
     print("\topen\t-\tOpen the configuration dialog [CLIENT ONLY]")
     print("\tshow\t")
@@ -680,6 +692,17 @@ concommand.Add("ttt_roleweapons", function(ply, cmd, args)
         Reload()
     elseif method == "help" then
         PrintHelp()
+    elseif method == "copy" or method == "duplicate" then
+        local from = #args > 1 and args[2] or nil
+        local to = #args > 2 and args[3] or nil
+        local overwrite = #args > 2 and args[4] or "false"
+
+        if not from or not to then
+            ErrorNoHalt("ERROR: '" .. method .. "' command missing required parameter(s)!\n")
+            return
+        end
+
+        Copy(from, to, string.lower(overwrite) == "true")
     else
         ErrorNoHalt("ERROR: Unknown command '" .. method .. "'\n")
     end
