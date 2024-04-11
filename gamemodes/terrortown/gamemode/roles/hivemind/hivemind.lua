@@ -55,7 +55,7 @@ AddHook("PlayerDeath", "HiveMind_PlayerDeath", function(victim, infl, attacker)
 
     timer.Create("HiveMindRespawn_" .. victim:SteamID64(), 0.25, 1, function()
         -- Double-check
-        if not IsPlayer(victim) or victim:IsHiveMind() then return end
+        if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
         if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
 
         local body = victim.server_ragdoll or victim:GetRagdollEntity()
