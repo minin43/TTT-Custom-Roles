@@ -49,7 +49,7 @@ end)
 -------------------------
 
 -- Players killed by the hive mind join the hive mind
-AddHook("PlayerDeath", "HiveMind_PlayerDeath", function(victim, infl, attacker)
+AddHook("PlayerDeath", "HiveMind_Assimilate_PlayerDeath", function(victim, infl, attacker)
     if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
     if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
 
@@ -198,11 +198,14 @@ AddHook("TTTPlayerHealthChanged", "HiveMind_TTTPlayerHealthChanged", function(pl
     HandleHealthSync(ply, newHealth)
 end)
 
-AddHook("PostPlayerDeath", "HiveMind_PostPlayerDeath", function(ply)
-    if not IsPlayer(ply) or not ply:IsHiveMind() then return end
+-- Kill all the members of the hive mind if a single hive mind is killed
+AddHook("PlayerDeath", "HiveMind_GroupDeath_PlayerDeath", function(victim, infl, attacker)
+    if not IsPlayer(victim) or not victim:IsHiveMind() then return end
+    -- If the victim and the inflictor and the attacker are all the same thing then they probably used the "kill" console command
+    if victim == attacker and IsValid(infl) and victim == infl then return end
 
     for _, p in PlayerIterator() do
-        if p == ply then continue end
+        if p == victim then continue end
         if not p:IsActiveHiveMind() then continue end
 
         p:QueueMessage(MSG_PRINTCENTER, "A member of the " .. ROLE_STRINGS[ROLE_HIVEMIND] .. " has been killed.")

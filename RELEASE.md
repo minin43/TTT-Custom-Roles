@@ -24,6 +24,7 @@
 - Fixed clown not being able to win with their cupid lover
 - Fixed mad scientist zombifying players sometimes giving them their previous role weapons instead of zombie claws
 - Fixed conflict between marshal and roles with custom round popup string logic
+- Fixed a hive mind using the console kill command causing all hive minds to die
 
 ### Developer
 - Added new semi-automated convar deprecation system
