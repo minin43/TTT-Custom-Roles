@@ -718,6 +718,7 @@ local function BuildWeaponConfig(dsheet, packName, tab)
 
                 -- Slot marker icon
                 ic.slot = 0
+                local table_index
                 if ItemIsWeapon(item) then
                     local slot = vgui.Create("SimpleIconLabelled")
                     slot:SetIcon("vgui/ttt/slot_cap")
@@ -740,6 +741,48 @@ local function BuildWeaponConfig(dsheet, packName, tab)
 
                     ic:AddLayer(slot)
                     ic:EnableMousePassthrough(slot)
+
+                    table_index = StringLower(item.id)
+                else
+                    table_index = StringLower(item.name)
+                end
+
+                local state_icon = nil
+                local tooltip = nil
+                if WEPS.BuyableWeapons[save_role] and table.HasValue(WEPS.BuyableWeapons[save_role], table_index) then
+                    state_icon = "cart_add.png"
+                    tooltip = "roleweapons_buyable_tooltip"
+                elseif WEPS.ExcludeWeapons[save_role] and table.HasValue(WEPS.ExcludeWeapons[save_role], table_index) then
+                    state_icon = "cart_delete.png"
+                    tooltip = "roleweapons_exclude_tooltip"
+                end
+
+                if state_icon ~= nil then
+                    local state = vgui.Create("DImage")
+                    state:SetImage("icon16/" .. state_icon)
+                    state.PerformLayout = function(s)
+                        s:AlignBottom(3)
+                        s:AlignLeft(3)
+                        s:SetSize(16, 16)
+                    end
+                    state:SetTooltip(GetTranslation(tooltip))
+
+                    ic:AddLayer(state)
+                    ic:EnableMousePassthrough(state)
+                end
+
+                if WEPS.BypassRandomWeapons[save_role] and table.HasValue(WEPS.BypassRandomWeapons[save_role], table_index) then
+                    local norandom = vgui.Create("DImage")
+                    norandom:SetImage("icon16/cart_put.png")
+                    norandom.PerformLayout = function(s)
+                        s:AlignTop(3)
+                        s:AlignRight(3)
+                        s:SetSize(16, 16)
+                    end
+                    norandom:SetTooltip(GetTranslation("roleweapons_norandom_tooltip"))
+
+                    ic:AddLayer(norandom)
+                    ic:EnableMousePassthrough(norandom)
                 end
 
                 ic:SetIconSize(itemSize)

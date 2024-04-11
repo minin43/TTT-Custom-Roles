@@ -16,6 +16,7 @@
 - Added ability to control whether the swapper's killer becomes the new swapper (enabled by default)
 - Added ability to control the hive mind's chat duplication (all hive mind chat duplication is enabled by default)
 - Added ability for hive mind to block environmental damage (disabled by default)
+- Added icons to show role weapon state (Buyable, Exclude, No Random) in the `ttt_roleweapons` dialog and the weapons tab of the `ttt_rolepacks` dialog
 
 ### Changes
 - Changed phantom round start popup message to reflect which features are currently enabled

@@ -1192,6 +1192,9 @@ L.roleweapons_command_clean = "Clean Invalid Configurations"
 L.roleweapons_command_clean_desc = "Removes any invalid configurations. WARNING: This CANNOT be undone!"
 L.roleweapons_command_reload = "Reload Configurations"
 L.roleweapons_command_reload_desc = "Reloads the configurations from the server's filesystem."
+L.roleweapons_buyable_tooltip = "Buyable"
+L.roleweapons_exclude_tooltip = "Excluded"
+L.roleweapons_norandom_tooltip = "Randomization Bypassed"
 
 -- Role Packs Configuration
 L.rolepacks_title = "Role Packs Configuration"
