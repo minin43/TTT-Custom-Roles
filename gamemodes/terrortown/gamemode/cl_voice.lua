@@ -19,7 +19,6 @@ local vgui = vgui
 
 local AddHook = hook.Add
 local CallHook = hook.Call
-local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 
@@ -553,14 +552,9 @@ function GM:PlayerStartVoice(ply)
                 RunConsoleCommand("tvog", "0")
             end
 
-            local hasGlitch = false
-            for _, v in PlayerIterator() do
-                if v:IsGlitch() then hasGlitch = true end
-            end
-
             -- Return early so the client doesn't think they are talking
             if not client.traitor_gvoice then
-                if hasGlitch then
+                if ShouldGlitchBlockCommunications() then
                     return
                 elseif client:IsTraitor() and client:GetNWBool("WasBeggar", false) and not client:ShouldRevealBeggar() then
                     return

@@ -330,6 +330,7 @@ ttt_spy_flare_gun_shop_rebuyable            0       // Whether the spy should be
 // Glitch
 ttt_glitch_mode                             0       // The way in which the glitch appears to traitors. 0 - Appears as a regular traitor. 1 - Can appear as a special traitor. 2 - Causes all traitors, regular or special, to appear as regular traitors and appears as a regular traitor themselves.
 ttt_glitch_use_traps                        0       // Whether glitches can see and use traitor traps. This also allows them to loot credits for traps that require them.
+ttt_glitch_chat_block_mode                  1       // How to handle glitch chat blocking. 0 - Don't block. 1 - Always block when there's a glitch. 2 - Block while a glitch is alive. 3 - Block until all glitches are confirmed by inspecting their body.
 
 // Phantom
 ttt_phantom_respawn                         1       // Whether the phantom should respawn when their killer is killed

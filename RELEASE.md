@@ -19,6 +19,7 @@
 - Added icons to show role weapon state (Buyable, Exclude, No Random) in the `ttt_roleweapons` dialog and the weapons tab of the `ttt_rolepacks` dialog
 - Added ability to copy/merge a role weapon configuration from one role to another via the new `ttt_roleweapons copy FROM TO [OVERWRITE]` command
 - Added ability to control whether the role of a player's killer is shown in death notification messages (enabled by default)
+- Added ability to control how glitch affects traitor chat (default is current behavior where all traitor chat is blocked when there is a glitch in the round)
 
 ### Changes
 - Changed phantom round start popup message to reflect which features are currently enabled
