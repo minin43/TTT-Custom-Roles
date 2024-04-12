@@ -1142,6 +1142,7 @@ globals = {
     "SetClownTeam",
     "SetTurncoatTeam",
     "SetVindicatorTeam",
+    "ShouldGlitchBlockCommunications",
     "ShouldPromoteDetectiveLike",
     "ShouldShowTraitorExtraInfo",
     "StartsWithVowel",
