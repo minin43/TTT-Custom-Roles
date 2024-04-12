@@ -67,7 +67,7 @@ function ShouldGlitchBlockCommunications()
     if #glitches == 0 then return false end
     if chat_block_mode == GLITCH_CHAT_BLOCK_ALWAYS then return true end
 
-    for _, g in ipairs(glitches) do
+    for _, v in ipairs(glitches) do
         -- If any of the glitches are alive, block communications
         if chat_block_mode == GLITCH_CHAT_BLOCK_WHILE_ALIVE then
             if v:Alive() then return true end
