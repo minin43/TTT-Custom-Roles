@@ -5,13 +5,20 @@ local player = player
 local timer = timer
 
 local AddHook = hook.Add
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_HiveMindChatDupe")
+
+local CHAT_MODE_NONE = 0
+local CHAT_DUPE_ALL = 1
+local CHAT_DUPE_PRIME = 2
 
 -------------
 -- CONVARS --
 -------------
+
+local hivemind_chat_mode = CreateConVar("ttt_hivemind_chat_mode", CHAT_DUPE_ALL, FCVAR_NONE, "How to handle chat by the hive mind. 0 - Do nothing. 1 - Force all members to duplicate when any member chats. 2 - Force all members to duplicate when only the first member chats.", CHAT_MODE_NONE, CHAT_DUPE_PRIME)
+local hivemind_block_environmental = CreateConVar("ttt_hivemind_block_environmental", "0", FCVAR_NONE, "Whether to block environmental damage to the hive mind", 0, 1)
 
 local hivemind_vision_enabled = GetConVar("ttt_hivemind_vision_enabled")
 local hivemind_friendly_fire = GetConVar("ttt_hivemind_friendly_fire")
@@ -25,13 +32,16 @@ local hivemind_regen_max_pct = GetConVar("ttt_hivemind_regen_max_pct")
 ----------------------
 
 AddHook("PlayerSay", "HiveMind_PlayerSay", function(ply, text, team_only)
+    local chat_mode = hivemind_chat_mode:GetInt()
+    if chat_mode <= CHAT_MODE_NONE then return end
     if not IsPlayer(ply) then return end
     if not ply:IsHiveMind() then return end
+    if chat_mode == CHAT_DUPE_PRIME and not ply.HiveMindPrime then return end
     if team_only then return end
 
     net.Start("TTT_HiveMindChatDupe")
-    net.WriteEntity(ply)
-    net.WriteString(text)
+        net.WritePlayer(ply)
+        net.WriteString(text)
     net.Broadcast()
 end)
 
@@ -40,17 +50,17 @@ end)
 -------------------------
 
 -- Players killed by the hive mind join the hive mind
-AddHook("PlayerDeath", "HiveMind_PlayerDeath", function(victim, infl, attacker)
+AddHook("PlayerDeath", "HiveMind_Assimilate_PlayerDeath", function(victim, infl, attacker)
     if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
     if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
 
     timer.Create("HiveMindRespawn_" .. victim:SteamID64(), 0.25, 1, function()
         -- Double-check
-        if not IsPlayer(victim) or victim:IsHiveMind() then return end
+        if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
         if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
 
         local body = victim.server_ragdoll or victim:GetRagdollEntity()
-        victim.PreviousMaxHealth = victim:GetMaxHealth()
+        victim.HiveMindPreviousMaxHealth = victim:GetMaxHealth()
         victim:SpawnForRound(true)
         victim:SetRole(ROLE_HIVEMIND)
         victim:StripRoleWeapons()
@@ -75,7 +85,7 @@ local currentCredits = 0
 
 local function HandleCreditsSync(amt)
     currentCredits = currentCredits + amt
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if not p:IsHiveMind() then continue end
         if p:GetCredits() ~= currentCredits then
             p:SetCredits(currentCredits)
@@ -98,7 +108,7 @@ AddHook("TTTBodyCreditsLooted", "HiveMind_CreditsSync_TTTBodyCreditsLooted", fun
     if not IsPlayer(deadPly) or not deadPly:IsHiveMind() then return end
 
     -- Find all corpses that belong to hive minds and remove their credits
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if not p:IsHiveMind() then continue end
         p:SetCredits(0)
         local p_rag = p.server_ragdoll or p:GetRagdollEntity()
@@ -132,9 +142,9 @@ AddHook("TTTPlayerRoleChanged", "HiveMind_HealthSync_TTTPlayerRoleChanged", func
     else
         local roleMaxHealth = 100
         -- This player should have their previous max health saved in the death hook above, but just make sure
-        if ply.PreviousMaxHealth then
-            roleMaxHealth = ply.PreviousMaxHealth
-            ply.PreviousMaxHealth = nil
+        if ply.HiveMindPreviousMaxHealth then
+            roleMaxHealth = ply.HiveMindPreviousMaxHealth
+            ply.HiveMindPreviousMaxHealth = nil
         -- If it's not there, for whatever reason, use the old role's configured max health instead
         elseif oldRole > ROLE_NONE and oldRole <= ROLE_MAX then
             roleMaxHealth = cvars.Number("ttt_" .. ROLE_STRINGS_RAW[oldRole] .. "_max_health", 100)
@@ -147,7 +157,7 @@ AddHook("TTTPlayerRoleChanged", "HiveMind_HealthSync_TTTPlayerRoleChanged", func
             currentHealth = currentHealth + healAmt
         end
 
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if not p:IsHiveMind() then continue end
             p:SetMaxHealth(maxHealth)
             -- If we're being healed, update everyone's health too
@@ -170,13 +180,30 @@ local function HandleHealthSync(ply, newHealth)
     currentHealth = newHealth
 
     -- Sync it to every other member
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p == ply then continue end
         if not p:IsActiveHiveMind() then continue end
 
         p:SetHealth(currentHealth)
     end
 end
+
+AddHook("EntityTakeDamage", "HiveMind_EntityTakeDamage", function(ent, dmginfo)
+    if GetRoundState() ~= ROUND_ACTIVE then return end
+    if not hivemind_block_environmental:GetBool() then return end
+    if not IsPlayer(ent) then return end
+    if not ent:IsActiveHiveMind() then return end
+
+    -- Block environmental damage to this hive mind as long as it isn't a map trigger doing it
+    -- Damage type DMG_GENERIC is "0" which doesn't seem to work with IsDamageType
+    local att = dmginfo:GetAttacker()
+    if (not IsValid(att) or att:GetClass() ~= "trigger_hurt") and
+        (dmginfo:IsExplosionDamage() or dmginfo:IsDamageType(DMG_BURN) or dmginfo:IsDamageType(DMG_CRUSH) or
+         dmginfo:IsDamageType(DMG_DROWN) or dmginfo:GetDamageType() == 0 or dmginfo:IsDamageType(DMG_DISSOLVE)) then
+        dmginfo:ScaleDamage(0)
+        dmginfo:SetDamage(0)
+    end
+end)
 
 AddHook("PostEntityTakeDamage", "HiveMind_PostEntityTakeDamage", function(ent, dmginfo, taken)
     if not taken then return end
@@ -189,11 +216,14 @@ AddHook("TTTPlayerHealthChanged", "HiveMind_TTTPlayerHealthChanged", function(pl
     HandleHealthSync(ply, newHealth)
 end)
 
-AddHook("PostPlayerDeath", "HiveMind_PostPlayerDeath", function(ply)
-    if not IsPlayer(ply) or not ply:IsHiveMind() then return end
+-- Kill all the members of the hive mind if a single hive mind is killed
+AddHook("PlayerDeath", "HiveMind_GroupDeath_PlayerDeath", function(victim, infl, attacker)
+    if not IsPlayer(victim) or not victim:IsHiveMind() then return end
+    -- If the victim and the inflictor and the attacker are all the same thing then they probably used the "kill" console command
+    if victim == attacker and IsValid(infl) and victim == infl then return end
 
-    for _, p in ipairs(GetAllPlayers()) do
-        if p == ply then continue end
+    for _, p in PlayerIterator() do
+        if p == victim then continue end
         if not p:IsActiveHiveMind() then continue end
 
         p:QueueMessage(MSG_PRINTCENTER, "A member of the " .. ROLE_STRINGS[ROLE_HIVEMIND] .. " has been killed.")
@@ -205,7 +235,12 @@ end)
 -- HEALTH REGEN --
 ------------------
 
+local primeAssigned = false
 ROLE_ON_ROLE_ASSIGNED[ROLE_HIVEMIND] = function(ply)
+    if not primeAssigned then
+        ply.HiveMindPrime = true
+        primeAssigned = true
+    end
     if timer.Exists("HiveMindHealthRegen") then return end
 
     local regen_timer = hivemind_regen_timer:GetInt()
@@ -216,7 +251,7 @@ ROLE_ON_ROLE_ASSIGNED[ROLE_HIVEMIND] = function(ply)
 
     timer.Create("HiveMindHealthRegen", regen_timer, 0, function()
         local hivemind_count = 0
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:IsHiveMind() then
                 hivemind_count = hivemind_count + 1
             end
@@ -275,7 +310,7 @@ AddHook("TTTCheckForWin", "HiveMind_TTTCheckForWin", function()
 
     local hivemind_alive = false
     local other_alive = false
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActive() then
             if v:IsHiveMind() then
                 hivemind_alive = true
@@ -310,7 +345,7 @@ AddHook("SetupPlayerVisibility", "HiveMind_SetupPlayerVisibility", function(ply)
     if not ply:IsActiveHiveMind() then return end
     if not hivemind_vision_enabled:GetBool() then return end
 
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if ply:TestPVS(v) then continue end
         if not v:IsActiveHiveMind() then continue end
 
@@ -326,9 +361,11 @@ end)
 -------------
 
 AddHook("TTTPrepareRound", "HiveMind_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    primeAssigned = false
+    for _, v in PlayerIterator() do
         timer.Remove("HiveMindRespawn_" .. v:SteamID64())
-        v.PreviousMaxHealth = nil
+        v.HiveMindPreviousMaxHealth = nil
+        v.HiveMindPrime = nil
     end
     timer.Remove("HiveMindHealthRegen")
 end)

@@ -200,6 +200,11 @@ Sets the target player's health based on their role convars.\
 *Parameters:*
 - *ply* - The target player
 
+### ShouldGlitchBlockCommunications()
+Whether the glitch should be blocking communications (text and voice).\
+*Realm:* Client and Server\
+*Added in:* 2.1.10
+
 ### ShouldShowTraitorExtraInfo()
 Whether extra information should be shown for the traitor team (e.g. teammate assassin's target and teammate parasite's infection).\
 *Realm:* Client and Server\

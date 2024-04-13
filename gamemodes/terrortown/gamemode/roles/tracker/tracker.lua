@@ -3,11 +3,10 @@ AddCSLuaFile()
 local hook = hook
 local IsValid = IsValid
 local net = net
-local pairs = pairs
+local player = player
 local table = table
 
-local GetAllPlayers = player.GetAll
-
+local PlayerIterator = player.Iterator
 -------------
 -- CONVARS --
 -------------
@@ -28,23 +27,24 @@ hook.Add("PlayerFootstep", "Tracker_PlayerFootstep", function(ply, pos, foot, so
     local footstep_time = tracker_footstep_time:GetInt()
     if footstep_time <= 0 then return end
 
-    net.Start("TTT_PlayerFootstep")
-    net.WriteEntity(ply)
-    net.WriteVector(pos)
-    net.WriteAngle(ply:GetAimVector():Angle())
-    net.WriteBit(foot)
-    local col = Vector(1, 1, 1)
-    if tracker_footstep_color:GetBool() then
-        col = ply:GetNWVector("PlayerColor", Vector(1, 1, 1))
-    end
-    net.WriteTable(Color(col.x * 255, col.y * 255, col.z * 255))
-    net.WriteUInt(footstep_time, 8)
     local tab = {}
-    for k, p in pairs(GetAllPlayers()) do
+    for k, p in PlayerIterator() do
         if p:IsActiveTracker() then
             table.insert(tab, p)
         end
     end
-    net.WriteFloat(1) -- Scale
+
+    net.Start("TTT_PlayerFootstep")
+        net.WritePlayer(ply)
+        net.WriteVector(pos)
+        net.WriteAngle(ply:GetAimVector():Angle())
+        net.WriteBit(foot)
+        local col = Vector(1, 1, 1)
+        if tracker_footstep_color:GetBool() then
+            col = ply:GetNWVector("PlayerColor", Vector(1, 1, 1))
+        end
+        net.WriteTable(Color(col.x * 255, col.y * 255, col.z * 255))
+        net.WriteUInt(footstep_time, 8)
+        net.WriteFloat(1) -- Scale
     net.Send(tab)
 end)

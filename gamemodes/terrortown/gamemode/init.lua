@@ -93,6 +93,7 @@ local util = util
 local CallHook = hook.Call
 local RunHook = hook.Run
 local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathRand = math.Rand
 local StringFormat = string.format
 local StringLower = string.lower
@@ -454,7 +455,7 @@ end
 local function EnoughPlayers()
     local ready = 0
     -- only count truly available players, ie. no forced specs
-    for _, ply in ipairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         if IsValid(ply) and ply:ShouldSpawn() then
             ready = ready + 1
         end
@@ -487,7 +488,7 @@ end
 -- we regularly check for these broken spectators while we wait for players
 -- and immediately fix them.
 function FixSpectators()
-    for k, ply in ipairs(GetAllPlayers()) do
+    for k, ply in PlayerIterator() do
         if ply:IsSpec() and not ply:GetRagdollSpec() and ply:GetMoveType() < MOVETYPE_NOCLIP then
             ply:Spectate(OBS_MODE_ROAMING)
         end
@@ -531,7 +532,7 @@ function StartNameChangeChecks()
     if not GetConVar("ttt_namechange_kick"):GetBool() then return end
 
     -- bring nicks up to date, may have been changed during prep/post
-    for _, ply in pairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         ply.spawn_nick = GetPlayerName(ply)
     end
 
@@ -548,12 +549,10 @@ local function CleanUp()
 
     et.FixParentedPreCleanup()
 
-    game.CleanUpMap()
-
-    et.FixParentedPostCleanup()
+    game.CleanUpMap(false, nil, function() et.FixParentedPostCleanup() end)
 
     -- Strip players now, so that their weapons are not seen by ReplaceEntities
-    for k, v in ipairs(GetAllPlayers()) do
+    for k, v in PlayerIterator() do
         if IsValid(v) then
             v:StripWeapons()
         end
@@ -619,7 +618,7 @@ function GM:TTTDelayRoundStartForVote()
 end
 
 function PrepareRound()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWVector("PlayerColor", Vector(1, 1, 1))
         -- Workaround to prevent GMod sprint from working
         v:SetRunSpeed(v:GetWalkSpeed())
@@ -718,11 +717,9 @@ function IncRoundEnd(incr)
 end
 
 function TellTraitorsAboutTraitors()
-    local plys = GetAllPlayers()
-
     local traitornicks = {}
     local hasGlitch = false
-    for _, v in ipairs(plys) do
+    for _, v in PlayerIterator() do
         if v:IsTraitorTeam() then
             table.insert(traitornicks, v:Nick())
         elseif v:IsGlitch() then
@@ -733,7 +730,7 @@ function TellTraitorsAboutTraitors()
 
     -- This is ugly as hell, but it's kinda nice to filter out the names of the
     -- traitors themselves in the messages to them
-    for _, v in ipairs(plys) do
+    for _, v in PlayerIterator() do
         if v:IsTraitorTeam() then
             if hasGlitch then
                 v:QueueMessage(MSG_PRINTBOTH, "There is " .. ROLE_STRINGS_EXT[ROLE_GLITCH] .. ".")
@@ -757,13 +754,12 @@ function TellTraitorsAboutTraitors()
 end
 
 function SpawnWillingPlayers(dead_only)
-    local plys = GetAllPlayers()
     local wave_delay = GetConVar("ttt_spawn_wave_interval"):GetFloat()
 
     -- simple method, should make this a case of the other method once that has
     -- been tested.
     if wave_delay <= 0 or dead_only then
-        for k, ply in ipairs(plys) do
+        for k, ply in PlayerIterator() do
             if IsValid(ply) then
                 ply:SpawnForRound(dead_only)
             end
@@ -773,7 +769,7 @@ function SpawnWillingPlayers(dead_only)
         local num_spawns = #GetSpawnEnts()
 
         local to_spawn = {}
-        for _, ply in RandomPairs(plys) do
+        for _, ply in RandomPairs(GetAllPlayers()) do
             if IsValid(ply) and ply:ShouldSpawn() then
                 table.insert(to_spawn, ply)
                 GAMEMODE:PlayerSpawnAsSpectator(ply)
@@ -871,7 +867,7 @@ function BeginRound()
 
     SCORE:HandleSelection() -- log traitors and detectives
 
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         -- Player color
         -- Generate a new color, but make sure it's not too bright or too dark
         local col = HSLToColor(colorGenerationHue, MathRand(0.5, 1), MathRand(0.25, 0.75))
@@ -889,7 +885,7 @@ function BeginRound()
     net.Start("TTT_ResetScoreboard")
     net.Broadcast()
 
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:Alive() and v:IsTerror() then
             net.Start("TTT_SpawnedPlayers")
             net.WriteString(v:Nick())
@@ -904,7 +900,7 @@ function BeginRound()
 
     -- EQUIP_REGEN health regeneration tick
     timer.Create("RegenEquipmentTick", 0.66, 0, function()
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if v:Alive() and not v:IsSpec() and v:HasEquipmentItem(EQUIP_REGEN) then
                 local hp = v:Health()
                 if hp < v:GetMaxHealth() then
@@ -1144,7 +1140,7 @@ function GM:TTTCheckForWin()
     local innocent_alive = false
     local monster_alive = false
 
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsActive() then
             if v:IsTraitorTeam() then
                 traitor_alive = true
@@ -1236,9 +1232,7 @@ function SelectRoles()
 
     if not GAMEMODE.LastRole then GAMEMODE.LastRole = {} end
 
-    local plys = GetAllPlayers()
-
-    for _, v in ipairs(plys) do
+    for _, v in PlayerIterator() do
         if IsValid(v) then
             -- everyone on the spec team is in specmode
             if not v:IsSpec() then
@@ -1298,7 +1292,7 @@ function SelectRoles()
     end
 
     PrintRoleText("-----CHECKING EXTERNALLY CHOSEN ROLES-----")
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if IsValid(v) and (not v:IsSpec()) then
             local role = v:GetRole()
             if role > ROLE_NONE and role <= ROLE_MAX then
@@ -1804,7 +1798,7 @@ function SelectRoles()
 
     GAMEMODE.LastRole = {}
 
-    for _, ply in ipairs(plys) do
+    for _, ply in PlayerIterator() do
         -- initialize credit count for everyone based on their role
         if IsValid(ply) and not ply:IsSpec() then
             if ply:GetRole() == ROLE_NONE then

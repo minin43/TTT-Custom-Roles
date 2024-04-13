@@ -1,9 +1,10 @@
 local hook = hook
 local math = math
+local player = player
 
 local MathCos = math.cos
 local MathSin = math.sin
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -48,7 +49,7 @@ end
 
 net.Receive("Sapper_ShowDamageAura", function()
     local client = LocalPlayer()
-    local sapper = net.ReadEntity()
+    local sapper = net.ReadPlayer()
     local sapperPos = sapper:GetPos()
     local pos = sapperPos + Vector(0, 0, 30)
     if client:GetPos():Distance(pos) > 3000 then return end
@@ -95,7 +96,7 @@ hook.Add("HUDPaintBackground", "Sapper_HUDPaintBackground", function()
     if client:IsSapper() then return end
 
     local inside = false
-    for _, p in pairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsActive() and p:GetDisplayedRole() == ROLE_SAPPER and client:GetPos():Distance(p:GetPos()) <= (sapper_aura_radius:GetInt() * UNITS_PER_METER) then
             inside = true
             break
@@ -111,8 +112,6 @@ end)
 hook.Add("TTTTutorialRoleText", "Sapper_TTTTutorialRoleText", function(role, titleLabel)
     if role == ROLE_SAPPER then
         local roleColor = ROLE_COLORS[ROLE_INNOCENT]
-        local detectiveColor = ROLE_COLORS[ROLE_DETECTIVE]
-        local html = "The " .. ROLE_STRINGS[ROLE_SAPPER] .. " is a " .. ROLE_STRINGS[ROLE_DETECTIVE] .. " and a member of the <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>innocent team</span> whose job is to find and eliminate their enemies."
 
         -- Fire immunity
         local fire_immune = sapper_fire_immune:GetBool()
@@ -120,7 +119,15 @@ hook.Add("TTTTutorialRoleText", "Sapper_TTTTutorialRoleText", function(role, tit
         if fire_immune then
             andfire = "and fire "
         end
-        html = html .. "<span style='display: block; margin-top: 10px;'>Instead of getting a DNA Scanner like a vanilla <span style='color: rgb(" .. detectiveColor.r .. ", " .. detectiveColor.g .. ", " .. detectiveColor.b .. ")'>" .. ROLE_STRINGS[ROLE_DETECTIVE] .. "</span>, they have an explosion " .. andfire .. "protection aura.</span>"
+
+        local html
+        if DETECTIVE_ROLES[ROLE_SAPPER] then
+            local detectiveColor = ROLE_COLORS[ROLE_DETECTIVE]
+            html = "The " .. ROLE_STRINGS[ROLE_SAPPER] .. " is a " .. ROLE_STRINGS[ROLE_DETECTIVE] .. " and a member of the <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>innocent team</span> whose job is to find and eliminate their enemies."
+            html = html .. "<span style='display: block; margin-top: 10px;'>Instead of getting a DNA Scanner like a vanilla <span style='color: rgb(" .. detectiveColor.r .. ", " .. detectiveColor.g .. ", " .. detectiveColor.b .. ")'>" .. ROLE_STRINGS[ROLE_DETECTIVE] .. "</span>, they have an explosion " .. andfire .. "protection aura.</span>"
+        else
+            html = "The " .. ROLE_STRINGS[ROLE_SAPPER] .. " is a member of the <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>innocent team</span> whose job is to find and eliminate their enemies while helping their allies using their explosion " .. andfire .. "protection aura."
+        end
 
         -- Protection Aura
         html = html .. "<span style='display: block; margin-top: 10px;'>The " .. ROLE_STRINGS[ROLE_SAPPER] .. "'s <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>explosion " .. andfire .. "protection</span> "

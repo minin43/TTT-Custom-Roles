@@ -399,9 +399,9 @@ function ROLEPACKS.SendRolePackWeapons(ply)
         if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 then
             net.Start("TTT_RolePackBuyableWeapons")
             net.WriteInt(id, 16)
-            net.WriteTable(roleBuyables)
-            net.WriteTable(roleExcludes)
-            net.WriteTable(roleNoRandoms)
+            net.WriteTable(roleBuyables, true)
+            net.WriteTable(roleExcludes, true)
+            net.WriteTable(roleNoRandoms, true)
             net.Send(ply)
         end
     end
@@ -665,9 +665,9 @@ function ROLEPACKS.FillRolePackWeaponTables()
         if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 then
             net.Start("TTT_RolePackBuyableWeapons")
             net.WriteInt(id, 16)
-            net.WriteTable(roleBuyables)
-            net.WriteTable(roleExcludes)
-            net.WriteTable(roleNoRandoms)
+            net.WriteTable(roleBuyables, true)
+            net.WriteTable(roleExcludes, true)
+            net.WriteTable(roleNoRandoms, true)
             net.Broadcast()
             handled = true
         end

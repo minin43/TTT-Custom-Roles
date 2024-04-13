@@ -5,7 +5,7 @@ local player = player
 local table = table
 
 local AddHook = hook.Add
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local TableInsert = table.insert
 
 ------------------
@@ -33,25 +33,35 @@ TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_is_monster",
     type = ROLE_CONVAR_TYPE_BOOL
 })
-table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_join_heal_pct",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 2
 })
-table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_regen_per_member_amt",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 0
 })
-table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_regen_timer",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 0
 })
-table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_regen_max_pct",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 2
+})
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
+    cvar = "ttt_hivemind_chat_mode",
+    type = ROLE_CONVAR_TYPE_DROPDOWN,
+    choices = {"None", "Duplicate All", "Duplicate Prime"},
+    isNumeric = true
+})
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
+    cvar = "ttt_hivemind_block_environmental",
+    type = ROLE_CONVAR_TYPE_BOOL
 })
 
 -------------------
@@ -85,7 +95,7 @@ AddHook("TTTPlayerRoleChanged", "HiveMind_ShopSync_TTTPlayerRoleChanged", functi
 
         if SERVER and WEPS.DoesRoleHaveWeapon(oldRole) then
             -- Bust the weapons cache for all players so the weapons show in the shop and they can buy them
-            for _, p in ipairs(GetAllPlayers()) do
+            for _, p in PlayerIterator() do
                 if not p:IsHiveMind() then continue end
                 -- Bust the shop cache
                 p:ConCommand("ttt_reset_weapons_cache")

@@ -1,8 +1,6 @@
 local cam = cam
 local draw = draw
-local ipairs = ipairs
 local math = math
-local pairs = pairs
 local render = render
 local surface = surface
 local string = string
@@ -11,7 +9,7 @@ local util = util
 
 local CallHook = hook.Call
 local RunHook = hook.Run
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 local GetRaw = LANG.GetRawTranslation
@@ -146,7 +144,7 @@ local function DrawTargetIcon(icon, noz, pos, dir, iconColor, iconType, offset)
     render.DrawQuadEasy(pos, dir, 8, 8, COLOR_WHITE, 180)
 end
 
-local plys, ply, pos, dir, tgt
+local pos, dir, tgt
 
 local propspec_outline = Material("models/props_combine/portalball001_sheet")
 
@@ -184,7 +182,6 @@ end
 -- happen before certain entities are drawn, which then clip over the sprite
 function GM:PostDrawTranslucentRenderables()
     client = LocalPlayer()
-    plys = GetAllPlayers()
     local spectatorOverride = client:GetRole() == ROLE_NONE and client:IsSpec() and GetConVar("ttt_spectators_see_roles"):GetBool()
 
     dir = client:GetForward() * -1
@@ -196,7 +193,7 @@ function GM:PostDrawTranslucentRenderables()
         hide_roles = GetConVar("ttt_hide_role"):GetBool()
     end
 
-    for _, v in pairs(plys) do
+    for _, v in PlayerIterator() do
         -- Compatibility with the disguises, Dead Ringer (810154456), and Prop Disguiser (310403737 and 2127939503)
         local hidden = v:GetNWBool("disguised", false) or (v.IsFakeDead and v:IsFakeDead()) or v:GetNWBool("PD_Disguised", false)
         if v:IsActive() and v ~= client and (not hidden or spectatorOverride) and not CallHook("TTTTargetIDPlayerBlockIcon", nil, v, client) then
@@ -293,8 +290,7 @@ function GM:PostDrawTranslucentRenderables()
     if client:Team() == TEAM_SPEC then
         cam.Start3D(EyePos(), EyeAngles())
 
-        for i = 1, #plys do
-            ply = plys[i]
+        for _, ply in PlayerIterator() do
             tgt = ply:GetObserverTarget()
             if IsValid(tgt) and tgt:GetNWEntity("spec_owner", nil) == ply then
                 render.MaterialOverride(propspec_outline)
@@ -325,7 +321,7 @@ local function DrawPropSpecLabels(cli)
     local text
     local w
     tgt = nil
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsSpec() then
             surface.SetTextColor(220, 200, 0, 120)
 

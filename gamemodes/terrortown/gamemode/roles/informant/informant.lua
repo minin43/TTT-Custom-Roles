@@ -2,9 +2,9 @@ AddCSLuaFile()
 
 local hook = hook
 local IsValid = IsValid
-local pairs = pairs
+local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local CallHook = hook.Call
 
 -------------
@@ -40,7 +40,7 @@ end)
 ----------------
 
 local function HasInformant()
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsInformant() then
             return true
         end
@@ -94,7 +94,7 @@ local function SetDefaultScanState(ply, oldRole, newRole)
 end
 
 hook.Add("TTTPrepareRound", "Informant_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWInt("TTTInformantScanStage", INFORMANT_UNSCANNED)
         v:SetNWInt("TTTInformantScannerState", INFORMANT_SCANNER_IDLE)
         v:SetNWString("TTTInformantScannerTarget", "")
@@ -108,7 +108,7 @@ end)
 hook.Add("TTTBeginRound", "Informant_TTTBeginRound", function()
     if not HasInformant() then return end
 
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         SetDefaultScanState(v)
     end
 end)
@@ -137,7 +137,7 @@ hook.Add("TTTPlayerRoleChanged", "Informant_TTTPlayerRoleChanged", function(ply,
         if scanStage > INFORMANT_UNSCANNED then
             local share = informant_share_scans:GetBool()
             local hideRole = ShouldHideRoleForTraitors(ply, oldRole, newRole)
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 -- Don't tell people about this role change if we're not revealing them
                 if hideRole then continue end
 
@@ -185,7 +185,7 @@ local function Announce(ply, message)
     ply:PrintMessage(HUD_PRINTTALK, "You have " .. message)
     if not informant_share_scans:GetBool() then return end
 
-    for _, p in pairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsActiveTraitorTeam() and p ~= ply then
             p:PrintMessage(HUD_PRINTTALK, "The informant has " .. message)
         end

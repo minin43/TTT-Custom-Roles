@@ -17,7 +17,7 @@ local timer = timer
 local util = util
 
 local CreateEntity = ents.Create
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local StringLower = string.lower
 
 --- networked data abstraction layer
@@ -110,7 +110,7 @@ local function HandleDetectiveSearchCredits(ply, deadply)
     if not GetConVar("ttt_detectives_search_credits_friendly"):GetBool() and ply:IsSameTeam(deadply) then return end
 
     if GetConVar("ttt_detectives_search_credits_share"):GetBool() then
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:IsActiveDetectiveLike() then
                 GiveSearchCredits(p, search_credits, p == ply)
             end

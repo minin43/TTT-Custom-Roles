@@ -292,6 +292,8 @@ L.set_radio_button = "Radio menu button"
 L.set_radio_button_tip = "What button to press to open/close the radio menu"
 L.set_bypass_culling = "Bypass map culling"
 L.set_bypass_culling_tip = "Whether to bypass vis leafs and culling in maps for player icons and highlighting. Disable for performance if you don't care about icons and highlighting lagging behind players sometimes."
+L.set_distance_unit = "Distance unit"
+L.set_distance_unit_tip = "What distance unit to display. Used for things like radar"
 
 L.set_title_play = "Gameplay settings"
 
@@ -1190,6 +1192,9 @@ L.roleweapons_command_clean = "Clean Invalid Configurations"
 L.roleweapons_command_clean_desc = "Removes any invalid configurations. WARNING: This CANNOT be undone!"
 L.roleweapons_command_reload = "Reload Configurations"
 L.roleweapons_command_reload_desc = "Reloads the configurations from the server's filesystem."
+L.roleweapons_buyable_tooltip = "Buyable"
+L.roleweapons_exclude_tooltip = "Excluded"
+L.roleweapons_norandom_tooltip = "Randomization Bypassed"
 
 -- Role Packs Configuration
 L.rolepacks_title = "Role Packs Configuration"

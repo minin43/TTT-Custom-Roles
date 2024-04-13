@@ -33,10 +33,14 @@
             <li>
                 <em>command</em> - Which command should be run <em>(Added in 1.9.4)</em>
                 <ul>
-                    <li><em>open (aka show)</em> - Opens the configuration UI. See <a href="../tutorials/configuring_role_weapons.html#configuration-by-ui" target="_blank">this tutorial</a> for how to use the UI. (This command is the default if no parameter is provided)</li>
-                    <li><em>list (aka print)</em> - Prints the current configuration in the server console, highlighting anything invalid</li>
                     <li><em>clean</em> - Removes any invalid configurations. WARNING: This CANNOT be undone!</li>
+                    <li><em>copy FROM TO [OVERWRITE] <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></em> - Duplicates a role configuration. If <code>true</code> is provided for the REPLACE parameter, any existing configuration will be removed <em>(Added in 2.1.10)</em></li>
+                    <li><em>duplicate <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></em> - Alias for <em>copy</em> <em>(Added in 2.1.10)</em></li>
+                    <li><em>list</em> - Prints the current configuration in the server console, highlighting anything invalid</li>
+                    <li><em>open</em> - Opens the configuration UI. See <a href="../tutorials/configuring_role_weapons.html#configuration-by-ui" target="_blank">this tutorial</a> for how to use the UI. (This command is the default if no parameter is provided)</li>
+                    <li><em>print</em> - Alias for <em>list</em></li>
                     <li><em>reload</em> - Reloads the configurations from the server's filesystem</li>
+                    <li><em>show</em> - Alias for <em>open</em></li>
                 </ul>
             </li>
         </ul>
@@ -52,9 +56,12 @@
             <li>
                 <em>command</em> - Which command should be run
                 <ul>
-                    <li><em>list (aka print)</em> - Prints the current configuration in the console, highlighting anything invalid</li>
                     <li><em>clean</em> - Removes any invalid configurations. WARNING: This CANNOT be undone!</li>
-                    <li><em>reload</em> - Reloads the configurations from the filesystem</li>
+                    <li><em>copy FROM TO [OVERWRITE] <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></em> - Duplicates a role configuration. If <code>true</code> is provided for the REPLACE parameter, any existing configuration will be removed <em>(Added in 2.1.10)</em></li>
+                    <li><em>duplicate <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></em> - Alias for <em>copy</em> <em>(Added in 2.1.10)</em></li>
+                    <li><em>list</em> - Prints the current configuration in the server console, highlighting anything invalid</li>
+                    <li><em>print</em> - Alias for <em>list</em></li>
+                    <li><em>reload</em> - Reloads the configurations from the server's filesystem</li>
                 </ul>
             </li>
         </ul>
@@ -166,15 +173,15 @@
             <li><em>order</em> - The weapon class string or equipment ID number to be ordered</li>
         </ul>
 
-        <h3><a id="ttt_order_for_someone" href="#ttt_order_for_someone">ttt_order_for_someone</a></h3>
+        <h3><a id="ttt_team_chat_as_player" href="#ttt_team_chat_as_player">ttt_team_chat_as_player</a></h3>
         <p>
             Sends a team chat message on behalf of another player with the given name. If the player's role cannot send team chat messages, nothing will happen. <em>NOTE</em>: Cheats must be enabled to use this command.<br>
             <em>Added in:</em> 2.0.7<br>
             <em>Parameters:</em>
         </p>
         <ul>
-            <li><em>target_name</em> - The name of the player who will be killed</li>
-            <li><em>order</em> - The weapon class string or equipment ID number to be ordered</li>
+            <li><em>sender_name</em> - The name of the player who is sending the message</li>
+            <li><em>text</em> - The message to send</li>
         </ul>
     </div>
     <div class="footerpadding panel"></div>

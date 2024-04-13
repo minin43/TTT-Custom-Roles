@@ -5,6 +5,7 @@ local draw = draw
 local ipairs = ipairs
 local IsValid = IsValid
 local pairs = pairs
+local player = player
 local surface = surface
 local string = string
 local table = table
@@ -12,7 +13,7 @@ local timer = timer
 local vgui = vgui
 
 local CallHook = hook.Call
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 local StringFormat = string.format
@@ -441,7 +442,7 @@ function PANEL:UpdateScoreboard(force)
 
     -- Put players where they belong. Groups will dump them as soon as they don't
     -- anymore.
-    for k, p in ipairs(GetAllPlayers()) do
+    for k, p in PlayerIterator() do
         if IsValid(p) then
             local group = ScoreGroup(p)
             if self.ply_groups[group] and not self.ply_groups[group]:HasPlayerRow(p) then

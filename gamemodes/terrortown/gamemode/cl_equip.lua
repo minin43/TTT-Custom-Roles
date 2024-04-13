@@ -97,17 +97,17 @@ end)
 
 net.Receive("TTT_BuyableWeapons", function()
     local role = net.ReadInt(16)
-    WEPS.BuyableWeapons[role] = net.ReadTable()
-    WEPS.ExcludeWeapons[role] = net.ReadTable()
-    WEPS.BypassRandomWeapons[role] = net.ReadTable()
+    WEPS.BuyableWeapons[role] = net.ReadTable(true)
+    WEPS.ExcludeWeapons[role] = net.ReadTable(true)
+    WEPS.BypassRandomWeapons[role] = net.ReadTable(true)
     ResetWeaponsCache()
 end)
 
 net.Receive("TTT_RolePackBuyableWeapons", function()
     local role = net.ReadInt(16)
-    WEPS.RolePackBuyableWeapons[role] = net.ReadTable()
-    WEPS.RolePackExcludeWeapons[role] = net.ReadTable()
-    WEPS.RolePackBypassRandomWeapons[role] = net.ReadTable()
+    WEPS.RolePackBuyableWeapons[role] = net.ReadTable(true)
+    WEPS.RolePackExcludeWeapons[role] = net.ReadTable(true)
+    WEPS.RolePackBypassRandomWeapons[role] = net.ReadTable(true)
     ResetWeaponsCache()
 end)
 
@@ -649,7 +649,7 @@ local function TraitorMenuPopup()
         -- local dlistw = 288
         dlist:SetPos(0, dsearchheight + dsearchpadding)
         dlist:SetSize(dlistw, dlisth - dsearchheight - dsearchpadding)
-        dlist:EnableVerticalScrollbar(true)
+        dlist:EnableVerticalScrollbar()
         dlist:EnableHorizontal(true)
 
         local bw, bh = 102, 25

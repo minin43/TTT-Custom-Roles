@@ -1,9 +1,9 @@
 AddCSLuaFile()
 
 local hook = hook
-local pairs = pairs
+local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -79,7 +79,7 @@ end)
 hook.Add("TTTPrepareRound", "Jester_PrepareRound", function()
     jesterWinTime = nil
 
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWString("JesterKiller", "")
     end
 end)

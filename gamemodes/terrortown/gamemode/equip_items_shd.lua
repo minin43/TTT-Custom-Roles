@@ -5,10 +5,6 @@ local table = table
 
 local StringLower = string.lower
 
--- This table is used by the client to show items in the equipment menu, and by
--- the server to check if a certain role is allowed to buy a certain item.
-
-
 -- If you have custom items you want to add, consider using a separate lua
 -- script that uses table.insert to add an entry to this table. This method
 -- means you won't have to add your code back in after every TTT update. Just
@@ -21,33 +17,12 @@ local StringLower = string.lower
 --   table.insert(EquipmentItems[ROLE_DETECTIVE], GetEquipmentItem(ROLE_TRAITOR, EQUIP_ARMOR))
 
 
--- Special equipment bitflags. Every unique piece of equipment needs its own
--- id.
---
--- Use the GenerateNewEquipmentID function (see below) to get a unique ID for
--- your equipment. This is guaranteed not to clash with other addons (as long
--- as they use the same safe method).
---
--- Details you shouldn't need:
--- The number should increase by a factor of two for every item (ie. ids
--- should be powers of two).
-EQUIP_NONE = 0
-EQUIP_ARMOR = 1
-EQUIP_RADAR = 2
-EQUIP_DISGUISE = 3
-EQUIP_SPEED = 4
-EQUIP_REGEN = 5
-
-EQUIP_MAX = 5
-
 -- Icon doesn't have to be in this dir, but all default ones are in here
 local mat_dir = "vgui/ttt/"
 
 
 -- Stick to around 35 characters per description line, and add a "\n" where you
 -- want a new line to start.
-
-EquipmentItems = {}
 
 local defaultDetectiveItems = {
     -- body armor
@@ -152,12 +127,6 @@ function GetEquipmentItemByName(name)
     end
 
     return nil
-end
-
--- Utility function to register a new Equipment ID
-function GenerateNewEquipmentID()
-    EQUIP_MAX = EQUIP_MAX + 1
-    return EQUIP_MAX
 end
 
 local function LoadMonsterRoleEquipment(role, radar)

@@ -2,9 +2,10 @@ AddCSLuaFile()
 
 local hook = hook
 local math = math
+local player = player
 local timer = timer
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathMax = math.max
 local MathMin = math.min
 local MathRandom = math.random
@@ -26,6 +27,8 @@ local shadow_target_buff_damage_bonus = CreateConVar("ttt_shadow_target_buff_dam
 local shadow_target_buff_role_copy = CreateConVar("ttt_shadow_target_buff_role_copy", "0", FCVAR_NONE, "Whether the shadow should instead copy the role of their target if the team join buff is enabled", 0, 1)
 local shadow_target_jester = CreateConVar("ttt_shadow_target_jester", "1", FCVAR_NONE, "Whether the shadow should be able to target a member of the jester team", 0, 1)
 local shadow_target_independent = CreateConVar("ttt_shadow_target_independent", "1", FCVAR_NONE, "Whether the shadow should be able to target an independent player", 0, 1)
+local shadow_target_traitor = CreateConVar("ttt_shadow_target_traitor", "1", FCVAR_NONE, "Whether the shadow should be able to target a member of the traitor team", 0, 1)
+local shadow_target_monster = CreateConVar("ttt_shadow_target_monster", "1", FCVAR_NONE, "Whether the shadow should be able to target a member of the mosnter team", 0, 1)
 local shadow_weaken_timer = CreateConVar("ttt_shadow_weaken_timer", "3", FCVAR_NONE, "How often (in seconds) to adjust the shadow's health when they are outside of the target circle", 1, 30)
 
 local shadow_start_timer = GetConVar("ttt_shadow_start_timer")
@@ -88,10 +91,12 @@ local function FindNewTarget(shadow)
 
         local closestTarget = nil
         local closestDistance = -1
-        for _, p in pairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:Alive() and not p:IsSpec() and p ~= shadow and
                 (shadow_target_jester:GetBool() or not p:IsJesterTeam()) and
-                (shadow_target_independent:GetBool() or not p:IsIndependentTeam()) then
+                (shadow_target_independent:GetBool() or not p:IsIndependentTeam()) and
+                (shadow_target_traitor:GetBool() or not p:IsTraitorTeam()) and
+                (shadow_target_monster:GetBool() or not p:IsMonsterTeam()) then
                 local distance = shadow:GetPos():Distance(p:GetPos())
                 if closestDistance == -1 or distance < closestDistance then
                     closestTarget = p
@@ -308,7 +313,7 @@ hook.Add("DoPlayerDeath", "Shadow_SoulLink_DoPlayerDeath", function(ply, attacke
         end
     else
         -- Find the shadows that "belong" to this player, and kill them
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:IsShadow() and p:IsActive() then
                 local target = player.GetBySteamID64(p:GetNWString("ShadowTarget", ""))
                 if IsPlayer(target) and target == ply then
@@ -326,7 +331,7 @@ hook.Add("PostPlayerDeath", "Shadow_Buff_PostPlayerDeath", function(ply)
     if shadow_target_buff:GetInt() == SHADOW_BUFF_RESPAWN and ply:GetNWBool("ShadowBuffActive", false) and not ply:GetNWBool("ShadowBuffDepleted", false) then
         -- Find the shadow that "belongs" to this player
         local shadow = nil
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if not p:IsShadow() then continue end
             if vicSid64 ~= p:GetNWString("ShadowTarget", "") then continue end
 
@@ -361,7 +366,7 @@ hook.Add("PostPlayerDeath", "Shadow_Buff_PostPlayerDeath", function(ply)
             end
         end)
     else
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if not p:IsShadow() then continue end
             if vicSid64 ~= p:GetNWString("ShadowTarget", "") then continue end
             ClearBuffTimer(p, ply)
@@ -435,7 +440,7 @@ hook.Add("TTTBeginRound", "Shadow_TTTBeginRound", function()
     local weakenTo = shadow_weaken_health_to:GetInt()
     local weakenTimer = shadow_weaken_timer:GetInt()
     timer.Create("TTTShadowTimer", 0.1, 0, function()
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if not v:IsShadow() or not v:Alive() or v:IsSpec() then continue end
 
             local target = player.GetBySteamID64(v:GetNWString("ShadowTarget", ""))
@@ -569,7 +574,7 @@ end)
 -------------
 
 hook.Add("TTTPrepareRound", "Shadow_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         ClearShadowState(v)
     end
     timer.Remove("TTTShadowTimer")

@@ -2,11 +2,11 @@ local halo = halo
 local hook = hook
 local table = table
 local IsValid = IsValid
-local pairs = pairs
+local player = player
 
 local TableInsert = table.insert
 local RemoveHook = hook.Remove
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 ------------------
 -- TRANSLATIONS --
@@ -97,7 +97,7 @@ local function EnableVindicatorTargetHighlights()
         if not target_sid64 or #target_sid64 == 0 then return end
 
         local target = nil
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if IsValid(v) and v:IsActive() and v ~= client and v:SteamID64() == target_sid64 then
                 target = v
                 break
@@ -161,7 +161,7 @@ end)
 
 hook.Add("TTTScoringSecondaryWins", "Vindicator_TTTScoringSecondaryWins", function(wintype, secondary_wins)
     if wintype ~= WIN_VINDICATOR then
-        for _, ply in pairs(GetAllPlayers()) do
+        for _, ply in PlayerIterator() do
             if ply:IsVindicator() and ply:GetNWBool("VindicatorSuccess", false) then
                 TableInsert(secondary_wins, ROLE_VINDICATOR)
             end
@@ -203,7 +203,7 @@ hook.Add("TTTEventFinishIconText", "Vindicator_TTTEventFinishIconText", function
 end)
 
 hook.Add("TTTEndRound", "Vindicator_SecondaryWinEvent_TTTEndRound", function()
-    for _, ply in pairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         if ply:IsVindicator() and ply:GetNWBool("VindicatorSuccess", false) then
             CLSCORE:AddEvent({ -- Log the win event with an offset to force it to the end
                 id = EVENT_FINISH,

@@ -1,17 +1,15 @@
 AddCSLuaFile()
 
 local hook = hook
-local ipairs = ipairs
 local math = math
 local net = net
-local pairs = pairs
 local player = player
 local string = string
 local table = table
 local timer = timer
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathRandom = math.random
 local StringFormat = string.format
 
@@ -51,7 +49,7 @@ local function StartCoughTimer()
             max = min
         end
         timer.Create("InfectedCough", MathRandom(min, max), 0, function()
-            for _, v in ipairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if v:IsActiveInfected() then
                     local idx = MathRandom(1, coughCount)
                     local chosen_sound = coughs[idx]
@@ -116,13 +114,13 @@ end
 local function StartSuccumbTimer()
     SetGlobalFloat("ttt_infected_succumb", CurTime() + infected_succumb_time:GetInt())
     timer.Create("InfectedSuccumb", infected_succumb_time:GetInt(), 1, function()
-        for _, p in pairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:IsActiveInfected() then
                 InfectedSuccumb(p, false)
             elseif p:IsInfected() and not p:Alive() and not timer.Exists("WaitForInfectedRespawn") then
                 timer.Create("WaitForInfectedRespawn", 0.1, 0, function()
                     local dead_infected = false
-                    for _, p2 in pairs(GetAllPlayers()) do
+                    for _, p2 in PlayerIterator() do
                         if p2:IsActiveInfected() then
                             InfectedSuccumb(p2, false)
                         elseif p2:IsInfected() and not p2:Alive() then
@@ -168,7 +166,7 @@ hook.Add("TTTEndRound", "Infected_TTTEndRound", function()
 end)
 
 hook.Add("TTTPrepareRound", "Infected_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("InfectedIsZombifying", false)
     end
 end)

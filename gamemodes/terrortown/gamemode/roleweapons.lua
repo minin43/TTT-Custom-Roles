@@ -10,11 +10,10 @@ local StringStripExtension = string.StripExtension
 local TableHasValue = table.HasValue
 local TableInsert = table.insert
 
-if SERVER then
-    util.AddNetworkString("TTT_RoleWeaponsList")
-    util.AddNetworkString("TTT_RoleWeaponsClean")
-    util.AddNetworkString("TTT_RoleWeaponsReload")
-end
+util.AddNetworkString("TTT_RoleWeaponsList")
+util.AddNetworkString("TTT_RoleWeaponsCopy")
+util.AddNetworkString("TTT_RoleWeaponsClean")
+util.AddNetworkString("TTT_RoleWeaponsReload")
 
 local function FindAndRemoveInvalidWeapons(tbl, invalidWeapons, printRemoval)
     local cleanTbl = {}
@@ -92,7 +91,14 @@ local function ShowList()
         end
     end
 end
-net.Receive("TTT_RoleWeaponsList", ShowList)
+net.Receive("TTT_RoleWeaponsList", function(len, ply)
+    if not ply:IsAdmin() and not ply:IsSuperAdmin() then
+        ErrorNoHalt("ERROR: You must be an administrator to run Role Weapons commands\n")
+        return
+    end
+
+    ShowList()
+end)
 
 local function Clean()
     local roleFiles, _ = file.Find("roleweapons/*.json", "DATA")
@@ -136,7 +142,14 @@ local function Clean()
         end
     end
 end
-net.Receive("TTT_RoleWeaponsClean", Clean)
+net.Receive("TTT_RoleWeaponsClean", function(len, ply)
+    if not ply:IsAdmin() and not ply:IsSuperAdmin() then
+        ErrorNoHalt("ERROR: You must be an administrator to run Role Weapons commands\n")
+        return
+    end
+
+    Clean()
+end)
 
 local function Reload()
     print("[ROLEWEAPONS] Reloading configuration...")
@@ -149,12 +162,129 @@ local function Reload()
     WEPS.ClearWeaponsLists()
     WEPS.HandleRoleEquipment()
 end
-if SERVER then net.Receive("TTT_RoleWeaponsReload", Reload) end
+net.Receive("TTT_RoleWeaponsReload", function(len, ply)
+    if not ply:IsAdmin() and not ply:IsSuperAdmin() then
+        ErrorNoHalt("ERROR: You must be an administrator to run Role Weapons commands\n")
+        return
+    end
+
+    Reload()
+end)
+
+local function Copy(from, to, overwrite)
+    if not TableHasValue(ROLE_STRINGS_RAW, from) then
+        print("[ROLEWEAPONS] No role named '" .. from .. "' found!")
+        return
+    end
+
+    if not TableHasValue(ROLE_STRINGS_RAW, to) then
+        print("[ROLEWEAPONS] No role named '" .. to .. "' found!")
+        return
+    end
+
+    -- If the original role doesn't have a configuration
+    if not file.Exists("roleweapons/" .. from .. ".json", "DATA") then
+        -- We only have to do something if the new role DOES and we're overwriting
+        if file.Exists("roleweapons/" .. to .. ".json", "DATA") then
+            if overwrite then
+                print("[ROLEWEAPONS] '" .. from .. "' does not have a configuration, but '" .. to .. "' does. Removing the '" .. to .. "' configuration.")
+                file.Delete("roleweapons/" .. to .. ".json", "DATA")
+                Reload()
+            else
+                print("[ROLEWEAPONS] '" .. from .. "' does not have a configuration, but '" .. to .. "' does and overwrite is disabled. Nothing to do.")
+            end
+        else
+            print("[ROLEWEAPONS] Neither '" .. from .. "' nor '" .. to .. "' has a configuration. Nothing to do.")
+        end
+    else
+        local fromJson = file.Read("roleweapons/" .. from .. ".json", "DATA")
+        if not fromJson then
+            ErrorNoHalt("[ROLEWEAPONS] Failed to load '" .. from .. "' configuration\n")
+            return
+        end
+
+        print("[ROLEWEAPONS] Loaded the '" .. from .. "' configuration.")
+
+        -- If we're overwriting, just delete the current config and copy the source
+        if overwrite then
+            print("[ROLEWEAPONS] Overwriting the '" .. to .. "' configuration.")
+            if file.Exists("roleweapons/" .. to .. ".json", "DATA") then
+                file.Delete("roleweapons/" .. to .. ".json", "DATA")
+            end
+
+            file.Write("roleweapons/" .. to .. ".json", fromJson)
+        else
+            local fromData = util.JSONToTable(fromJson)
+            if not fromData then
+                ErrorNoHalt("[ROLEWEAPONS] Failed to parse '" .. from .. "' configuration\n")
+                return
+            end
+
+            local toJson = file.Read("roleweapons/" .. to .. ".json", "DATA")
+            if not toJson then
+                ErrorNoHalt("[ROLEWEAPONS] Failed to load '" .. to .. "' configuration\n")
+                return
+            end
+
+            local toData = util.JSONToTable(toJson)
+            if not toData then
+                ErrorNoHalt("[ROLEWEAPONS] Failed to parse '" .. to .. "' configuration\n")
+                return
+            end
+
+            print("[ROLEWEAPONS] Merging with the '" .. to .. "' configuration.")
+
+            local toBuyables = toData.Buyables or {}
+            for _, v in ipairs(fromData.Buyables or {}) do
+                if not TableHasValue(toBuyables, v) then
+                    TableInsert(toBuyables, v)
+                end
+            end
+
+            local toExcludes = toData.Excludes or {}
+            for _, v in ipairs(fromData.Excludes or {}) do
+                if not TableHasValue(toExcludes, v) then
+                    TableInsert(toExcludes, v)
+                end
+            end
+
+            local toNoRandoms = toData.NoRandoms or {}
+            for _, v in ipairs(fromData.NoRandoms or {}) do
+                if not TableHasValue(toNoRandoms, v) then
+                    TableInsert(toNoRandoms, v)
+                end
+            end
+
+            toData.Buyables = toBuyables
+            toData.Excludes = toExcludes
+            toData.NoRandoms = toNoRandoms
+
+            toJson = util.TableToJSON(toData)
+
+            print("[ROLEWEAPONS] Saving the '" .. to .. "' configuration.")
+            file.Write("roleweapons/" .. to .. ".json", toJson)
+        end
+        Reload()
+    end
+end
+net.Receive("TTT_RoleWeaponsCopy", function(len, ply)
+    if not ply:IsAdmin() and not ply:IsSuperAdmin() then
+        ErrorNoHalt("ERROR: You must be an administrator to run Role Weapons commands\n")
+        return
+    end
+
+    local from = net.ReadString()
+    local to = net.ReadString()
+    local overwrite = net.ReadBit()
+    Copy(from, to, overwrite)
+end)
 
 local function PrintHelp()
     print("ttt_roleweapons [OPTION]")
     print("If no options provided, default of 'open' will be used")
     print("\tclean\t-\tRemoves any invalid configurations. WARNING: This CANNOT be undone!")
+    print("\tcopy FROM TO [REPLACE]\t-\tDuplicates a role configuration. If \"true\" is provided for the REPLACE parameter, any existing configuration will be removed")
+    print("\tduplicate FROM TO [REPLACE]\t")
     print("\thelp\t-\tPrints this message")
     print("\topen\t-\tOpen the configuration dialog [CLIENT ONLY]")
     print("\tshow\t")
@@ -175,6 +305,17 @@ concommand.Add("sv_ttt_roleweapons", function(ply, cmd, args)
         Reload()
     elseif method == "help" then
         PrintHelp()
+    elseif method == "copy" or method == "duplicate" then
+        local from = #args > 1 and args[2] or nil
+        local to = #args > 2 and args[3] or nil
+        local overwrite = #args > 2 and args[4] or "false"
+
+        if not from or not to then
+            ErrorNoHalt("ERROR: '" .. method .. "' command missing required parameter(s)!\n")
+            return
+        end
+
+        Copy(from, to, string.lower(overwrite) == "true")
     else
         ErrorNoHalt("ERROR: Unknown command '" .. method .. "'\n")
     end

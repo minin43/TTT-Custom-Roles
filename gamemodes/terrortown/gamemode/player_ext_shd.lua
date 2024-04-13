@@ -10,13 +10,14 @@ local ipairs = ipairs
 local IsValid = IsValid
 local math = math
 local net = net
+local player = player
 local string = string
 local table = table
 local timer = timer
 local util = util
 
 local CallHook = hook.Call
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathAbs = math.abs
 local MathAcos = math.acos
 
@@ -549,7 +550,7 @@ if CLIENT then
     function GM:GrabEarAnimation(ply) end
 
     net.Receive("TTT_PerformGesture", function()
-        local ply = net.ReadEntity()
+        local ply = net.ReadPlayer()
         local act = net.ReadUInt(16)
         if IsValid(ply) and act then
             ply:AnimPerformGesture(act)
@@ -613,8 +614,8 @@ else
         if not act then return end
 
         net.Start("TTT_PerformGesture")
-        net.WriteEntity(self)
-        net.WriteUInt(act, 16)
+            net.WritePlayer(self)
+            net.WriteUInt(act, 16)
         net.Broadcast()
     end
 
@@ -658,7 +659,7 @@ function player.GetRoleTeam(role, detectivesAreInnocent)
 end
 
 function player.GetLivingRole(role)
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:Alive() and v:IsTerror() and v:IsRole(role) then
             return v
         end
@@ -669,7 +670,7 @@ function player.IsRoleLiving(role) return IsPlayer(player.GetLivingRole(role)) e
 
 function player.GetLivingInRadius(pos, radius)
     local living_players = {}
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if not p:Alive() or p:IsSpec() then continue end
         if p:GetPos():Distance(pos) > radius then continue end
         table.insert(living_players, p)
@@ -683,7 +684,7 @@ function player.TeamLivingCount(ignorePassiveWinners)
     local indep_alive = 0
     local monster_alive = 0
     local jester_alive = 0
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         -- If the player is alive
         if v:Alive() and v:IsTerror() then
             -- If we're either not ignoring passive winners or this isn't a passive winning role
@@ -719,7 +720,7 @@ function player.AreTeamsLiving(ignorePassiveWinners)
 end
 
 function player.ExecuteAgainstTeamPlayers(roleTeam, detectivesAreInnocent, aliveOnly, callback)
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if not aliveOnly or (v:Alive() and v:IsTerror()) then
             local playerTeam = player.GetRoleTeam(v:GetRole(), detectivesAreInnocent)
             if playerTeam == roleTeam and callback(v) then
@@ -739,7 +740,7 @@ end
 
 function player.LivingCount(ignorePassiveWinners)
     local players_alive = 0
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         -- If the player is alive and we're either not ignoring passive winners or this isn't a passive winning role
         if (v:Alive() and v:IsTerror() and (not ignorePassiveWinners or not ROLE_HAS_PASSIVE_WIN[v:GetRole()])) or
             -- Handle zombification differently because the player's original role should have no impact on this

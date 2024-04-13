@@ -753,6 +753,14 @@ function HELPSCRN:CreateConfig(dsettings)
 
     cb = dgui:CheckBox(GetTranslation("set_bypass_culling"), "ttt_bypass_culling")
     cb:SetTooltip(GetTranslation("set_bypass_culling_tip"))
+
+    local combo, _ = dgui:ComboBox(GetTranslation("set_distance_unit"), "ttt_distance_unit")
+    combo:SetTooltip(GetTranslation("set_distance_unit_tip"))
+    combo:SetSortItems(false)
+    combo:AddChoice("None", 0)
+    combo:AddChoice("Meters", 1)
+    combo:AddChoice("Feet", 2)
+
     HookCall("TTTSettingsConfigTabFields", nil, "Interface", dgui)
 
     dsettings:AddItem(dgui)

@@ -2,6 +2,13 @@
 
 if engine.ActiveGamemode() ~= "terrortown" then return end
 
+local math = math
+local pairs = pairs
+local player = player
+local table = table
+
+local PlayerIterator = player.Iterator
+
 local startChance = .2
 local startDelay = 10
 local minSpectators = 3
@@ -45,7 +52,7 @@ hook.Add("TTTBeginRound", "SpectatorRandomats_TTTBeginRound", function()
     if math.random() > startChance then return end
 
     local specCount = 0
-    for _, p in ipairs(player.GetAll()) do
+    for _, p in PlayerIterator() do
         if p:IsSpec() or not p:Alive() then
             specCount = specCount + 1
         end

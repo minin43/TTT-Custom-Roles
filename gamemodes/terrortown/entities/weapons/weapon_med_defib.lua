@@ -54,6 +54,7 @@ if SERVER then
         ply:SetCredits(credits)
         ply:SetPos(self.Location or body:GetPos())
         ply:SetEyeAngles(Angle(0, body:GetAngles().y, 0))
+        ply:SetNWBool("WasRevivedByParamedic", true)
         if GetConVar("ttt_paramedic_defib_as_innocent"):GetBool() then
             ply:SetRole(ROLE_INNOCENT)
             ply:StripRoleWeapons()
@@ -68,6 +69,9 @@ if SERVER then
             ply:StripRoleWeapons()
         end
         ply:QueueMessage(MSG_PRINTCENTER, "You have been revived by " .. ROLE_STRINGS_EXT[ROLE_PARAMEDIC] .. "!")
+        if GetConVar("ttt_paramedic_revive_muted"):GetBool() then
+            ply:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
+        end
         SetRoleHealth(ply)
 
         SafeRemoveEntity(body)
