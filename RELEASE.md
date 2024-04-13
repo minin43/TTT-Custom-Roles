@@ -95,11 +95,11 @@ Includes beta update [2.1.6](#216-beta).
 
 ### Additions
 - Added option to have players who use the spongifier be fully healed after becoming the sponge (disabled by default)
-- Added the option for the Tracker to have the tracking radar as part of their loadout (disabled by default)
+- Added the option for the tracker to have the tracking radar as part of their loadout (disabled by default)
 
 ### Changes
 - Changed how jester and sponge win logic is performed to fix compatibility with other addons that occur on round end
-- Changed player color generation for the Medium and the Tracker to use the golden ratio so that colors are not too similar
+- Changed player color generation for the medium and the tracker to use the golden ratio so that colors are not too similar
 
 ### Fixes
 - Fixed player who becomes the new swapper not getting any role weapons the swapper may have (like the spongifier)
