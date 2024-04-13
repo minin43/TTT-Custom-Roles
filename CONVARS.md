@@ -330,6 +330,7 @@ ttt_spy_flare_gun_shop_rebuyable            0       // Whether the spy should be
 // Glitch
 ttt_glitch_mode                             0       // The way in which the glitch appears to traitors. 0 - Appears as a regular traitor. 1 - Can appear as a special traitor. 2 - Causes all traitors, regular or special, to appear as regular traitors and appears as a regular traitor themselves.
 ttt_glitch_use_traps                        0       // Whether glitches can see and use traitor traps. This also allows them to loot credits for traps that require them.
+ttt_glitch_chat_block_mode                  1       // How to handle glitch chat blocking. 0 - Don't block. 1 - Always block when there's a glitch. 2 - Block while a glitch is alive. 3 - Block until all glitches are confirmed by inspecting their body.
 
 // Phantom
 ttt_phantom_respawn                         1       // Whether the phantom should respawn when their killer is killed
@@ -521,8 +522,9 @@ ttt_swapper_weapon_mode                     1       // How to handle weapons whe
 ttt_swapper_notify_mode                     0       // The logic to use when notifying players that a swapper is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
 ttt_swapper_notify_sound                    0       // Whether to play a cheering sound when a swapper is killed
 ttt_swapper_notify_confetti                 0       // Whether to throw confetti when a swapper is a killed
-ttt_swapper_killer_health                   100     // The amount of health the swapper's killer should set to. Set to "0" to kill them
-ttt_swapper_killer_max_health               0       // The maximum health value to set on the swapper's killer. Set to "0" to use the swapper's default
+ttt_swapper_killer_swap                     1       // Whether to the swapper's killer should become the new swapper
+ttt_swapper_killer_health                   100     // The amount of health the swapper's killer should set to. Set to "0" to kill them (Only applies if ttt_swapper_killer_swap is enabled)
+ttt_swapper_killer_max_health               0       // The maximum health value to set on the swapper's killer. Set to "0" to use the swapper's default (Only applies if ttt_swapper_killer_swap is enabled)
 ttt_swapper_credits_starting                0       // The number of credits a swapper should start with
 ttt_swapper_healthstation_reduce_max        1       // Whether the swapper's max health should be reduced to match their current health when using a health station, instead of being healed
 ttt_swapper_swap_lovers                     1       // Whether the swapper should swap lovers with their attacker or not
@@ -844,6 +846,8 @@ ttt_hivemind_join_heal_pct                  0.25    // The percentage a new memb
 ttt_hivemind_regen_timer                    0       // The amount of time (in seconds) between each health regeneration
 ttt_hivemind_regen_per_member_amt           1       // The amount of health per-member of the hive mind that they should regenerate over time
 ttt_hivemind_regen_max_pct                  0.5     // The percentage of the hive mind's maximum health to heal them up to (e.g. 0.5 = 50% of their max health)
+ttt_hivemind_chat_mode                      1       // How to handle chat by the hive mind. 0 - Do nothing. 1 - Force all members to duplicate when any member chats. 2 - Force all members to duplicate when only the first member chats
+ttt_hivemind_block_environmental            0       // Whether to block environmental damage to the hive mind
 ttt_hivemind_can_see_jesters                1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the hive mind
 ttt_hivemind_update_scoreboard              1       // Whether the hive mind shows dead players as missing in action
 // ----------------------------------------
@@ -1082,6 +1086,7 @@ ttt_round_summary_tabs                      summary,hilite,events,scores // The 
 
 // Misc.
 ttt_death_notifier_enabled                  1       // Whether the name and role of a player's killer should be shown to the victim
+ttt_death_notifier_show_role                1       // Whether to show the killer's role in death notification messages
 ttt_smokegrenade_extinguish                 1       // Whether smoke grenades should extinguish fire
 ttt_player_set_color                        1       // Whether player colors are set each time that player spawns
 ttt_dna_scan_on_dialog                      1       // Whether to show a button to open the DNA scanner on the body search dialog

@@ -1123,6 +1123,38 @@ function RegisterRole(tbl)
     hook.Call("TTTRoleRegistered", nil, roleID)
 end
 
+include("util.lua")
+
+-- Moved from equip_items_shd.lua to allow roles to generate equipment IDs on load
+
+-- This table is used by the client to show items in the equipment menu, and by
+-- the server to check if a certain role is allowed to buy a certain item.
+EquipmentItems = EquipmentItems or {}
+
+-- Special equipment IDs. Every unique piece of equipment needs its own
+-- id.
+--
+-- Use the GenerateNewEquipmentID function (see below) to get a unique ID for
+-- your equipment. This is guaranteed not to clash with other addons (as long
+-- as they use the same safe method).
+--
+-- Details you shouldn't need:
+-- The number should increase by one every time
+EQUIP_NONE = 0
+EQUIP_ARMOR = 1
+EQUIP_RADAR = 2
+EQUIP_DISGUISE = 3
+EQUIP_SPEED = 4
+EQUIP_REGEN = 5
+
+EQUIP_MAX = EQUIP_MAX or 5
+
+-- Utility function to register a new Equipment ID
+function GenerateNewEquipmentID()
+    EQUIP_MAX = EQUIP_MAX + 1
+    return EQUIP_MAX
+end
+
 local function AddRoleFiles(root)
     local rootfiles, dirs = FileFind(root .. "*", "LUA")
     for _, dir in ipairs(dirs) do
@@ -1448,7 +1480,6 @@ COLOR_PINK = Color(255, 0, 255, 255)
 COLOR_ORANGE = Color(250, 100, 0, 255)
 COLOR_OLIVE = Color(100, 100, 0, 255)
 
-include("util.lua")
 include("lang_shd.lua") -- uses some of util
 include("equip_items_shd.lua")
 

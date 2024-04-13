@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.10 (Beta)
-**Released:**
+**Released: April 13th, 2024**
 
 ### Additions
 - Added ability to set whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar) (disabled by default)
@@ -13,6 +13,13 @@
 - Added ability to control whether the shadow target can be a traitor or a monster (enabled by default)
 - Added ability for a player to control what unit distances are displayed in (defaults to meters)
 - Added ability for the role of a player's killer to be hidden when there is a medium in the round (disabled by default)
+- Added ability to control whether the swapper's killer becomes the new swapper (enabled by default)
+- Added ability to control the hive mind's chat duplication (all hive mind chat duplication is enabled by default)
+- Added ability for hive mind to block environmental damage (disabled by default)
+- Added icons to show role weapon state (Buyable, Exclude, No Random) in the `ttt_roleweapons` dialog and the weapons tab of the `ttt_rolepacks` dialog
+- Added ability to copy/merge a role weapon configuration from one role to another via the new `ttt_roleweapons copy FROM TO [OVERWRITE]` command
+- Added ability to control whether the role of a player's killer is shown in death notification messages (enabled by default)
+- Added ability to control how glitch affects traitor chat (default is current behavior where all traitor chat is blocked when there is a glitch in the round)
 
 ### Changes
 - Changed phantom round start popup message to reflect which features are currently enabled
@@ -22,6 +29,7 @@
 - Fixed clown not being able to win with their cupid lover
 - Fixed mad scientist zombifying players sometimes giving them their previous role weapons instead of zombie claws
 - Fixed conflict between marshal and roles with custom round popup string logic
+- Fixed a hive mind using the console kill command causing all hive minds to die
 
 ### Developer
 - Added new semi-automated convar deprecation system
@@ -29,6 +37,7 @@
 - Updated to use `net.Read/WritePlayer` where appropriate
 - Updated many places in the codebase to use `player.Iterator`
 - Updated to use sequential `net.Read/WriteTable` where appropriate
+- Changed EquipmentItems and GenerateNewEquipmentID to be defined earlier so custom roles can use them on initialization
 - Ported "TTT: Use new game.CleanUpMap argument"
 - Ported "TTT: Use net.Read/WritePlayer"
 - Ported "TTT: Use player.Iterator"

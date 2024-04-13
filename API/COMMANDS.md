@@ -11,10 +11,14 @@ Allows for viewing and editing which weapons are available in each role's shop.\
 *Added in*: 1.2.7\
 *Parameters:*
 - *command* - Which command should be run *(Added in 1.9.4)*
-  - *open (aka show)* - Opens the configuration UI. See [this tutorial](../CONVARS.md#Configuration-by-UI) for how to use the UI. (This command is the default if no parameter is provided)
-  - *list (aka print)* - Prints the current configuration in the server console, highlighting anything invalid
   - *clean* - Removes any invalid configurations. WARNING: This CANNOT be undone!
+  - *copy FROM TO [REPLACE]* - Duplicates a role configuration. If `true` is provided for the REPLACE parameter, any existing configuration will be removed *(Added in 2.1.10)*
+  - *duplicate* - Alias for *copy* *(Added in 2.1.10)*
+  - *list* - Prints the current configuration in the server console, highlighting anything invalid
+  - *open (aka show)* - Opens the configuration UI. See [this tutorial](../CONVARS.md#Configuration-by-UI) for how to use the UI. (This command is the default if no parameter is provided)
+  - *print* - Alias for *list*
   - *reload* - Reloads the configurations from the server's filesystem
+  - *show* - Alias for *open*
 
 ## *Server Commands*
 
@@ -23,9 +27,12 @@ Allows for viewing and editing which weapons are available in each role's shop. 
 *Added in*: 1.9.4\
 *Parameters:*
 - *command* - Which command should be run
-  - *list (aka print)* - Prints the current configuration in the console, highlighting anything invalid
   - *clean* - Removes any invalid configurations. WARNING: This CANNOT be undone!
-  - *reload* - Reloads the configurations from the filesystem
+  - *copy FROM TO [REPLACE]* - Duplicates a role configuration. If `true` is provided for the REPLACE parameter, any existing configuration will be removed *(Added in 2.1.10)*
+  - *duplicate* - Alias for *copy* *(Added in 2.1.10)*
+  - *list* - Prints the current configuration in the server console, highlighting anything invalid
+  - *print* - Alias for *list*
+  - *reload* - Reloads the configurations from the server's filesystem
 
 ### ttt_damage_from_random
 Damages the local player by a random non-jester team player. *NOTE*: Cheats must be enabled to use this command.\

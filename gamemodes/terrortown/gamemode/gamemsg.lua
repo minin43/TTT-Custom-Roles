@@ -245,11 +245,7 @@ function GM:PlayerSay(ply, text, team_only)
             table.insert(filtered, 1, "[MUMBLED]")
             return table.concat(filtered, " ")
         elseif team_only and not team and (ply:IsTraitorTeam() or ply:IsDetectiveLike() or ply:IsMonsterTeam()) then
-            local hasGlitch = false
-            for _, v in PlayerIterator() do
-                if v:IsGlitch() then hasGlitch = true end
-            end
-            if ply:IsTraitorTeam() and hasGlitch then
+            if ply:IsTraitorTeam() and ShouldGlitchBlockCommunications() then
                 ply:PrintMessage(HUD_PRINTTALK, "The glitch is scrambling your communications")
                 return ""
             elseif ply:IsTraitor() and ply:GetNWBool("WasBeggar", false) and ShouldHideTraitorBeggar() then
@@ -318,11 +314,6 @@ function GM:PlayerCanHearPlayersVoice(listener, speaker)
 
     -- Traitors "team" chat by default, non-locationally
     if speakerCanUseTraitorVoice and not speaker.traitor_gvoice then
-        local hasGlitch = false
-        for _, v in PlayerIterator() do
-            if v:IsGlitch() then hasGlitch = true end
-        end
-
         if listenerCanUseTraitorVoice then
             -- Don't send voice to listener if either one of them was a beggar and the role change is not revealed
             if ((speaker:IsTraitor() and speaker:GetNWBool("WasBeggar", false)) or
@@ -336,7 +327,7 @@ function GM:PlayerCanHearPlayersVoice(listener, speaker)
                 ShouldHideTraitorBodysnatcher() then
                 return false, false
             end
-            return not hasGlitch, false
+            return not ShouldGlitchBlockCommunications(), false
         end
 
         -- unless traitor_gvoice is true, normal innos can't hear speaker
@@ -386,13 +377,8 @@ local function TraitorGlobalVoice(ply, cmd, args)
     local state = tonumber(args[1])
     ply.traitor_gvoice = (state == 1)
 
-    local hasGlitch = false
-    for _, v in PlayerIterator() do
-        if v:IsGlitch() then hasGlitch = true end
-    end
-
     if not ply.traitor_gvoice then
-        if hasGlitch then
+        if ShouldGlitchBlockCommunications() then
             ply:PrintMessage(HUD_PRINTTALK, "The glitch is scrambling your communications")
             return
         elseif ply:IsTraitor() and ply:GetNWBool("WasBeggar", false) and ShouldHideTraitorBeggar() then

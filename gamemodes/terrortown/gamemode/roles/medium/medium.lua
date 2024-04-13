@@ -103,8 +103,7 @@ end)
 -- Hide the role of the player that killed the victim if there is a medium in the round and that feature is enabled
 hook.Add("TTTDeathNotifyOverride", "Medium_TTTDeathNotifyOverride", function(victim, inflictor, attacker, reason, killerName, role)
     if GetRoundState() ~= ROUND_ACTIVE then return end
-    if not IsValid(inflictor) or not IsValid(attacker) then return end
-    if not attacker:IsPlayer() then return end
+    if not IsPlayer(attacker) then return end
     if victim == attacker then return end
     if not medium_hide_killer_role:GetBool() then return end
 

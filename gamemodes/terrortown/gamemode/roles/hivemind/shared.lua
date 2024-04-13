@@ -33,25 +33,35 @@ TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_is_monster",
     type = ROLE_CONVAR_TYPE_BOOL
 })
-table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_join_heal_pct",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 2
 })
-table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_regen_per_member_amt",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 0
 })
-table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_regen_timer",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 0
 })
-table.insert(ROLE_CONVARS[ROLE_HIVEMIND], {
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
     cvar = "ttt_hivemind_regen_max_pct",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 2
+})
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
+    cvar = "ttt_hivemind_chat_mode",
+    type = ROLE_CONVAR_TYPE_DROPDOWN,
+    choices = {"None", "Duplicate All", "Duplicate Prime"},
+    isNumeric = true
+})
+TableInsert(ROLE_CONVARS[ROLE_HIVEMIND], {
+    cvar = "ttt_hivemind_block_environmental",
+    type = ROLE_CONVAR_TYPE_BOOL
 })
 
 -------------------
