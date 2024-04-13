@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.10 (Beta)
-**Released:**
+**Released: April 13th, 2024**
 
 ### Additions
 - Added ability to set whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar) (disabled by default)
