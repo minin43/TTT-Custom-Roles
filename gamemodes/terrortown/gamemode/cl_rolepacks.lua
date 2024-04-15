@@ -787,6 +787,20 @@ local function BuildWeaponConfig(dsheet, packName, tab)
                     ic:EnableMousePassthrough(norandom)
                 end
 
+                if weaponChanges.weapons[save_role] and weaponChanges.weapons[save_role].Loadouts and table.HasValue(weaponChanges.weapons[save_role].Loadouts, table_index) then
+                    local loadout = vgui.Create("DImage")
+                    loadout:SetImage("icon16/cart_go.png")
+                    loadout.PerformLayout = function(s)
+                        s:AlignBottom(3)
+                        s:CenterHorizontal()
+                        s:SetSize(16, 16)
+                    end
+                    loadout:SetTooltip(GetTranslation("roleweapons_loadout_tooltip"))
+
+                    ic:AddLayer(loadout)
+                    ic:EnableMousePassthrough(loadout)
+                end
+
                 ic:SetIconSize(itemSize)
                 ic:SetIcon(item.material)
             elseif item.model then
@@ -901,9 +915,17 @@ local function BuildWeaponConfig(dsheet, packName, tab)
     dradionorandom:SetTextColor(COLOR_WHITE)
     dradionorandom:SetDisabled(true)
 
+    local dradioloadout = vgui.Create("DCheckBoxLabel", dweapons)
+    dradioloadout:SetPos(w - 30 - bw, dih + dsearchheight + dradioh + (dradiopadding * 2))
+    dradioloadout:SetText(GetTranslation("roleweapons_option_loadout"))
+    dradioloadout:SetTooltip(GetTranslation("roleweapons_option_loadout_tooltip"))
+    dradioloadout:SizeToContents()
+    dradioloadout:SetTextColor(COLOR_WHITE)
+    dradioloadout:SetDisabled(true)
+
     local function UpdateButtonState()
         local valid = role > ROLE_NONE and save_role > ROLE_NONE
-        if valid and not dradionone:GetChecked() and not dradioinclude:GetChecked() and not dradioexclude:GetChecked() and not dradionorandom:GetChecked() then
+        if valid and not dradionone:GetChecked() and not dradioinclude:GetChecked() and not dradioexclude:GetChecked() and not dradionorandom:GetChecked() and not dradioloadout:GetChecked() then
             valid = false
         end
 
@@ -911,6 +933,7 @@ local function BuildWeaponConfig(dsheet, packName, tab)
         dradioinclude:SetDisabled(not valid)
         dradioexclude:SetDisabled(not valid)
         dradionorandom:SetDisabled(not valid)
+        dradioloadout:SetDisabled(not valid)
     end
 
     local function UpdateRadioButtonState(item)
@@ -931,6 +954,11 @@ local function BuildWeaponConfig(dsheet, packName, tab)
         end
 
         dradionorandom:SetValue(weaponChanges.weapons[save_role] and TableHasValue(weaponChanges.weapons[save_role].NoRandoms, id))
+        print(save_role, id, weaponChanges.weapons[save_role] and TableHasValue(weaponChanges.weapons[save_role].Loadouts, id))
+        if weaponChanges.weapons[save_role] then
+            PrintTable(weaponChanges.weapons[save_role].Loadouts or {})
+        end
+        dradioloadout:SetValue(weaponChanges.weapons[save_role] and TableHasValue(weaponChanges.weapons[save_role].Loadouts, id))
     end
 
     local function CacheWeaponChange()
@@ -973,6 +1001,15 @@ local function BuildWeaponConfig(dsheet, packName, tab)
         else
             TableRemoveByValue(weaponChanges.weapons[save_role].NoRandoms, id)
         end
+
+        if dradioloadout:GetChecked() then
+            if not TableHasValue(weaponChanges.weapons[save_role].Loadouts, id) then
+                TableInsert(weaponChanges.weapons[save_role].Loadouts, id)
+            end
+        else
+            print("Removing",id,"from loadout")
+            TableRemoveByValue(weaponChanges.weapons[save_role].Loadouts, id)
+        end
     end
 
     dradionone.OnChange = function(pnl, val)
@@ -1002,6 +1039,12 @@ local function BuildWeaponConfig(dsheet, packName, tab)
         end
     end
     dradionorandom.OnChange = function(pnl, val)
+        if val then
+            UpdateButtonState()
+            CacheWeaponChange()
+        end
+    end
+    dradioloadout.OnChange = function(pnl, val)
         if val then
             UpdateButtonState()
             CacheWeaponChange()
@@ -1065,9 +1108,11 @@ local function BuildWeaponConfig(dsheet, packName, tab)
         save_role = data
         UpdateButtonState()
         RefreshEquipmentList()
+        CacheWeaponChange()
 
         local new = dlist.SelectedPanel
         if not new or not new.item then return end
+        print("UpdateRadioButtonState",save_role)
         UpdateRadioButtonState(new.item)
     end
 
@@ -1086,6 +1131,10 @@ local function BuildWeaponConfig(dsheet, packName, tab)
 
     local function UpdateRolePackWeaponUI(jsonTable, roleByte)
         weaponChanges.weapons[roleByte] = jsonTable
+        -- This was added after the other three, so make sure it exists on load
+        if not weaponChanges.weapons[roleByte].Loadouts then
+            weaponChanges.weapons[roleByte].Loadouts = {}
+        end
         oldWeaponChanges = TableCopy(weaponChanges)
         if roleByte == role then
             LocalPlayer():ConCommand("ttt_reset_weapons_cache")
@@ -1106,6 +1155,10 @@ local function BuildWeaponConfig(dsheet, packName, tab)
     end
 
     local function WeaponTablesMatch(tbl1, tbl2)
+        -- If both tables are missing, they essentially match
+        if not tbl1 and not tbl2 then return true end
+        -- If only one is missing then they don't match
+        if not tbl1 or not tbl2 then return false end
         if #tbl1 ~= #tbl2 then return false end
 
         local t1 = TableCopy(tbl1)
@@ -1124,10 +1177,19 @@ local function BuildWeaponConfig(dsheet, packName, tab)
     dweapons.HasUnsavedChanges = function()
         for r = 0, ROLE_MAX do
             if weaponChanges.weapons[r] then
+                print("Checking oldWeapons", r)
                 if not oldWeaponChanges.weapons[r] then return true end
+                print("Checking Buyables", r)
                 if not WeaponTablesMatch(weaponChanges.weapons[r].Buyables, oldWeaponChanges.weapons[r].Buyables) then return true end
+                print("Checking Excludes", r)
                 if not WeaponTablesMatch(weaponChanges.weapons[r].Excludes, oldWeaponChanges.weapons[r].Excludes) then return true end
+                print("Checking NoRandoms", r)
                 if not WeaponTablesMatch(weaponChanges.weapons[r].NoRandoms, oldWeaponChanges.weapons[r].NoRandoms) then return true end
+                print("Checking Loadouts", r)
+                PrintTable(weaponChanges.weapons[r].Loadouts or {})
+                PrintTable(oldWeaponChanges.weapons[r].Loadouts or {})
+                if not WeaponTablesMatch(weaponChanges.weapons[r].Loadouts, oldWeaponChanges.weapons[r].Loadouts) then return true end
+                print(ROLE_STRINGS[r], "clear")
             end
         end
         return false

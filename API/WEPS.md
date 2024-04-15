@@ -15,3 +15,8 @@ A table whose keys are role IDs and whose values are the list of weapon classes 
 A table whose keys are role IDs and whose values are the list of weapon classes or equipment names that the role cannot purchase that they normally would be able to.\
 *Realm:* Client and Server\
 *Added in:* 1.0.0
+
+### WEPS.LoadoutWeapons
+A table whose keys are role IDs and whose values are the list of weapon classes or equipment names that the role will be given as part of their loadout.\
+*Realm:* Client and Server\
+*Added in:* 2.1.11

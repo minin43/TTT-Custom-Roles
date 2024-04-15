@@ -3,6 +3,9 @@
 ## 2.1.11 (Beta)
 **Released:**
 
+### Additions
+- Added ability to add weapons to a role's loadout using the `ttt_roleweapons` system or the weapons tab within `ttt_rolepacks`
+
 ### Fixes
 - Fixed role weapon state not showing accurately in the weapons tab of the `ttt_rolepacks` dialog
 

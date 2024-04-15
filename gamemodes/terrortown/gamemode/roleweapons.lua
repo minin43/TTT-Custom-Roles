@@ -43,6 +43,7 @@ local function ShowList()
         local roleBuyables = {}
         local roleExcludes = {}
         local roleNoRandoms = {}
+        local roleLoadouts = {}
         local invalidWeapons = {}
         -- Load the lists from the JSON file for this role
         if file.Exists("roleweapons/" .. name .. ".json", "DATA") then
@@ -53,6 +54,7 @@ local function ShowList()
                     roleBuyables = roleData.Buyables or {}
                     roleExcludes = roleData.Excludes or {}
                     roleNoRandoms = roleData.NoRandoms or {}
+                    roleLoadouts = roleData.Loadouts or {}
                 end
             end
         end
@@ -60,6 +62,7 @@ local function ShowList()
         roleBuyables = FindAndRemoveInvalidWeapons(roleBuyables, invalidWeapons)
         roleExcludes = FindAndRemoveInvalidWeapons(roleExcludes, invalidWeapons)
         roleNoRandoms = FindAndRemoveInvalidWeapons(roleNoRandoms, invalidWeapons)
+        roleLoadouts = FindAndRemoveInvalidWeapons(roleLoadouts, invalidWeapons)
 
         -- Print this role's information
         print("[ROLEWEAPONS] Configuration information for '" .. name .. "'")
@@ -75,6 +78,11 @@ local function ShowList()
 
         print("\n\tNo-Random:")
         for _, weaponName in ipairs(roleNoRandoms) do
+            print("\t\t" .. weaponName)
+        end
+
+        print("\n\tLoadout:")
+        for _, weaponName in ipairs(roleLoadouts) do
             print("\t\t" .. weaponName)
         end
 
@@ -120,9 +128,10 @@ local function Clean()
                     roleData.Buyables = FindAndRemoveInvalidWeapons(roleData.Buyables or {}, {}, true)
                     roleData.Excludes = FindAndRemoveInvalidWeapons(roleData.Excludes or {}, {}, true)
                     roleData.NoRandoms = FindAndRemoveInvalidWeapons(roleData.NoRandoms or {}, {}, true)
+                    roleData.Loadouts = FindAndRemoveInvalidWeapons(roleData.Loadouts or {}, {}, true)
 
                     -- Update the file with the cleaned tables
-                    if #roleData.Buyables > 0 or #roleData.Excludes > 0 or #roleData.NoRandoms > 0 then
+                    if #roleData.Buyables > 0 or #roleData.Excludes > 0 or #roleData.NoRandoms > 0 or #roleData.Loadouts > 0 then
                         roleJson = util.TableToJSON(roleData)
                         file.Write("roleweapons/" .. name .. ".json", roleJson)
                     else
@@ -255,9 +264,17 @@ local function Copy(from, to, overwrite)
                 end
             end
 
+            local toLoadouts = toData.Loadouts or {}
+            for _, v in ipairs(fromData.Loadouts or {}) do
+                if not TableHasValue(toLoadouts, v) then
+                    TableInsert(toLoadouts, v)
+                end
+            end
+
             toData.Buyables = toBuyables
             toData.Excludes = toExcludes
             toData.NoRandoms = toNoRandoms
+            toData.Loadouts = toLoadouts
 
             toJson = util.TableToJSON(toData)
 

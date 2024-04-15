@@ -73,13 +73,14 @@ Resets the cache of the role weapon overrides and resets all changed weapon `Can
 *Realm:* Client and Server\
 *Added in:* 1.0.0
 
-### WEPS.UpdateWeaponLists(role, weapon, includeSelected, excludeSelected, noRandomSelected)
+### WEPS.UpdateWeaponLists(role, weapon, includeSelected, excludeSelected, noRandomSelected, loadoutSelected)
 Updates the roleweapons lists for the provided role and weapon.\
 *Realm:* Client and Server\
 *Added in:* 1.9.4\
 *Parameters:*
 - *role* - The role whole roleweapons lists are being updated
 - *weapon* - The weapon being added or removed from the various lists
-- *includeSelected* - Whether the "include" option is selected. Determines whether the given `weapon` should be in the [WEPS.BuyableWeapons](WEPS.md#wepsbuyableweapons) list
-- *excludeSelected* - Whether the "include" option is selected. Determines whether the given `weapon` should be in the [WEPS.ExcludeWeapons](WEPS.md#wepsexcludeweapons) list
-- *noRandomSelected* - Whether the "include" option is selected. Determines whether the given `weapon` should be in the [WEPS.BypassRandomWeapons](WEPS.md#wepsbypassrandomweapons) list
+- *includeSelected* - Whether the "Include" option is selected. Determines whether the given `weapon` should be in the [WEPS.BuyableWeapons](WEPS.md#wepsbuyableweapons) list
+- *excludeSelected* - Whether the "Exclude" option is selected. Determines whether the given `weapon` should be in the [WEPS.ExcludeWeapons](WEPS.md#wepsexcludeweapons) list
+- *noRandomSelected* - Whether the "No Random" option is selected. Determines whether the given `weapon` should be in the [WEPS.BypassRandomWeapons](WEPS.md#wepsbypassrandomweapons) list
+- *loadoutSelected* - Whether the "Loadout" option is selected. Determines whether the given `weapon` should be in the [WEPS.LoadoutWeapons](WEPS.md#wepsloadoutweapons) list *(Added in 2.1.11)*
