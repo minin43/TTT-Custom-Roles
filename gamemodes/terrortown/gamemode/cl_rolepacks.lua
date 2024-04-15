@@ -749,10 +749,10 @@ local function BuildWeaponConfig(dsheet, packName, tab)
 
                 local state_icon = nil
                 local tooltip = nil
-                if WEPS.BuyableWeapons[save_role] and table.HasValue(WEPS.BuyableWeapons[save_role], table_index) then
+                if weaponChanges.weapons[save_role].Buyables and table.HasValue(weaponChanges.weapons[save_role].Buyables, table_index) then
                     state_icon = "cart_add.png"
                     tooltip = "roleweapons_buyable_tooltip"
-                elseif WEPS.ExcludeWeapons[save_role] and table.HasValue(WEPS.ExcludeWeapons[save_role], table_index) then
+                elseif weaponChanges.weapons[save_role].Excludes and table.HasValue(weaponChanges.weapons[save_role].Excludes, table_index) then
                     state_icon = "cart_delete.png"
                     tooltip = "roleweapons_exclude_tooltip"
                 end
@@ -771,7 +771,7 @@ local function BuildWeaponConfig(dsheet, packName, tab)
                     ic:EnableMousePassthrough(state)
                 end
 
-                if WEPS.BypassRandomWeapons[save_role] and table.HasValue(WEPS.BypassRandomWeapons[save_role], table_index) then
+                if weaponChanges.weapons[save_role].NoRandoms and table.HasValue(weaponChanges.weapons[save_role].NoRandoms, table_index) then
                     local norandom = vgui.Create("DImage")
                     norandom:SetImage("icon16/cart_put.png")
                     norandom.PerformLayout = function(s)

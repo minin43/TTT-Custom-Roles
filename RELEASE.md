@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.1.11 (Beta)
+**Released:**
+
+### Fixes
+- Fixed role weapon state not showing accurately in the weapons tab of the `ttt_rolepacks` dialog
+
 ## 2.1.10 (Beta)
 **Released: April 13th, 2024**
 
