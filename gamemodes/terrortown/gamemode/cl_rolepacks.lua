@@ -749,12 +749,14 @@ local function BuildWeaponConfig(dsheet, packName, tab)
 
                 local state_icon = nil
                 local tooltip = nil
-                if weaponChanges.weapons[save_role].Buyables and table.HasValue(weaponChanges.weapons[save_role].Buyables, table_index) then
-                    state_icon = "cart_add.png"
-                    tooltip = "roleweapons_buyable_tooltip"
-                elseif weaponChanges.weapons[save_role].Excludes and table.HasValue(weaponChanges.weapons[save_role].Excludes, table_index) then
-                    state_icon = "cart_delete.png"
-                    tooltip = "roleweapons_exclude_tooltip"
+                if weaponChanges.weapons[save_role] then
+                    if weaponChanges.weapons[save_role].Buyables and table.HasValue(weaponChanges.weapons[save_role].Buyables, table_index) then
+                        state_icon = "cart_add.png"
+                        tooltip = "roleweapons_buyable_tooltip"
+                    elseif weaponChanges.weapons[save_role].Excludes and table.HasValue(weaponChanges.weapons[save_role].Excludes, table_index) then
+                        state_icon = "cart_delete.png"
+                        tooltip = "roleweapons_exclude_tooltip"
+                    end
                 end
 
                 if state_icon ~= nil then
@@ -771,7 +773,7 @@ local function BuildWeaponConfig(dsheet, packName, tab)
                     ic:EnableMousePassthrough(state)
                 end
 
-                if weaponChanges.weapons[save_role].NoRandoms and table.HasValue(weaponChanges.weapons[save_role].NoRandoms, table_index) then
+                if weaponChanges.weapons[save_role] and weaponChanges.weapons[save_role].NoRandoms and table.HasValue(weaponChanges.weapons[save_role].NoRandoms, table_index) then
                     local norandom = vgui.Create("DImage")
                     norandom:SetImage("icon16/cart_put.png")
                     norandom.PerformLayout = function(s)
@@ -945,7 +947,7 @@ local function BuildWeaponConfig(dsheet, packName, tab)
         end
 
         if not weaponChanges.weapons[save_role] then
-            weaponChanges.weapons[save_role] = {Buyables = {}, Excludes = {}, NoRandoms = {}}
+            weaponChanges.weapons[save_role] = {Buyables = {}, Excludes = {}, NoRandoms = {}, Loadouts = {}}
         end
 
         if dradioinclude:GetChecked() then
@@ -1040,8 +1042,7 @@ local function BuildWeaponConfig(dsheet, packName, tab)
         UpdateButtonState()
     end
 
-    dsearchrole.OnSelect = function(pnl, index, label, data)
-        role = data
+    local function RefreshEquipmentList()
         if role <= ROLE_NONE then
             dlist:Clear()
             dlist.OnActivePanelChanged(dlist, nil, false)
@@ -1055,9 +1056,15 @@ local function BuildWeaponConfig(dsheet, packName, tab)
         end
     end
 
+    dsearchrole.OnSelect = function(pnl, index, label, data)
+        role = data
+        RefreshEquipmentList()
+    end
+
     dsaverole.OnSelect = function(pnl, index, label, data)
         save_role = data
         UpdateButtonState()
+        RefreshEquipmentList()
 
         local new = dlist.SelectedPanel
         if not new or not new.item then return end
