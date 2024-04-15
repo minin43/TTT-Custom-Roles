@@ -233,6 +233,20 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
                     ic:EnableMousePassthrough(norandom)
                 end
 
+                if WEPS.LoadoutWeapons[save_role] and table.HasValue(WEPS.LoadoutWeapons[save_role], table_index) then
+                    local loadout = vgui.Create("DImage")
+                    loadout:SetImage("icon16/cart_go.png")
+                    loadout.PerformLayout = function(s)
+                        s:AlignBottom(3)
+                        s:CenterHorizontal()
+                        s:SetSize(16, 16)
+                    end
+                    loadout:SetTooltip(GetTranslation("roleweapons_loadout_tooltip"))
+
+                    ic:AddLayer(loadout)
+                    ic:EnableMousePassthrough(loadout)
+                end
+
                 ic:SetIconSize(itemSize)
                 ic:SetIcon(item.material)
             elseif item.model then
@@ -310,14 +324,14 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
     end
 
     local dconfirm = vgui.Create("DButton", droleweapons)
-    dconfirm:SetPos(w - 30 - bw, dih + dsearchheight + 3)
-    dconfirm:SetSize(bw, bh)
+    dconfirm:SetPos(w - 30 - bw, dih + dsearchheight + bh + 6)
+    dconfirm:SetSize(bw / 2 - 3, bh)
     dconfirm:SetDisabled(true)
     dconfirm:SetText(GetTranslation("roleweapons_confirm"))
 
     local dcancel = vgui.Create("DButton", droleweapons)
-    dcancel:SetPos(w - 30 - bw, dih + dsearchheight + bh + 6)
-    dcancel:SetSize(bw, bh)
+    dcancel:SetPos(w - 30 - bw / 2 + 3, dih + dsearchheight + bh + 6)
+    dcancel:SetSize(bw / 2 - 3, bh)
     dcancel:SetDisabled(false)
     dcancel:SetText(GetTranslation("close"))
     dcancel.DoClick = function() dframe:Close() end
@@ -353,16 +367,24 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
     dradioexclude:SetDisabled(true)
 
     local dradionorandom = vgui.Create("DCheckBoxLabel", droleweapons)
-    dradionorandom:SetPos(w - 30 - bw, dih + (dradiopadding * 2))
+    dradionorandom:SetPos(w - 30 - bw, dih)
     dradionorandom:SetText(GetTranslation("roleweapons_option_norandom"))
     dradionorandom:SetTooltip(GetTranslation("roleweapons_option_norandom_tooltip"))
     dradionorandom:SizeToContents()
     dradionorandom:SetTextColor(COLOR_WHITE)
     dradionorandom:SetDisabled(true)
 
+    local dradioloadout = vgui.Create("DCheckBoxLabel", droleweapons)
+    dradioloadout:SetPos(w - 30 - bw, dih + dradioh + dradiopadding)
+    dradioloadout:SetText(GetTranslation("roleweapons_option_loadout"))
+    dradioloadout:SetTooltip(GetTranslation("roleweapons_option_loadout_tooltip"))
+    dradioloadout:SizeToContents()
+    dradioloadout:SetTextColor(COLOR_WHITE)
+    dradioloadout:SetDisabled(true)
+
     local function UpdateButtonState()
         local valid = role > ROLE_NONE and save_role > ROLE_NONE
-        if valid and not dradionone:GetChecked() and not dradioinclude:GetChecked() and not dradioexclude:GetChecked() and not dradionorandom:GetChecked() then
+        if valid and not dradionone:GetChecked() and not dradioinclude:GetChecked() and not dradioexclude:GetChecked() and not dradionorandom:GetChecked() and not dradioloadout:GetChecked() then
             valid = false
         end
 
@@ -371,6 +393,7 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
         dradioinclude:SetDisabled(not valid)
         dradioexclude:SetDisabled(not valid)
         dradionorandom:SetDisabled(not valid)
+        dradioloadout:SetDisabled(not valid)
     end
 
     local function UpdateRadioButtonState(item)
@@ -386,6 +409,7 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
             end
 
             dradionorandom:SetValue(WEPS.BypassRandomWeapons[save_role] and table.HasValue(WEPS.BypassRandomWeapons[save_role], weap_class))
+            dradioloadout:SetValue(WEPS.LoadoutWeapons[save_role] and table.HasValue(WEPS.LoadoutWeapons[save_role], weap_class))
         else
             local name = StringLower(item.name)
             if WEPS.BuyableWeapons[save_role] and table.HasValue(WEPS.BuyableWeapons[save_role], name) then
@@ -397,6 +421,7 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
             end
 
             dradionorandom:SetValue(WEPS.BypassRandomWeapons[save_role] and table.HasValue(WEPS.BypassRandomWeapons[save_role], name))
+            dradioloadout:SetValue(WEPS.LoadoutWeapons[save_role] and table.HasValue(WEPS.LoadoutWeapons[save_role], name))
         end
     end
 
@@ -430,6 +455,11 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
         end
     end
     dradionorandom.OnChange = function(pnl, val)
+        if val then
+            UpdateButtonState()
+        end
+    end
+    dradioloadout.OnChange = function(pnl, val)
         if val then
             UpdateButtonState()
         end
@@ -507,6 +537,7 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
         local includeSelected = dradioinclude:GetChecked()
         local excludeSelected = dradioexclude:GetChecked()
         local noRandomSelected = dradionorandom:GetChecked()
+        local loadoutSelected = dradioloadout:GetChecked()
 
         local id
         if ItemIsWeapon(choice) then
@@ -522,6 +553,7 @@ local function BuildRoleWeapons(dsheet, dframe, itemSize, m, dlistw, dlisth, diw
         net.WriteBool(includeSelected)
         net.WriteBool(excludeSelected)
         net.WriteBool(noRandomSelected)
+        net.WriteBool(loadoutSelected)
         net.SendToServer()
 
         -- Update the list if we just updated the role we're already looking at

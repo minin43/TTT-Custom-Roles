@@ -1,5 +1,15 @@
 # Release Notes
 
+## 2.1.11 (Beta)
+**Released: April 15th, 2024**
+
+### Additions
+- Added ability to add weapons and equipment to a role's loadout using the `ttt_roleweapons` system or the weapons tab within `ttt_rolepacks`
+
+### Fixes
+- Fixed role weapon state not showing accurately in the weapons tab of the `ttt_rolepacks` dialog
+- Fixed minor typo in the informant scanner weapon's help text
+
 ## 2.1.10 (Beta)
 **Released: April 13th, 2024**
 
@@ -95,11 +105,11 @@ Includes beta update [2.1.6](#216-beta).
 
 ### Additions
 - Added option to have players who use the spongifier be fully healed after becoming the sponge (disabled by default)
-- Added the option for the Tracker to have the tracking radar as part of their loadout (disabled by default)
+- Added the option for the tracker to have the tracking radar as part of their loadout (disabled by default)
 
 ### Changes
 - Changed how jester and sponge win logic is performed to fix compatibility with other addons that occur on round end
-- Changed player color generation for the Medium and the Tracker to use the golden ratio so that colors are not too similar
+- Changed player color generation for the medium and the tracker to use the golden ratio so that colors are not too similar
 
 ### Fixes
 - Fixed player who becomes the new swapper not getting any role weapons the swapper may have (like the spongifier)

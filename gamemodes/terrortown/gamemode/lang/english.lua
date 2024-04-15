@@ -1180,6 +1180,8 @@ L.roleweapons_option_exclude = "Exclude"
 L.roleweapons_option_exclude_tooltip = "Mark this weapon as explicitly NOT buyable"
 L.roleweapons_option_norandom = "No Random"
 L.roleweapons_option_norandom_tooltip = "Ensure this weapon stays in the shop, regardless of randomization"
+L.roleweapons_option_loadout = "Loadout"
+L.roleweapons_option_loadout_tooltip = "Add this to the role's loadout, giving it to them for free each round"
 L.roleweapons_select_searchrole = "-Search Role-"
 L.roleweapons_select_searchrole_tooltip = "Which role shop to search within"
 L.roleweapons_select_saverole = "-Save Role-"
@@ -1195,6 +1197,7 @@ L.roleweapons_command_reload_desc = "Reloads the configurations from the server'
 L.roleweapons_buyable_tooltip = "Buyable"
 L.roleweapons_exclude_tooltip = "Excluded"
 L.roleweapons_norandom_tooltip = "Randomization Bypassed"
+L.roleweapons_loadout_tooltip = "In Loadout"
 
 -- Role Packs Configuration
 L.rolepacks_title = "Role Packs Configuration"

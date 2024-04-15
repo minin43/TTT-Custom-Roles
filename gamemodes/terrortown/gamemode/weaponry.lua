@@ -23,6 +23,9 @@ local PlayerIterator = player.Iterator
 local IsEquipment = WEPS.IsEquipment
 local StringLower = string.lower
 local StringSub = string.sub
+local TableCopy = table.Copy
+local TableHasValue = table.HasValue
+local TableInsert = table.insert
 
 -- Prevent players from picking up multiple weapons of the same type etc
 function GM:PlayerCanPickupWeapon(ply, wep)
@@ -238,6 +241,50 @@ function GM:PlayerLoadout(ply)
 
             -- hand out weaponry
             GiveLoadoutWeapons(ply)
+
+            -- Gather the list of extra loadout weapons for this role
+            local role = ply:GetRole()
+            local mergedLoadoutWeapons = TableCopy(WEPS.LoadoutWeapons[role] or {})
+            local packName = GetConVar("ttt_role_pack"):GetString()
+            if #packName > 0 then
+                for _, v in pairs(WEPS.RolePackLoadoutWeapons[role] or {}) do
+                    if not TableHasValue(mergedLoadoutWeapons, v) then
+                        TableInsert(mergedLoadoutWeapons, v)
+                    end
+                end
+            end
+
+            -- Give each one to the player
+            for _, v in ipairs(mergedLoadoutWeapons) do
+                local isequip = false
+                local id_num = nil
+                if weapons.GetStored(v) then
+                    if not ply:HasWeapon(v) and ply:CanCarryType(WEPS.TypeForWeapon(v)) then
+                        ply:Give(v)
+                    else
+                        continue
+                    end
+                else
+                    isequip = true
+                    local equip = GetEquipmentItemByName(v)
+                    if equip ~= nil then
+                        id_num = tonumber(equip.id)
+                        ply:GiveEquipmentItem(equip.id)
+                    else
+                        continue
+                    end
+                end
+
+                -- Also let them know they "bought" this item so hooks are called
+                net.Start("TTT_BoughtItem")
+                net.WriteBit(isequip)
+                if id_num then
+                    net.WriteUInt(id_num, 32)
+                else
+                    net.WriteString(v)
+                end
+                net.Send(ply)
+            end
 
             GiveLoadoutSpecial(ply)
 
@@ -766,6 +813,7 @@ function WEPS.HandleRoleEquipment(ply)
         local roleBuyables = {}
         local roleExcludes = {}
         local roleNoRandoms = {}
+        local roleLoadouts = {}
         -- Check for the JSON file first and use that if it exists
         if file.Exists("roleweapons/" .. name .. ".json", "DATA") then
             local roleJson = file.Read("roleweapons/" .. name .. ".json", "DATA")
@@ -775,6 +823,7 @@ function WEPS.HandleRoleEquipment(ply)
                     roleBuyables = roleData.Buyables or {}
                     roleExcludes = roleData.Excludes or {}
                     roleNoRandoms = roleData.NoRandoms or {}
+                    roleLoadouts = roleData.Loadouts or {}
                 end
             end
         -- Otherwise use the old text files and also convert them to a JSON file
@@ -815,7 +864,8 @@ function WEPS.HandleRoleEquipment(ply)
                 local roleData = {
                     Buyables = roleBuyables,
                     Excludes = roleExcludes,
-                    NoRandoms = roleNoRandoms
+                    NoRandoms = roleNoRandoms,
+                    Loadouts = {}
                 }
                 local roleJson = util.TableToJSON(roleData)
                 file.Write("roleweapons/" .. name .. ".json", roleJson)
@@ -836,6 +886,7 @@ function WEPS.HandleRoleEquipment(ply)
         WEPS.BuyableWeapons[id] = roleBuyables
         WEPS.ExcludeWeapons[id] = roleExcludes
         WEPS.BypassRandomWeapons[id] = roleNoRandoms
+        WEPS.LoadoutWeapons[id] = roleLoadouts
 
         if id >= ROLE_EXTERNAL_START and ROLE_SHOP_ITEMS[id] then
             for _, v in pairs(ROLE_SHOP_ITEMS[id]) do
@@ -844,12 +895,13 @@ function WEPS.HandleRoleEquipment(ply)
             end
         end
 
-        if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 then
+        if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 or #roleLoadouts > 0 then
             net.Start("TTT_BuyableWeapons")
                 net.WriteInt(id, 16)
                 net.WriteTable(roleBuyables, true)
                 net.WriteTable(roleExcludes, true)
                 net.WriteTable(roleNoRandoms, true)
+                net.WriteTable(roleLoadouts, true)
             if ply then
                 net.Send(ply)
             else
@@ -891,6 +943,7 @@ net.Receive("TTT_ConfigureRoleWeapons", function(len, ply)
     local includeSelected = net.ReadBool()
     local excludeSelected = net.ReadBool()
     local noRandomSelected = net.ReadBool()
+    local loadoutSelected = net.ReadBool()
     local roleName = StringLower(ROLE_STRINGS_RAW[role])
 
     -- Ensure directories exist
@@ -920,8 +973,12 @@ net.Receive("TTT_ConfigureRoleWeapons", function(len, ply)
         roleData = {
             Buyables = {},
             Excludes = {},
-            NoRandoms = {}
+            NoRandoms = {},
+            Loadouts = {}
         }
+    -- This was added after the other three, so make sure it exists on load
+    elseif not roleData.Loadouts then
+        roleData.Loadouts = {}
     end
 
     -- Update tables
@@ -961,12 +1018,24 @@ net.Receive("TTT_ConfigureRoleWeapons", function(len, ply)
         table.insert(roleData.NoRandoms, id)
     end
 
+    local loadout = table.HasValue(roleData.Loadouts, id)
+    if not loadoutSelected then
+        if loadout then
+            -- Remove the entry from the table
+            table.RemoveByValue(roleData.Loadouts, id)
+            -- Make the table have sequential keys again
+            roleData.Loadouts = table.ClearKeys(roleData.Loadouts)
+        end
+    elseif not loadout then
+        table.insert(roleData.Loadouts, id)
+    end
+
     -- Save the updated file to the disk
     local roleJson = util.TableToJSON(roleData)
     file.Write(rolePath, roleJson)
 
     -- Update tables
-    WEPS.UpdateWeaponLists(role, id, includeSelected, excludeSelected, noRandomSelected)
+    WEPS.UpdateWeaponLists(role, id, includeSelected, excludeSelected, noRandomSelected, loadoutSelected)
 
     -- Send list update to client
     net.Start("TTT_UpdateBuyableWeapons")
@@ -975,5 +1044,6 @@ net.Receive("TTT_ConfigureRoleWeapons", function(len, ply)
     net.WriteBool(includeSelected)
     net.WriteBool(excludeSelected)
     net.WriteBool(noRandomSelected)
+    net.WriteBool(loadoutSelected)
     net.Broadcast()
 end)
