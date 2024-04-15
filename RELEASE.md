@@ -8,6 +8,7 @@
 
 ### Fixes
 - Fixed role weapon state not showing accurately in the weapons tab of the `ttt_rolepacks` dialog
+- Fixed minor typo in the informant scanner weapon's help text
 
 ## 2.1.10 (Beta)
 **Released: April 13th, 2024**
