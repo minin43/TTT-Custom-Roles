@@ -3,7 +3,7 @@ AddCSLuaFile()
 local hook = hook
 local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 if CLIENT then
     SWEP.PrintName = "Spongifier"
@@ -64,7 +64,7 @@ if SERVER then
     end
 
     function SWEP:OnDefibStart(ply, body, bone)
-        for _, p in ipairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p == ply then continue end
             p:QueueMessage(MSG_PRINTCENTER, ply:Nick() .. " is converting themselves to be " .. ROLE_STRINGS_EXT[ROLE_SPONGE])
         end

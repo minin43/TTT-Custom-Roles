@@ -3,7 +3,7 @@ AddCSLuaFile()
 local hook = hook
 local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 ------------------
 -- ROLE CONVARS --
@@ -53,7 +53,7 @@ ROLE_SELECTION_PREDICATE[ROLE_MARSHAL] = function()
     if not marshal_prevent_deputy:GetBool() then return true end
 
     -- Don't allow the marshal to spawn if there's already a deputy or impersonator
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsDeputy() or p:IsImpersonator() then
             return false
         end

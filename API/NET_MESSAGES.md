@@ -11,7 +11,7 @@ Adds a footstep to the list's list of footsteps to show.\
 *Realm:* Client\
 *Added in:* 1.0.0\
 *Parameters:*
-- *Entity* - The player whose footsteps are being recorded
+- *Player* - The player whose footsteps are being recorded *(Changed from Entity to Player in 2.1.10)*
 - *Vector* - The position to place the footsteps at
 - *Angle* - The angle to place the footsteps with
 - *Bit* - Which foot's step is currently being recorded (0 = Left, 1 = Right)

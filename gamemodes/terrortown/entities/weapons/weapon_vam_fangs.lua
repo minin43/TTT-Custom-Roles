@@ -209,7 +209,7 @@ function SWEP:SecondaryAttack()
 
         if SERVER then
             net.Start("TTT_Vampire_Fade")
-            net.WriteEntity(self:GetOwner())
+                net.WritePlayer(self:GetOwner())
             net.Broadcast()
         end
     end
@@ -601,7 +601,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_Vampire_Fade", function()
-        local ply = net.ReadEntity()
+        local ply = net.ReadPlayer()
         if not IsValid(ply) or ply:IsSpec() or not ply:Alive() then return end
 
         local pos = ply:GetPos() + Vector(0, 0, 10)

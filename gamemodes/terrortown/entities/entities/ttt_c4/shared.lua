@@ -5,7 +5,6 @@ local concommand = concommand
 local draw = draw
 local ents = ents
 local hook = hook
-local ipairs = ipairs
 local IsValid = IsValid
 local math = math
 local net = net
@@ -14,6 +13,8 @@ local surface = surface
 local table = table
 local timer = timer
 local util = util
+
+local PlayerIterator = player.Iterator
 
 if SERVER then
     AddCSLuaFile("cl_init.lua")
@@ -183,7 +184,7 @@ function ENT:SphereDamage(dmgowner, center, radius)
     local d
     local diff
     local dmg
-    for _, ent in ipairs(player.GetAll()) do
+    for _, ent in PlayerIterator() do
         if IsValid(ent) and ent:Team() == TEAM_TERROR then
 
             -- dot of the difference with itself is distance squared
@@ -295,7 +296,7 @@ function ENT:IsDetectiveNear()
     local r = self.DetectiveNearRadius ^ 2
     local d
     local diff
-    for _, ent in ipairs(player.GetAll()) do
+    for _, ent in PlayerIterator() do
         if IsValid(ent) and ent:IsActiveDetectiveLike() then
             -- dot of the difference with itself is distance squared
             diff = center - ent:GetPos()

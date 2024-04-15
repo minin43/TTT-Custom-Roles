@@ -2,12 +2,13 @@ AddCSLuaFile()
 
 local hook = hook
 local net = net
-local pairs = pairs
 local player = player
 local surface = surface
 local string = string
 local table = table
 local util = util
+
+local PlayerIterator = player.Iterator
 
 if CLIENT then
     SWEP.PrintName = "Brain Washing Device"
@@ -66,15 +67,15 @@ if SERVER then
         if ply:IsTraitor() and CORPSE.GetFound(body, false) == true then
             local plys = {}
 
-            for _, v in pairs(player.GetAll()) do
+            for _, v in PlayerIterator() do
                 if not v:IsTraitor() then
                     table.insert(plys, v)
                 end
             end
 
             net.Start("TTT_Hypnotised_Hide")
-            net.WriteEntity(ply)
-            net.WriteBool(true)
+                net.WritePlayer(ply)
+                net.WriteBool(true)
             net.Send(plys)
         end
 
@@ -85,8 +86,8 @@ if SERVER then
         hook.Call("TTTPlayerRoleChangedByItem", nil, owner, ply, self)
 
         net.Start("TTT_Hypnotised")
-        net.WriteString(ply:Nick())
-        net.WriteString(owner:SteamID64())
+            net.WriteString(ply:Nick())
+            net.WriteString(owner:SteamID64())
         net.Broadcast()
 
         ply:SpawnForRound(true)
@@ -108,7 +109,10 @@ if SERVER then
             ply:SetRole(ROLE_TRAITOR)
         end
         ply:StripRoleWeapons()
-        ply:QueueMessage(MSG_PRINTCENTER, "You have been brainwashed and are now a traitor.")
+        ply:QueueMessage(MSG_PRINTCENTER, "You have been brainwashed and are now " .. ROLE_STRINGS_EXT[ROLE_TRAITOR] .. ".")
+        if GetConVar("ttt_hypnotist_brainwash_muted"):GetBool() then
+            ply:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
+        end
         SetRoleHealth(ply)
 
         SafeRemoveEntity(body)
@@ -134,7 +138,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_Hypnotised_Hide", function()
-        local hply = net.ReadEntity()
+        local hply = net.ReadPlayer()
         hply.HypnotisedHide = net.ReadBool()
     end)
 
@@ -144,7 +148,7 @@ if CLIENT then
     end)
 
     hook.Add("TTTEndRound", "RemoveHypnotisedHide", function()
-        for _, v in pairs(player.GetAll()) do v.HypnotisedHide = nil end
+        for _, v in PlayerIterator() do v.HypnotisedHide = nil end
     end)
 
     local oldScoreGroup = ScoreGroup

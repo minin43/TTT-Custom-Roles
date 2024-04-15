@@ -1,11 +1,11 @@
 local halo = halo
 local hook = hook
 local IsValid = IsValid
-local pairs = pairs
+local player = player
 local string = string
 
 local RemoveHook = hook.Remove
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -125,7 +125,7 @@ local function EnableAssassinTargetHighlights()
         if not target_sid64 or #target_sid64 == 0 then return end
 
         local target = nil
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if IsValid(v) and v:IsActive() and v ~= client and v:SteamID64() == target_sid64 then
                 target = v
                 break

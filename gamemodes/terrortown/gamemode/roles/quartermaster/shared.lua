@@ -15,6 +15,10 @@ TableInsert(ROLE_CONVARS[ROLE_QUARTERMASTER], {
     cvar = "ttt_quartermaster_limited_loot",
     type = ROLE_CONVAR_TYPE_BOOL
 })
+TableInsert(ROLE_CONVARS[ROLE_QUARTERMASTER], {
+    cvar = "ttt_quartermaster_set_crate_owner",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
 
 -------------------
 -- ROLE FEATURES --

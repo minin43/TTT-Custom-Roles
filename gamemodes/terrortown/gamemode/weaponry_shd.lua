@@ -50,15 +50,18 @@ end
 WEPS.BuyableWeapons = { }
 WEPS.ExcludeWeapons = { }
 WEPS.BypassRandomWeapons = { }
+WEPS.LoadoutWeapons = { }
 
 WEPS.RolePackBuyableWeapons = { }
 WEPS.RolePackExcludeWeapons = { }
 WEPS.RolePackBypassRandomWeapons = { }
+WEPS.RolePackLoadoutWeapons = { }
 
 function WEPS.ClearWeaponsLists()
     TableEmpty(WEPS.BuyableWeapons)
     TableEmpty(WEPS.ExcludeWeapons)
     TableEmpty(WEPS.BypassRandomWeapons)
+    TableEmpty(WEPS.LoadoutWeapons)
 end
 if CLIENT then net.Receive("TTT_ClearRoleWeapons", WEPS.ClearWeaponsLists) end
 
@@ -73,6 +76,9 @@ function WEPS.PrepWeaponsLists(role)
     if not WEPS.BypassRandomWeapons[role] then
         WEPS.BypassRandomWeapons[role] = {}
     end
+    if not WEPS.LoadoutWeapons[role] then
+        WEPS.LoadoutWeapons[role] = {}
+    end
     if not WEPS.RolePackBuyableWeapons[role] then
         WEPS.RolePackBuyableWeapons[role] = {}
     end
@@ -82,12 +88,15 @@ function WEPS.PrepWeaponsLists(role)
     if not WEPS.RolePackBypassRandomWeapons[role] then
         WEPS.RolePackBypassRandomWeapons[role] = {}
     end
+    if not WEPS.RolePackLoadoutWeapons[role] then
+        WEPS.RolePackLoadoutWeapons[role] = {}
+    end
     if not EquipmentItems[role] then
         EquipmentItems[role] = {}
     end
 end
 
-function WEPS.UpdateWeaponLists(role, weapon, includeSelected, excludeSelected, noRandomSelected)
+function WEPS.UpdateWeaponLists(role, weapon, includeSelected, excludeSelected, noRandomSelected, loadoutSelected)
     WEPS.PrepWeaponsLists(role)
     if includeSelected then
         if not TableHasValue(WEPS.BuyableWeapons[role], weapon) then
@@ -110,7 +119,14 @@ function WEPS.UpdateWeaponLists(role, weapon, includeSelected, excludeSelected, 
     else
         TableRemoveByValue(WEPS.BypassRandomWeapons[role], weapon)
     end
-    CallHook("TTTRoleWeaponUpdated", nil, role, weapon, includeSelected, excludeSelected, noRandomSelected)
+    if loadoutSelected then
+        if not TableHasValue(WEPS.LoadoutWeapons[role], weapon) then
+            TableInsert(WEPS.LoadoutWeapons[role], weapon)
+        end
+    else
+        TableRemoveByValue(WEPS.LoadoutWeapons[role], weapon)
+    end
+    CallHook("TTTRoleWeaponUpdated", nil, role, weapon, includeSelected, excludeSelected, noRandomSelected, loadoutSelected)
 end
 
 function WEPS.ResetWeaponsCache()

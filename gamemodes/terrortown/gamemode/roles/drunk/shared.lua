@@ -4,7 +4,7 @@ local hook = hook
 local player = player
 local table = table
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 ------------------
 -- ROLE CONVARS --
@@ -91,7 +91,7 @@ hook.Add("TTTRoleSpawnsArtificially", "Drunk_TTTRoleSpawnsArtificially", functio
 
     if util.CanRoleSpawnNaturally(role) then return end
 
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsRole(role) then
             return true
         end

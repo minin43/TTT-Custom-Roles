@@ -7,7 +7,7 @@ local player = player
 local table = table
 local ents = ents
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local CreateEntity = ents.Create
 local FindEntsByClass = ents.FindByClass
 
@@ -25,6 +25,7 @@ local medium_spirit_color = GetConVar("ttt_medium_spirit_color")
 local medium_dead_notify = GetConVar("ttt_medium_dead_notify")
 local medium_seance_time = GetConVar("ttt_medium_seance_time")
 local medium_seance_max_info = GetConVar("ttt_medium_seance_max_info")
+local medium_hide_killer_role = GetConVar("ttt_medium_hide_killer_role")
 
 -------------------
 -- ROLE FEATURES --
@@ -65,7 +66,7 @@ end)
 hook.Add("PlayerDeath", "Medium_Spirits_PlayerDeath", function(victim, infl, attacker)
     -- Create spirit for the medium
     local mediumCount = 0
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsMedium() then
             mediumCount = mediumCount + 1
         end
@@ -99,12 +100,32 @@ hook.Add("PlayerDeath", "Medium_Spirits_PlayerDeath", function(victim, infl, att
     end
 end)
 
+-- Hide the role of the player that killed the victim if there is a medium in the round and that feature is enabled
+hook.Add("TTTDeathNotifyOverride", "Medium_TTTDeathNotifyOverride", function(victim, inflictor, attacker, reason, killerName, role)
+    if GetRoundState() ~= ROUND_ACTIVE then return end
+    if not IsPlayer(attacker) then return end
+    if victim == attacker then return end
+    if not medium_hide_killer_role:GetBool() then return end
+
+    local medium = false
+    for _, p in PlayerIterator() do
+        if p:IsMedium() then
+            medium = true
+            break
+        end
+    end
+
+    if not medium then return end
+
+    return reason, killerName, ROLE_NONE
+end)
+
 -------------
 -- SCANNER --
 -------------
 
 hook.Add("TTTPrepareRound", "Medium_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWInt("TTTMediumSeanceStage", MEDIUM_SCANNED_NONE)
         v:SetNWInt("TTTMediumSeanceState", MEDIUM_SEANCE_IDLE)
         v:SetNWString("TTTMediumSeanceTarget", "")

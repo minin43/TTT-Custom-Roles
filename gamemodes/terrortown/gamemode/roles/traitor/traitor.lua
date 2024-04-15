@@ -1,8 +1,9 @@
 AddCSLuaFile()
 
 local hook = hook
+local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -19,7 +20,7 @@ hook.Add("SetupPlayerVisibility", "Traitors_SetupPlayerVisibility", function(ply
     if not ply:ShouldBypassCulling() then return end
     if not ply:IsActiveTraitorTeam() then return end
 
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if not v:IsActiveTraitorTeam() and not v:IsActiveGlitch() then continue end
         if ply:TestPVS(v) then continue end
 
@@ -39,7 +40,7 @@ hook.Add("TTTBeginRound", "Traitors_TTTBeginRound", function()
     if credit_timer <= 0 then return end
 
     timer.Create("TraitorCreditTimer", credit_timer, 0, function()
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if v:IsActiveTraitorTeam() then
                 v:AddCredits(1)
                 LANG.Msg(v, "credit_all", { role = ROLE_STRINGS[v:GetRole()], num = 1 })

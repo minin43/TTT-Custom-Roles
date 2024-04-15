@@ -317,6 +317,12 @@
                             <td>The amount of time in seconds the Beggar's scanner takes to use.</td>
                         </tr>
                         <tr>
+                            <td>ttt_beggar_transfer_ownership</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether the ownership of a shop item should transfer each time its picked up by a non-beggar.</td>
+                        </tr>
+                        <tr>
                             <td>ttt_beggar_update_scoreboard</td>
                             <td>0</td>
                             <td>Boolean</td>
@@ -1113,13 +1119,19 @@
                             <td>ttt_swapper_killer_health</td>
                             <td>100</td>
                             <td>Integer</td>
-                            <td>The amount of health the Swapper's killer should set to. Set to "0" to kill them.</td>
+                            <td>The amount of health the Swapper's killer should set to. Set to "0" to kill them. <i>(Only applies if <code>ttt_swapper_killer_swap</code> is enabled)</i></td>
                         </tr>
                         <tr>
                             <td>ttt_swapper_killer_max_health</td>
                             <td>0</td>
                             <td>Integer</td>
-                            <td>The maximum health value to set on the Swapper's killer. Set to "0" to use the Swapper's default.</td>
+                            <td>The maximum health value to set on the Swapper's killer. Set to "0" to use the Swapper's default. <i>(Only applies if <code>ttt_swapper_killer_swap</code> is enabled)</i></td>
+                        </tr>
+                        <tr>
+                            <td>ttt_swapper_killer_swap</td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether to the swapper's killer should become the new swapper.</td>
                         </tr>
                         <tr>
                             <td>ttt_swapper_respawn_health</td>

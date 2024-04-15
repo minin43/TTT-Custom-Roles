@@ -1,5 +1,57 @@
 # Release Notes
 
+## 2.1.11 (Beta)
+**Released: April 15th, 2024**
+
+### Additions
+- Added ability to add weapons and equipment to a role's loadout using the `ttt_roleweapons` system or the weapons tab within `ttt_rolepacks`
+
+### Fixes
+- Fixed role weapon state not showing accurately in the weapons tab of the `ttt_rolepacks` dialog
+- Fixed minor typo in the informant scanner weapon's help text
+
+## 2.1.10 (Beta)
+**Released: April 13th, 2024**
+
+### Additions
+- Added ability to set whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar) (disabled by default)
+- Added ability to have weapons transfer ownership each time they are picked up by a non-beggar, meaning the beggar will join the team of the last player who picked up the weapon rather than the person who originally bought it (disabled by default)
+- Added ability to control whether a phantom respawns when their killer is killed (enabled by default)
+- Added ability for players revived by the paramedic to be muted for the remainder of the round (disabled by default)
+- Added ability for players brainwashed by the hypnotist to be muted for the remainder of the round (disabled by default)
+- Added ability for the sapper to be a special innocent instead of a special detective (disabled by default)
+- Added ability to control whether the shadow target can be a traitor or a monster (enabled by default)
+- Added ability for a player to control what unit distances are displayed in (defaults to meters)
+- Added ability for the role of a player's killer to be hidden when there is a medium in the round (disabled by default)
+- Added ability to control whether the swapper's killer becomes the new swapper (enabled by default)
+- Added ability to control the hive mind's chat duplication (all hive mind chat duplication is enabled by default)
+- Added ability for hive mind to block environmental damage (disabled by default)
+- Added icons to show role weapon state (Buyable, Exclude, No Random) in the `ttt_roleweapons` dialog and the weapons tab of the `ttt_rolepacks` dialog
+- Added ability to copy/merge a role weapon configuration from one role to another via the new `ttt_roleweapons copy FROM TO [OVERWRITE]` command
+- Added ability to control whether the role of a player's killer is shown in death notification messages (enabled by default)
+- Added ability to control how glitch affects traitor chat (default is current behavior where all traitor chat is blocked when there is a glitch in the round)
+
+### Changes
+- Changed phantom round start popup message to reflect which features are currently enabled
+
+### Fixes
+- Fixed vindicator who's killer is made into their lover by a cupid not being able to win with their new lover
+- Fixed clown not being able to win with their cupid lover
+- Fixed mad scientist zombifying players sometimes giving them their previous role weapons instead of zombie claws
+- Fixed conflict between marshal and roles with custom round popup string logic
+- Fixed a hive mind using the console kill command causing all hive minds to die
+
+### Developer
+- Added new semi-automated convar deprecation system
+- Added new `TTTShowSearchScreen` hook to allow changing body search data or replacing the dialog (Thanks @wget!)
+- Updated to use `net.Read/WritePlayer` where appropriate
+- Updated many places in the codebase to use `player.Iterator`
+- Updated to use sequential `net.Read/WriteTable` where appropriate
+- Changed EquipmentItems and GenerateNewEquipmentID to be defined earlier so custom roles can use them on initialization
+- Ported "TTT: Use new game.CleanUpMap argument"
+- Ported "TTT: Use net.Read/WritePlayer"
+- Ported "TTT: Use player.Iterator"
+
 ## 2.1.9
 **Released: March 30th, 2024**
 
@@ -53,11 +105,11 @@ Includes beta update [2.1.6](#216-beta).
 
 ### Additions
 - Added option to have players who use the spongifier be fully healed after becoming the sponge (disabled by default)
-- Added the option for the Tracker to have the tracking radar as part of their loadout (disabled by default)
+- Added the option for the tracker to have the tracking radar as part of their loadout (disabled by default)
 
 ### Changes
 - Changed how jester and sponge win logic is performed to fix compatibility with other addons that occur on round end
-- Changed player color generation for the Medium and the Tracker to use the golden ratio so that colors are not too similar
+- Changed player color generation for the medium and the tracker to use the golden ratio so that colors are not too similar
 
 ### Fixes
 - Fixed player who becomes the new swapper not getting any role weapons the swapper may have (like the spongifier)

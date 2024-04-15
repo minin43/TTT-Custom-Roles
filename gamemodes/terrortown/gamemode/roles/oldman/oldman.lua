@@ -4,13 +4,12 @@ local hook = hook
 local ipairs = ipairs
 local IsValid = IsValid
 local net = net
-local pairs = pairs
 local player = player
 local resource = resource
 local timer = timer
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_UpdateOldManWins")
 util.AddNetworkString("TTT_ResetOldManWins")
@@ -53,7 +52,7 @@ ROLE_ON_ROLE_ASSIGNED[ROLE_OLDMAN] = function(ply)
     local oldman_drain_health = oldman_drain_health_to:GetInt()
     if oldman_drain_health > 0 then
         timer.Create("oldmanhealthdrain", 3, 0, function()
-            for _, p in pairs(GetAllPlayers()) do
+            for _, p in PlayerIterator() do
                 if p:IsActiveOldMan() then
                     local hp = p:Health()
                     if hp > oldman_drain_health then
@@ -199,7 +198,7 @@ hook.Add("PostEntityTakeDamage", "OldMan_PostEntityTakeDamage", function(ent, dm
 end)
 
 hook.Add("TTTPrepareRound", "OldMan_TTTPrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v.damageHealth = nil
         v:SetNWBool("AdrenalineRush", false)
         v:SetNWBool("AdrenalineRushed", false)

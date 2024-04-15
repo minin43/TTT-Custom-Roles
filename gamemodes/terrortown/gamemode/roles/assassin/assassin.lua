@@ -3,11 +3,11 @@ AddCSLuaFile()
 local hook = hook
 local IsValid = IsValid
 local math = math
-local pairs = pairs
+local player = player
 local table = table
 local timer = timer
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -------------
 -- CONVARS --
@@ -59,7 +59,7 @@ local function AssignAssassinTarget(ply, start, delay)
         end
     end
 
-    for _, p in pairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:Alive() and not p:IsSpec() then
             -- Include all non-traitor detective-like players
             if p:IsDetectiveLike() and not p:IsTraitorTeam() then
@@ -111,7 +111,7 @@ local function AssignAssassinTarget(ply, start, delay)
 end
 
 local function UpdateAssassinTargets(ply)
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         local assassintarget = v:GetNWString("AssassinTarget", "")
         if v:IsAssassin() and ply:SteamID64() == assassintarget then
             -- Reset the target to clear the target overlay from the scoreboard
@@ -219,7 +219,7 @@ end)
 
 -- Clear the assassin target information when the next round starts
 hook.Add("TTTPrepareRound", "Assassin_Target_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWString("AssassinTarget", "")
         v:SetNWBool("AssassinFailed", false)
         v:SetNWBool("AssassinComplete", false)
@@ -276,7 +276,7 @@ hook.Add("SetupPlayerVisibility", "Assassin_SetupPlayerVisibility", function(ply
     if not assassin_target_vision_enabled:GetBool() and not assassin_show_target_icon:GetBool() then return end
 
     local target_sid64 = ply:GetNWString("AssassinTarget", "")
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:SteamID64() ~= target_sid64 then continue end
         if ply:TestPVS(v) then continue end
 

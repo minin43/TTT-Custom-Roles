@@ -6,7 +6,7 @@ local player = player
 local net = net
 local math = math
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_VindicatorTeamChange")
 util.AddNetworkString("TTT_VindicatorActive")
@@ -81,7 +81,7 @@ local function ActivateVindicator(vindicator, target)
         target:QueueMessage(MSG_PRINTBOTH, roleStr .. " (" .. vindicator:Nick() .. ") has respawned and is hunting you down!")
 
         if mode == VINDICATOR_ANNOUNCE_ALL then
-            for _, ply in pairs(GetAllPlayers()) do
+            for _, ply in PlayerIterator() do
                 if ply ~= vindicator and ply ~= target then
                     ply:PrintMessage(HUD_PRINTTALK, roleStr .. " (" .. vindicator:Nick() .. ") has respawned and is hunting down " .. target:Nick() .. "!")
                 end
@@ -127,7 +127,7 @@ hook.Add("PlayerDeath", "Vindicator_PlayerDeath", function(victim, infl, attacke
 
     -- If we have already checked the attacker v. victim options, we know neither are a vindicator
     -- Check if the victim is a vindicator's target
-    for _, ply in pairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         if ply:IsActiveVindicator() and victim:SteamID64() == ply:GetNWString("VindicatorTarget", "") then
             if attacker == victim and vindicator_target_suicide_success:GetBool() then
                 ply:SetNWBool("VindicatorSuccess", true)
@@ -198,7 +198,7 @@ end)
 hook.Add("TTTBeginRound", "Vindicator_TTTBeginRound", function()
     timer.Create("TTTVindicatorTimer", 0.1, 0, function()
         if vindicator_prevent_revival:GetBool() then
-            for _, v in pairs(GetAllPlayers()) do
+            for _, v in PlayerIterator() do
                 if not v:IsActiveVindicator() then continue end
 
                 local target_sid64 = v:GetNWString("VindicatorTarget", "")
@@ -228,7 +228,7 @@ end)
 hook.Add("PlayerDisconnected", "Vindicator_PlayerDisconnected", function(ply)
     local sid64 = ply:SteamID64()
 
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:GetNWString("VindicatorTarget", "") == sid64 and not v:GetNWBool("VindicatorSuccess", false) then
             v:QueueMessage(MSG_PRINTBOTH, "Your target has disconnected so you have rejoined the innocent team!")
             SetVindicatorTeam(false)
@@ -253,6 +253,10 @@ local function HandleVindicatorWinBlock(win_type)
     local target = player.GetBySteamID64(sid64)
     if not IsPlayer(target) or not target:Alive() then return win_type end
 
+    -- If the vindicator is paired with their target and they would win together, let that happen
+    local lover = vindicator:GetNWString("TTTCupidLover", "")
+    if win_type == WIN_CUPID and #lover > 0 and lover == sid64 then return win_type end
+
     return WIN_NONE
 end
 
@@ -263,7 +267,7 @@ end)
 hook.Add("TTTCheckForWin", "Vindicator_TTTCheckForWin", function()
     local vindicator_win = false
     local other_alive = false
-    for _, ply in ipairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         if ply:IsVindicator() then
             if ply:GetNWBool("VindicatorSuccess", false) then
                 vindicator_win = true
@@ -292,7 +296,7 @@ end)
 
 hook.Add("TTTPrepareRound", "Vindicator_PrepareRound", function()
     SetVindicatorTeam(false)
-    for _, ply in pairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         ply:SetNWString("VindicatorTarget", "")
         ply:SetNWBool("VindicatorSuccess", false)
         timer.Remove("VindicatorRespawn" .. ply:SteamID64())

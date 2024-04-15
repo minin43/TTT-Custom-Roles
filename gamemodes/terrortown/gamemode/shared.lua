@@ -5,6 +5,7 @@ local IsValid = IsValid
 local math = math
 local net = net
 local pairs = pairs
+local player = player
 local string = string
 local table = table
 
@@ -12,7 +13,7 @@ local FileExists = file.Exists
 local FileFind = file.Find
 local CallHook = hook.Call
 local RunHook = hook.Run
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local StringUpper = string.upper
 local StringLower = string.lower
 local StringFind = string.find
@@ -23,7 +24,7 @@ local StringSub = string.sub
 include("player_class/player_ttt.lua")
 
 -- Version string for display and function for version checks
-CR_VERSION = "2.1.9"
+CR_VERSION = "2.1.11"
 CR_BETA = false
 CR_WORKSHOP_ID = CR_BETA and "2404251054" or "2421039084"
 
@@ -1122,6 +1123,38 @@ function RegisterRole(tbl)
     hook.Call("TTTRoleRegistered", nil, roleID)
 end
 
+include("util.lua")
+
+-- Moved from equip_items_shd.lua to allow roles to generate equipment IDs on load
+
+-- This table is used by the client to show items in the equipment menu, and by
+-- the server to check if a certain role is allowed to buy a certain item.
+EquipmentItems = EquipmentItems or {}
+
+-- Special equipment IDs. Every unique piece of equipment needs its own
+-- id.
+--
+-- Use the GenerateNewEquipmentID function (see below) to get a unique ID for
+-- your equipment. This is guaranteed not to clash with other addons (as long
+-- as they use the same safe method).
+--
+-- Details you shouldn't need:
+-- The number should increase by one every time
+EQUIP_NONE = 0
+EQUIP_ARMOR = 1
+EQUIP_RADAR = 2
+EQUIP_DISGUISE = 3
+EQUIP_SPEED = 4
+EQUIP_REGEN = 5
+
+EQUIP_MAX = EQUIP_MAX or 5
+
+-- Utility function to register a new Equipment ID
+function GenerateNewEquipmentID()
+    EQUIP_MAX = EQUIP_MAX + 1
+    return EQUIP_MAX
+end
+
 local function AddRoleFiles(root)
     local rootfiles, dirs = FileFind(root .. "*", "LUA")
     for _, dir in ipairs(dirs) do
@@ -1447,7 +1480,6 @@ COLOR_PINK = Color(255, 0, 255, 255)
 COLOR_ORANGE = Color(250, 100, 0, 255)
 COLOR_OLIVE = Color(100, 100, 0, 255)
 
-include("util.lua")
 include("lang_shd.lua") -- uses some of util
 include("equip_items_shd.lua")
 
@@ -1669,7 +1701,7 @@ if SERVER then
         local mode = GetConVar("ttt_" .. cvar_role .. "_notify_mode"):GetInt()
         local play_sound = GetConVar("ttt_" .. cvar_role .. "_notify_sound"):GetBool()
         local show_confetti = GetConVar("ttt_" .. cvar_role .. "_notify_confetti"):GetBool()
-        for _, ply in pairs(GetAllPlayers()) do
+        for _, ply in PlayerIterator() do
             if ply == attacker then
                 local role_string = ROLE_STRINGS[role]
                 ply:QueueMessage(MSG_PRINTCENTER, "You killed the " .. role_string .. "!")
@@ -1679,9 +1711,9 @@ if SERVER then
 
             if play_sound or show_confetti then
                 net.Start("TTT_JesterDeathCelebration")
-                net.WriteEntity(victim)
-                net.WriteBool(play_sound)
-                net.WriteBool(show_confetti)
+                    net.WritePlayer(victim)
+                    net.WriteBool(play_sound)
+                    net.WriteBool(show_confetti)
                 net.Send(ply)
             end
         end
@@ -1690,7 +1722,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_JesterDeathCelebration", function()
-        local ent = net.ReadEntity()
+        local ent = net.ReadPlayer()
         local play_sound = net.ReadBool()
         local show_confetti = net.ReadBool()
 
@@ -1735,9 +1767,42 @@ DefaultEquipment = {
 -- Old ConVars --
 -----------------
 
---local function OldCVarWarning(oldName, newName)
---    cvars.AddChangeCallback(oldName, function(convar, oldValue, newValue)
---        RunConsoleCommand(newName, newValue)
---        ErrorNoHalt("WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
---    end)
---end
+local function AddOldCVarWarning(oldName, newName)
+    cvars.AddChangeCallback(oldName, function(convar, oldValue, newValue)
+        RunConsoleCommand(newName, newValue)
+        ErrorNoHalt("WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
+    end)
+end
+
+-- Add entries to this table in the form of: { "old_convar_name", "new_convar_name" }
+local deprecatedConVars = {}
+
+for _, c in ipairs(deprecatedConVars) do
+    -- Create the old convar with the same default value as the new one
+    local oldName = c[1]
+    local newName = c[2]
+    local newCvar = GetConVar(newName)
+    if newCvar == nil then continue end
+
+    CreateConVar(oldName, newCvar:GetString(), FCVAR_REPLICATED, "DEPRECATED! Please use \"" .. newName .. "\" instead!", newCvar:GetMin(), newCvar:GetMax())
+
+    -- Add the change warning to the old convar to warn each time it's changed
+    AddOldCVarWarning(c[1], c[2])
+end
+
+hook.Add("PlayerInitialSpawn", "ConVarDeprecation_PlayerInitialSpawn", function(ply, transition)
+    if not IsValid(ply) then return end
+    if not ply:IsAdmin() and not ply:IsSuperAdmin() then return end
+
+    for _, c in ipairs(deprecatedConVars) do
+        local oldName = c[1]
+        local newName = c[2]
+        local oldCvar = GetConVar(oldName)
+        if oldCvar == nil then continue end
+
+        -- If the old convar has a value other than the default then warn the admin
+        if oldCvar:GetDefault() ~= oldCvar:GetString() then
+            ply:PrintMessage(HUD_PRINTTALK, "[CR4TTT] WARNING: ConVar \'" .. oldName .. "\' deprecated. Use \'" .. newName .. "\' instead!\n")
+        end
+    end
+end)

@@ -487,7 +487,7 @@ Called after the role weapons configuration is loaded.\
 *Realm:* Client and Server\
 *Added in:* 1.6.17
 
-### TTTRoleWeaponUpdated(role, weapon, include, exclude, noRandom)
+### TTTRoleWeaponUpdated(role, weapon, include, exclude, noRandom, loadout)
 Called after a role weapon configuration is changed for a specific role and weapon.\
 *Realm:* Client and Server\
 *Added in:* 1.6.17\
@@ -497,6 +497,7 @@ Called after a role weapon configuration is changed for a specific role and weap
 - *include* - Whether this weapon is being added to `WEPS.BuyableWeapons`
 - *exclude* - Whether this weapon is being added to `WEPS.ExcludeWeapons`
 - *noRandom* - Whether this weapon is being added to `WEPS.BypassRandomWeapons`
+- *loadout* - Whether this weapon is being added to `WEPS.LoadoutWeapons` *(Added in 2.1.11)*
 
 ### TTTScoreboardPlayerName(ply, client, currentName)
 Called before a player's row in the scoreboard (tab menu) is shown, allowing the name to be changed.\
@@ -705,6 +706,13 @@ Called when a player buys a random item from the shop.\
 *Parameters:*
 - *client* - The player who is buying a random item
 - *item* - The random item that was selected
+
+### TTTShowSearchScreen(search)
+Called when a body search screen would be shown.\
+*Realm:* Client\
+*Added in:* 2.1.10\
+*Parameters:*
+- *search* - The body's search info
 
 ### TTTSmokeGrenadeExtinguish(ent_class, ent_pos)
 Called when a smoke grenade extinguishes a fire entity.\

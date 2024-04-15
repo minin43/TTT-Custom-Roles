@@ -1,15 +1,15 @@
 local concommand = concommand
 local hook = hook
-local ipairs = ipairs
 local IsValid = IsValid
 local net = net
+local player = player
 local table = table
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 function GetTraitors()
     local trs = {}
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsTraitorTeam() then table.insert(trs, v) end
     end
 
@@ -22,7 +22,7 @@ function CountTraitors() return #GetTraitors() end
 
 -- Send every player their role
 local function SendPlayerRoles()
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         net.Start("TTT_Role")
         net.WriteInt(v:GetRole(), 8)
         net.Send(v)
@@ -46,7 +46,7 @@ end
 
 function SendRoleList(role, ply_or_rf, pred)
     local role_ids = {}
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsRole(role) then
             if not pred or (pred and pred(v)) then
                 table.insert(role_ids, v:EntIndex())
@@ -79,13 +79,11 @@ function SendFullStateUpdate()
 end
 
 function SendRoleReset(ply_or_rf)
-    local plys = GetAllPlayers()
-
     net.Start("TTT_RoleList")
     net.WriteInt(ROLE_INNOCENT, 8)
 
-    net.WriteUInt(#plys, 8)
-    for _, v in ipairs(plys) do
+    net.WriteUInt(player.GetCount(), 8)
+    for k, v in PlayerIterator() do
         net.WriteUInt(v:EntIndex() - 1, 7)
     end
 

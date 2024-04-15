@@ -4,7 +4,7 @@ local hook = hook
 local player = player
 local table = table
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -- Initialize role features
 
@@ -12,7 +12,7 @@ ROLE_SELECTION_PREDICATE[ROLE_DEPUTY] = function()
     if not GetConVar("ttt_marshal_prevent_deputy"):GetBool() then return true end
 
     -- Don't allow the deputy to spawn if there's already a marshal
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:IsMarshal() then
             return false
         end

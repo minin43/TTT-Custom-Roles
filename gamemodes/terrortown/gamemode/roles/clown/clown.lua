@@ -7,7 +7,7 @@ local resource = resource
 local table = table
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_ClownTeamChange")
 util.AddNetworkString("TTT_ClownActivate")
@@ -46,7 +46,7 @@ local function ActivateClown(clown)
         end
     end
     net.Start("TTT_ClownActivate")
-    net.WriteEntity(clown)
+        net.WritePlayer(clown)
     net.Broadcast()
 
     -- Give the clown their shop items if purchase was delayed
@@ -74,7 +74,7 @@ hook.Add("PostPlayerDeath", "Clown_ActivationPercent_PostPlayerDeath", function(
     local total_players = 0
     local living_players = 0
     local clowns = {}
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         -- Keep track of the clowns
         if p:IsClown() then
             table.insert(clowns, p)
@@ -104,13 +104,38 @@ end)
 local function HandleClownWinBlock(win_type)
     if win_type == WIN_NONE then return win_type end
 
-    local clown = player.GetLivingRole(ROLE_CLOWN)
-    if not IsPlayer(clown) then return win_type end
+    -- Activate every clown that hasn't already been activated
+    local activated = false
+    local living_clowns = {}
+    for _, ply in PlayerIterator() do
+        if not IsPlayer(ply) then continue end
+        if not ply:Alive() or ply:IsSpec() then continue end
+        if not ply:IsClown() then continue end
+        table.insert(living_clowns, ply)
 
-    local killer_clown_active = clown:IsRoleActive()
-    if not killer_clown_active then
-        ActivateClown(clown)
+        if not ply:IsRoleActive() then
+            ActivateClown(ply)
+            activated = true
+        end
+    end
+
+    -- If we don't have any clowns then don't bother continuing
+    if #living_clowns == 0 then return win_type end
+
+    -- Block the previous win if we just activated a clown
+    if activated then
         return WIN_NONE
+    end
+
+    -- Special logic for cupid wins
+    if win_type == WIN_CUPID then
+        for _, clown in ipairs(living_clowns) do
+            -- If the clown is a lover, let the cupid/lover win pass
+            local lover = clown:GetNWString("TTTCupidLover", "")
+            if #lover > 0 then
+                return win_type
+            end
+        end
     end
 
     local traitor_alive, innocent_alive, indep_alive, monster_alive, _ = player.TeamLivingCount(true)

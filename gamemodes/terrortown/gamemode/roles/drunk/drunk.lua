@@ -12,7 +12,7 @@ local table = table
 local timer = timer
 local util = util
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_DrunkSober")
 
@@ -124,7 +124,7 @@ function plymeta:DrunkJoinLosingTeam()
     local players = 0
     local innocentHealth = 0
     local traitorHealth = 0
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if IsValid(v) and v:GetRole() ~= ROLE_NONE then
             players = players + 1
             if v:IsActiveInnocentTeam() then
@@ -342,7 +342,7 @@ function plymeta:SoberDrunk(team)
         -- If there are role options, remove any that shouldn't be used
         if #role_options > 0 then
             -- Remove any used roles
-            for _, p in ipairs(GetAllPlayers()) do
+            for _, p in PlayerIterator() do
                 if p:IsCustom() then
                     table.RemoveByValue(role_options, p:GetRole())
                 end
@@ -396,7 +396,7 @@ function plymeta:DrunkRememberRole(role, hidecenter)
 
     local mode = drunk_notify_mode:GetInt()
     if mode > 0 then
-        for _, v in pairs(GetAllPlayers()) do
+        for _, v in PlayerIterator() do
             if self ~= v then
                 if (v:IsTraitorTeam() and (mode == JESTER_NOTIFY_DETECTIVE_AND_TRAITOR or mode == JESTER_NOTIFY_TRAITOR)) or -- the enums here are the same as for the jester notifications so we can just use those
                         (v:IsDetectiveLike() and (mode == JESTER_NOTIFY_DETECTIVE_AND_TRAITOR or mode == JESTER_NOTIFY_DETECTIVE)) or
@@ -431,7 +431,7 @@ end
 ROLE_ON_ROLE_ASSIGNED[ROLE_DRUNK] = function(ply)
     SetGlobalFloat("ttt_drunk_remember", CurTime() + drunk_sober_time:GetInt())
     timer.Create("drunkremember", drunk_sober_time:GetInt(), 1, function()
-        for _, p in pairs(GetAllPlayers()) do
+        for _, p in PlayerIterator() do
             if p:IsActiveDrunk() then
                 if drunk_join_losing_team:GetBool() then
                     p:DrunkJoinLosingTeam()
@@ -441,7 +441,7 @@ ROLE_ON_ROLE_ASSIGNED[ROLE_DRUNK] = function(ply)
             elseif p:IsDrunk() and not p:Alive() and not timer.Exists("waitfordrunkrespawn") then
                 timer.Create("waitfordrunkrespawn", 0.1, 0, function()
                     local dead_drunk = false
-                    for _, p2 in pairs(GetAllPlayers()) do
+                    for _, p2 in PlayerIterator() do
                         if p2:IsActiveDrunk() then
                             if drunk_join_losing_team:GetBool() then
                                 p2:DrunkJoinLosingTeam()
@@ -495,7 +495,7 @@ hook.Add("TTTWinCheckBlocks", "Drunk_TTTWinCheckBlocks", function(win_blocks)
 end)
 
 hook.Add("TTTPrepareRound", "Drunk_PrepareRound", function()
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         v:SetNWBool("WasDrunk", false)
     end
 end)

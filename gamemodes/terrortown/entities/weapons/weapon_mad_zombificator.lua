@@ -2,12 +2,13 @@ AddCSLuaFile()
 
 local hook = hook
 local net = net
-local pairs = pairs
 local player = player
 local surface = surface
 local string = string
 local table = table
 local util = util
+
+local PlayerIterator = player.Iterator
 
 if CLIENT then
     SWEP.PrintName = "Zombification Device"
@@ -46,15 +47,15 @@ if SERVER then
         if ply:IsTraitor() and CORPSE.GetFound(body, false) == true then
             local plys = {}
 
-            for _, v in pairs(player.GetAll()) do
+            for _, v in PlayerIterator() do
                 if not v:IsTraitor() then
                     table.insert(plys, v)
                 end
             end
 
             net.Start("TTT_Zombificator_Hide")
-            net.WriteEntity(ply)
-            net.WriteBool(true)
+                net.WritePlayer(ply)
+                net.WriteBool(true)
             net.Send(plys)
         end
 
@@ -65,14 +66,14 @@ if SERVER then
         hook.Call("TTTPlayerRoleChangedByItem", nil, owner, ply, self)
 
         net.Start("TTT_Zombified")
-        net.WriteString(ply:Nick())
+            net.WriteString(ply:Nick())
         net.Broadcast()
 
+        ply:SetRole(ROLE_ZOMBIE)
         ply:SpawnForRound(true)
         ply:SetCredits(credits)
         ply:SetPos(self.Location or body:GetPos())
         ply:SetEyeAngles(Angle(0, body:GetAngles().y, 0))
-        ply:SetRole(ROLE_ZOMBIE)
         ply:StripRoleWeapons()
         ply:QueueMessage(MSG_PRINTCENTER, "You have been turned into a zombie.")
         SetRoleHealth(ply)
@@ -104,7 +105,7 @@ end
 
 if CLIENT then
     net.Receive("TTT_Zombificator_Hide", function()
-        local hply = net.ReadEntity()
+        local hply = net.ReadPlayer()
         hply.MadZomHide = net.ReadBool()
     end)
 
@@ -114,7 +115,7 @@ if CLIENT then
     end)
 
     hook.Add("TTTEndRound", "RemoveZombificatorHide", function()
-        for _, v in pairs(player.GetAll()) do v.MadZomHide = nil end
+        for _, v in PlayerIterator() do v.MadZomHide = nil end
     end)
 
     local oldScoreGroup = ScoreGroup

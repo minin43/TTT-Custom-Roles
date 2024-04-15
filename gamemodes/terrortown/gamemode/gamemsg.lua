@@ -6,11 +6,11 @@ local ipairs = ipairs
 local IsValid = IsValid
 local math = math
 local net = net
-local pairs = pairs
+local player = player
 local string = string
 local table = table
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local CallHook = hook.Call
 
 -- NOTE: most uses of the Msg functions here have been moved to the LANG
@@ -82,9 +82,9 @@ local function RoleChatMsg(sender, msg)
     if not targets then return end
 
     net.Start("TTT_RoleChat")
-    net.WriteInt(sender:GetRole(), 8)
-    net.WriteEntity(sender)
-    net.WriteString(msg)
+        net.WriteInt(sender:GetRole(), 8)
+        net.WritePlayer(sender)
+        net.WriteString(msg)
     net.Send(targets)
 end
 concommand.Add("ttt_team_chat_as_player", function(ply, cmd, args)
@@ -93,7 +93,7 @@ concommand.Add("ttt_team_chat_as_player", function(ply, cmd, args)
     local target_name = args[1]
     local text = args[2]
     local target = nil
-    for _, p in ipairs(GetAllPlayers()) do
+    for _, p in PlayerIterator() do
         if p:Nick() == target_name then
             target = p
             break
@@ -112,7 +112,7 @@ end, nil, "Sends a chat message as another player", FCVAR_CHEAT)
 
 -- Round start info popup
 function ShowRoundStartPopup()
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if IsValid(v) and v:Team() == TEAM_TERROR and v:Alive() then
             v:ConCommand("ttt_cl_startpopup")
         end
@@ -121,7 +121,7 @@ end
 
 function GetPlayerFilter(pred)
     local filter = {}
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if IsValid(v) and pred(v) then
             table.insert(filter, v)
         end
@@ -245,11 +245,7 @@ function GM:PlayerSay(ply, text, team_only)
             table.insert(filtered, 1, "[MUMBLED]")
             return table.concat(filtered, " ")
         elseif team_only and not team and (ply:IsTraitorTeam() or ply:IsDetectiveLike() or ply:IsMonsterTeam()) then
-            local hasGlitch = false
-            for _, v in pairs(GetAllPlayers()) do
-                if v:IsGlitch() then hasGlitch = true end
-            end
-            if ply:IsTraitorTeam() and hasGlitch then
+            if ply:IsTraitorTeam() and ShouldGlitchBlockCommunications() then
                 ply:PrintMessage(HUD_PRINTTALK, "The glitch is scrambling your communications")
                 return ""
             elseif ply:IsTraitor() and ply:GetNWBool("WasBeggar", false) and ShouldHideTraitorBeggar() then
@@ -318,11 +314,6 @@ function GM:PlayerCanHearPlayersVoice(listener, speaker)
 
     -- Traitors "team" chat by default, non-locationally
     if speakerCanUseTraitorVoice and not speaker.traitor_gvoice then
-        local hasGlitch = false
-        for _, v in pairs(GetAllPlayers()) do
-            if v:IsGlitch() then hasGlitch = true end
-        end
-
         if listenerCanUseTraitorVoice then
             -- Don't send voice to listener if either one of them was a beggar and the role change is not revealed
             if ((speaker:IsTraitor() and speaker:GetNWBool("WasBeggar", false)) or
@@ -336,7 +327,7 @@ function GM:PlayerCanHearPlayersVoice(listener, speaker)
                 ShouldHideTraitorBodysnatcher() then
                 return false, false
             end
-            return not hasGlitch, false
+            return not ShouldGlitchBlockCommunications(), false
         end
 
         -- unless traitor_gvoice is true, normal innos can't hear speaker
@@ -386,13 +377,8 @@ local function TraitorGlobalVoice(ply, cmd, args)
     local state = tonumber(args[1])
     ply.traitor_gvoice = (state == 1)
 
-    local hasGlitch = false
-    for _, v in pairs(GetAllPlayers()) do
-        if v:IsGlitch() then hasGlitch = true end
-    end
-
     if not ply.traitor_gvoice then
-        if hasGlitch then
+        if ShouldGlitchBlockCommunications() then
             ply:PrintMessage(HUD_PRINTTALK, "The glitch is scrambling your communications")
             return
         elseif ply:IsTraitor() and ply:GetNWBool("WasBeggar", false) and ShouldHideTraitorBeggar() then
@@ -447,8 +433,8 @@ local function LastWordsMsg(ply, words)
     local context = LastWordContext[ply.death_type] or ""
 
     net.Start("TTT_LastWordsMsg")
-    net.WriteEntity(ply)
-    net.WriteString(words .. (final and "" or "--") .. context)
+        net.WritePlayer(ply)
+        net.WriteString(words .. (final and "" or "--") .. context)
     net.Broadcast()
 end
 
@@ -547,12 +533,12 @@ local function RadioCommand(ply, cmd, args)
         end
 
         net.Start("TTT_RadioMsg")
-        net.WriteEntity(ply)
-        net.WriteString(msg_name)
-        net.WriteString(name)
-        if rag_name then
-            net.WriteString(rag_name)
-        end
+            net.WritePlayer(ply)
+            net.WriteString(msg_name)
+            net.WriteString(name)
+            if rag_name then
+                net.WriteString(rag_name)
+            end
         net.Broadcast()
     end
 end

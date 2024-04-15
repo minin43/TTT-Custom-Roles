@@ -395,13 +395,15 @@ function ROLEPACKS.SendRolePackWeapons(ply)
         local roleBuyables = WEPS.RolePackBuyableWeapons[id]
         local roleExcludes = WEPS.RolePackExcludeWeapons[id]
         local roleNoRandoms = WEPS.RolePackBypassRandomWeapons[id]
+        local roleLoadouts = WEPS.RolePackLoadoutWeapons[id]
 
-        if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 then
+        if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 or #roleLoadouts > 0 then
             net.Start("TTT_RolePackBuyableWeapons")
             net.WriteInt(id, 16)
-            net.WriteTable(roleBuyables)
-            net.WriteTable(roleExcludes)
-            net.WriteTable(roleNoRandoms)
+            net.WriteTable(roleBuyables, true)
+            net.WriteTable(roleExcludes, true)
+            net.WriteTable(roleNoRandoms, true)
+            net.WriteTable(roleLoadouts, true)
             net.Send(ply)
         end
     end
@@ -646,6 +648,7 @@ function ROLEPACKS.FillRolePackWeaponTables()
         local roleBuyables = {}
         local roleExcludes = {}
         local roleNoRandoms = {}
+        local roleLoadouts = {}
 
         local roleJson = file.Read("rolepacks/" .. rolePackName .. "/weapons/" .. name .. ".json", "DATA")
         if roleJson then
@@ -654,6 +657,7 @@ function ROLEPACKS.FillRolePackWeaponTables()
                 roleBuyables = roleData.Buyables or {}
                 roleExcludes = roleData.Excludes or {}
                 roleNoRandoms = roleData.NoRandoms or {}
+                roleLoadouts = roleData.Loadouts or {}
             end
         end
 
@@ -661,13 +665,15 @@ function ROLEPACKS.FillRolePackWeaponTables()
         WEPS.RolePackBuyableWeapons[id] = roleBuyables
         WEPS.RolePackExcludeWeapons[id] = roleExcludes
         WEPS.RolePackBypassRandomWeapons[id] = roleNoRandoms
+        WEPS.RolePackLoadoutWeapons[id] = roleLoadouts
 
-        if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 then
+        if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 or #roleLoadouts > 0 then
             net.Start("TTT_RolePackBuyableWeapons")
             net.WriteInt(id, 16)
-            net.WriteTable(roleBuyables)
-            net.WriteTable(roleExcludes)
-            net.WriteTable(roleNoRandoms)
+            net.WriteTable(roleBuyables, true)
+            net.WriteTable(roleExcludes, true)
+            net.WriteTable(roleNoRandoms, true)
+            net.WriteTable(roleLoadouts, true)
             net.Broadcast()
             handled = true
         end

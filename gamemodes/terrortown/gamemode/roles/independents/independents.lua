@@ -1,10 +1,9 @@
 AddCSLuaFile()
 
 local hook = hook
-local ipairs = ipairs
 local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 
 -----------------------
 -- PLAYER VISIBILITY --
@@ -16,7 +15,7 @@ hook.Add("SetupPlayerVisibility", "Independents_SetupPlayerVisibility", function
     if not ply:ShouldBypassCulling() then return end
     if not ply:IsActiveIndependentTeam() then return end
 
-    for _, v in ipairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if not v:IsActiveIndependentTeam() then continue end
         if ply:TestPVS(v) then continue end
 

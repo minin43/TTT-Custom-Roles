@@ -32,7 +32,9 @@ Be careful, though! If used on a bad player, they will become {animpersonator} i
 Press {menukey} to receive your equipment!]])
 end)
 
-hook.Add("TTTRolePopupParams", "Marshal_TTTRolePopupParams", function(client)
+hook.Add("TTTRolePopupParams", "Marshal_TTTRolePopupParams", function(cli)
+    if not cli:IsMarshal() then return end
+
     return { animpersonator = ROLE_STRINGS_EXT[ROLE_IMPERSONATOR] }
 end)
 

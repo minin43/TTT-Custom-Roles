@@ -1,12 +1,12 @@
 local hook = hook
 local math = math
-local pairs = pairs
+local player = player
 local table = table
 local string = string
 local ents = ents
 
 local StringUpper = string.upper
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local MathRand = math.Rand
 local MathRandom = math.random
 local TableInsert = table.insert
@@ -20,6 +20,7 @@ local medium_spirit_color = GetConVar("ttt_medium_spirit_color")
 local medium_spirit_vision = GetConVar("ttt_medium_spirit_vision")
 local medium_seance_time = GetConVar("ttt_medium_seance_time")
 local medium_seance_max_info = GetConVar("ttt_medium_seance_max_info")
+local medium_hide_killer_role = GetConVar("ttt_medium_hide_killer_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -75,7 +76,7 @@ local function ShouldSeeSpirits(ply)
     cacheTime = CurTime()
 
     -- Only allow dead people to see spirits if there is a medium
-    for _, v in pairs(GetAllPlayers()) do
+    for _, v in PlayerIterator() do
         if v:IsMedium() then
             lastResult = true
             return true
@@ -348,6 +349,11 @@ hook.Add("TTTTutorialRoleText", "Medium_TTTTutorialRoleText", function(role, tit
             end
         end
         html = html .. ".</span>"
+
+        -- Killer role hiding
+        if medium_hide_killer_role:GetBool() then
+            html = html .. "<span style='display: block; margin-top: 10px;'>When there is " .. ROLE_STRINGS_EXT[ROLE_MEDIUM] .. " in the round, players who kill others <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>will have their role hidden</span> in death notifications.</span>"
+        end
 
         return html
     end

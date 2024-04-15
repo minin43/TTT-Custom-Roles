@@ -1,11 +1,11 @@
 AddCSLuaFile()
 
+local GetConVar = GetConVar
 local hook = hook
 local IsValid = IsValid
-local GetConVar = GetConVar
-local ipairs = ipairs
+local player = player
 
-local GetAllPlayers = player.GetAll
+local PlayerIterator = player.Iterator
 local SetMDL = FindMetaTable("Entity").SetModel
 
 -------------
@@ -93,7 +93,7 @@ hook.Add("PlayerDeath", "Spy_PlayerDeath", function(victim, inflictor, attacker)
 end)
 
 local function ClearFullState()
-    for _, ply in ipairs(GetAllPlayers()) do
+    for _, ply in PlayerIterator() do
         local sid64 = ply:SteamID64()
         local playerModel = playerModels[sid64]
         if playerModel then
