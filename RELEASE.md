@@ -1,6 +1,6 @@
 # Release Notes
 
-## 2.1.11 (Beta)
+## 2.1.11
 **Released: April 15th, 2024**
 
 ### Additions
