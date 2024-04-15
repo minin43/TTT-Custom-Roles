@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.11 (Beta)
-**Released:**
+**Released: April 15th, 2024**
 
 ### Additions
 - Added ability to add weapons and equipment to a role's loadout using the `ttt_roleweapons` system or the weapons tab within `ttt_rolepacks`
