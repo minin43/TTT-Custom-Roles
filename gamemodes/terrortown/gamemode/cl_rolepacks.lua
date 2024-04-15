@@ -742,9 +742,9 @@ local function BuildWeaponConfig(dsheet, packName, tab)
                     ic:AddLayer(slot)
                     ic:EnableMousePassthrough(slot)
 
-                    table_index = StringLower(item.id)
+                    table_index = item.id
                 else
-                    table_index = StringLower(item.name)
+                    table_index = item.name
                 end
 
                 local state_icon = nil
