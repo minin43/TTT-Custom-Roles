@@ -46,7 +46,7 @@ SWEP.WeaponID              = AMMO_WTESTER
 SWEP.InLoadoutFor          = {ROLE_DETECTIVE}
 SWEP.InLoadoutForDefault   = {ROLE_DETECTIVE}
 
---SWEP.AllowDrop = false
+SWEP.AllowDrop             = true
 SWEP.AutoSpawnable         = false
 SWEP.NoSights              = true
 
@@ -75,6 +75,7 @@ if CLIENT then
     CreateClientConVar("ttt_dna_scan_repeat", 1, true, true)
 else
     local dna_scan_detectives_loadout = CreateConVar("ttt_dna_scan_detectives_loadout", "0", FCVAR_NONE, "Whether all detectives should be given a DNA scanner. If disabled, only the Detective role will get one", 0, 1)
+    local dna_scan_only_drop_on_death = CreateConVar("ttt_dna_scan_only_drop_on_death", "0", FCVAR_NONE, "Whether the DNA scanner should only be droppable when the holder dies", 0, 1)
 
     hook.Add("TTTUpdateRoleState", "DNAScanner_TTTUpdateRoleState", function()
         local wtester = weapons.GetStored("weapon_ttt_wtester")
@@ -83,6 +84,10 @@ else
         else
             wtester.InLoadoutFor = wtester.InLoadoutForDefault
         end
+
+        -- If we disable "AllowDrop", the player cannot drop on purpose
+        -- but when they are killed, the weapon is dropped regardless of "AllowDrop"'s value
+        wtester.AllowDrop = not dna_scan_only_drop_on_death:GetBool()
     end)
 
     function SWEP:GetRepeating()
