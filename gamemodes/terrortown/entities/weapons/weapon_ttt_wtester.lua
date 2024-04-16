@@ -44,6 +44,7 @@ SWEP.CanBuy                = nil -- no longer a buyable thing
 SWEP.WeaponID              = AMMO_WTESTER
 
 SWEP.InLoadoutFor          = {ROLE_DETECTIVE}
+SWEP.InLoadoutForDefault   = {ROLE_DETECTIVE}
 
 --SWEP.AllowDrop = false
 SWEP.AutoSpawnable         = false
@@ -73,6 +74,17 @@ local dna_scan_on_dialog = CreateConVar("ttt_dna_scan_on_dialog", "1", FCVAR_REP
 if CLIENT then
     CreateClientConVar("ttt_dna_scan_repeat", 1, true, true)
 else
+    local dna_scan_detectives_loadout = CreateConVar("ttt_dna_scan_detectives_loadout", "0", FCVAR_NONE, "Whether all detectives should be given a DNA scanner. If disabled, only the Detective role will get one", 0, 1)
+
+    hook.Add("TTTUpdateRoleState", "DNAScanner_TTTUpdateRoleState", function()
+        local wtester = weapons.GetStored("weapon_ttt_wtester")
+        if dna_scan_detectives_loadout:GetBool() then
+            wtester.InLoadoutFor = GetTeamRoles(DETECTIVE_ROLES)
+        else
+            wtester.InLoadoutFor = wtester.InLoadoutForDefault
+        end
+    end)
+
     function SWEP:GetRepeating()
         local ply = self:GetOwner()
         return IsValid(ply) and ply:GetInfoNum("ttt_dna_scan_repeat", 1) == 1

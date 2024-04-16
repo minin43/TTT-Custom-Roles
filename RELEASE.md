@@ -3,6 +3,10 @@
 ## 2.1.12 (Beta)
 **Released:**
 
+### Additions
+- Added ability for DNA Scanner to be given to all detective roles (disabled by default)
+  - When disabled, only the vanilla Detective role will be given the DNA scanner as part of their loadout
+
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
 
