@@ -12,6 +12,15 @@ ROLE_IS_ACTIVE[ROLE_VINDICATOR] = function(ply)
     return ply:IsIndependentTeam()
 end
 
+hook.Add("TTTIsPlayerRespawning", "Vindicator_TTTIsPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if ply:GetNWBool("VindicatorIsRespawning", false) then
+        return true
+    end
+end)
+
 function SetVindicatorTeam(independent)
     INDEPENDENT_ROLES[ROLE_VINDICATOR] = independent
     INNOCENT_ROLES[ROLE_VINDICATOR] = not independent

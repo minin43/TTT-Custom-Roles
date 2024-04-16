@@ -208,6 +208,15 @@ Called when an informant has scanned additional information from a target player
 - *tgt* - The player being scanned
 - *stage* - The new scan stage
 
+### TTTIsPlayerRespawning(ply)
+Called to check whether a player is currently respawning.\
+*Realm:* Client and Server\
+*Added in:* 2.1.12\
+*Parameters:*
+- *ply*</em>* - The player being queried for respawn status
+
+*Return:* `true` if the player is currently respawning, `false` if they are not. If you have no opinion (e.g. let other logic determine this) then don't return anything at all.
+
 ### TTTKarmaGiveReward(ply, reward, victim)
 Called before a player is rewarded with karma. Used to block a player's karma reward.\
 *Realm:* Server\

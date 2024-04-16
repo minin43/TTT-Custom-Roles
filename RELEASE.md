@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.1.12 (Beta)
+**Released:**
+
+### Developer
+- Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
+
 ## 2.1.11
 **Released: April 15th, 2024**\
 Includes beta update [2.1.10](#2110-beta).

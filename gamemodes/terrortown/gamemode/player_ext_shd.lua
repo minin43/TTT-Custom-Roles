@@ -219,6 +219,10 @@ function plymeta:IsVictimChangingRole(victim)
     return false
 end
 
+function plymeta:IsRespawning()
+    return CallHook("TTTIsPlayerRespawning", nil, self) == true
+end
+
 function plymeta:SetRoleAndBroadcast(role)
     self:SetRole(role)
 

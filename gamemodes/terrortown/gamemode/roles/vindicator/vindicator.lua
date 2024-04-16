@@ -36,6 +36,7 @@ local function ActivateVindicator(vindicator, target)
     -- Change their team and set their target even if the target is already dead
     SetVindicatorTeam(true)
     vindicator:SetNWString("VindicatorTarget", target:SteamID64())
+    vindicator:SetNWBool("VindicatorIsRespawning", false)
 
     net.Start("TTT_VindicatorActive")
     net.WriteString(vindicator:Nick())
@@ -96,6 +97,8 @@ hook.Add("PlayerDeath", "Vindicator_PlayerDeath", function(victim, infl, attacke
     if valid_kill then
         if victim:IsVindicator() and not victim:IsRoleActive() and attacker ~= victim then
             if attacker:IsVictimChangingRole(victim) then return end
+
+            victim:SetNWBool("VindicatorIsRespawning", true)
 
             local delay = vindicator_respawn_delay:GetInt()
             if delay == 0 then
@@ -299,6 +302,7 @@ hook.Add("TTTPrepareRound", "Vindicator_PrepareRound", function()
     for _, ply in PlayerIterator() do
         ply:SetNWString("VindicatorTarget", "")
         ply:SetNWBool("VindicatorSuccess", false)
+        ply:SetNWBool("VindicatorIsRespawning", false)
         timer.Remove("VindicatorRespawn" .. ply:SteamID64())
     end
     timer.Remove("TTTVindicatorTimer")

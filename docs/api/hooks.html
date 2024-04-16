@@ -324,6 +324,20 @@
             <li><em>stage</em> - The new scan stage</li>
         </ul>
 
+        <h3><a id="tttisplayerespawningply" href="#tttisplayerespawningply">TTTIsPlayerRespawning(ply)</a></h3>
+        <p>
+            Called to check whether a player is currently respawning.<br>
+            <em>Realm:</em> Client and Server<br>
+            <em>Added in:</em> 2.1.12<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>ply</em> - The player being queried for respawn status</li>
+        </ul>
+        <p>
+            <em>Return:</em> <code>true</code> if the player is currently respawning, <code>false</code> if they are not. If you have no opinion (e.g. let other logic determine this) then don't return anything at all.
+        </p>
+
         <h3><a id="tttkarmagiverewardply-reward-victim" href="#tttkarmagiverewardply-reward-victim">TTTKarmaGiveReward(ply, reward, victim)</a></h3>
         <p>
             Called before a player is rewarded with karma. Used to block a player's karma reward.<br>

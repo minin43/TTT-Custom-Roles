@@ -145,6 +145,7 @@ local function ClearShadowState(ply)
     ply:SetNWFloat("ShadowBuffTimer", -1)
     ply:SetNWBool("ShadowBuffActive", false)
     ply:SetNWBool("ShadowBuffDepleted", false)
+    ply:SetNWBool("ShadowTargetRespawning", false)
     timer.Remove("TTTShadowWeakenTimer_" .. ply:SteamID64())
     timer.Remove("TTTShadowRegenTimer_" .. ply:SteamID64())
 end
@@ -349,6 +350,7 @@ hook.Add("PostPlayerDeath", "Shadow_Buff_PostPlayerDeath", function(ply)
             ply:QueueMessage(MSG_PRINTBOTH, "Your " .. ROLE_STRINGS[ROLE_SHADOW] .. " will respawn you in " .. respawnDelay .. " seconds")
         end
 
+        ply:SetNWBool("ShadowTargetRespawning", true)
         local timerId = "TTTShadowBuffTimer_" .. shadow:SteamID64() .. "_" .. ply:SteamID64()
         timer.Create(timerId, respawnDelay, 1, function()
             if not IsValid(ply) or ply:Alive() or not ply:IsSpec() then return end
@@ -356,6 +358,7 @@ hook.Add("PostPlayerDeath", "Shadow_Buff_PostPlayerDeath", function(ply)
             -- Respawn them on their body so the shadow doesn't get screwed over
             local corpse = ply.server_ragdoll or ply:GetRagdollEntity()
             ply:SetNWBool("ShadowBuffDepleted", true)
+            ply:SetNWBool("ShadowTargetRespawning", false)
             ply:SpawnForRound(true)
             ply:SetPos(FindRespawnLocation(corpse:GetPos()) or corpse:GetPos())
             ply:SetEyeAngles(Angle(0, corpse:GetAngles().y, 0))

@@ -216,6 +216,11 @@ Whether the entity or position given is on screen for the player, within the giv
 - *ent_or_pos* - The entity or position vector that is being checked
 - *limit* - The maximum value limit before a player is determined to be "off screen" (Defaults to 1)
 
+### plymeta:IsRespawning()
+Whether this player is currently respawning.\
+*Realm:* Client and Server\
+*Added in:* 2.1.12
+
 ### plymeta:IsRoleActive()
 Whether the player's role feature has been activated.\
 *Realm:* Client and Server\

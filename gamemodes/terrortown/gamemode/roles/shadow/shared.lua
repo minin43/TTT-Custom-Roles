@@ -317,3 +317,12 @@ hook.Add("TTTUpdateRoleState", "Shadow_TTTUpdateRoleState", function()
     JESTER_ROLES[ROLE_SHADOW] = is_jester
     INDEPENDENT_ROLES[ROLE_SHADOW] = not is_jester
 end)
+
+hook.Add("TTTIsPlayerRespawning", "Shadow_TTTIsPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if ply:GetNWBool("ShadowTargetRespawning", false) then
+        return true
+    end
+end)
