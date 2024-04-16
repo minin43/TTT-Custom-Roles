@@ -18,6 +18,7 @@ for role = 0, ROLE_MAX do
 end
 
 CreateConVar("ttt_all_search_binoc", "0", FCVAR_REPLICATED)
+CreateConVar("ttt_all_search_dnascanner", "0", FCVAR_REPLICATED)
 CreateConVar("ttt_all_search_postround", "1", FCVAR_REPLICATED)
 CreateConVar("ttt_color_mode_override", "none", FCVAR_REPLICATED)
 
