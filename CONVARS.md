@@ -1089,8 +1089,9 @@ ttt_death_notifier_enabled                  1       // Whether the name and role
 ttt_death_notifier_show_role                1       // Whether to show the killer's role in death notification messages
 ttt_smokegrenade_extinguish                 1       // Whether smoke grenades should extinguish fire
 ttt_player_set_color                        1       // Whether player colors are set each time that player spawns
-ttt_dna_scan_on_dialog                      1       // Whether to show a button to open the DNA scanner on the body search dialog
 ttt_dna_scan_detectives_loadout             0       // Whether all detectives should be given a DNA scanner. If disabled, only the Detective role will get one
+ttt_dna_scan_on_dialog                      1       // Whether to show a button to open the DNA scanner on the body search dialog
+ttt_dna_scan_only_drop_on_death             0       // Whether the DNA scanner should only be droppable when the holder dies
 ttt_spectator_corpse_search                 1       // Whether spectators can search bodies (not shared with other players)
 ttt_corpse_search_not_shared                0       // Whether corpse searches are not shared with other players (only affects non-detective-like searchers)
 ttt_color_mode_override                     "none"  // Forces all players to have a certain role color setting. none (let user decide), default, simple, protan, deutan, tritan
