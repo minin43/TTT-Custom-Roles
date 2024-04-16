@@ -177,17 +177,17 @@ ROLE_VINDICATOR = 45
 ROLE_MAX = 45
 ROLE_EXTERNAL_START = ROLE_MAX + 1
 
-local function AddRoleAssociations(list, roles)
+local function AddRoleAssociations(tbl, roles)
     -- Use an associative array so we can do a O(1) lookup by role
     -- See: https://wiki.facepunch.com/gmod/table.HasValue
     for _, r in ipairs(roles) do
-        list[r] = true
+        tbl[r] = true
     end
 end
 
-function GetTeamRoles(list, excludes)
+function GetTeamRoles(tbl, excludes)
     local roles = {}
-    for r, v in pairs(list) do
+    for r, v in pairs(tbl) do
         if v and (not excludes or not excludes[r]) then
             table.insert(roles, r)
         end
