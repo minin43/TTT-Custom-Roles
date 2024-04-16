@@ -806,6 +806,7 @@ end
 -- If this logic or the list of roles who can buy is changed, it must also be updated in OrderEquipment above and cl_equip.lua
 -- This also sends a cache reset request to every client so that things like shop randomization happen every round
 function WEPS.HandleRoleEquipment(ply)
+    loadout_weapons = nil
     local handled = false
     for id, name in pairs(ROLE_STRINGS_RAW) do
         WEPS.PrepWeaponsLists(id)

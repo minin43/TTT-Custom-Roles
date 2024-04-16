@@ -3,6 +3,9 @@
 ## 2.1.12 (Beta)
 **Released:**
 
+### Fixes
+- Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
+
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
 
