@@ -54,10 +54,12 @@ AddHook("PlayerDeath", "HiveMind_Assimilate_PlayerDeath", function(victim, infl,
     if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
     if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
 
+    victim:SetNWBool("HiveMindRespawning", true)
     timer.Create("HiveMindRespawn_" .. victim:SteamID64(), 0.25, 1, function()
         -- Double-check
         if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
         if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
+        victim:SetNWBool("HiveMindRespawning", false)
 
         local body = victim.server_ragdoll or victim:GetRagdollEntity()
         victim.HiveMindPreviousMaxHealth = victim:GetMaxHealth()
@@ -364,6 +366,7 @@ AddHook("TTTPrepareRound", "HiveMind_PrepareRound", function()
     primeAssigned = false
     for _, v in PlayerIterator() do
         timer.Remove("HiveMindRespawn_" .. v:SteamID64())
+        v:SetNWBool("HiveMindRespawning", false)
         v.HiveMindPreviousMaxHealth = nil
         v.HiveMindPrime = nil
     end
