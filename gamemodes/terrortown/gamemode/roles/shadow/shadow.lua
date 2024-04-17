@@ -385,7 +385,7 @@ hook.Add("PostPlayerDeath", "Shadow_Buff_PostPlayerDeath", function(ply)
     timer.Remove("TTTShadowRegenTimer_" .. ply:SteamID64())
 end)
 
-hook.Add("TTTStopPlayerRespawning", "Zombie_TTTStopPlayerRespawning", function(ply)
+hook.Add("TTTStopPlayerRespawning", "Shadow_TTTStopPlayerRespawning", function(ply)
     if not IsPlayer(ply) then return end
     if not ply:Alive() or ply:IsSpec() then return end
 
