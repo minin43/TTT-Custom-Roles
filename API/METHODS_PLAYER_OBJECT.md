@@ -360,6 +360,13 @@ Sets the credits on the player based on their role's starting credits convars.\
 *Parameters:*
 - *keep_existing* - Whether to keep the player's existing credits (Defaults to `false`) *(Added in 1.6.2)*
 
+### plymeta:SetPlayerScale(scale)
+Sets the player's size by adjusting models, step sizes, hulls and view offsets.\
+*Realm:* Server\
+*Added in:* 1.3.1\
+*Parameters:*
+- *scale* - The value with which to scale the players size, relative to their current size.
+
 ### plymeta:SetRoleAndBroadcast(role)
 Sets the player's role to the given one and (if called on the server) broadcasts the change to all clients for scoreboard tracking.\
 *Realm:* Client and Server\
@@ -453,14 +460,14 @@ Runs the logic for when a drunk sobers up and remembers their role.\
 *Parameters:*
 - *team* - Which team to choose a role from (see ROLE_TEAM_* global enumeration)
 
+### plymeta:StopRespawning()
+Stops the player from respawning due to a role feature.\
+*Realm:* Server\
+*Added in:* 2.1.12
+
+*Returns:* `true` if a respawn was stopped, `false` otherwise.
+
 ### plymeta:StripRoleWeapons()
 Strips all weapons from the player whose `Category` property matches the global `WEAPON_CATEGORY_ROLE` value.\
 *Realm:* Client and Server\
 *Added in:* 1.0.5
-
-### plymeta:SetPlayerScale(scale)
-Sets the player's size by adjusting models, step sizes, hulls and view offsets.\
-*Realm:* Server\
-*Added in:* 1.3.1\
-*Parameters:*
-- *scale* - The value with which to scale the players size, relative to their current size.

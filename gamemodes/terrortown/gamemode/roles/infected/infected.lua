@@ -139,11 +139,22 @@ hook.Add("PlayerDeath", "Infected_KillCheck_PlayerDeath", function(victim, infl,
     local valid_kill = IsPlayer(attacker) and attacker ~= victim and GetRoundState() == ROUND_ACTIVE
     if not valid_kill then return end
     if not victim:IsInfected() then return end
+
     victim:SetNWBool("InfectedIsZombifying", true)
-    timer.Simple(0.25, function()
+    timer.Create("Infectify_" .. victim:SteamID64(), 0.25, 1, function()
         InfectedSuccumb(victim, true)
         victim:SetNWBool("InfectedIsZombifying", false)
     end)
+end)
+
+hook.Add("TTTStopPlayerRespawning", "Infected_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if ply:GetNWBool("InfectedIsZombifying", false) then
+        timer.Remove("Infectify_" .. ply:SteamID64())
+        ply:SetNWBool("InfectedIsZombifying", false)
+    end
 end)
 
 -----------------------
@@ -168,5 +179,6 @@ end)
 hook.Add("TTTPrepareRound", "Infected_PrepareRound", function()
     for _, v in PlayerIterator() do
         v:SetNWBool("InfectedIsZombifying", false)
+        timer.Remove("Infectify_" .. v:SteamID64())
     end
 end)

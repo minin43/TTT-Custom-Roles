@@ -222,6 +222,11 @@ end
 function plymeta:IsRespawning()
     return CallHook("TTTIsPlayerRespawning", nil, self) == true
 end
+if SERVER then
+    function plymeta:StopRespawning()
+        return CallHook("TTTStopPlayerRespawning", nil, self) == true
+    end
+end
 
 function plymeta:SetRoleAndBroadcast(role)
     self:SetRole(role)

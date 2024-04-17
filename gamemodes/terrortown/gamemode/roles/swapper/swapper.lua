@@ -154,7 +154,7 @@ hook.Add("PlayerDeath", "Swapper_KillCheck_PlayerDeath", function(victim, infl, 
     end
     local victim_weapons = GetPlayerWeaponInfo(victim)
 
-    timer.Simple(0.01, function()
+    timer.Create("Swapping_" .. victim:SteamID64(), 0.01, 1, function()
         local body = victim.server_ragdoll or victim:GetRagdollEntity()
         victim:SetRole(attacker:GetRole())
         victim:SpawnForRound(true)
@@ -254,6 +254,16 @@ hook.Add("PlayerDeath", "Swapper_KillCheck_PlayerDeath", function(victim, infl, 
     net.Broadcast()
 end)
 
+hook.Add("TTTStopPlayerRespawning", "Swapper_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if ply:GetNWBool("IsSwapping", false) then
+        timer.Remove("Swapping_" .. ply:SteamID64())
+        ply:SetNWBool("IsSwapping", false)
+    end
+end)
+
 hook.Add("TTTCupidShouldLoverSurvive", "Swapper_TTTCupidShouldLoverSurvive", function(ply, lover)
     if ply:GetNWBool("IsSwapping", false) or lover:GetNWBool("IsSwapping", false) then
         return true
@@ -264,5 +274,6 @@ hook.Add("TTTPrepareRound", "Swapper_PrepareRound", function()
     for _, v in PlayerIterator() do
         v:SetNWString("SwappedWith", "")
         v:SetNWBool("IsSwapping", false)
+        timer.Remove("Swapping_" .. v:SteamID64())
     end
 end)

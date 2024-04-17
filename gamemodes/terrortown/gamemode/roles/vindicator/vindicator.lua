@@ -158,6 +158,16 @@ hook.Add("PlayerDeath", "Vindicator_PlayerDeath", function(victim, infl, attacke
     end
 end)
 
+hook.Add("TTTStopPlayerRespawning", "Vindicator_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if ply:GetNWBool("VindicatorIsRespawning", false) then
+        timer.Remove("VindicatorRespawn" .. ply:SteamID64())
+        ply:SetNWBool("VindicatorIsRespawning", false)
+    end
+end)
+
 hook.Add("TTTDeathNotifyOverride", "Vindicator_TTTDeathNotifyOverride", function(victim, inflictor, attacker, reason, killerName, role)
     if GetRoundState() ~= ROUND_ACTIVE then return end
     if not IsValid(inflictor) or not IsValid(attacker) then return end

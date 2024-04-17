@@ -1080,6 +1080,31 @@
             <li><em>item</em> - The random item that was selected</li>
         </ul>
 
+        <h3><a id="tttshouldplayersmokeply-client-shouldsmoke-smokecolor-smokeparticle-smokeoffset" href="#tttshouldplayersmokeply-client-shouldsmoke-smokecolor-smokeparticle-smokeoffset">TTTShouldPlayerSmoke(ply, client, shouldSmoke, smokeColor, smokeParticle, smokeOffset)</a></h3>
+        <p>
+            Called when during a player's `Think`, allowing a player to emit smoke with different visual effects.<br>
+            <em>Realm:</em> Client<br>
+            <em>Added in:</em> 1.2.7<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>ply</em> - The target player being rendered</li>
+            <li><em>client</em> - The local player</li>
+            <li><em>shouldSmoke</em> - Whether the player would normally emit smoke</li>
+            <li><em>smokeColor</em> - What <a href="https://wiki.facepunch.com/gmod/Color" target="_blank">Color</a> the smoke will be. (Defaults to <code>COLOR_BLACK</code>)</li>
+            <li><em>smokeParticle</em> - What particle the smoke will use. Should be the relative path the the <code>.vmt</code> file for the particle. (Defaults to <code>"particle/snow.vmt"</code>)</li>
+            <li><em>smokeOffset</em> - A <a href="https://wiki.facepunch.com/gmod/Vector" target="_blank">Vector</a> representing the relative offset from the player's feet. (Defaults to <code>Vector(0, 0, 30)</code>)</li>
+        </ul>
+        <p>
+            <em>Return:</em>
+        </p>
+        <ul>
+            <li><em>shouldSmoke</em> - The new shouldSmoke value to use or the original passed into the hook</li>
+            <li><em>smokeColor</em> - The new smokeColor value to use or the original passed into the hook</li>
+            <li><em>smokeParticle</em> - The new smokeParticle value to use or the original passed into the hook</li>
+            <li><em>smokeOffset</em> - The new smokeOffset value to use or the original passed into the hook</li>
+        </ul>
+
         <h3><a  id="tttshowsearchscreensearch" href="#tttshowsearchscreensearch">TTTShowSearchScreen(search)</a></h3>
         <p>
             Called when a body search screen would be shown.<br>
@@ -1220,30 +1245,12 @@
             <li><em>wasSprinting</em> - Whether the player was sprinting</li>
         </ul>
 
-        <h3><a id="tttshouldplayersmokeply-client-shouldsmoke-smokecolor-smokeparticle-smokeoffset" href="#tttshouldplayersmokeply-client-shouldsmoke-smokecolor-smokeparticle-smokeoffset">TTTShouldPlayerSmoke(ply, client, shouldSmoke, smokeColor, smokeParticle, smokeOffset)</a></h3>
+        <h3><a id="tttstopplayerrespawningply" href="#tttstopplayerrespawningply">TTTStopPlayerRespawning(ply)</a></h3>
         <p>
-            .<br>
-            <em>Realm:</em> Client<br>
-            <em>Added in:</em> 1.2.7<br>
-            <em>Parameters:</em>
+            Called when something has requested that a player stop respawning due to a role feature.<br>
+            <em>Realm:</em> Server<br>
+            <em>Added in:</em> 2.1.12
         </p>
-        <ul>
-            <li><em>ply</em> - The target player being rendered</li>
-            <li><em>client</em> - The local player</li>
-            <li><em>shouldSmoke</em> - Whether the player would normally emit smoke</li>
-            <li><em>smokeColor</em> - What <a href="https://wiki.facepunch.com/gmod/Color" target="_blank">Color</a> the smoke will be. (Defaults to <code>COLOR_BLACK</code>)</li>
-            <li><em>smokeParticle</em> - What particle the smoke will use. Should be the relative path the the <code>.vmt</code> file for the particle. (Defaults to <code>"particle/snow.vmt"</code>)</li>
-            <li><em>smokeOffset</em> - A <a href="https://wiki.facepunch.com/gmod/Vector" target="_blank">Vector</a> representing the relative offset from the player's feet. (Defaults to <code>Vector(0, 0, 30)</code>)</li>
-        </ul>
-        <p>
-            <em>Return:</em>
-        </p>
-        <ul>
-            <li><em>shouldSmoke</em> - The new shouldSmoke value to use or the original passed into the hook</li>
-            <li><em>smokeColor</em> - The new smokeColor value to use or the original passed into the hook</li>
-            <li><em>smokeParticle</em> - The new smokeParticle value to use or the original passed into the hook</li>
-            <li><em>smokeOffset</em> - The new smokeOffset value to use or the original passed into the hook</li>
-        </ul>
 
         <h3><a id="tttsynceventids" href="#tttsynceventids">TTTSyncEventIDs()</a></h3>
         <p>

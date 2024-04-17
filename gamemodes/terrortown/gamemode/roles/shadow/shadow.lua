@@ -135,6 +135,7 @@ end
 -- ROLE FEATURES --
 -------------------
 
+local buffTimers = {}
 local function ClearShadowState(ply)
     ply.TTTShadowMaxHealth = nil
     ply.TTTShadowLastMaxHealth = nil
@@ -148,9 +149,12 @@ local function ClearShadowState(ply)
     ply:SetNWBool("ShadowTargetRespawning", false)
     timer.Remove("TTTShadowWeakenTimer_" .. ply:SteamID64())
     timer.Remove("TTTShadowRegenTimer_" .. ply:SteamID64())
+
+    for _, timerId in pairs(buffTimers) do
+        timer.Remove(timerId)
+    end
 end
 
-local buffTimers = {}
 local function ClearBuffTimer(shadow, target, sendMessage)
     if not target then return end
 
@@ -379,6 +383,21 @@ hook.Add("PostPlayerDeath", "Shadow_Buff_PostPlayerDeath", function(ply)
     -- Stop weakening or regenerating a dead player
     timer.Remove("TTTShadowWeakenTimer_" .. ply:SteamID64())
     timer.Remove("TTTShadowRegenTimer_" .. ply:SteamID64())
+end)
+
+hook.Add("TTTStopPlayerRespawning", "Zombie_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if ply:GetNWBool("ShadowTargetRespawning", false) then
+        -- Find all buff timers for this player and end them
+        for _, timerId in pairs(buffTimers) do
+            if string.EndsWith(timerId, "_" .. ply:SteamID64()) then
+                timer.Remove(timerId)
+            end
+        end
+        ply:SetNWBool("ShadowTargetRespawning", false)
+    end
 end)
 
 local function CreateWeakenTimer(shadow, weakenTo, weakenTimer)

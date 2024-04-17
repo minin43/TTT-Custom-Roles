@@ -51,14 +51,20 @@ end)
 
 -- Players killed by the hive mind join the hive mind
 AddHook("PlayerDeath", "HiveMind_Assimilate_PlayerDeath", function(victim, infl, attacker)
-    if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
+    if not IsPlayer(victim) or victim:IsHiveMind() then return end
     if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
+
+    -- Hive Mind bypasses whatever respawn feature the victim's old role had
+    if victim:IsRespawning() then
+        victim:StopRespawning()
+    end
 
     victim:SetNWBool("HiveMindRespawning", true)
     timer.Create("HiveMindRespawn_" .. victim:SteamID64(), 0.25, 1, function()
         -- Double-check
-        if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
+        if not IsPlayer(victim) or victim:IsHiveMind() then return end
         if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
+
         victim:SetNWBool("HiveMindRespawning", false)
 
         local body = victim.server_ragdoll or victim:GetRagdollEntity()
@@ -77,6 +83,16 @@ AddHook("PlayerDeath", "HiveMind_Assimilate_PlayerDeath", function(victim, infl,
 
         SendFullStateUpdate()
     end)
+end)
+
+hook.Add("TTTStopPlayerRespawning", "HiveMind_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if ply:GetNWBool("HiveMindRespawning", false) then
+        timer.Remove("HiveMindRespawn_" .. ply:SteamID64())
+        ply:SetNWBool("HiveMindRespawning", false)
+    end
 end)
 
 --------------------
