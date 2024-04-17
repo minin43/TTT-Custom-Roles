@@ -105,7 +105,7 @@ hook.Add("PlayerDeath", "Phantom_PlayerDeath", function(victim, infl, attacker)
     local valid_kill = IsPlayer(attacker) and attacker ~= victim and GetRoundState() == ROUND_ACTIVE
     if valid_kill and victim:IsPhantom() then
         local attacker_alive = attacker:IsActive()
-        local will_posses = phantom_killer_haunt:GetBool() and not victim:IsZombifying() and attacker_alive
+        local will_posses = phantom_killer_haunt:GetBool() and not attacker:IsVictimChangingRole(victim) and attacker_alive
 
         -- Only bother looking this up if we're going to use it
         local loverSID = ""
@@ -121,7 +121,7 @@ hook.Add("PlayerDeath", "Phantom_PlayerDeath", function(victim, infl, attacker)
             end
         end
 
-        if victim:IsZombifying() then return end
+        if attacker:IsVictimChangingRole(victim) then return end
 
         if not attacker_alive then
             victim:QueueMessage(MSG_PRINTBOTH, "Your attacker is already dead so you have nobody to haunt.")
