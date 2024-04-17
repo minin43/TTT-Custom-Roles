@@ -320,6 +320,7 @@ ttt_spy_steal_model                         1       // Whether the spy should ch
 ttt_spy_steal_model_hands                   1       // Whether the spy should change to the victim's playermodel's 1st-person hands after killing a player
 ttt_spy_steal_model_alert                   1       // Whether the spy should see an alert message displaying who they are disguised as after killing a player
 ttt_spy_steal_name                          1       // Whether the spy should change to the victim's name after killing a player (When other players look at the spy and see their info under the crosshair)
+ttt_spy_steal_from_respawning               1       // Whether the spy should steal the identity of their victim even if that player is respawning
 ttt_spy_flare_gun_loadout                   1       // Whether the spy should have a flare gun given to them when they spawn. Server must be restarted for changes to take effect
 ttt_spy_flare_gun_shop                      0       // Whether the spy should have a flare gun be purchasable in the shop. Server must be restarted for changes to take effect
 ttt_spy_flare_gun_shop_rebuyable            0       // Whether the spy should be able to purchase the flare gun multiple times (requires "ttt_spy_flare_gun_shop" to be enabled). Server must be restarted for changes to take effect

@@ -41,11 +41,11 @@ end)
 -- ROLE CONVARS --
 ------------------
 
-CreateConVar("ttt_spy_steal_model", "1", FCVAR_REPLICATED)
-local spy_steal_name = CreateConVar("ttt_spy_steal_name", "1", FCVAR_REPLICATED)
-local spy_flare_gun_loadout = CreateConVar("ttt_spy_flare_gun_loadout", "1", FCVAR_REPLICATED)
-local spy_flare_gun_shop = CreateConVar("ttt_spy_flare_gun_shop", "0", FCVAR_REPLICATED)
-local spy_flare_gun_shop_rebuyable = CreateConVar("ttt_spy_flare_gun_shop_rebuyable", "0", FCVAR_REPLICATED)
+CreateConVar("ttt_spy_steal_model", "1", FCVAR_REPLICATED, "Whether the spy should change to the victim's playermodel after killing a player", 0, 1)
+local spy_steal_name = CreateConVar("ttt_spy_steal_name", "1", FCVAR_REPLICATED, "Whether the spy should change to the victim's name after killing a player (When other players look at the spy and see their info under the crosshair)", 0, 1)
+local spy_flare_gun_loadout = CreateConVar("ttt_spy_flare_gun_loadout", "1", FCVAR_REPLICATED, "Whether the spy should have a flare gun given to them when they spawn. Server must be restarted for changes to take effect", 0, 1)
+local spy_flare_gun_shop = CreateConVar("ttt_spy_flare_gun_shop", "0", FCVAR_REPLICATED, "Whether the spy should have a flare gun be purchasable in the shop. Server must be restarted for changes to take effect", 0, 1)
+local spy_flare_gun_shop_rebuyable = CreateConVar("ttt_spy_flare_gun_shop_rebuyable", "0", FCVAR_REPLICATED, "Whether the spy should be able to purchase the flare gun multiple times (requires \"ttt_spy_flare_gun_shop\" to be enabled). Server must be restarted for changes to take effect", 0, 1)
 
 ROLE_CONVARS[ROLE_SPY] = {}
 table.insert(ROLE_CONVARS[ROLE_SPY], {
@@ -62,6 +62,10 @@ table.insert(ROLE_CONVARS[ROLE_SPY], {
 })
 table.insert(ROLE_CONVARS[ROLE_SPY], {
     cvar = "ttt_spy_steal_name",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SPY], {
+    cvar = "ttt_spy_steal_from_respawning",
     type = ROLE_CONVAR_TYPE_BOOL
 })
 table.insert(ROLE_CONVARS[ROLE_SPY], {
