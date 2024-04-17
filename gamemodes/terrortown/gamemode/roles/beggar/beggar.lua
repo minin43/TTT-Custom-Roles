@@ -178,7 +178,7 @@ end)
 
 hook.Add("TTTStopPlayerRespawning", "Beggar_TTTStopPlayerRespawning", function(ply)
     if not IsPlayer(ply) then return end
-    if not ply:Alive() or ply:IsSpec() then return end
+    if ply:Alive() then return end
 
     if ply:GetNWBool("BeggarIsRespawning", false) then
         timer.Remove(ply:Nick() .. "BeggarRespawn")

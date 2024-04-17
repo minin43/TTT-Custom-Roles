@@ -320,7 +320,7 @@ end)
 
 hook.Add("TTTIsPlayerRespawning", "Shadow_TTTIsPlayerRespawning", function(ply)
     if not IsPlayer(ply) then return end
-    if not ply:Alive() or ply:IsSpec() then return end
+    if ply:Alive() then return end
 
     if ply:GetNWBool("ShadowTargetRespawning", false) then
         return true

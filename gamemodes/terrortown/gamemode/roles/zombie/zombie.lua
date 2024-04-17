@@ -336,7 +336,7 @@ end
 
 hook.Add("TTTStopPlayerRespawning", "Zombie_TTTStopPlayerRespawning", function(ply)
     if not IsPlayer(ply) then return end
-    if not ply:Alive() or ply:IsSpec() then return end
+    if ply:Alive() then return end
 
     if ply:IsZombifying() then
         timer.Remove("Zombify_" .. ply:SteamID64())

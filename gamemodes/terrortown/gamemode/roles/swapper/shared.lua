@@ -10,7 +10,7 @@ SWAPPER_WEAPON_ALL = 2
 -- Initialize role features
 hook.Add("TTTIsPlayerRespawning", "Swapper_TTTIsPlayerRespawning", function(ply)
     if not IsPlayer(ply) then return end
-    if not ply:Alive() or ply:IsSpec() then return end
+    if ply:Alive() then return end
 
     if ply:GetNWBool("IsSwapping", false) then
         return true
