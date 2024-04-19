@@ -1,13 +1,20 @@
-local GetTranslation = LANG.GetTranslation
+local GetRawTranslation = LANG.GetRawTranslation
 local StringLower = string.lower
 local TableInsert = table.insert
 local TableSort = table.sort
 local MathMax = math.max
 local MathClamp = math.Clamp
 local MathCeil = math.ceil
+local MathSin = math.sin
 
-local hotkey = CreateClientConVar("ttt_cheatsheat_hotkey", "H", true, false, "Hotkey for opening the cheat sheet")
+local hotkey = CreateClientConVar("ttt_cheatsheat_hotkey", "h", true, false, "Hotkey for opening the cheat sheet")
 local panel
+
+local function ClosePanel()
+    panel:Close()
+    panel = nil
+    hook.Remove("Think", "CheetSheet_Think")
+end
 
 hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button)
     if button ~= input.GetKeyCode(hotkey:GetString()) then return end
@@ -123,9 +130,20 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
             icon:SetTooltip(ROLE_STRINGS[role])
             icon:SetPos(currentColumn * (iconSize + descriptionWidth + (m * 2)), currentRow * (iconSize + m))
             icon.DoClick = function()
-                -- TODO: Open tutorial page for role
-                panel:Close()
-                panel = nil
+                HELPSCRN:OpenRoleTutorial(role)
+                ClosePanel()
+            end
+
+            if role == ply:GetRole() and ply:IsActive() then
+                local r1, g1, b1, _ = ROLE_COLORS[role]:Unpack()
+                local r2, g2, b2, _ = ROLE_COLORS_DARK[role]:Unpack()
+                local rd = r2 - r1
+                local gd = g2 - g1
+                local bd = b2 - b1
+                hook.Add("Think", "CheetSheet_Think", function()
+                    local fade = (MathSin(RealTime() * 3) + 1) / 2
+                    icon:SetBackgroundColor(Color(r1 + (fade * rd), g1 + (fade * gd), b1 + (fade * bd), 255))
+                end)
             end
 
             local title = vgui.Create("DLabel", dteam)
@@ -133,14 +151,23 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
             title:SetPos(iconSize + m + (currentColumn * (iconSize + descriptionWidth + (m * 2))), currentRow * (iconSize + m))
             title:SetSize(descriptionWidth, titleHeight)
             title:SetContentAlignment(7)
-            title:SetText(ROLE_STRINGS[role])
+            if role == ply:GetRole() and ply:IsActive() then
+                title:SetText(ROLE_STRINGS[role] .. " (CURRENT ROLE)")
+            else
+                title:SetText(ROLE_STRINGS[role])
+            end
 
             local desc = vgui.Create("DLabel", dteam)
             desc:SetPos(iconSize + m + (currentColumn * (iconSize + descriptionWidth + (m * 2))), titleHeight + (currentRow * (iconSize + m)))
             desc:SetSize(descriptionWidth, iconSize - titleHeight)
             desc:SetWrap(true)
             desc:SetContentAlignment(7)
-            desc:SetText(GetTranslation("cheatsheet_desc_" .. ROLE_STRINGS_RAW[role]))
+            local text = GetRawTranslation("cheatsheet_desc_" .. ROLE_STRINGS_RAW[role])
+            if text == nil then
+                desc:SetText("Role description not found.")
+            else
+                desc:SetText(text)
+            end
 
             currentColumn = currentColumn + 1
             if currentColumn == 3 then
@@ -186,6 +213,5 @@ hook.Add("PlayerButtonUp", "CheatSheet_PlayerButtonUp", function(ply, button)
     if button ~= input.GetKeyCode(hotkey:GetString()) then return end
     if panel == nil then return end
 
-    panel:Close()
-    panel = nil
+    ClosePanel()
 end)

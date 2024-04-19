@@ -9,6 +9,7 @@
 - Added ability to disable DNA Scanner from being dropped, except for when the player holding it dies (disabled by default)
 - Added ability to allow any player holding the DNA scanner to search bodies as if they were a detective (disabled by default)
 - Added ability to control whether a spy who kills a respawning player will steal their identity anyway (enabled by default)
+- Added a cheat sheet which gives a brief description of all enabled roles.
 
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
