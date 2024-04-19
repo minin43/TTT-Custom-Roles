@@ -3,6 +3,7 @@ local StringLower = string.lower
 local TableInsert = table.insert
 local TableSort = table.sort
 local MathMax = math.max
+local MathClamp = math.Clamp
 local MathCeil = math.ceil
 
 local hotkey = CreateClientConVar("ttt_cheatsheat_hotkey", "H", true, false, "Hotkey for opening the cheat sheet")
@@ -29,13 +30,19 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
     end
 
     local detectives = {}
-    TableInsert(detectives, ROLE_DETECTIVE)
+    if ROLE_PACK_ROLES[ROLE_DETECTIVE] or GetConVar("ttt_special_detective_pct"):GetFloat() < 1 or GetConVar("ttt_special_detective_chance"):GetFloat() < 1 then
+        TableInsert(detectives, ROLE_DETECTIVE)
+    end
     AddRolesFromTeam(detectives, DETECTIVE_ROLES)
     local innocents = {}
-    TableInsert(innocents, ROLE_INNOCENT)
+    if ROLE_PACK_ROLES[ROLE_INNOCENT] or GetConVar("ttt_special_innocent_pct"):GetFloat() < 1 or GetConVar("ttt_special_innocent_chance"):GetFloat() < 1 then
+        TableInsert(innocents, ROLE_INNOCENT)
+    end
     AddRolesFromTeam(innocents, INNOCENT_ROLES, DETECTIVE_ROLES)
     local traitors = {}
-    TableInsert(traitors, ROLE_TRAITOR)
+    if ROLE_PACK_ROLES[ROLE_TRAITOR] or GetConVar("ttt_special_traitor_pct"):GetFloat() < 1 or GetConVar("ttt_special_traitor_chance"):GetFloat() < 1 then
+        TableInsert(traitors, ROLE_TRAITOR)
+    end
     AddRolesFromTeam(traitors, TRAITOR_ROLES)
     local jesters = {}
     AddRolesFromTeam(jesters, JESTER_ROLES)
@@ -44,7 +51,7 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
     local monsters = {}
     AddRolesFromTeam(monsters, MONSTER_ROLES)
 
-    local columns = 3
+    local columns = MathClamp(MathMax(#detectives, #innocents, #traitors, #jesters, #independents, #monsters), 1, 3)
     local detectiveRows     = MathCeil(#detectives / columns)
     local innocentRows      = MathCeil(#innocents / columns)
     local traitorRows       = MathCeil(#traitors / columns)
@@ -60,8 +67,8 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
             + IsLabelNeeded(jesters) + IsLabelNeeded(independents) + IsLabelNeeded(monsters)
 
     local iconSize          = 64
-    local titleHeight       = 18
-    local descriptionWidth  = 196
+    local titleHeight       = 14
+    local descriptionWidth  = 256
     local labelHeight       = 16
     local m                 = 5
 
@@ -72,7 +79,7 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
     local independentsHeight    = MathMax((iconSize + m) * independentRows + m, 0)
     local monstersHeight        = MathMax((iconSize + m) * monsterRows + m, 0)
 
-    local w = (iconSize + descriptionWidth + (m * 3)) * 3
+    local w = (iconSize + descriptionWidth + (m * 3)) * columns
     local h = detectivesHeight + innocentsHeight + traitorsHeight + jestersHeight + independentsHeight + monstersHeight + (labelHeight * labels)
 
     local dframe = vgui.Create("DFrame")
@@ -81,10 +88,6 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
     dframe:SetVisible(true)
     dframe:SetDeleteOnClose(true)
     dframe:ShowCloseButton(false)
-    dframe:SetTitle(GetTranslation("cheatsheet_title"))
-    if scrollbarEnabled then
-        dframe:SetVerticalScrollbarEnabled(true)
-    end
 
     local dlist = vgui.Create("DPanel", dframe)
     dlist:SetSize(w, h)
@@ -137,15 +140,13 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
             desc:SetSize(descriptionWidth, iconSize - titleHeight)
             desc:SetWrap(true)
             desc:SetContentAlignment(7)
-            -- TODO: Actually add role descriptions
-            desc:SetText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquam turpis mollis elit consectetur venenatis.")
+            desc:SetText(GetTranslation("cheatsheet_desc_" .. ROLE_STRINGS_RAW[role]))
 
             currentColumn = currentColumn + 1
             if currentColumn == 3 then
                 currentColumn = 0
                 currentRow = currentRow + 1
             end
-
             -- TODO: Highlight current role
         end
     end

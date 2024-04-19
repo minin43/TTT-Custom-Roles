@@ -23,6 +23,9 @@ hook.Add("Initialize", "Drunk_Translations_Initialize", function()
     -- Events
     LANG.AddToLanguage("english", "ev_drunk", "{player} remembered they are {team}")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_drunk", "Has forgotten their role and remembers after enough time passes or when there are no members of the innocent team or traitor team left alive.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_drunk", [[You are {role}!  You have forgotten what team you are on!
 Wait until you sober up and remember. Try to lay low in the meantime.]])

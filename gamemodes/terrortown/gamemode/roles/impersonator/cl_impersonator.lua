@@ -11,6 +11,9 @@ local impersonator_damage_penalty = GetConVar("ttt_impersonator_damage_penalty")
 ------------------
 
 hook.Add("Initialize", "Impersonator_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_impersonator", "Promoted to replace the detective in the event of their death, but they are still a member of the traitor team.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_impersonator", [[You are {role}! {comrades}
 

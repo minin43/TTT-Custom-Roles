@@ -20,6 +20,9 @@ hook.Add("Initialize", "Swapper_Translations_Initialize", function()
     -- Scoring
     LANG.AddToLanguage("english", "score_swapper_killed", "Killed")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_swapper", "Swaps roles with their killer instead of dying.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_swapper", [[You are {role}! {traitors} think you are {ajester} and you
 deal no damage however, if anyone kills you, they become

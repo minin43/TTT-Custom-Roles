@@ -123,12 +123,6 @@ CreateConVar("ttt_detective_min_players", "8")
 CreateConVar("ttt_detective_karma_min", "600")
 
 -- Role spawn parameters
-CreateConVar("ttt_special_innocent_pct", 0.33)
-CreateConVar("ttt_special_innocent_chance", 0.5)
-CreateConVar("ttt_special_traitor_pct", 0.33)
-CreateConVar("ttt_special_traitor_chance", 0.5)
-CreateConVar("ttt_special_detective_pct", 0.33)
-CreateConVar("ttt_special_detective_chance", 0.5)
 CreateConVar("ttt_independent_chance", 0.5)
 CreateConVar("ttt_jester_chance", 0.5)
 

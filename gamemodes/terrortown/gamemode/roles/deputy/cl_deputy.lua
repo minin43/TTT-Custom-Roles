@@ -12,6 +12,9 @@ local deputy_damage_penalty = GetConVar("ttt_deputy_damage_penalty")
 ------------------
 
 hook.Add("Initialize", "Deputy_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_deputy", "Promoted to replace the detective in the event of their death.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_deputy", [[You are {role}! If the {detective} dies you will take
 over and gain the ability to buy shop items and search bodies.]])

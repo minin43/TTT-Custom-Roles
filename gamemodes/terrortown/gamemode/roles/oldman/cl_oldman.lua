@@ -19,6 +19,9 @@ hook.Add("Initialize", "OldMan_Translations_Initialize", function()
     -- Win conditions
     LANG.AddToLanguage("english", "ev_win_oldman", "The {role} has somehow survived and also won the round!")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_oldman", "Has barely any health and must survive until the end of the round to win.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_oldman", [[You are {role}! The slightest breeze could kill
 you if you aren't careful. You don't care who wins as long

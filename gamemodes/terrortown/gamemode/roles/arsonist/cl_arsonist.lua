@@ -38,6 +38,9 @@ hook.Add("Initialize", "Arsonist_Translations_Initialize", function()
     LANG.AddToLanguage("english", "arsdouse_failed", "DOUSING FAILED")
     LANG.AddToLanguage("english", "arsonist_hud", "Dousing complete. Igniter active.")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_arsonist", "Can douse players and set them on fire. They win if they are the last player alive.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_arsonist", [[You are {role}! Get close to other players
 to douse them in gasoline.

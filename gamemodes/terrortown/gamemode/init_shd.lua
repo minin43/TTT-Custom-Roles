@@ -17,6 +17,14 @@ for role = 0, ROLE_MAX do
     end
 end
 
+-- Role spawn parameters
+CreateConVar("ttt_special_innocent_pct", 0.33, FCVAR_REPLICATED)
+CreateConVar("ttt_special_innocent_chance", 0.5, FCVAR_REPLICATED)
+CreateConVar("ttt_special_traitor_pct", 0.33, FCVAR_REPLICATED)
+CreateConVar("ttt_special_traitor_chance", 0.5, FCVAR_REPLICATED)
+CreateConVar("ttt_special_detective_pct", 0.33, FCVAR_REPLICATED)
+CreateConVar("ttt_special_detective_chance", 0.5, FCVAR_REPLICATED)
+
 CreateConVar("ttt_all_search_binoc", "0", FCVAR_REPLICATED)
 CreateConVar("ttt_all_search_postround", "1", FCVAR_REPLICATED)
 CreateConVar("ttt_color_mode_override", "none", FCVAR_REPLICATED)

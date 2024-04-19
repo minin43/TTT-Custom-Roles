@@ -20,6 +20,9 @@ hook.Add("Initialize", "Informant_Translations_Initialize", function()
     -- ConVars
     LANG.AddToLanguage("english", "informant_config_show_radius", "Show tracking radius circle")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_informant", "Can scan other players to learn their role and track their location.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_informant", [[You are {role}! {comrades}
 

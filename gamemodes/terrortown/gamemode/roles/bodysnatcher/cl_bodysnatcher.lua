@@ -37,6 +37,9 @@ hook.Add("Initialize", "Bodysnatcher_Translations_Initialize", function()
     -- Scoring
     LANG.AddToLanguage("english", "score_bodysnatcher_bodysnatched", "Bodysnatched by")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_bodysnatcher", "Can use their bodysnatching device on a body to steal their role.")
+
     -- Popups
     LANG.AddToLanguage("english", "info_popup_bodysnatcher_jester", [[You are {role}! {traitors} think you are {ajester} and you
 deal no damage. Use your body snatching device on a corpse

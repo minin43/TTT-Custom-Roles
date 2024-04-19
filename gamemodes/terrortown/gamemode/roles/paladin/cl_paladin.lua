@@ -20,6 +20,9 @@ local paladin_damage_reduction = GetConVar("ttt_paladin_damage_reduction")
 ------------------
 
 hook.Add("Initialize", "Paladin_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_paladin", "Has an aura that can heal players and reduce incoming damage.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_paladin", [[You are {role}! As {adetective}, HQ has given you special resources to find the {traitors}.
 You have a healing aura that is visible to everyone.

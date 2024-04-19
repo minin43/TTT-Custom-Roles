@@ -40,6 +40,9 @@ hook.Add("Initialize", "Phantom_Translations_Initialize", function()
     LANG.AddToLanguage("english", "exor_help_sec", "{secondaryfire} to cleanse yourself.")
     LANG.AddToLanguage("english", "exor_desc", "Use on a player to exorcise a {phantom}")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_phantom", "Haunt's their killer for a chance to respawn or disrupt the player they are haunting.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_phantom", [[You are {role}! Try to survive and help your {innocent} friends!{abilities}]])
     LANG.AddToLanguage("english", "info_popup_phantom_haunt", "You will haunt the player who kills you.")

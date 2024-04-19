@@ -6,6 +6,9 @@ local string = string
 ------------------
 
 hook.Add("Initialize", "Doctor_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_doctor", "Has access to healing items that can help heal themselves and their team mates.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_doctor", [[You are {role}! You're here to keep your teammates alive.
 Use your tools to keep fellow {innocents} in the fight!
