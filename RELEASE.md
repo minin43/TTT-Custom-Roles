@@ -17,6 +17,7 @@
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
 - Added `plymeta:StopRespawning` fed by the new `TTTStopPlayerRespawning` hook
+- Added ability to open role tutorial to a specific role via `HELPSCRN:OpenRoleTutorial(ROLE_ID)`
 
 ## 2.1.11
 **Released: April 15th, 2024**\

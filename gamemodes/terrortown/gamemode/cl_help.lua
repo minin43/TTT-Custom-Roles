@@ -104,7 +104,7 @@ function HELPSCRN:Show()
     tutparent:SetPaintBackground(false)
     tutparent:StretchToParent(margin, 0, 0, 0)
 
-    self:CreateTutorial(tutparent)
+    self.TutorialPanel = self:CreateTutorial(tutparent)
 
     dtabs:AddSheet(GetTranslation("help_tut"), tutparent, "icon16/book_open.png", false, false, GetTranslation("help_tut_tip"))
 
@@ -119,7 +119,6 @@ function HELPSCRN:Show()
     dtabs:AddSheet(GetTranslation("help_settings"), dsettings, "icon16/wrench.png", false, false, GetTranslation("help_settings_tip"))
 
     -- Roles
-
     local droles = vgui.Create("DScrollPanel", dtabs)
     droles:StretchToParent(0, 0, padding, 0)
     droles:SetPadding(10)
@@ -580,10 +579,10 @@ function HELPSCRN:CreateTutorial(parent)
     tut.current = 1
     ShowTutorialPage(tut, tut.current)
 
-    local pageSelect = vgui.Create("DComboBox", parent)
-    pageSelect:SetSize(bw * 2, bh)
-    pageSelect:MoveBelow(tut)
-    pageSelect:SetSortItems(false)
+    tut.PageSelect = vgui.Create("DComboBox", parent)
+    tut.PageSelect:SetSize(bw * 2, bh)
+    tut.PageSelect:MoveBelow(tut)
+    tut.PageSelect:SetSortItems(false)
     for i = 1, maxPages do
         local name
         if i <= #enabledPages then
@@ -592,90 +591,103 @@ function HELPSCRN:CreateTutorial(parent)
             local role = enabledRoles[i - #enabledPages]
             name = ROLE_STRINGS[role]
         end
-        pageSelect:AddChoice(name, i, i == 1)
+        tut.PageSelect:AddChoice(name, i, i == 1)
     end
 
-    local bar = vgui.Create("TTTProgressBar", parent)
-    bar:SetSize(198, bh)
-    bar:MoveBelow(tut)
-    bar:AlignLeft((bw * 2) + 5)
-    bar:SetMin(1)
-    bar:SetMax(maxPages)
-    bar:SetValue(1)
-    bar:SetColor(Color(0, 200, 0))
+    tut.PageBar = vgui.Create("TTTProgressBar", parent)
+    tut.PageBar:SetSize(198, bh)
+    tut.PageBar:MoveBelow(tut)
+    tut.PageBar:AlignLeft((bw * 2) + 5)
+    tut.PageBar:SetMin(1)
+    tut.PageBar:SetMax(maxPages)
+    tut.PageBar:SetValue(1)
+    tut.PageBar:SetColor(Color(0, 200, 0))
 
     -- fixing your panels...
-    bar.UpdateText = function(s)
+    tut.PageBar.UpdateText = function(s)
         s.Label:SetText(Format("%i / %i", s.m_iValue, s.m_iMax))
         s:PerformLayout()
     end
 
-    bar:UpdateText()
+    tut.PageBar:UpdateText()
 
-    local bnext = vgui.Create("DButton", parent)
-    bnext:SetFont("Trebuchet22")
-    bnext:SetSize(bw, bh)
-    bnext:SetText(GetTranslation("next"))
-    bnext:CopyPos(bar)
-    bnext:AlignRight(1)
+    tut.NextButton = vgui.Create("DButton", parent)
+    tut.NextButton:SetFont("Trebuchet22")
+    tut.NextButton:SetSize(bw, bh)
+    tut.NextButton:SetText(GetTranslation("next"))
+    tut.NextButton:CopyPos(tut.PageBar)
+    tut.NextButton:AlignRight(1)
 
-    local brole = vgui.Create("DButton", parent)
-    brole:SetSize(24, bh)
-    brole:SetText("")
-    brole:SetImage("icon16/arrow_in.png")
-    brole:SetTooltip(GetTranslation("help_tut_find_role"))
-    brole:CopyPos(bar)
-    brole:MoveLeftOf(bnext)
+    tut.RoleButton = vgui.Create("DButton", parent)
+    tut.RoleButton:SetSize(24, bh)
+    tut.RoleButton:SetText("")
+    tut.RoleButton:SetImage("icon16/arrow_in.png")
+    tut.RoleButton:SetTooltip(GetTranslation("help_tut_find_role"))
+    tut.RoleButton:CopyPos(tut.PageBar)
+    tut.RoleButton:MoveLeftOf(tut.NextButton)
 
-    local bprev = vgui.Create("DButton", parent)
-    bprev:SetFont("Trebuchet22")
-    bprev:SetSize(bw, bh)
-    bprev:SetText(GetTranslation("prev"))
-    bprev:CopyPos(bar)
-    bprev:MoveLeftOf(brole)
+    tut.PreviousButton = vgui.Create("DButton", parent)
+    tut.PreviousButton:SetFont("Trebuchet22")
+    tut.PreviousButton:SetSize(bw, bh)
+    tut.PreviousButton:SetText(GetTranslation("prev"))
+    tut.PreviousButton:CopyPos(tut.PageBar)
+    tut.PreviousButton:MoveLeftOf(tut.RoleButton)
 
-    pageSelect.OnSelect = function(pnl, index, label, data)
+    tut.PageSelect.OnSelect = function(pnl, index, label, data)
         tut.current = data
-        bar:SetValue(tut.current)
+        tut.PageBar:SetValue(tut.current)
         ShowTutorialPage(tut, tut.current)
     end
 
-    bnext.DoClick = function()
+    tut.NextButton.DoClick = function()
         if tut.current < maxPages then
-            pageSelect:ChooseOptionID(tut.current + 1)
+            tut.PageSelect:ChooseOptionID(tut.current + 1)
         end
     end
 
-    bprev.DoClick = function()
+    tut.PreviousButton.DoClick = function()
         if tut.current > 1 then
-            pageSelect:ChooseOptionID(tut.current - 1)
+            tut.PageSelect:ChooseOptionID(tut.current - 1)
         end
     end
 
-    brole.DoClick = function()
-        local hide_role = false
-        if ConVarExists("ttt_hide_role") then
-            hide_role = GetConVar("ttt_hide_role"):GetBool()
-        end
-
-        if hide_role then return end
-
+    tut.RoleButton.DoClick = function()
         local client = LocalPlayer()
+        if not IsValid(client) then return end
+
         local role = client:GetDisplayedRole()
-        if not IsValid(client) or role <= ROLE_NONE or role > ROLE_MAX then return end
-
-        local page = nil
-        for i = #enabledPages, maxPages do
-            if role == enabledRoles[i - #enabledPages] then
-                page = i
-                break
-            end
-        end
-
-        if not page then return end
-
-        pageSelect:ChooseOptionID(page)
+        HELPSCRN:OpenRoleTutorial(role)
     end
+
+    return tut
+end
+
+function HELPSCRN:OpenRoleTutorial(role)
+    if role <= ROLE_NONE or role > ROLE_MAX then return end
+
+    local hide_role = false
+    if ConVarExists("ttt_hide_role") then
+        hide_role = GetConVar("ttt_hide_role"):GetBool()
+    end
+
+    if hide_role then return end
+
+    -- Open the window if it isn't already
+    if not IsValid(dframe) then
+        self:Show()
+    end
+
+    local page = nil
+    for i = #enabledPages, maxPages do
+        if role == enabledRoles[i - #enabledPages] then
+            page = i
+            break
+        end
+    end
+
+    if not page then return end
+
+    self.TutorialPanel.PageSelect:ChooseOptionID(page)
 end
 
 function HELPSCRN:CreateConfig(dsettings)
