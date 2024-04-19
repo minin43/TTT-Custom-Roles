@@ -320,6 +320,7 @@ ttt_spy_steal_model                         1       // Whether the spy should ch
 ttt_spy_steal_model_hands                   1       // Whether the spy should change to the victim's playermodel's 1st-person hands after killing a player
 ttt_spy_steal_model_alert                   1       // Whether the spy should see an alert message displaying who they are disguised as after killing a player
 ttt_spy_steal_name                          1       // Whether the spy should change to the victim's name after killing a player (When other players look at the spy and see their info under the crosshair)
+ttt_spy_steal_from_respawning               1       // Whether the spy should steal the identity of their victim even if that player is respawning
 ttt_spy_flare_gun_loadout                   1       // Whether the spy should have a flare gun given to them when they spawn. Server must be restarted for changes to take effect
 ttt_spy_flare_gun_shop                      0       // Whether the spy should have a flare gun be purchasable in the shop. Server must be restarted for changes to take effect
 ttt_spy_flare_gun_shop_rebuyable            0       // Whether the spy should be able to purchase the flare gun multiple times (requires "ttt_spy_flare_gun_shop" to be enabled). Server must be restarted for changes to take effect
@@ -443,6 +444,7 @@ ttt_detectives_glow_enabled                 0       // Whether members of the de
 ttt_special_detectives_armor_loadout        1       // Whether special detectives (all detective roles other than the original detective itself) get armor automatically for free
 ttt_all_search_postround                    1       // Whether non-detectives can search bodies post-round or not
 ttt_all_search_binoc                        0       // Whether non-detectives can search bodies if they are using binoculars
+ttt_all_search_dnascanner                   0       // Whether non-detectives can search bodies if they are hold the DNA scanner
 ttt_detectives_credits_timer                0       // How often in seconds to give members of the detective team a credit. Set to 0 to disable.
 ttt_detectives_search_credits               0       // How many credits a detective should get for searching a corpse. Set to 0 to disable.
 ttt_detectives_search_credits_friendly      0       // Whether detectives should get credits for searching friendly corpses
@@ -1089,7 +1091,9 @@ ttt_death_notifier_enabled                  1       // Whether the name and role
 ttt_death_notifier_show_role                1       // Whether to show the killer's role in death notification messages
 ttt_smokegrenade_extinguish                 1       // Whether smoke grenades should extinguish fire
 ttt_player_set_color                        1       // Whether player colors are set each time that player spawns
+ttt_dna_scan_detectives_loadout             0       // Whether all detectives should be given a DNA scanner. If disabled, only the Detective role will get one
 ttt_dna_scan_on_dialog                      1       // Whether to show a button to open the DNA scanner on the body search dialog
+ttt_dna_scan_only_drop_on_death             0       // Whether the DNA scanner should only be droppable when the holder dies
 ttt_spectator_corpse_search                 1       // Whether spectators can search bodies (not shared with other players)
 ttt_corpse_search_not_shared                0       // Whether corpse searches are not shared with other players (only affects non-detective-like searchers)
 ttt_color_mode_override                     "none"  // Forces all players to have a certain role color setting. none (let user decide), default, simple, protan, deutan, tritan

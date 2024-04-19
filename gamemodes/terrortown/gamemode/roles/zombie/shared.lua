@@ -18,6 +18,15 @@ ROLE_VICTIM_CHANGING_ROLE[ROLE_ZOMBIE] = function(ply, victim)
     return victim:IsZombifying()
 end
 
+hook.Add("TTTIsPlayerRespawning", "Zombie_TTTIsPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:IsZombifying() then
+        return true
+    end
+end)
+
 hook.Add("TTTRoleSpawnsArtificially", "Zombie_TTTRoleSpawnsArtificially", function(role)
     if role == ROLE_ZOMBIE then
         local madScientistEnabled = util.CanRoleSpawn(ROLE_MADSCIENTIST) and

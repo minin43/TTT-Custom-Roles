@@ -53,9 +53,11 @@ end
 function CORPSE.CanBeSearched(ply, rag)
     if not IsPlayer(ply) then return false end
 
+    local weap_class = WEPS.GetClass(ply.GetActiveWeapon and ply:GetActiveWeapon())
     local ownerEnt = CORPSE.GetPlayer(rag)
     local detectiveSearchOnly = (GetConVar("ttt_detectives_search_only"):GetBool() or IsAllDetectiveOnly()) and
                             not (GetConVar("ttt_all_search_postround"):GetBool() and GetRoundState() ~= ROUND_ACTIVE) and
-                            not (GetConVar("ttt_all_search_binoc"):GetBool() and ply:GetActiveWeapon() and WEPS.GetClass(ply:GetActiveWeapon()) == "weapon_ttt_binoculars")
+                            not (GetConVar("ttt_all_search_binoc"):GetBool() and weap_class == "weapon_ttt_binoculars") and
+                            not (GetConVar("ttt_all_search_dnascanner"):GetBool() and weap_class == "weapon_ttt_wtester")
     return ply:IsActiveDetectiveLike() or not detectiveSearchOnly or (IsValid(ownerEnt) and ownerEnt:GetNWBool("body_searched", false))
 end

@@ -142,15 +142,18 @@ local function IdentifyBody(ply, rag)
     -- will return either false or a valid ply
     local deadply = player.GetBySteamID64(rag.sid64) or player.GetBySteamID(rag.sid)
 
+    -- If the we're allowing anyone with a DNA scanner to cosplay as a detective, show them everything
+    local fullSearch = GetConVar("ttt_all_search_dnascanner"):GetBool() and WEPS.GetClass(ply.GetActiveWeapon and ply:GetActiveWeapon()) == "weapon_ttt_wtester"
+
     -- Announce body
-    local announceName = AnnounceBodyName(ply, round_state, deadply)
+    local announceName = fullSearch or AnnounceBodyName(ply, round_state, deadply)
     if bodyfound:GetBool() and not CORPSE.GetFound(rag, false) and (not IsValid(deadply) or announceName or not deadply:GetNWBool("body_found", false)) then
         local name = "someone"
         if announceName then
             name = nick
         end
         local role_string = "an unknown role"
-        if AnnounceBodyRole(ply, round_state, deadply) then
+        if fullSearch or AnnounceBodyRole(ply, round_state, deadply) then
             role_string = ROLE_STRINGS_EXT[role]
         elseif AnnounceBodyTeam(ply, round_state, deadply) then
             local roleTeam = player.GetRoleTeam(role)
@@ -174,10 +177,15 @@ local function IdentifyBody(ply, rag)
                 deadply:SetNWBool("body_found", true)
                 deadply:SetNWBool("body_searched", true)
             end
-            -- Keep track if this body was searched specifically by a detective
-            if ply:IsDetectiveLike() and not deadply:GetNWBool("body_searched_det", false) then
-                deadply:SetNWBool("body_searched_det", true)
-                HandleDetectiveSearchCredits(ply, deadply)
+
+            if not deadply:GetNWBool("body_searched_det", false) then
+                -- Keep track if this body was searched specifically by a detective
+                if ply:IsDetectiveLike() then
+                    deadply:SetNWBool("body_searched_det", true)
+                    HandleDetectiveSearchCredits(ply, deadply)
+                elseif fullSearch then
+                    deadply:SetNWBool("body_searched_det", true)
+                end
             end
 
             -- Don't cache this in case the hook wants to change the corpse's role
