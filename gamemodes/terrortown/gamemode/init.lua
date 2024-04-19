@@ -46,6 +46,7 @@ AddCSLuaFile("cl_hitmarkers.lua")
 AddCSLuaFile("cl_deathnotify.lua")
 AddCSLuaFile("cl_sprint.lua")
 AddCSLuaFile("sprint_shd.lua")
+AddCSLuaFile("cl_cheatsheet.lua")
 
 include("shared.lua")
 include("init_shd.lua")
