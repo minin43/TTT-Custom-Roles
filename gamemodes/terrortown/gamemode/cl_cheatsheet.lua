@@ -58,36 +58,55 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
     local monsters = {}
     AddRolesFromTeam(monsters, MONSTER_ROLES)
 
-    local columns = MathClamp(MathMax(#detectives, #innocents, #traitors, #jesters, #independents, #monsters), 1, 3)
-    local detectiveRows     = MathCeil(#detectives / columns)
-    local innocentRows      = MathCeil(#innocents / columns)
-    local traitorRows       = MathCeil(#traitors / columns)
-    local jesterRows        = MathCeil(#jesters / columns)
-    local independentRows   = MathCeil(#independents / columns)
-    local monsterRows       = MathCeil(#monsters / columns)
-
-    local function IsLabelNeeded(tbl)
-        return #tbl == 0 and 0 or 1
-    end
-
-    local labels = IsLabelNeeded(detectives) + IsLabelNeeded(innocents) + IsLabelNeeded(traitors)
-            + IsLabelNeeded(jesters) + IsLabelNeeded(independents) + IsLabelNeeded(monsters)
-
     local iconSize          = 64
     local titleHeight       = 14
     local descriptionWidth  = 256
     local labelHeight       = 16
     local m                 = 5
 
-    local detectivesHeight      = MathMax((iconSize + m) * detectiveRows + m, 0)
-    local innocentsHeight       = MathMax((iconSize + m) * innocentRows + m, 0)
-    local traitorsHeight        = MathMax((iconSize + m) * traitorRows + m, 0)
-    local jestersHeight         = MathMax((iconSize + m) * jesterRows + m, 0)
-    local independentsHeight    = MathMax((iconSize + m) * independentRows + m, 0)
-    local monstersHeight        = MathMax((iconSize + m) * monsterRows + m, 0)
+    local w, h, detectivesHeight, innocentsHeight, traitorsHeight, jestersHeight, independentsHeight, monstersHeight
 
-    local w = (iconSize + descriptionWidth + (m * 3)) * columns
-    local h = detectivesHeight + innocentsHeight + traitorsHeight + jestersHeight + independentsHeight + monstersHeight + (labelHeight * labels)
+    local maxColumns = 3
+    local fitsScreen = false
+    local needsScrollbar = false
+    while not fitsScreen do
+        local columns = MathClamp(MathMax(#detectives, #innocents, #traitors, #jesters, #independents, #monsters), 1, maxColumns)
+        local detectiveRows     = MathCeil(#detectives / columns)
+        local innocentRows      = MathCeil(#innocents / columns)
+        local traitorRows       = MathCeil(#traitors / columns)
+        local jesterRows        = MathCeil(#jesters / columns)
+        local independentRows   = MathCeil(#independents / columns)
+        local monsterRows       = MathCeil(#monsters / columns)
+
+        local function IsLabelNeeded(tbl)
+            return #tbl == 0 and 0 or 1
+        end
+
+        local labels = IsLabelNeeded(detectives) + IsLabelNeeded(innocents) + IsLabelNeeded(traitors)
+                + IsLabelNeeded(jesters) + IsLabelNeeded(independents) + IsLabelNeeded(monsters)
+
+        detectivesHeight    = MathMax((iconSize + m) * detectiveRows + m, 0)
+        innocentsHeight     = MathMax((iconSize + m) * innocentRows + m, 0)
+        traitorsHeight      = MathMax((iconSize + m) * traitorRows + m, 0)
+        jestersHeight       = MathMax((iconSize + m) * jesterRows + m, 0)
+        independentsHeight  = MathMax((iconSize + m) * independentRows + m, 0)
+        monstersHeight      = MathMax((iconSize + m) * monsterRows + m, 0)
+
+        w = (iconSize + descriptionWidth + (m * 3)) * columns
+        h = detectivesHeight + innocentsHeight + traitorsHeight + jestersHeight + independentsHeight + monstersHeight + (labelHeight * labels)
+
+        if needsScrollbar then -- If we know we need a scrollbar then exit the loop
+            fitsScreen = true
+            -- TODO: Actually add scrollbar
+        elseif w > ScrW() then -- If it is too wide then we have gone too far and we will need a scrollbar
+            maxColumns = maxColumns - 1
+            needsScrollbar = true
+        elseif h > ScrH() then -- If it is too tall try adding another column
+            maxColumns = maxColumns + 1
+        else -- If it fits the screen then exit the loop
+            fitsScreen = true
+        end
+    end
 
     local dframe = vgui.Create("DFrame")
     dframe:SetSize(w, h)
@@ -170,7 +189,7 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
             end
 
             currentColumn = currentColumn + 1
-            if currentColumn == 3 then
+            if currentColumn == maxColumns then
                 currentColumn = 0
                 currentRow = currentRow + 1
             end
