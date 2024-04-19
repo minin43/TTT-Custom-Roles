@@ -85,6 +85,9 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
         local labels = IsLabelNeeded(detectives) + IsLabelNeeded(innocents) + IsLabelNeeded(traitors)
                 + IsLabelNeeded(jesters) + IsLabelNeeded(independents) + IsLabelNeeded(monsters)
 
+        -- I worked this out from looking at screenshots and measuring how the bottom margin changes based on the number of labels. I don't know why this is needed or where these numbers come from!
+        local bottomMarginOffset = (6 - labels) * 5
+
         detectivesHeight    = MathMax((iconSize + m) * detectiveRows + m, 0)
         innocentsHeight     = MathMax((iconSize + m) * innocentRows + m, 0)
         traitorsHeight      = MathMax((iconSize + m) * traitorRows + m, 0)
@@ -93,7 +96,7 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
         monstersHeight      = MathMax((iconSize + m) * monsterRows + m, 0)
 
         w = (iconSize + descriptionWidth + (m * 3)) * columns
-        h = detectivesHeight + innocentsHeight + traitorsHeight + jestersHeight + independentsHeight + monstersHeight + (labelHeight * labels)
+        h = detectivesHeight + innocentsHeight + traitorsHeight + jestersHeight + independentsHeight + monstersHeight + (labelHeight * labels) - bottomMarginOffset
 
         if needsScrollbar then -- If we know we need a scrollbar then exit the loop
             fitsScreen = true
