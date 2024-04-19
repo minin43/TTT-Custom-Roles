@@ -193,7 +193,6 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
                 currentColumn = 0
                 currentRow = currentRow + 1
             end
-            -- TODO: Highlight current role
         end
     end
 
