@@ -90,8 +90,8 @@ hook.Add("PlayerDeath", "Medium_Spirits_PlayerDeath", function(victim, infl, att
         spirit:Spawn()
         spirits[victim:SteamID64()] = spirit
 
-        -- If there is a medium in the round, let the player who died know there is a medium as long as this player isn't the only medium and they are not turning into a zombie
-        if medium_dead_notify:GetBool() and mediumCount > 0 and (mediumCount > 1 or not victim:IsMedium()) and not victim:IsZombifying() then
+        -- If there is a medium in the round, let the player who died know there is a medium as long as this player isn't the only medium and they are not respawning
+        if medium_dead_notify:GetBool() and mediumCount > 0 and (mediumCount > 1 or not victim:IsMedium()) and not victim:IsRespawning() then
             victim:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_MEDIUM] .. " senses your spirit.")
         end
 

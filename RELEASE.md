@@ -1,5 +1,24 @@
 # Release Notes
 
+## 2.1.12 (Beta)
+**Released:**
+
+### Additions
+- Added ability for DNA Scanner to be given to all detective roles (disabled by default)
+  - When disabled, only the vanilla Detective role will be given the DNA scanner as part of their loadout
+- Added ability to disable DNA Scanner from being dropped, except for when the player holding it dies (disabled by default)
+- Added ability to allow any player holding the DNA scanner to search bodies as if they were a detective (disabled by default)
+- Added ability to control whether a spy who kills a respawning player will steal their identity anyway (enabled by default)
+
+### Fixes
+- Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
+- Fixed potential issues when a parasite or phantom is killed by a role that changes their victim's role
+
+### Developer
+- Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
+- Added `plymeta:StopRespawning` fed by the new `TTTStopPlayerRespawning` hook
+- Added ability to open role tutorial to a specific role via `HELPSCRN:OpenRoleTutorial(ROLE_ID)`
+
 ## 2.1.11
 **Released: April 15th, 2024**\
 Includes beta update [2.1.10](#2110-beta).

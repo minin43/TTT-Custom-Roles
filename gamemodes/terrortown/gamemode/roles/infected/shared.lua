@@ -2,6 +2,16 @@ AddCSLuaFile()
 
 local table = table
 
+-- Initialize role features
+hook.Add("TTTIsPlayerRespawning", "Infected_TTTIsPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:GetNWBool("InfectedIsZombifying", false) then
+        return true
+    end
+end)
+
 ------------------
 -- ROLE CONVARS --
 ------------------
