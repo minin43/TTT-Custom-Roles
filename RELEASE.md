@@ -10,6 +10,7 @@
 - Added ability to allow any player holding the DNA scanner to search bodies as if they were a detective (disabled by default)
 - Added ability to control whether a spy who kills a respawning player will steal their identity anyway (enabled by default)
 - Added ability to limit the number of times the phantom can respawn (disabled by default)
+- Added ability to change the informant's scan time based on the team of their target (defaults to 1x speed for all teams)
 
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps

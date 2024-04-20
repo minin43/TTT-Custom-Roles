@@ -314,6 +314,11 @@ ttt_informant_scanner_time                  8       // The amount of time (in se
 ttt_informant_scanner_float_time            1       // The amount of time (in seconds) it takes for the informant's scanner to lose it's target without line of sight
 ttt_informant_scanner_cooldown              3       // The amount of time (in seconds) the informant's tracker goes on cooldown for after losing it's target
 ttt_informant_scanner_distance              2500    // The maximum distance away the scanner target can be
+ttt_informant_scanner_innocent_mult         1       // The multiplier to use with the scanner time when the target is an innocent (e.g. 0.5 = 50% scanner time)
+ttt_informant_scanner_traitor_mult          1       // The multiplier to use with the scanner time when the target is an traitor (e.g. 0.5 = 50% scanner time)
+ttt_informant_scanner_jester_mult           1       // The multiplier to use with the scanner time when the target is an jester (e.g. 0.5 = 50% scanner time)
+ttt_informant_scanner_independent_mult      1       // The multiplier to use with the scanner time when the target is an independent (e.g. 0.5 = 50% scanner time)
+ttt_informant_scanner_monster_mult          1       // The multiplier to use with the scanner time when the target is an monster (e.g. 0.5 = 50% scanner time)
 
 // Spy
 ttt_spy_steal_model                         1       // Whether the spy should change to the victim's playermodel after killing a player
