@@ -336,6 +336,7 @@ ttt_glitch_chat_block_mode                  1       // How to handle glitch chat
 // Phantom
 ttt_phantom_respawn                         1       // Whether the phantom should respawn when their killer is killed
 ttt_phantom_respawn_health                  50      // The amount of health a phantom will respawn with
+ttt_phantom_respawn_limit                   0       // The amount of times a phantom can respawn. Set to 0 to have no limit
 ttt_phantom_weaker_each_respawn             0       // Whether a phantom respawns weaker (1/2 as much HP) each time they respawn, down to a minimum of 1
 ttt_phantom_announce_death                  0       // Whether to announce to detectives (and promoted deputies and impersonators) that a phantom has been killed or respawned
 ttt_phantom_killer_smoke                    0       // Whether to show smoke on the player who killed the phantom
