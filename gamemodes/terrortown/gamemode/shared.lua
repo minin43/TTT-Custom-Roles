@@ -1454,6 +1454,7 @@ CORPSE_ICON_TYPES = {
     "equipment",
     "head",
     "kills",
+    "killer",
     "lastid",
     "nick",
     "role",

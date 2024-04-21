@@ -16,6 +16,9 @@
 - Added ability for infected to be a jester or an independent (disabled by default)
 - Added ability for infected to immediately succumb and become a zombie when another team would have won (disabled by default)
   - Only used when infected is jester or independent
+- Added ability to show the killer's team information on the corpse search screen (disabled by default)
+  - Each team can be enabled separately with flavor text that hints at the killer's team
+  - Plain text that explicitly states the killer's team can also be enabled on top of the flavor text
 
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps

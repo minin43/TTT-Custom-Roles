@@ -390,6 +390,11 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     -- identifier so we know whether a ttt_confirm_death was legit
     ply.search_id = { eidx = rag:EntIndex(), id = rag:EntIndex() + dtime }
 
+    local killerid = "0"
+    if IsPlayer(rag.killer) then
+        killerid = rag.killer:SteamID64()
+    end
+
     -- time of dna sample decay relative to current time
     local stime = 0
     if rag.killer_sample then
@@ -431,6 +436,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     net.WriteString(wep)
     net.WriteBit(hshot) -- ( 1 bit )
     net.WriteInt(dtime, 16)
+    net.WriteUInt64(killerid)
     net.WriteInt(stime, 16)
 
     net.WriteUInt(#kill_entids, 8)
@@ -594,6 +600,7 @@ function CORPSE.Create(ply, attacker, dmginfo)
     rag.time = CurTime()
     rag.kills = table.Copy(ply.kills)
 
+    rag.killer = attacker
     rag.killer_sample = GetKillerSample(ply, attacker, dmginfo)
 
     -- crime scene data
