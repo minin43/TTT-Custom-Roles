@@ -231,7 +231,7 @@ hook.Add("TTTTutorialRoleText", "Infected_TTTTutorialRoleText", function(role, t
         -- If we're not an innocent and respawn blocking is enabled, let the player know
         if roleTeam ~= ROLE_TEAM_INNOCENT and infected_block_win:GetBool() then
             html = html .. "<span style='display: block; margin-top: 10px;'>" .. ROLE_STRINGS[ROLE_INFECTED] .. ".</span>"
-            html = html .. "<span style='display: block; margin-top: 10px;'>When a team would normally win, the " .. ROLE_STRINGS[ROLE_INFECTED] .. " <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>immediately succumbs</span> to their infection, changing into <span style='color: rgb(" .. zombieColor.r .. ", " .. zombieColor.g .. ", " .. zombieColor.b .. ")'>" .. ROLE_STRINGS_EXT[ROLE_ZOMBIE] .. "</span> and allowing them to <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>go on a rampage</span> and win by surprise.</span>"
+            html = html .. "<span style='display: block; margin-top: 10px;'>When a team would normally win, the " .. ROLE_STRINGS[ROLE_INFECTED] .. " <span style='color: rgb(" .. roleTeamColor.r .. ", " .. roleTeamColor.g .. ", " .. roleTeamColor.b .. ")'>immediately succumbs</span> to their infection, changing into <span style='color: rgb(" .. zombieColor.r .. ", " .. zombieColor.g .. ", " .. zombieColor.b .. ")'>" .. ROLE_STRINGS_EXT[ROLE_ZOMBIE] .. "</span> and allowing them to <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>go on a rampage</span> and win by surprise.</span>"
         end
 
         if infected_show_icon:GetBool() then
