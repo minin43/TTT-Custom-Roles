@@ -230,6 +230,7 @@ L.sb_ping = "Ping"
 L.sb_deaths = "Deaths"
 L.sb_score = "Score"
 L.sb_karma = "Karma"
+L.sb_role = "Role"
 
 L.sb_info_help = "Search this player's body, and you can review the results here."
 

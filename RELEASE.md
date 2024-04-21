@@ -12,13 +12,14 @@
 - Added ability to limit the number of times the phantom can respawn (disabled by default)
 - Added ability to change the informant's scan time based on the team of their target (defaults to 1x speed for all teams)
 - Added ability to limit the amount of max health the hive mind gains when they assimilate a player (defaults to 100%)
+- Added ability to sort by known player role back to the scoreboard
 
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
 - Fixed potential issues when a parasite or phantom is killed by a role that changes their victim's role
 - Fixed cupid's lovers getting penalized karma when they side with their opposite-team lover and attacker their teammates
-- Fixed player resurrected by the paramedic getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_paramedic_revive_muted` enabled 
-- Fixed player brainwashed by the hypnotist getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_hypnotist_brainwash_muted` enabled 
+- Fixed player resurrected by the paramedic getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_paramedic_revive_muted` enabled
+- Fixed player brainwashed by the hypnotist getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_hypnotist_brainwash_muted` enabled
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
