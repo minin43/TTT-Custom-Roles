@@ -13,6 +13,9 @@
 - Added ability to change the informant's scan time based on the team of their target (defaults to 1x speed for all teams)
 - Added ability to limit the amount of max health the hive mind gains when they assimilate a player (defaults to 100%)
 - Added ability to sort by known player role back to the scoreboard
+- Added ability for infected to be a jester or an independent (disabled by default)
+- Added ability for infected to immediately succumb and become a zombie when another team would have won (disabled by default)
+  - Only used when infected is jester or independent
 
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps

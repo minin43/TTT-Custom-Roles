@@ -405,6 +405,9 @@ ttt_turncoat_change_max_health              1       // Whether to change the tur
 ttt_turncoat_change_innocent_kill           0       // Whether to change the turncoat's team when they kill a member of the innocent team
 
 // Infected
+ttt_infected_is_jester                      0       // Whether the infected should be treated as a jester
+ttt_infected_is_independent                 0       // Whether the infected should be treated as an independent
+ttt_infected_block_win                      0       // Blocks other teams from winning and causes the infected to succumb immediately when they would have. Only used when "ttt_infected_is_jester" or "ttt_infected_is_independent" are enabled
 ttt_infected_succumb_time                   180     // Time in seconds for the infected to succumb to their disease
 ttt_infected_full_health                    1       // Whether the infected's health is refilled when they become a zombie
 ttt_infected_prime                          1       // Whether the infected will become a prime zombie
