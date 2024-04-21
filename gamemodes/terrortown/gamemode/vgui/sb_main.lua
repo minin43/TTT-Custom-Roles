@@ -146,7 +146,7 @@ local function GetRoleRank(role)
         local detective_roles = GetTeamRoles(DETECTIVE_ROLES)
         table.sort(detective_roles, SortByRoleName)
         for _, r in ipairs(detective_roles) do
-            if r == ROLE_DETECIVE then continue end
+            if r == ROLE_DETECTIVE then continue end
 
             role_ranks[r] = rank
             rank = rank + 1
