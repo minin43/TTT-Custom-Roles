@@ -32,6 +32,9 @@
 - Fixed player resurrected by the paramedic getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_paramedic_revive_muted` enabled
 - Fixed player brainwashed by the hypnotist getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_hypnotist_brainwash_muted` enabled
 - Fixed "call detective" button not working on corpse search dialog
+- Fixed corpse calls duplicating when different players called the detective to the same corpse
+- Fixed corpse calls not expiring after 45 seconds like they do in vanilla TTT
+  - This can be adjusted or disabled with a new convar
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook

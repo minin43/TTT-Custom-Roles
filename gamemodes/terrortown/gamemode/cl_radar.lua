@@ -26,6 +26,8 @@ RADAR.samples_count = 0
 RADAR.called_corpses = {}
 RADAR.teleport_marks = {}
 
+local detectives_corpse_call_expiration = GetConVar("ttt_detectives_corpse_call_expiration")
+
 function RADAR:EndScan()
     self.enable = false
     self.endtime = CurTime()
@@ -50,6 +52,16 @@ end
 
 -- cache stuff we'll be drawing
 function RADAR.CacheEnts()
+    local corpse_call_expiration = detectives_corpse_call_expiration:GetInt()
+    if corpse_call_expiration > 0 then
+        -- also do some corpse cleanup here
+        for k, corpse in pairs(RADAR.called_corpses) do
+            if (corpse.called + corpse_call_expiration) < CurTime() then
+                RADAR.called_corpses[k] = nil -- will make # inaccurate, no big deal
+            end
+        end
+    end
+
     if RADAR.bombs_count == 0 then return end
 
     -- Update bomb positions for those we know about
@@ -295,6 +307,17 @@ net.Receive("TTT_C4Warn", ReceiveC4Warn)
 local function ReceiveCorpseCall()
     local pos = net.ReadVector()
     local sid = net.ReadString()
+
+    -- If this sid already has a corpse call, update the position
+    for _, r in ipairs(RADAR.called_corpses) do
+        if r.sid == sid then
+            r.pos = pos
+            r.called = CurTime()
+            return
+        end
+    end
+
+    -- If not, add it
     table.insert(RADAR.called_corpses, { sid = sid, pos = pos, called = CurTime() })
 end
 net.Receive("TTT_CorpseCall", ReceiveCorpseCall)
