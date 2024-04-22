@@ -423,7 +423,7 @@ local function ShowSearchScreen(search_raw)
             end
         })
 
-        if not client:IsDetectiveLike() then
+        if not client:IsDetectiveLike() and not CORPSE.GetFound(rag, false) then
             table.insert(buttons, {
                 text = PT("search_call", { role = ROLE_STRINGS[ROLE_DETECTIVE] }),
                 doclick = function(btn)
