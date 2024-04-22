@@ -156,7 +156,7 @@ local function ClearShadowState(ply)
     for _, timerId in pairs(buffTimers) do
         if string.find(timerId, "_" .. ply:SteamID64()) then
             timer.Remove(timerId)
-            bufftimers[timerId] = false
+            buffTimers[timerId] = false
         end
     end
 end
