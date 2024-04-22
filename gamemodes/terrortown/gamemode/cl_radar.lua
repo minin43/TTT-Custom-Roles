@@ -26,6 +26,8 @@ RADAR.samples_count = 0
 RADAR.called_corpses = {}
 RADAR.teleport_marks = {}
 
+local detectives_corpse_call_expiration = GetConVar("ttt_detectives_corpse_call_expiration")
+
 function RADAR:EndScan()
     self.enable = false
     self.endtime = CurTime()
@@ -50,11 +52,14 @@ end
 
 -- cache stuff we'll be drawing
 function RADAR.CacheEnts()
-    -- also do some corpse cleanup here
-    for k, corpse in pairs(RADAR.called_corpses) do
-       if (corpse.called + 45) < CurTime() then
-          RADAR.called_corpses[k] = nil -- will make # inaccurate, no big deal
-       end
+    local corpse_call_expiration = detectives_corpse_call_expiration:GetInt()
+    if corpse_call_expiration > 0 then
+        -- also do some corpse cleanup here
+        for k, corpse in pairs(RADAR.called_corpses) do
+            if (corpse.called + corpse_call_expiration) < CurTime() then
+                RADAR.called_corpses[k] = nil -- will make # inaccurate, no big deal
+            end
+        end
     end
 
     if RADAR.bombs_count == 0 then return end

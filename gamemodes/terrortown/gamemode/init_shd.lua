@@ -30,6 +30,7 @@ CreateConVar("ttt_detectives_search_only", "1", FCVAR_REPLICATED)
 for _, dataType in ipairs(CORPSE_ICON_TYPES) do
     CreateConVar("ttt_detectives_search_only_" .. dataType, "0", FCVAR_REPLICATED)
 end
+CreateConVar("ttt_detectives_corpse_call_expiration", "45", FCVAR_REPLICATED, "How many seconds before detective corpse calls should expire. Set to 0 to disable", 0, 180)
 
 -- Traitor role properties
 CreateConVar("ttt_traitors_vision_enabled", "0", FCVAR_REPLICATED)

@@ -29,6 +29,7 @@
 - Fixed "call detective" button not working on corpse search dialog
 - Fixed corpse calls duplicating when different players called the detective to the same corpse
 - Fixed corpse calls not expiring after 45 seconds like they do in vanilla TTT
+  - This can be adjusted or disabled with a new convar
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
