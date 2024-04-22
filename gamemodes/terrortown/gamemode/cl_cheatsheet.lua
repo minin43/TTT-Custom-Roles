@@ -62,6 +62,7 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
     local titleHeight       = 14
     local descriptionWidth  = 256
     local labelHeight       = 16
+    local scrollbarWidth    = 15
     local m                 = 5
 
     local w, h, detectivesHeight, innocentsHeight, traitorsHeight, jestersHeight, independentsHeight, monstersHeight
@@ -85,22 +86,24 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
         local labels = IsLabelNeeded(detectives) + IsLabelNeeded(innocents) + IsLabelNeeded(traitors)
                 + IsLabelNeeded(jesters) + IsLabelNeeded(independents) + IsLabelNeeded(monsters)
 
-        -- I worked this out from looking at screenshots and measuring how the bottom margin changes based on the number of labels. I don't know why this is needed or where these numbers come from!
-        local bottomMarginOffset = (6 - labels) * 5
-
-        detectivesHeight    = MathMax((iconSize + m) * detectiveRows + m, 0)
-        innocentsHeight     = MathMax((iconSize + m) * innocentRows + m, 0)
-        traitorsHeight      = MathMax((iconSize + m) * traitorRows + m, 0)
-        jestersHeight       = MathMax((iconSize + m) * jesterRows + m, 0)
-        independentsHeight  = MathMax((iconSize + m) * independentRows + m, 0)
-        monstersHeight      = MathMax((iconSize + m) * monsterRows + m, 0)
+        detectivesHeight    = MathMax((iconSize + m) * detectiveRows, 0)
+        innocentsHeight     = MathMax((iconSize + m) * innocentRows, 0)
+        traitorsHeight      = MathMax((iconSize + m) * traitorRows, 0)
+        jestersHeight       = MathMax((iconSize + m) * jesterRows, 0)
+        independentsHeight  = MathMax((iconSize + m) * independentRows, 0)
+        monstersHeight      = MathMax((iconSize + m) * monsterRows, 0)
 
         w = (iconSize + descriptionWidth + (m * 3)) * columns
-        h = detectivesHeight + innocentsHeight + traitorsHeight + jestersHeight + independentsHeight + monstersHeight + (labelHeight * labels) - bottomMarginOffset
+        h = detectivesHeight + innocentsHeight + traitorsHeight + jestersHeight + independentsHeight + monstersHeight + (labelHeight * labels) + m
 
-        if needsScrollbar then -- If we know we need a scrollbar then exit the loop
-            fitsScreen = true
-            -- TODO: Actually add scrollbar
+        if needsScrollbar then -- If we know we need a scrollbar then add it
+            w = w + scrollbarWidth
+            if w > ScrW() then-- If the scrollbar was enough to push us over the edge we need to go back one more column
+                maxColumns = maxColumns - 1
+            else -- If everything fits with the scrollbar then exit the loop
+                h = ScrH()
+                fitsScreen = true
+            end
         elseif w > ScrW() then -- If it is too wide then we have gone too far and we will need a scrollbar
             maxColumns = maxColumns - 1
             needsScrollbar = true
@@ -118,21 +121,26 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
     dframe:SetDeleteOnClose(true)
     dframe:ShowCloseButton(false)
 
-    local dlist = vgui.Create("DPanel", dframe)
+    local dbackground = vgui.Create("DPanel", dframe)
+    dbackground:SetSize(w, h)
+    dbackground:SetPos(0, 0)
+    dbackground:SetBackgroundColor(COLOR_GRAY)
+
+    local dlist = vgui.Create("DScrollPanel", dbackground)
     dlist:SetSize(w, h)
     dlist:SetPos(0, 0)
-    dlist:SetMouseInputEnabled(true)
-    dlist:SetBackgroundColor(COLOR_GRAY)
+
+    local dcanvas = dlist:GetCanvas()
 
     local function CreateTeamList(label, roleTable, height, yOffset)
-        local dlabel = vgui.Create("DLabel", dlist)
+        local dlabel = vgui.Create("DLabel", dcanvas)
         dlabel:SetFont("TabLarge")
         dlabel:SetText(label)
         dlabel:SetContentAlignment(7)
         dlabel:SetWidth(w)
         dlabel:SetPos(m + 3, yOffset) -- For some reason the text isn't inline with the icons so we shift it 3px to the right
 
-        local dteam = vgui.Create("DPanel", dlist)
+        local dteam = vgui.Create("DPanel", dcanvas)
         dteam:SetPos(m, yOffset + labelHeight)
         dteam:SetSize(w, height)
         dteam:SetPaintBackground(false)
