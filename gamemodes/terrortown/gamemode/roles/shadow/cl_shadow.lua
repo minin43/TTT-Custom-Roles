@@ -39,12 +39,6 @@ local shadow_target_buff_show_progress = GetConVar("ttt_shadow_target_buff_show_
 ------------------
 
 AddHook("Initialize", "Shadow_Translations_Initialize", function()
-    -- Popup
-    LANG.AddToLanguage("english", "info_popup_shadow", [[You are {role}! Find your target quickly
-and stay close to them. If you don't, you will be punished.
-
-Survive until the end of the round to win.]])
-
     -- HUD
     LANG.AddToLanguage("english", "shadow_delay_target", "Target identified in: {time}")
     LANG.AddToLanguage("english", "shadow_find_target", "FIND YOUR TARGET - {time}")
@@ -66,6 +60,15 @@ Survive until the end of the round to win.]])
 
     -- Scoreboard
     LANG.AddToLanguage("english", "score_shadow_following", "Following")
+
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_shadow", "Needs to stay close to their target or there will be consequences.")
+
+    -- Popup
+    LANG.AddToLanguage("english", "info_popup_shadow", [[You are {role}! Find your target quickly
+and stay close to them. If you don't, you will be punished.
+
+Survive until the end of the round to win.]])
 end)
 
 ----------------------

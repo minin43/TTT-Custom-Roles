@@ -5,6 +5,9 @@ local hook = hook
 ------------------
 
 hook.Add("Initialize", "Detective_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_detective", "Base version of the detectives who can use their DNA scanner to track down killers.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_detective", [[You are {role}! HQ has given you special resources to find the {traitors}.
 Use them to help the {innocents} survive, but be careful:

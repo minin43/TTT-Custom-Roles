@@ -34,6 +34,9 @@ hook.Add("Initialize", "Revenger_Translations_Initialize", function()
     -- Target ID
     LANG.AddToLanguage("english", "target_revenger_lover", "YOUR SOULMATE")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_revenger", "Assigned a random player as soulmate to protect.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_revenger", [[You are {role}! You are helplessly in love with {lover}.
 Do whatever you can to protect them. If they die you will

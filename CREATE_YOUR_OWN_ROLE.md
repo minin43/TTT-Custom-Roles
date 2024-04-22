@@ -6,6 +6,7 @@
    1. [Role Table](#Role-Table)
    1. [Role Strings](#Role-Strings)
    1. [Description](#Description)
+   1. [Short Description](#Short-Description)
    1. [Team](#Team)
    1. [Shop and Loadout Items](#Shop-and-Loadout-Items)
       1. [Weapon](#Weapon)
@@ -77,6 +78,8 @@ ROLE.nameext = ""
 ROLE.nameshort = ""
 
 ROLE.desc = [[]]
+
+ROLE.shortdesc = ""
 
 ROLE.team = 
 
@@ -175,6 +178,16 @@ ROLE.desc = [[You are {role}! {comrades}
 Summon minions to help defeat your enemies.  
   
 Press {menukey} to receive your special equipment!]]
+```
+
+### Short Description
+
+Along with the full role description, you need a short description that is no longer than two sentences that will be displayed in the cheat sheet. This is just to convey a general idea of what you role does and does not need to convey much detail. Keep it short and sweet.
+
+The short description for the Summoner will look like this:
+
+```lua
+ROLE.shortdesc = "Can buy items that summon minions."
 ```
 
 ### Team
@@ -853,6 +866,8 @@ ROLE.desc = [[You are {role}! {comrades}
 Summon minions to help defeat your enemies.  
 
 Press {menukey} to receive your special equipment!]]
+
+ROLE.shortdesc = "Can buy items that summon minions."
 
 ROLE.team = ROLE_TEAM_TRAITOR
 

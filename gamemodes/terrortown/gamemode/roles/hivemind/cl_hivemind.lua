@@ -29,6 +29,9 @@ AddHook("Initialize", "HiveMind_Translations_Initialize", function()
     LANG.AddToLanguage("english", "win_hivemind", "We are {role}!")
     LANG.AddToLanguage("english", "ev_win_hivemind", "The {role} has assimilated everyone!")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_hivemind", "Can assimilate other players into the Hive Mind by killing them. They win by assimilating all living players.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_hivemind", [[You are {role}! Killing other
 players will have them join you, merging their health

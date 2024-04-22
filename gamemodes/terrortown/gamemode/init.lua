@@ -46,6 +46,7 @@ AddCSLuaFile("cl_hitmarkers.lua")
 AddCSLuaFile("cl_deathnotify.lua")
 AddCSLuaFile("cl_sprint.lua")
 AddCSLuaFile("sprint_shd.lua")
+AddCSLuaFile("cl_cheatsheet.lua")
 
 include("shared.lua")
 include("init_shd.lua")
@@ -122,12 +123,6 @@ CreateConVar("ttt_detective_min_players", "8")
 local detective_karma_min = CreateConVar("ttt_detective_karma_min", "600")
 
 -- Role spawn parameters
-CreateConVar("ttt_special_innocent_pct", 0.33)
-CreateConVar("ttt_special_innocent_chance", 0.5)
-CreateConVar("ttt_special_traitor_pct", 0.33)
-CreateConVar("ttt_special_traitor_chance", 0.5)
-CreateConVar("ttt_special_detective_pct", 0.33)
-CreateConVar("ttt_special_detective_chance", 0.5)
 CreateConVar("ttt_independent_chance", 0.5)
 CreateConVar("ttt_jester_chance", 0.5)
 
