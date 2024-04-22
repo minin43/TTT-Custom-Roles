@@ -37,7 +37,7 @@ hook.Add("Initialize", "Medium_Translations_Initialize", function()
     LANG.AddToLanguage("english", "medium_reveal_role", "{medium} has performed a seance and discovered that {spirit} was {role}.")
 
     -- Cheat Sheet
-    LANG.AddToLanguage("english", "cheatsheet_desc_medium", "Can communicate the souls of dead players.")
+    LANG.AddToLanguage("english", "cheatsheet_desc_medium", "Can communicate with the souls of dead players.")
 
     -- Popup
     LANG.AddToLanguage("english", "info_popup_medium", [[You are {role}! As {adetective}, HQ has given you special resources to find the {traitors}.
