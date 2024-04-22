@@ -21,6 +21,9 @@
   - Each team can be enabled separately with flavor text that hints at the killer's team
   - Plain text that explicitly states the killer's team can also be enabled on top of the flavor text
 
+### Changes
+- Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused
+
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
 - Fixed potential issues when a parasite or phantom is killed by a role that changes their victim's role

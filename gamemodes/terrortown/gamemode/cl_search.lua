@@ -164,6 +164,7 @@ function PreprocSearch(raw)
                     search[t] = nil
                 else
                     search[t].text = T("search_killer_team_" .. teamName)
+                    search[t].color = GetRoleTeamColor(roleTeam)
                     search[t].p = 3
                     if corpse_search_killer_team_text_plain:GetBool() then
                         search[t].text = search[t].text .. "\n" .. PT("search_killer_team", { team = teamName })
