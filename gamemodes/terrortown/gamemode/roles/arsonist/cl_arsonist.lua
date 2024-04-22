@@ -135,7 +135,7 @@ hook.Add("TTTBodySearchPopulate", "Arsonist_TTTBodySearchPopulate", function(sea
         text = message,
         img = "vgui/ttt/icon_arsonistdouse",
         text_icon = time,
-        p = 3
+        p = 10
     }
 end)
 

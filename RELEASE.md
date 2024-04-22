@@ -4,7 +4,7 @@
 **Released:**
 
 ### Additions
-- Added a cheat sheet which gives a brief description of all enabled roles.
+- Added a cheat sheet which gives a brief description of all enabled roles
 - Added ability for DNA Scanner to be given to all detective roles (disabled by default)
   - When disabled, only the vanilla Detective role will be given the DNA scanner as part of their loadout
 - Added ability to disable DNA Scanner from being dropped, except for when the player holding it dies (disabled by default)
@@ -23,6 +23,7 @@
 
 ### Changes
 - Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused
+- Changed sort order of items when searching a body so that important information is displayed in a consistent order
 
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
