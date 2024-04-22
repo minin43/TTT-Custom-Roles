@@ -970,6 +970,7 @@ function RegisterRole(tbl)
 
     -- Create the role description translation automatically
     ROLE_TRANSLATIONS[roleID]["english"]["info_popup_" .. tbl.nameraw] = tbl.desc
+    ROLE_TRANSLATIONS[roleID]["english"]["cheatsheet_desc_" .. tbl.nameraw] = tbl.shortdesc
 
     if type(tbl.selectionpredicate) == "function" then
         ROLE_SELECTION_PREDICATE[roleID] = tbl.selectionpredicate

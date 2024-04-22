@@ -11,6 +11,9 @@ local mercenary_shop_mode = GetConVar("ttt_mercenary_shop_mode")
 ------------------
 
 hook.Add("Initialize", "Mercenary_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_mercenary", "Can buy items to help defeat their enemies.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_mercenary", [[You are {role}! Try to survive and help your {innocent} friends!
 

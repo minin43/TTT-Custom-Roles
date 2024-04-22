@@ -24,6 +24,9 @@ hook.Add("Initialize", "Marshal_Translations_Initialize", function()
     -- Announcement
     LANG.AddToLanguage("english", "marshal_deputize_announce", "{amarshal} has promoted {target} to be {adeputy}")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_marshal", "Can use their badge to turn a player into a Deputy or an Impersonator.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_marshal", [[You are {role}! As {adetective}, HQ has given you special resources to find the {traitors}.
 You have a {deputy} Badge that can turn any player into a {deputy}.

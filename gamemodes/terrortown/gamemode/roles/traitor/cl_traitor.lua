@@ -5,6 +5,9 @@ local hook = hook
 ------------------
 
 hook.Add("Initialize", "Traitor_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_traitor", "Base member of the traitor team who can buy items to help defeat their enemies.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_traitor", [[You are {role}! {comrades}
 

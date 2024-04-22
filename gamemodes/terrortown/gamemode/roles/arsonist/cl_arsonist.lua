@@ -38,6 +38,9 @@ hook.Add("Initialize", "Arsonist_Translations_Initialize", function()
     LANG.AddToLanguage("english", "arsdouse_failed", "DOUSING FAILED")
     LANG.AddToLanguage("english", "arsonist_hud", "Dousing complete. Igniter active.")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_arsonist", "Can douse players and set them on fire. They win if they are the last player alive.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_arsonist", [[You are {role}! Get close to other players
 to douse them in gasoline.
@@ -128,13 +131,11 @@ hook.Add("TTTBodySearchPopulate", "Arsonist_TTTBodySearchPopulate", function(sea
     local time = util.SimpleTime(CurTime() - douseTime, "%02i:%02i")
     local message = LANG.GetParamTranslation("arsonist_body_doused", {time = time, anarsonist = ROLE_STRINGS_EXT[ROLE_ARSONIST]})
 
-    local roleString = ROLE_STRINGS_SHORT[ROLE_ARSONIST]
-    local img = util.GetRoleIconPath(roleString, "icon", "vtf")
     search["arsonistdouse"] = {
         text = message,
-        img = img,
-        color = ROLE_COLORS[ROLE_ARSONIST],
-        p = 3
+        img = "vgui/ttt/icon_arsonistdouse",
+        text_icon = time,
+        p = 10
     }
 end)
 

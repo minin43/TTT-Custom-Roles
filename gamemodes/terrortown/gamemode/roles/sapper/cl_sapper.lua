@@ -21,6 +21,9 @@ local sapper_c4_guaranteed_defuse = GetConVar("ttt_sapper_c4_guaranteed_defuse")
 ------------------
 
 hook.Add("Initialize", "Sapper_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_sapper", "Has an aura that makes players immune to explosions.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_sapper", [[You are {role}! As {adetective}, HQ has given you special resources to find the {traitors}.
 You have an explosion protection aura that is visible to everyone.

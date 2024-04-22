@@ -43,6 +43,9 @@ AddHook("Initialize", "Cupid_Translations_Initialize", function()
     -- Event
     LANG.AddToLanguage("english", "ev_cupid_paired", "{cupid} made {lover1} and {lover2} fall in love")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_cupid", "Can use their bow to make two players fall in love. Those players then win and die together.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_cupid_jester", [[You are {role}! {traitors} think you are {ajester} and you
 deal no damage. However, you can use your bow to make two

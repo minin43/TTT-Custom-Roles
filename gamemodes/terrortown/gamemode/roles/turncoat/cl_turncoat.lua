@@ -20,6 +20,9 @@ hook.Add("Initialize", "Turncoat_Translations_Initialize", function()
     LANG.AddToLanguage("english", "tur_changer_help_pri", "Press {primaryfire} to change teams.")
     LANG.AddToLanguage("english", "tur_changer_help_sec", "Be careful! Everyone will be told.")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_turncoat", "Can switch sides and join the traitor team.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_turncoat", [[You are {role}! You are {aninnocent} who has a device
 which will switch you to the {traitor} team but

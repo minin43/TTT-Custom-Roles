@@ -5,6 +5,9 @@ local hook = hook
 ------------------
 
 hook.Add("Initialize", "Innocent_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_innocent", "Base member of the innocent team that has no special abilities.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_innocent", [[You are {role}! But there are {traitors} around...
 Who can you trust, and who is out to fill you with bullets?

@@ -15,6 +15,9 @@ hook.Add("Initialize", "MadScientist_Translations_Initialize", function()
     LANG.AddToLanguage("english", "zombificator_help_pri", "Hold {primaryfire} to zombify dead body.")
     LANG.AddToLanguage("english", "zombificator_help_sec", "The revived player will become a zombie.")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_madscientist", "Can use their zombification device to revive players as Zombies. They win by turning everyone into a Zombie.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_madscientist", [[You are {role}! Try to spread your virus to
 everyone! Using your zombification device on a dead
