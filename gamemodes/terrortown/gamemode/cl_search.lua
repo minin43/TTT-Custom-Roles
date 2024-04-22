@@ -423,7 +423,7 @@ local function ShowSearchScreen(search_raw)
             end
         })
 
-        if not client:IsDetectiveLike() and not CORPSE.GetFound(rag, false) then
+        if not client:IsDetectiveLike() then
             table.insert(buttons, {
                 text = PT("search_call", { role = ROLE_STRINGS[ROLE_DETECTIVE] }),
                 doclick = function(btn)
@@ -431,7 +431,7 @@ local function ShowSearchScreen(search_raw)
                     table.insert(client.called_corpses, search_raw.eidx)
                     btn:SetDisabled(true)
 
-                    RunConsoleCommand("ttt_call_detective", search_raw.eidx, search_raw.sid)
+                    RunConsoleCommand("ttt_call_detective", search_raw.eidx)
                 end,
                 disabled = function()
                     return client:IsSpec() or table.HasValue(client.called_corpses or {}, search_raw.eidx)

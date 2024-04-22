@@ -270,15 +270,17 @@ end
 -- Call detectives to a corpse
 local function CallDetective(ply, cmd, args)
     if not IsValid(ply) then return end
-    if #args ~= 2 then return end
+    if #args ~= 1 then return end
     if not ply:IsActive() then return end
 
     local eidx = tonumber(args[1])
     if not eidx then return end
 
-    local sid = args[2]
     local rag = Entity(eidx)
     if not (IsValid(rag) and rag.player_ragdoll) then return end
+
+    local owner = CORPSE.GetPlayer(rag)
+    if not IsPlayer(owner) then return end
 
     if ((rag.last_detective_call or 0) < (CurTime() - 5)) and (rag:GetPos():Distance(ply:GetPos()) < 128) then
         rag.last_detective_call = CurTime()
@@ -286,8 +288,8 @@ local function CallDetective(ply, cmd, args)
         if CORPSE.GetFound(rag, false) then
             -- show indicator to detectives
             net.Start("TTT_CorpseCall")
-            net.WriteVector(rag:GetPos())
-            net.WriteString(sid)
+                net.WriteVector(rag:GetPos())
+                net.WriteString(owner:SteamID())
             net.Send(GetExtendedDetectiveFilter(true))
 
             LANG.Msg("body_call", {
@@ -368,8 +370,8 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
             if IsValid(rag) and rag:GetPos():Distance(ply:GetPos()) < 128 then
                 hook.Call("TTTBodyFound", GAMEMODE, ply, ownerEnt, rag)
                 net.Start("TTT_CorpseCall")
-                net.WriteVector(rag:GetPos())
-                net.WriteString(rag.sid)
+                    net.WriteVector(rag:GetPos())
+                    net.WriteString(rag.sid)
                 net.Send(GetExtendedDetectiveFilter(true))
                 ownerEnt:SetNWBool("det_called", true)
                 ownerEnt:SetNWBool("body_found", true)
@@ -460,7 +462,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
 
         -- Let detctives know that this body has already been searched
         net.Start("TTT_RemoveCorpseCall")
-        net.WriteString(rag.sid)
+            net.WriteString(rag.sid)
         net.Send(GetExtendedDetectiveFilter(true))
     else
         net.Send(ply)

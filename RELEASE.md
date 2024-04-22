@@ -26,7 +26,7 @@
 - Fixed cupid's lovers getting penalized karma when they side with their opposite-team lover and attacker their teammates
 - Fixed player resurrected by the paramedic getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_paramedic_revive_muted` enabled
 - Fixed player brainwashed by the hypnotist getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_hypnotist_brainwash_muted` enabled
-- Fixed "call detective" button showing on corpses that have already been fully identified by a non-detective when `ttt_detectives_search_only` is disabled
+- Fixed "call detective" button not working on corpse search dialog
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
