@@ -154,24 +154,33 @@ function PreprocSearch(raw)
                 search[t].p = 2
             end
         elseif t == "killer" then
-            local clientTeam = LocalPlayer():GetRoleTeam()
-            local clientTeamName = GetRawRoleTeamName(clientTeam)
-            if not d or not cvars.Bool("ttt_corpse_search_team_text_" .. clientTeamName) then
+            -- If we don't have a killer or a source player then just don't show this at all
+            if not d or not raw.owner then
                 search[t] = nil
-            else
-                local roleTeam = player.GetRoleTeam(raw.killer:GetRole(), true)
-                local teamName = GetRawRoleTeamName(roleTeam)
-                local showTeamText = cvars.Bool("ttt_corpse_search_killer_team_text_" .. teamName, false)
-                if not showTeamText then
-                    search[t] = nil
-                else
-                    search[t].text = T("search_killer_team_" .. teamName)
-                    search[t].color = GetRoleTeamColor(roleTeam)
-                    search[t].p = 4
-                    if corpse_search_killer_team_text_plain:GetBool() then
-                        search[t].text = search[t].text .. "\n" .. PT("search_killer_team", { team = teamName })
-                    end
-                end
+                continue
+            end
+
+            -- Make sure showing killer info for the ragdoll's team is enabled
+            local ragTeam = raw.owner:GetRoleTeam(true)
+            local ragTeamName = GetRawRoleTeamName(ragTeam)
+            if not cvars.Bool("ttt_corpse_search_team_text_" .. ragTeamName) then
+                search[t] = nil
+                continue
+            end
+
+            -- Make sure showing killer info for the killer's team is enabled
+            local roleTeam = player.GetRoleTeam(d:GetRole(), true)
+            local teamName = GetRawRoleTeamName(roleTeam)
+            if not cvars.Bool("ttt_corpse_search_killer_team_text_" .. teamName, false) then
+                search[t] = nil
+                continue
+            end
+
+            search[t].text = T("search_killer_team_" .. teamName)
+            search[t].color = GetRoleTeamColor(roleTeam)
+            search[t].p = 4
+            if corpse_search_killer_team_text_plain:GetBool() then
+                search[t].text = search[t].text .. "\n" .. PT("search_killer_team", { team = teamName })
             end
         elseif t == "words" then
             if #d > 0 then
