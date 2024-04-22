@@ -40,6 +40,9 @@ hook.Add("Initialize", "Beggar_Translations_Initialize", function()
     LANG.AddToLanguage("english", "beggar_hidden_innocent_hud", "You still appear as {beggar} to {innocents}")
     LANG.AddToLanguage("english", "beggar_hidden_traitor_hud", "You still appear as {beggar} to {traitors}")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_beggar", "Joins someone's team and becomes an Innocent or a Traitor when they are given a shop item by another player.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_beggar_jester", [[You are {role}! {traitors} think you are {ajester} and you
 deal no damage. However, if you can convince someone to give

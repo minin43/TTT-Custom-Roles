@@ -32,6 +32,9 @@ hook.Add("Initialize", "Assassin_Translations_Initialize", function()
     LANG.AddToLanguage("english", "target_assassin_target_team", "{player}'s TARGET")
     LANG.AddToLanguage("english", "target_current_target", "CURRENT TARGET")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_assassin", "Assigned a target at random. They deal more damage to their target and less damage to everyone else.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_assassin", [[You are {role}! {comrades}
 

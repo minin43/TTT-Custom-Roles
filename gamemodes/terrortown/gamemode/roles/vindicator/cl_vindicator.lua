@@ -25,6 +25,9 @@ hook.Add("Initialize", "Vindicator_Translations_Initialize", function()
     -- Scoring
     LANG.AddToLanguage("english", "score_vindicator_killedby", "Killed by")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_vindicator", "Respawns as an independent to take their revenge if they are killed.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_vindicator", [[You are {role}! Work with the {innocents}
 to try to track down the {traitors}! If someone

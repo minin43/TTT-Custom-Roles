@@ -29,6 +29,7 @@
                     <li><a href="#role-table">Role Table</a></li>
                     <li><a href="#role-strings">Role Strings</a></li>
                     <li><a href="#description">Description</a></li>
+                    <li><a href="#short-description">Short Description</a></li>
                     <li><a href="#team">Team</a></li>
                     <li><a href="#shop-and-loadout-items">Shop and Loadout Items</a>
                         <ol>
@@ -109,6 +110,8 @@ ROLE.nameext = ""
 ROLE.nameshort = ""
 
 ROLE.desc = [[]]
+
+ROLE.shortdesc = ""
 
 ROLE.team = 
 
@@ -258,6 +261,10 @@ Summon minions to help defeat your enemies.
 
 Press {menukey} to receive your special equipment!]]</code></pre></div>
 
+        <h3><a id="short-description" href="#short-description">Short Description</a></h3>
+        <p>Along with the full role description, you need a short description that is no longer than two sentences that will be displayed in the cheat sheet. This is just to convey a general idea of what you role does and does not need to convey much detail. Keep it short and sweet.</p>
+        <p>The short description for the Summoner will look like this:</p>
+        <div><pre><code class="language-lua">ROLE.shortdesc = "Can buy items that summon minions."</code></pre></div>
         <h3><a id="team" href="#team">Team</a></h3>
         <p>Next we have the team. You can set which team your role is a member of by using the the following values</p>
         <table>
@@ -961,6 +968,8 @@ ROLE.desc = [[You are {role}! {comrades}
 Summon minions to help defeat your enemies.  
 
 Press {menukey} to receive your special equipment!]]
+
+ROLE.shortdesc = "Can buy items that summon minions."
 
 ROLE.team = ROLE_TEAM_TRAITOR
 

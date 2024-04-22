@@ -29,6 +29,9 @@ hook.Add("Initialize", "Zombie_Translations_Initialize", function()
     -- Events
     LANG.AddToLanguage("english", "ev_zombi", "{victim} was turned into {azombie}")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_zombie", "Can turn other players into Zombies using their claws. They win by turning everyone into a Zombie.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_zombie", [[You are {role}! {comrades}
 

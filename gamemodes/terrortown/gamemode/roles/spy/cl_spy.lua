@@ -15,6 +15,9 @@ local spy_flare_gun_shop = GetConVar("ttt_spy_flare_gun_shop")
 ------------------
 
 hook.Add("Initialize", "Spy_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_spy", "Steals the name and player model of players they kill.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_spy", [[You are {role}! {comrades}
 

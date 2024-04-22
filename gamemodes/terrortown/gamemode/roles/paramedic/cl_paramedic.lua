@@ -17,6 +17,9 @@ hook.Add("Initialize", "Paramedic_Translations_Initialize", function()
     LANG.AddToLanguage("english", "defibrillator_help_pri", "Hold {primaryfire} to revive dead body.")
     LANG.AddToLanguage("english", "defibrillator_help_sec", "The revived player will be respawned at their body's location.")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_paramedic", "Can use their defibrillator to revive another player.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_paramedic", [[You are {role}! You can give your fellow {innocents}
 a second chance with your defibrillator. Stay alive

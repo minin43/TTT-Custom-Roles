@@ -101,7 +101,7 @@ function PANEL:UpdatePlayerData(force)
             ic = vgui.Create("SimpleIconAvatar", self.List)
             ic:SetPlayer(info.ply)
             ic:SetAvatarSize(24)
-        elseif t == "dtime" then
+        elseif info.text_icon then
             ic = vgui.Create("SimpleIconLabelled", self.List)
             ic:SetIconText(info.text_icon)
         else

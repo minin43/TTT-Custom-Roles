@@ -36,6 +36,9 @@ Using this on a player who is not infected will kill them!]])
     -- Event
     LANG.AddToLanguage("english", "ev_infect", "{victim} infected {attacker}")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_parasite", "Infects players that kill them and retakes control after time.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_parasite", [[You are {role}! {comrades}
 

@@ -12,6 +12,9 @@ local veteran_announce = GetConVar("ttt_veteran_announce")
 ------------------
 
 hook.Add("Initialize", "Veteran_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_veteran", "Gets a buff if they are the last member of the innocent team left alive.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_veteran", [[You are {role}! You work best under pressure.
 If you are the last {innocent} player alive you will

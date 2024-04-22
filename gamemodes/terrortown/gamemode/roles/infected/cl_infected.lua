@@ -37,6 +37,9 @@ hook.Add("Initialize", "Infected_Translations_Initialize", function()
     -- HUD
     LANG.AddToLanguage("english", "infected_hud", "You will succumb in: {time}")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_infected", "Turns into a Zombie if the round goes on for too long.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_infected", [[You are {role}! You have a secret disease
 that will eventually turn you into {azombie}!

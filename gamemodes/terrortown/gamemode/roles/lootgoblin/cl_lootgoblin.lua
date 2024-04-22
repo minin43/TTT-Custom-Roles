@@ -28,6 +28,9 @@ hook.Add("Initialize", "LootGoblin_Translations_Initialize", function()
     -- ConVars
     LANG.AddToLanguage("english", "lootgoblin_config_radar_sound", "Play radar ping sound")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_lootgoblin", "Revealed to all players and drops random shop items when they die. They win if they can survive until the end of the round.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_lootgoblin", [[You are {role}! All you want to do is hoard your
 loot! But be careful... Everyone is out to kill

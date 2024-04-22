@@ -773,6 +773,9 @@ function HELPSCRN:CreateConfig(dsettings)
     combo:AddChoice("Meters", 1)
     combo:AddChoice("Feet", 2)
 
+    cb = dgui:TextEntry(GetTranslation("set_cheatsheat_hotkey"), "ttt_cheatsheat_hotkey")
+    cb:SetTooltip(GetTranslation("set_cheatsheat_hotkey_tip"))
+
     HookCall("TTTSettingsConfigTabFields", nil, "Interface", dgui)
 
     dsettings:AddItem(dgui)
