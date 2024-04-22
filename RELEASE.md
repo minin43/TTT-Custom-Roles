@@ -9,10 +9,24 @@
 - Added ability to disable DNA Scanner from being dropped, except for when the player holding it dies (disabled by default)
 - Added ability to allow any player holding the DNA scanner to search bodies as if they were a detective (disabled by default)
 - Added ability to control whether a spy who kills a respawning player will steal their identity anyway (enabled by default)
+- Added ability to limit the number of times the phantom can respawn (disabled by default)
+- Added ability to change the informant's scan time based on the team of their target (defaults to 1x speed for all teams)
+- Added ability to limit the amount of max health the hive mind gains when they assimilate a player (defaults to 100%)
+- Added ability to sort by known player role back to the scoreboard
+- Added ability for infected to be a jester or an independent (disabled by default)
+- Added ability for infected to immediately succumb and become a zombie when another team would have won (disabled by default)
+  - Only used when infected is jester or independent
+- Added ability to show the killer's team information on the corpse search screen (disabled by default)
+  - Each team can be enabled separately with flavor text that hints at the killer's team
+  - Plain text that explicitly states the killer's team can also be enabled on top of the flavor text
 
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
 - Fixed potential issues when a parasite or phantom is killed by a role that changes their victim's role
+- Fixed cupid's lovers getting penalized karma when they side with their opposite-team lover and attacker their teammates
+- Fixed player resurrected by the paramedic getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_paramedic_revive_muted` enabled
+- Fixed player brainwashed by the hypnotist getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_hypnotist_brainwash_muted` enabled
+- Fixed "call detective" button not working on corpse search dialog
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook

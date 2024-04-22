@@ -13,6 +13,7 @@ local timer = timer
 local vgui = vgui
 
 local CallHook = hook.Call
+local RunHook = hook.Run
 local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
@@ -117,6 +118,101 @@ function ScoreGroup(p)
     return group or (p:IsTerror() and GROUP_TERROR or GROUP_SPEC)
 end
 
+local role_ranks = nil
+local function GetRoleRank(role)
+    if not role_ranks then
+        local function SortByRoleName(rolea, roleb)
+            return ROLE_STRINGS[rolea] < ROLE_STRINGS[roleb]
+        end
+
+        -- Build the rank table so roles are ordered like this:
+        --   Vanilla Detective
+        --   Special detectives
+        --   Vanilla Innocent
+        --   Special innocents
+        --   Vanilla Traitor
+        --   Special traitors
+        --   Jesters
+        --   Independents
+        --   Monsters
+        role_ranks = {}
+
+        local rank = 1
+
+        -- Detectives
+        role_ranks[ROLE_DETECTIVE] = rank
+        rank = rank + 1
+
+        local detective_roles = GetTeamRoles(DETECTIVE_ROLES)
+        table.sort(detective_roles, SortByRoleName)
+        for _, r in ipairs(detective_roles) do
+            if r == ROLE_DETECTIVE then continue end
+
+            role_ranks[r] = rank
+            rank = rank + 1
+        end
+
+        -- Innocents
+        role_ranks[ROLE_INNOCENT] = rank
+        rank = rank + 1
+
+        local innocent_roles = GetTeamRoles(INNOCENT_ROLES)
+        table.sort(innocent_roles, SortByRoleName)
+        for _, r in ipairs(innocent_roles) do
+            if r == ROLE_INNOCENT then continue end
+            if DETECTIVE_ROLES[r] then continue end
+
+            role_ranks[r] = rank
+            rank = rank + 1
+        end
+
+        -- Traitors
+        role_ranks[ROLE_TRAITOR] = rank
+        rank = rank + 1
+
+        local traitor_roles = GetTeamRoles(TRAITOR_ROLES)
+        table.sort(traitor_roles, SortByRoleName)
+        for _, r in ipairs(traitor_roles) do
+            if r == ROLE_TRAITOR then continue end
+
+            role_ranks[r] = rank
+            rank = rank + 1
+        end
+
+        -- Jesters
+        local jester_roles = GetTeamRoles(JESTER_ROLES)
+        table.sort(jester_roles, SortByRoleName)
+        for _, r in ipairs(jester_roles) do
+            role_ranks[r] = rank
+            rank = rank + 1
+        end
+
+        -- Independents
+        local independent_roles = GetTeamRoles(INDEPENDENT_ROLES)
+        table.sort(independent_roles, SortByRoleName)
+        for _, r in ipairs(independent_roles) do
+            role_ranks[r] = rank
+            rank = rank + 1
+        end
+
+        -- Monsters
+        local monster_roles = GetTeamRoles(MONSTER_ROLES)
+        table.sort(monster_roles, SortByRoleName)
+        for _, r in ipairs(monster_roles) do
+            role_ranks[r] = rank
+            rank = rank + 1
+        end
+
+        -- Put unknowns last
+        role_ranks[ROLE_NONE] = rank * 2
+
+        --for r, i in pairs(role_ranks) do
+        --    print(i, ROLE_STRINGS[r])
+        --end
+    end
+
+    return role_ranks[role]
+end
 
 -- Comparison functions used to sort scoreboard
 _G.sboard_sort = {
@@ -127,11 +223,37 @@ _G.sboard_sort = {
     ping = function(plya, plyb)
         return plya:Ping() - plyb:Ping()
     end,
-    deaths = function (plya, plyb)
+    deaths = function(plya, plyb)
         return plya:Deaths() - plyb:Deaths()
     end,
-    score = function (plya, plyb)
+    score = function(plya, plyb)
         return plya:Frags() - plyb:Frags()
+    end,
+    role = function(plya, plyb)
+        local client = LocalPlayer()
+
+        -- Use the scoreboard hook to determine whether the client knows the role of each player
+        -- If the hook returns something that is not a number that means the role is unknown, so just use ROLE_NONE
+        local rolea = plya == client and plya:GetRole() or RunHook("TTTScoreboardRowColorForPlayer", plya)
+        if not isnumber(rolea) then
+            rolea = ROLE_NONE
+        end
+        local roleaRank = GetRoleRank(rolea)
+
+        local roleb = plyb == client and plyb:GetRole() or RunHook("TTTScoreboardRowColorForPlayer", plyb)
+        if not isnumber(roleb) then
+            roleb = ROLE_NONE
+        end
+        local rolebRank = GetRoleRank(roleb)
+
+        -- Then sort by the role rank for each known role, translated
+        -- to a c-style compare function
+        if roleaRank > rolebRank then
+            return 1
+        elseif roleaRank < rolebRank then
+            return -1
+        end
+        return 0
     end,
     karma = function(plya, plyb)
         return (plya:GetBaseKarma() or 0) - (plyb:GetBaseKarma() or 0)
@@ -209,6 +331,7 @@ function PANEL:Init()
     -- Columns spaced out a bit to allow for more room for translations
     self:AddFakeColumn(GetTranslation("sb_sortby"), nil, 70, nil) -- "Sort by:"
     self:AddFakeColumn(GetTranslation("equip_spec_name"), nil, 70, "name")
+    self:AddFakeColumn(GetTranslation("sb_role"), nil, 70, "role")
 
     -- Let hooks add their column headers (via AddColumn() or AddFakeColumn())
     CallHook("TTTScoreboardColumns", nil, self)

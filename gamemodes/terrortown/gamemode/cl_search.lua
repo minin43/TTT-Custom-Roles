@@ -19,6 +19,8 @@ local dtt = { search_dmg_crush = DMG_CRUSH, search_dmg_bullet = DMG_BULLET, sear
 
 local client
 
+local corpse_search_killer_team_text_plain = GetConVar("ttt_corpse_search_killer_team_text_plain")
+
 -- "From their body you can tell XXX"
 local function DmgToText(d)
     for k, v in pairs(dtt) do
@@ -77,7 +79,8 @@ local TypeToMat = {
     dtime = "time",
     stime = "wtester",
     lastid = "lastid",
-    kills = "list"
+    kills = "list",
+    killer = "killer"
 }
 
 -- Accessor for better fail handling
@@ -149,6 +152,23 @@ function PreprocSearch(raw)
                 search[t].text = PT("search_team", { team = name })
                 search[t].color = color
                 search[t].p = 2
+            end
+        elseif t == "killer" then
+            if not d then
+                search[t] = nil
+            else
+                local roleTeam = player.GetRoleTeam(raw.killer:GetRole(), true)
+                local teamName = GetRawRoleTeamName(roleTeam)
+                local showTeamText = cvars.Bool("ttt_corpse_search_killer_team_text_" .. teamName, false)
+                if not showTeamText then
+                    search[t] = nil
+                else
+                    search[t].text = T("search_killer_team_" .. teamName)
+                    search[t].p = 3
+                    if corpse_search_killer_team_text_plain:GetBool() then
+                        search[t].text = search[t].text .. "\n" .. PT("search_killer_team", { team = teamName })
+                    end
+                end
             end
         elseif t == "words" then
             if #d > 0 then
@@ -411,7 +431,7 @@ local function ShowSearchScreen(search_raw)
                     table.insert(client.called_corpses, search_raw.eidx)
                     btn:SetDisabled(true)
 
-                    RunConsoleCommand("ttt_call_detective", search_raw.eidx, search_raw.sid)
+                    RunConsoleCommand("ttt_call_detective", search_raw.eidx)
                 end,
                 disabled = function()
                     return client:IsSpec() or table.HasValue(client.called_corpses or {}, search_raw.eidx)
@@ -606,6 +626,7 @@ local function ReceiveRagdollSearch()
     search.wep = net.ReadString()
     search.head = net.ReadBit() == 1
     search.dtime = net.ReadInt(16)
+    search.killer = player.GetBySteamID64(net.ReadUInt64())
     search.stime = net.ReadInt(16)
 
     -- Players killed

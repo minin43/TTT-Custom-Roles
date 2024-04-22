@@ -20,6 +20,11 @@ local informant_can_scan_jesters = GetConVar("ttt_informant_can_scan_jesters")
 local informant_can_scan_glitches = GetConVar("ttt_informant_can_scan_glitches")
 local informant_requires_scanner = GetConVar("ttt_informant_requires_scanner")
 local informant_scanner_time = GetConVar("ttt_informant_scanner_time")
+local informant_scanner_innocent_mult = GetConVar("ttt_informant_scanner_innocent_mult")
+local informant_scanner_traitor_mult = GetConVar("ttt_informant_scanner_traitor_mult")
+local informant_scanner_jester_mult = GetConVar("ttt_informant_scanner_jester_mult")
+local informant_scanner_independent_mult = GetConVar("ttt_informant_scanner_independent_mult")
+local informant_scanner_monster_mult = GetConVar("ttt_informant_scanner_monster_mult")
 
 ------------------
 -- ROLE WEAPONS --
@@ -229,12 +234,30 @@ local function ScanAllowed(ply, target)
     return true
 end
 
+local function GetTargetScanTime(target)
+    local scanner_time = informant_scanner_time:GetInt()
+    if not target or not IsPlayer(target) then
+        return scanner_time
+    end
+
+    if target:IsTraitorTeam() or target:IsGlitch() then
+        return scanner_time * informant_scanner_traitor_mult:GetFloat()
+    elseif target:IsJesterTeam() then
+        return scanner_time * informant_scanner_jester_mult:GetFloat()
+    elseif target:IsMonsterTeam() then
+        return scanner_time * informant_scanner_monster_mult:GetFloat()
+    elseif target:IsIndependentTeam() then
+        return scanner_time * informant_scanner_independent_mult:GetFloat()
+    end
+    return scanner_time * informant_scanner_innocent_mult:GetFloat()
+end
+
 local function Scan(ply, target)
     if not IsValid(ply) or not IsValid(target) then return end
 
     if target:IsActive() then
         local stage = target:GetNWInt("TTTInformantScanStage", INFORMANT_UNSCANNED)
-        if CurTime() - ply:GetNWFloat("TTTInformantScannerStartTime", -1) >= informant_scanner_time:GetInt() then
+        if CurTime() - ply:GetNWFloat("TTTInformantScannerStartTime", -1) >= GetTargetScanTime(target) then
             stage = stage + 1
             if stage == INFORMANT_SCANNED_TEAM then
                 local message = "discovered that " .. target:Nick() .. " is "

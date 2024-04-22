@@ -15,6 +15,7 @@ local StringUpper = string.upper
 local hivemind_vision_enabled = GetConVar("ttt_hivemind_vision_enabled")
 local hivemind_friendly_fire = GetConVar("ttt_hivemind_friendly_fire")
 local hivemind_join_heal_pct = GetConVar("ttt_hivemind_join_heal_pct")
+local hivemind_join_max_hp_pct = GetConVar("ttt_hivemind_join_max_hp_pct")
 local hivemind_regen_timer = GetConVar("ttt_hivemind_regen_timer")
 local hivemind_regen_per_member_amt = GetConVar("ttt_hivemind_regen_per_member_amt")
 local hivemind_regen_max_pct = GetConVar("ttt_hivemind_regen_max_pct")
@@ -201,7 +202,11 @@ AddHook("TTTTutorialRoleText", "HiveMind_TTTTutorialRoleText", function(role, ti
         html = html .. "<span style='display: block; margin-top: 10px;'>Assimilated players will <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>respawn as part of the " .. ROLE_STRINGS[ROLE_HIVEMIND] .. "</span>.</span>"
         html = html .. "<span style='display: block; margin-top: 10px;'>When a player with a shop is assimilated, their available shop items are <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>added to the " .. ROLE_STRINGS[ROLE_HIVEMIND] .. "'s shop</span>.</span>"
 
-        html = html .. "<span style='display: block; margin-top: 10px;'>All members of the " .. ROLE_STRINGS[ROLE_HIVEMIND] .. " have a <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>shared pool of health</span> -- gaining members increases the collective's maximum health and any healing or damage done to one member affects them all.</span>"
+        html = html .. "<span style='display: block; margin-top: 10px;'>All members of the " .. ROLE_STRINGS[ROLE_HIVEMIND] .. " have a <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>shared pool of health</span> -- "
+        if hivemind_join_max_hp_pct:GetFloat() > 0 then
+            html = html .. "gaining members increases the collective's maximum health and "
+        end
+        html = html .. "any healing or damage done to one member affects them all.</span>"
 
         local join_heal_pct = hivemind_join_heal_pct:GetFloat()
         if join_heal_pct > 0 then
