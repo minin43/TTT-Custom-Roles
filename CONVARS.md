@@ -1115,6 +1115,11 @@ ttt_corpse_search_killer_team_text_monster     0       // Whether corpse searche
 ttt_corpse_search_killer_team_text_independent 0       // Whether corpse searches should include flavor text hinting at the team of their independent killer
 ttt_corpse_search_killer_team_text_jester      0       // Whether corpse searches should include flavor text hinting at the team of their jester team killer
 ttt_corpse_search_killer_team_text_plain       0       // Whether corpse searches should include plain text showing the team of their killer. Only used alongside the "ttt_corpse_search_killer_team_text_*" convars
+ttt_corpse_search_team_text_traitor            0       // Whether corpse searches of traitors should include flavor text hinting at the team of their killer
+ttt_corpse_search_team_text_innocent           0       // Whether corpse searches of innocents should include flavor text hinting at the team of their killer
+ttt_corpse_search_team_text_monster            0       // Whether corpse searches of monsters should include flavor text hinting at the team of their killer
+ttt_corpse_search_team_text_independent        0       // Whether corpse searches of independents should include flavor text hinting at the team of their killer
+ttt_corpse_search_team_text_jester             0       // Whether corpse searches of jesters should include flavor text hinting at the team of their killer
 ttt_color_mode_override                        "none"  // Forces all players to have a certain role color setting. none (let user decide), default, simple, protan, deutan, tritan
 ttt_spectators_see_roles                       0       // Whether spectators (not dead players) should be able to see the roles of all players
 ```

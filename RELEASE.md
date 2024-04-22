@@ -18,8 +18,9 @@
 - Added ability for infected to immediately succumb and become a zombie when another team would have won (disabled by default)
   - Only used when infected is jester or independent
 - Added ability to show the killer's team information on the corpse search screen (disabled by default)
-  - Each team can be enabled separately with flavor text that hints at the killer's team
-  - Plain text that explicitly states the killer's team can also be enabled on top of the flavor text
+  - There are convars to control showing the text by corpse's team as well as by the killer's team
+    - This allows the granularity to do something like: Show the team info if a traitor is killed only by a monster or independent
+  - Plain text that explicitly states the killer's team can also be enabled in addition to the flavor text
 - Added ability to make the shadow target buff progress bar resumable if they get too far away from their target for a short time (disabled by default)
 
 ### Changes

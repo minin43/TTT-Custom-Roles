@@ -154,7 +154,9 @@ function PreprocSearch(raw)
                 search[t].p = 2
             end
         elseif t == "killer" then
-            if not d then
+            local clientTeam = LocalPlayer():GetRoleTeam()
+            local clientTeamName = GetRawRoleTeamName(clientTeam)
+            if not d or not cvars.Bool("ttt_corpse_search_team_text_" .. clientTeamName) then
                 search[t] = nil
             else
                 local roleTeam = player.GetRoleTeam(raw.killer:GetRole(), true)
