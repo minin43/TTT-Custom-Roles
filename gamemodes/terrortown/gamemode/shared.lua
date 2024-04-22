@@ -1343,8 +1343,9 @@ WIN_SPONGE = 15
 WIN_ARSONIST = 16
 WIN_HIVEMIND = 17
 WIN_VINDICATOR = 18
+WIN_INFECTED = 19
 
-WIN_MAX = WIN_MAX or 18
+WIN_MAX = WIN_MAX or 19
 WINS_BY_ROLE = WINS_BY_ROLE or {}
 
 if SERVER then
@@ -1454,6 +1455,7 @@ CORPSE_ICON_TYPES = {
     "equipment",
     "head",
     "kills",
+    "killer",
     "lastid",
     "nick",
     "role",
@@ -1538,9 +1540,9 @@ local ttt_playercolors = {
     }
 };
 
-CreateConVar("ttt_playercolor_mode", "1")
+local playercolor_mode = CreateConVar("ttt_playercolor_mode", "1")
 function GM:TTTPlayerColor(model)
-    local mode = GetConVar("ttt_playercolor_mode"):GetInt()
+    local mode = playercolor_mode:GetInt()
     if mode == 1 then
         return table.Random(ttt_playercolors.serious)
     elseif mode == 2 then

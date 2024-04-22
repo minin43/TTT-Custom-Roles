@@ -75,6 +75,25 @@ hook.Add("ScalePlayerDamage", "Cupid_ScalePlayerDamage", function(ply, hitgroup,
     end
 end)
 
+-- Don't penalize karma for lovers who kill members on their team when their lover is not
+hook.Add("TTTKarmaShouldGivePenalty", "Cupid_TTTKarmaShouldGivePenalty", function(attacker, victim)
+    -- We only care about attackers who have lovers
+    local attLover = attacker:GetNWString("TTTCupidLover", "")
+    if not attLover or #attLover == 0 then return end
+
+    -- Specifically lovers that are alive
+    local lover = player.GetBySteamID64(attLover)
+    if not lover or not IsPlayer(lover) then return end
+
+    -- If the attacker and their lover are on the same team then just let normal karma rules work
+    if not attacker:IsSameTeam(lover) then return end
+
+    -- Otherwise, if the attacker and their victim are on the same team, block karma penalties
+    if attacker:IsSameTeam(victim) then
+        return true
+    end
+end)
+
 --------------------------
 -- DISCONNECTION CHECKS --
 --------------------------

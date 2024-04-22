@@ -22,6 +22,7 @@ util.AddNetworkString("TTT_InfectedSuccumbed")
 local infected_cough_timer_min = CreateConVar("ttt_infected_cough_timer_min", "30", FCVAR_NONE, "The minimum time between infected coughs", 0, 180)
 local infected_cough_timer_max = CreateConVar("ttt_infected_cough_timer_max", "60", FCVAR_NONE, "The maximum time between infected coughs", 0, 300)
 
+local infected_block_win = GetConVar("ttt_infected_block_win")
 local infected_prime = GetConVar("ttt_infected_prime")
 local infected_cough_enabled = GetConVar("ttt_infected_cough_enabled")
 local infected_respawn_enabled = GetConVar("ttt_infected_respawn_enabled")
@@ -154,6 +155,64 @@ hook.Add("TTTStopPlayerRespawning", "Infected_TTTStopPlayerRespawning", function
     if ply:GetNWBool("InfectedIsZombifying", false) then
         timer.Remove("Infectify_" .. ply:SteamID64())
         ply:SetNWBool("InfectedIsZombifying", false)
+    end
+end)
+
+----------------
+-- WIN CHECKS --
+----------------
+
+hook.Add("TTTWinCheckBlocks", "Infected_TTTWinCheckBlocks", function(win_blocks)
+    -- Don't block wins while the infected is innocent
+    if INNOCENT_ROLES[ROLE_INFECTED] then return end
+    if not infected_block_win:GetBool() then return end
+
+    table.insert(win_blocks, function(win)
+        if win == WIN_NONE or win == WIN_INFECTED then return end
+
+        for _, v in PlayerIterator() do
+            if not v:IsActiveInfected() then continue end
+
+            -- If this infected isn't already zombifying, start that
+            if not v:GetNWBool("InfectedIsZombifying", false) then
+                InfectedSuccumb(v, false)
+            end
+
+            -- Prevent anyone else from winning while there's a living infected
+            return WIN_NONE
+        end
+    end)
+end)
+
+hook.Add("TTTCheckForWin", "Infected_TTTCheckForWin", function()
+    -- Only run the win check if the infected wins by themselves
+    if not INDEPENDENT_ROLES[ROLE_INFECTED] then return end
+
+    local infected_alive = false
+    local other_alive = false
+    for _, v in PlayerIterator() do
+        if v:IsActive() then
+            if v:IsInfected() then
+                infected_alive = true
+            elseif not v:ShouldActLikeJester() then
+                other_alive = true
+            end
+        end
+    end
+
+    if infected_alive and not other_alive then
+        return WIN_INFECTED
+    elseif infected_alive then
+        return WIN_NONE
+    end
+end)
+
+hook.Add("TTTPrintResultMessage", "Infected_TTTPrintResultMessage", function(type)
+    if type == WIN_INFECTED then
+        local role_string = ROLE_STRINGS[ROLE_INFECTED]
+        LANG.Msg("win_infected", { role = role_string })
+        ServerLog("Result: " .. role_string .. " wins.\n")
+        return true
     end
 end)
 

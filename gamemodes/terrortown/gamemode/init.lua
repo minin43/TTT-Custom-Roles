@@ -120,7 +120,7 @@ CreateConVar("ttt_traitor_max", "32")
 CreateConVar("ttt_detective_pct", "0.13", FCVAR_NOTIFY)
 CreateConVar("ttt_detective_max", "32")
 CreateConVar("ttt_detective_min_players", "8")
-CreateConVar("ttt_detective_karma_min", "600")
+local detective_karma_min = CreateConVar("ttt_detective_karma_min", "600")
 
 -- Role spawn parameters
 CreateConVar("ttt_independent_chance", 0.5)
@@ -1480,7 +1480,7 @@ function SelectRoles()
 
     -- pick detectives
     if choice_count >= GetConVar("ttt_detective_min_players"):GetInt() then
-        local min_karma = GetConVar("ttt_detective_karma_min"):GetInt()
+        local min_karma = detective_karma_min:GetInt()
         local options = {}
         local secondary_options = {}
         local tertiary_options = {}

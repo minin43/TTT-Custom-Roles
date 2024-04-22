@@ -39,6 +39,11 @@ local informant_share_scans = GetConVar("ttt_informant_share_scans")
 local informant_can_scan_jesters = GetConVar("ttt_informant_can_scan_jesters")
 local informant_can_scan_glitches = GetConVar("ttt_informant_can_scan_glitches")
 local informant_scanner_time = GetConVar("ttt_informant_scanner_time")
+local informant_scanner_innocent_mult = GetConVar("ttt_informant_scanner_innocent_mult")
+local informant_scanner_traitor_mult = GetConVar("ttt_informant_scanner_traitor_mult")
+local informant_scanner_jester_mult = GetConVar("ttt_informant_scanner_jester_mult")
+local informant_scanner_independent_mult = GetConVar("ttt_informant_scanner_independent_mult")
+local informant_scanner_monster_mult = GetConVar("ttt_informant_scanner_monster_mult")
 local informant_requires_scanner = GetConVar("ttt_informant_requires_scanner")
 
 local informant_show_scan_radius = CreateClientConVar("ttt_informant_show_scan_radius", "0", true, false, "Whether the scan radius circle should show", 0, 1)
@@ -252,6 +257,24 @@ end
 -- SCANNER HUD --
 -----------------
 
+local function GetTargetScanTime(target)
+    local scanner_time = informant_scanner_time:GetInt()
+    if not target or not IsPlayer(target) then
+        return scanner_time
+    end
+
+    if target:IsTraitorTeam() or target:IsGlitch() then
+        return scanner_time * informant_scanner_traitor_mult:GetFloat()
+    elseif target:IsJesterTeam() then
+        return scanner_time * informant_scanner_jester_mult:GetFloat()
+    elseif target:IsMonsterTeam() then
+        return scanner_time * informant_scanner_monster_mult:GetFloat()
+    elseif target:IsIndependentTeam() then
+        return scanner_time * informant_scanner_independent_mult:GetFloat()
+    end
+    return scanner_time * informant_scanner_innocent_mult:GetFloat()
+end
+
 hook.Add("HUDPaint", "Informant_HUDPaint", function()
     if not client then
         client = LocalPlayer()
@@ -271,7 +294,8 @@ hook.Add("HUDPaint", "Informant_HUDPaint", function()
             return
         end
 
-        local scan = informant_scanner_time:GetInt()
+        local target = player.GetBySteamID64(client:GetNWString("TTTInformantScannerTarget", ""))
+        local scan = GetTargetScanTime(target)
         local time = client:GetNWFloat("TTTInformantScannerStartTime", -1) + scan
 
         local x = ScrW() / 2.0
@@ -292,7 +316,6 @@ hook.Add("HUDPaint", "Informant_HUDPaint", function()
                 color = Color(0, 255, 0, 155)
             end
 
-            local target = player.GetBySteamID64(client:GetNWString("TTTInformantScannerTarget", ""))
             local targetState = target:GetNWInt("TTTInformantScanStage", INFORMANT_UNSCANNED)
 
             local cc = math.min(1, 1 - ((time - CurTime()) / scan))

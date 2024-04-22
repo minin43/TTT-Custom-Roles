@@ -36,6 +36,11 @@ table.insert(ROLE_CONVARS[ROLE_PHANTOM], {
     decimal = 0
 })
 table.insert(ROLE_CONVARS[ROLE_PHANTOM], {
+    cvar = "ttt_phantom_respawn_limit",
+    type = ROLE_CONVAR_TYPE_NUM,
+    decimal = 0
+})
+table.insert(ROLE_CONVARS[ROLE_PHANTOM], {
     cvar = "ttt_phantom_weaker_each_respawn",
     type = ROLE_CONVAR_TYPE_BOOL
 })

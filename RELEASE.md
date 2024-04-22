@@ -24,6 +24,10 @@
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
 - Fixed potential issues when a parasite or phantom is killed by a role that changes their victim's role
+- Fixed cupid's lovers getting penalized karma when they side with their opposite-team lover and attacker their teammates
+- Fixed player resurrected by the paramedic getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_paramedic_revive_muted` enabled
+- Fixed player brainwashed by the hypnotist getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_hypnotist_brainwash_muted` enabled
+- Fixed "call detective" button not working on corpse search dialog
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook

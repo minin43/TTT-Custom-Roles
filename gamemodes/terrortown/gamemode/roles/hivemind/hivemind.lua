@@ -23,6 +23,7 @@ local hivemind_block_environmental = CreateConVar("ttt_hivemind_block_environmen
 local hivemind_vision_enabled = GetConVar("ttt_hivemind_vision_enabled")
 local hivemind_friendly_fire = GetConVar("ttt_hivemind_friendly_fire")
 local hivemind_join_heal_pct = GetConVar("ttt_hivemind_join_heal_pct")
+local hivemind_join_max_hp_pct = GetConVar("ttt_hivemind_join_max_hp_pct")
 local hivemind_regen_timer = GetConVar("ttt_hivemind_regen_timer")
 local hivemind_regen_per_member_amt = GetConVar("ttt_hivemind_regen_per_member_amt")
 local hivemind_regen_max_pct = GetConVar("ttt_hivemind_regen_max_pct")
@@ -167,7 +168,7 @@ AddHook("TTTPlayerRoleChanged", "HiveMind_HealthSync_TTTPlayerRoleChanged", func
         elseif oldRole > ROLE_NONE and oldRole <= ROLE_MAX then
             roleMaxHealth = cvars.Number("ttt_" .. ROLE_STRINGS_RAW[oldRole] .. "_max_health", 100)
         end
-        maxHealth = maxHealth + roleMaxHealth
+        maxHealth = maxHealth + (roleMaxHealth * hivemind_join_max_hp_pct:GetFloat())
 
         local heal_pct = hivemind_join_heal_pct:GetFloat()
         if heal_pct > 0 then
