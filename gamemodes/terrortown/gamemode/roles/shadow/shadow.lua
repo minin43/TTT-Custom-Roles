@@ -19,6 +19,7 @@ util.AddNetworkString("TTT_ResetShadowWins")
 -- CONVARS --
 -------------
 
+local shadow_target_buff_resumable = CreateConVar("ttt_shadow_target_buff_resumable", 0, FCVAR_NONE, "Whether the shadow's buff should retain progress if they move away from their target", 0, 1)
 local shadow_target_buff_notify = CreateConVar("ttt_shadow_target_buff_notify", "0", FCVAR_NONE, "Whether the shadow's target should be notified when they are buffed", 0, 1)
 local shadow_target_buff_heal_amount = CreateConVar("ttt_shadow_target_buff_heal_amount", "5", FCVAR_NONE, "The amount of health the shadow's target should be healed per-interval", 1, 100)
 local shadow_target_buff_heal_interval = CreateConVar("ttt_shadow_target_buff_heal_interval", "10", FCVAR_NONE, "How often (in seconds) the shadow's target should be healed", 1, 100)
@@ -144,14 +145,19 @@ local function ClearShadowState(ply)
     ply:SetNWString("ShadowTarget", "")
     ply:SetNWFloat("ShadowTimer", -1)
     ply:SetNWFloat("ShadowBuffTimer", -1)
+    ply:SetNWFloat("ShadowBuffTimerRemaining", -1)
     ply:SetNWBool("ShadowBuffActive", false)
     ply:SetNWBool("ShadowBuffDepleted", false)
     ply:SetNWBool("ShadowTargetRespawning", false)
     timer.Remove("TTTShadowWeakenTimer_" .. ply:SteamID64())
     timer.Remove("TTTShadowRegenTimer_" .. ply:SteamID64())
 
+    -- Remove all buff timers that involve this player
     for _, timerId in pairs(buffTimers) do
-        timer.Remove(timerId)
+        if string.find(timerId, "_" .. ply:SteamID64()) then
+            timer.Remove(timerId)
+            bufftimers[timerId] = false
+        end
     end
 end
 
@@ -170,9 +176,17 @@ local function ClearBuffTimer(shadow, target, sendMessage)
             shadow:QueueMessage(MSG_PRINTBOTH, message)
         end
 
-        shadow:SetNWFloat("ShadowBuffTimer", -1)
         target:SetNWBool("ShadowBuffActive", false)
-        timer.Remove(timerId)
+
+        if shadow_target_buff_resumable:GetBool() then
+            local remaining = shadow:GetNWFloat("ShadowBuffTimer", -1) - CurTime()
+            shadow:SetNWFloat("ShadowBuffTimerRemaining", remaining)
+            timer.Pause(timerId)
+        else
+            timer.Remove(timerId)
+        end
+
+        shadow:SetNWFloat("ShadowBuffTimer", -1)
         buffTimers[timerId] = nil
     end
 end
@@ -187,13 +201,9 @@ local function CreateHealTimer(shadow, target, timerId)
     end)
 end
 
-local function CreateBuffTimer(shadow, target)
-    local timerId = "TTTShadowBuffTimer_" .. shadow:SteamID64() .. "_" .. target:SteamID64()
-    if buffTimers[timerId] then return end
-
+local function SendBuffInfoMessage(shadow, time)
     local buffType = shadow_target_buff:GetInt()
-    local buffDelay = shadow_target_buff_delay:GetInt()
-    local message = "Stay with your target for " .. buffDelay .. " seconds to "
+    local message = "Stay with your target for " .. time .. " seconds to "
     if buffType == SHADOW_BUFF_TEAM_JOIN then
         message = message .. "join their team!"
     elseif buffType == SHADOW_BUFF_STEAL_ROLE then
@@ -202,8 +212,25 @@ local function CreateBuffTimer(shadow, target)
         message = message .. "give them a buff!"
     end
     shadow:QueueMessage(MSG_PRINTBOTH, message)
+end
+
+local function CreateBuffTimer(shadow, target)
+    local timerId = "TTTShadowBuffTimer_" .. shadow:SteamID64() .. "_" .. target:SteamID64()
+    if buffTimers[timerId] then return end
 
     buffTimers[timerId] = true
+    -- If the timer still exists that means we paused it and it's resumable
+    if timer.Exists(timerId) then
+        local remaining = shadow:GetNWFloat("ShadowBuffTimerRemaining", -1)
+        shadow:SetNWFloat("ShadowBuffTimer", CurTime() + remaining)
+        shadow:SetNWFloat("ShadowBuffTimerRemaining", -1)
+        timer.UnPause(timerId)
+        SendBuffInfoMessage(shadow, math.Round(remaining, 0))
+        return
+    end
+
+    local buffDelay = shadow_target_buff_delay:GetInt()
+    SendBuffInfoMessage(shadow, buffDelay)
     shadow:SetNWFloat("ShadowBuffTimer", CurTime() + buffDelay)
     timer.Create(timerId, buffDelay, 1, function()
         if not IsValid(shadow) or not IsValid(target) then return end

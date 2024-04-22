@@ -20,6 +20,7 @@
 - Added ability to show the killer's team information on the corpse search screen (disabled by default)
   - Each team can be enabled separately with flavor text that hints at the killer's team
   - Plain text that explicitly states the killer's team can also be enabled on top of the flavor text
+- Added ability to make the shadow target buff progress bar resumable if they get too far away from their target for a short time (disabled by default)
 
 ### Changes
 - Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused
