@@ -35,6 +35,8 @@ hook.Add("TTTBeginRound", "Cupid_TTTBeginRound", function()
 
             local lover = player.GetBySteamID64(lover_sid64)
             if not IsPlayer(lover) or lover:IsActive() then continue end
+            -- Don't kill a lover if their pair used a "kill" bind
+            if lover.TTTCupidKillbindUsed then continue end
 
             local should_survive = HookCall("TTTCupidShouldLoverSurvive", nil, v, lover)
             if type(should_survive) == "boolean" and should_survive then continue end
@@ -43,6 +45,24 @@ hook.Add("TTTBeginRound", "Cupid_TTTBeginRound", function()
             v:QueueMessage(MSG_PRINTBOTH, "Your lover has died!")
         end
     end)
+end)
+
+-- Keep track if a lover uses a "kill" bind so we don't punish their pair
+hook.Add("PlayerDeath", "Cupid_Killbind_PlayerDeath", function(victim, infl, attacker)
+    if not IsPlayer(victim) then return end
+
+    local lover_sid64 = victim:GetNWString("TTTCupidLover", "")
+    if #lover_sid64 == 0 then return end
+
+    -- If the victim and the inflictor and the attacker are all the same thing then they probably used the "kill" console command
+    if victim == attacker and IsValid(infl) and victim == infl then
+        victim.TTTCupidKillbindUsed = true
+
+        local lover = player.GetBySteamID64(lover_sid64)
+        if lover and IsPlayer(lover) then
+            lover:QueueMessage(MSG_PRINTBOTH, "Your lover has died by their own hand! Try to survive without them...")
+        end
+    end
 end)
 
 -------------
@@ -55,8 +75,18 @@ hook.Add("TTTPrepareRound", "Cupid_TTTPrepareRound", function()
         v:SetNWString("TTTCupidLover", "")
         v:SetNWString("TTTCupidTarget1", "")
         v:SetNWString("TTTCupidTarget2", "")
+        v.TTTCupidKillbindUsed = false
     end
     timer.Remove("TTTCupidTimer")
+end)
+
+-- Reset the "kill" bind tracking when players respawn
+hook.Add("TTTPlayerSpawnForRound", "Cupid_TTTPlayerSpawnForRound", function(ply, dead_only)
+    if not dead_only then return end
+    if not IsValid(ply) then return end
+    if ply:Alive() then return end
+
+    ply.TTTCupidKillbindUsed = false
 end)
 
 ------------

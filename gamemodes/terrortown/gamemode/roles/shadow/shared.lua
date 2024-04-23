@@ -102,6 +102,10 @@ table.insert(ROLE_CONVARS[ROLE_SHADOW], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_SHADOW], {
+    cvar = "ttt_shadow_target_buff_resumable",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SHADOW], {
     cvar = "ttt_shadow_target_buff_notify",
     type = ROLE_CONVAR_TYPE_BOOL
 })

@@ -2,6 +2,11 @@
 
 CreateConVar("ttt_spectator_corpse_search", "1", FCVAR_REPLICATED, "Whether spectators can search bodies (not shared with other players)", 0, 1)
 CreateConVar("ttt_corpse_search_not_shared", "0", FCVAR_REPLICATED, "Whether corpse searches are not shared with other players (only affects non-detective-like searchers)", 0, 1)
+CreateConVar("ttt_corpse_search_team_text_traitor", "0", FCVAR_REPLICATED, "Whether corpse searches of traitors should include flavor text hinting at the team of their killer", 0, 1)
+CreateConVar("ttt_corpse_search_team_text_innocent", "0", FCVAR_REPLICATED, "Whether corpse searches of innocents should include flavor text hinting at the team of their killer", 0, 1)
+CreateConVar("ttt_corpse_search_team_text_monster", "0", FCVAR_REPLICATED, "Whether corpse searches of monsters should include flavor text hinting at the team of their killer", 0, 1)
+CreateConVar("ttt_corpse_search_team_text_independent", "0", FCVAR_REPLICATED, "Whether corpse searches of independents should include flavor text hinting at the team of their killer", 0, 1)
+CreateConVar("ttt_corpse_search_team_text_jester", "0", FCVAR_REPLICATED, "Whether corpse searches of jesters should include flavor text hinting at the team of their killer", 0, 1)
 CreateConVar("ttt_corpse_search_killer_team_text_traitor", "0", FCVAR_REPLICATED, "Whether corpse searches should include flavor text hinting at the team of their traitor team killer", 0, 1)
 CreateConVar("ttt_corpse_search_killer_team_text_innocent", "0", FCVAR_REPLICATED, "Whether corpse searches should include flavor text hinting at the team of their innocent team killer", 0, 1)
 CreateConVar("ttt_corpse_search_killer_team_text_monster", "0", FCVAR_REPLICATED, "Whether corpse searches should include flavor text hinting at the team of their monster team killer", 0, 1)

@@ -813,6 +813,7 @@ ttt_shadow_alive_radius                        8       // The radius (in meters)
 ttt_shadow_dead_radius                         3       // The radius (in meters) from the death target that the shadow has to stay within
 ttt_shadow_target_buff                         4       // The type of buff to shadow's target should get. 0 - None. 1 - Heal over time. 2 - Single respawn. 3 - Damage bonus. 4 - Team join. 5 - Kill target and steal their role.
 ttt_shadow_target_buff_show_progress           1       // Whether to show a progress bar for the when the shadow's buff will be activated
+ttt_shadow_target_buff_resumable               0       // Whether the shadow's buff should retain progress if they move away from their target
 ttt_shadow_target_buff_notify                  0       // Whether the shadow's target should be notified when they are buffed
 ttt_shadow_target_buff_delay                   90      // How long (in seconds) the shadow needs to be near their target before the buff takes effect
 ttt_shadow_target_buff_heal_amount             5       // The amount of health the shadow's target should be healed per-interval
@@ -1114,6 +1115,11 @@ ttt_corpse_search_killer_team_text_monster     0       // Whether corpse searche
 ttt_corpse_search_killer_team_text_independent 0       // Whether corpse searches should include flavor text hinting at the team of their independent killer
 ttt_corpse_search_killer_team_text_jester      0       // Whether corpse searches should include flavor text hinting at the team of their jester team killer
 ttt_corpse_search_killer_team_text_plain       0       // Whether corpse searches should include plain text showing the team of their killer. Only used alongside the "ttt_corpse_search_killer_team_text_*" convars
+ttt_corpse_search_team_text_traitor            0       // Whether corpse searches of traitors should include flavor text hinting at the team of their killer
+ttt_corpse_search_team_text_innocent           0       // Whether corpse searches of innocents should include flavor text hinting at the team of their killer
+ttt_corpse_search_team_text_monster            0       // Whether corpse searches of monsters should include flavor text hinting at the team of their killer
+ttt_corpse_search_team_text_independent        0       // Whether corpse searches of independents should include flavor text hinting at the team of their killer
+ttt_corpse_search_team_text_jester             0       // Whether corpse searches of jesters should include flavor text hinting at the team of their killer
 ttt_color_mode_override                        "none"  // Forces all players to have a certain role color setting. none (let user decide), default, simple, protan, deutan, tritan
 ttt_spectators_see_roles                       0       // Whether spectators (not dead players) should be able to see the roles of all players
 ```
