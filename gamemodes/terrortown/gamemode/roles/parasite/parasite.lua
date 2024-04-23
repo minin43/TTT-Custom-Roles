@@ -19,9 +19,9 @@ util.AddNetworkString("TTT_ParasiteInfect")
 -------------
 
 local parasite_infection_warning_time = CreateConVar("ttt_parasite_infection_warning_time", 0, FCVAR_NONE, "The time in seconds after infection to warn the victim with an ambiguous message", 0, 300)
-local parasite_infection_transfer_reset = CreateConVar("ttt_parasite_infection_transfer_reset", 1)
-local parasite_respawn_health = CreateConVar("ttt_parasite_respawn_health", 100, FCVAR_NONE, "The health on which the parasite respawns", 1, 100)
 local parasite_infection_saves_lover = CreateConVar("ttt_parasite_infection_saves_lover", "1", FCVAR_NONE, "Whether the parasite's lover should survive if the parasite is infecting a player", 0, 1)
+local parasite_infection_transfer_reset = CreateConVar("ttt_parasite_infection_transfer_reset", 1, FCVAR_NONE, "Whether the parasite's infection progress will reset if their infection is transferred to another player", 0, 1)
+local parasite_respawn_health = CreateConVar("ttt_parasite_respawn_health", 100, FCVAR_NONE, "The health on which the parasite respawns", 1, 100)
 
 local parasite_infection_time = GetConVar("ttt_parasite_infection_time")
 local parasite_infection_transfer = GetConVar("ttt_parasite_infection_transfer")
@@ -175,6 +175,28 @@ local function HandleParasiteInfection(attacker, victim, keep_progress)
     attacker:SetNWBool("ParasiteInfected", true)
     victim:SetNWBool("ParasiteInfecting", true)
     victim:SetNWString("ParasiteInfectingTarget", attacker:SteamID64())
+
+    -- Lock the victim's view on their attacker
+    timer.Create(victim:Nick() .. "ParasiteInfectingSpectate", 1, 1, function()
+        victim:SetRagdollSpec(false)
+        victim:Spectate(OBS_MODE_CHASE)
+        victim:SpectateEntity(attacker)
+    end)
+
+    local infection_time = parasite_infection_time:GetInt()
+    if infection_time <= 0 then
+        -- Even though there is no infection progress, use the same timer ID so all the logic that stops it
+        -- can be reused. We really just want to make sure they stay locked to their target
+        timer.Create(victim:Nick() .. "ParasiteInfectionProgress", 1, 0, function()
+            -- Make sure the victim is still in the correct spectate mode
+            local spec_mode = victim:GetObserverMode()
+            if spec_mode ~= OBS_MODE_CHASE and spec_mode ~= OBS_MODE_IN_EYE then
+                victim:Spectate(OBS_MODE_CHASE)
+            end
+        end)
+        return
+    end
+
     if not keep_progress then
         victim:SetNWInt("ParasiteInfectionProgress", 0)
     end
@@ -191,13 +213,6 @@ local function HandleParasiteInfection(attacker, victim, keep_progress)
         else
             victim:SetNWInt("ParasiteInfectionProgress", progress)
         end
-    end)
-
-    -- Lock the victim's view on their attacker
-    timer.Create(victim:Nick() .. "ParasiteInfectingSpectate", 1, 1, function()
-        victim:SetRagdollSpec(false)
-        victim:Spectate(OBS_MODE_CHASE)
-        victim:SpectateEntity(attacker)
     end)
 
     local warning_time = parasite_infection_warning_time:GetInt()
@@ -264,11 +279,18 @@ hook.Add("DoPlayerDeath", "Parasite_DoPlayerDeath", function(ply, attacker, dmgi
         local parasite = deadParasites[key]
         if parasite.attacker == ply:SteamID64() and IsValid(parasite.player) then
             local deadParasite = parasite.player
-            local parasiteDead = deadParasite:IsParasite() and not deadParasite:Alive()
-            local transfer = parasite_infection_transfer:GetBool()
+            if not deadParasite:IsParasite() or deadParasite:Alive() then continue end
+
+            -- If we're not infecting, but haunting then we just respawning immediately
+            if parasite_infection_time:GetInt() <= 0 then
+                deadParasite:QueueMessage(MSG_PRINTCENTER, "Your host has been killed, allowing your infection to take over.")
+                DoParasiteRespawn(deadParasite, attacker, true)
+                continue
+            end
+
             local suicideMode = parasite_infection_suicide_mode:GetInt()
             -- Transfer the infection to the new attacker if there is one, they are alive, the parasite is still alive, and the transfer feature is enabled
-            if IsPlayer(attacker) and attacker:IsActive() and parasiteDead and transfer then
+            if IsPlayer(attacker) and attacker:IsActive() and parasite_infection_transfer:GetBool() then
                 deadParasites[key].attacker = attacker:SteamID64()
                 HandleParasiteInfection(attacker, deadParasite, not parasite_infection_transfer_reset:GetBool())
                 deadParasite:QueueMessage(MSG_PRINTCENTER, "Your host has been killed and your infection has spread to their killer.")
@@ -281,15 +303,13 @@ hook.Add("DoPlayerDeath", "Parasite_DoPlayerDeath", function(ply, attacker, dmgi
                 DoParasiteRespawn(deadParasite, attacker, true)
             else
                 ClearParasiteState(deadParasite)
-                if parasiteDead then
-                    deadParasite:QueueMessage(MSG_PRINTCENTER, "Your host has died.")
+                deadParasite:QueueMessage(MSG_PRINTCENTER, "Your host has died.")
 
-                    if parasite_infection_saves_lover:GetBool() then
-                        local loverSID = deadParasite:GetNWString("TTTCupidLover", "")
-                        if #loverSID > 0 then
-                            local lover = player.GetBySteamID64(loverSID)
-                            lover:PrintMessage(HUD_PRINTTALK, "Your lover's host has died!")
-                        end
+                if parasite_infection_saves_lover:GetBool() then
+                    local loverSID = deadParasite:GetNWString("TTTCupidLover", "")
+                    if #loverSID > 0 then
+                        local lover = player.GetBySteamID64(loverSID)
+                        lover:PrintMessage(HUD_PRINTTALK, "Your lover's host has died!")
                     end
                 end
             end

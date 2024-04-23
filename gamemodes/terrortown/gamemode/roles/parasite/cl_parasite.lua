@@ -158,13 +158,15 @@ end
 hook.Add("TTTSpectatorShowHUD", "Parasite_Infecting_TTTSpectatorShowHUD", function(cli, tgt)
     if not cli:IsParasite() then return end
 
+    local max_power = parasite_infection_time:GetInt()
+    if max_power <= 0 then return end
+
     local L = LANG.GetUnsafeLanguageTable()
     local infection_colors = {
         border = COLOR_WHITE,
         background = Color(191, 91, 22, 222),
         fill = Color(255, 127, 39, 255)
     }
-    local max_power = parasite_infection_time:GetInt()
     local current_power = cli:GetNWInt("ParasiteInfectionProgress", 0)
 
     CRHUD:PaintPowersHUD(nil, max_power, current_power, infection_colors, L.infect_title, L.infect_help)
@@ -186,7 +188,11 @@ hook.Add("TTTTutorialRoleText", "Parasite_TTTTutorialRoleText", function(role, t
 
         -- Respawn
         local infection_time = parasite_infection_time:GetInt()
-        html = html .. "<span style='display: block; margin-top: 10px;'>After " .. infection_time .. " seconds, the <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>infection becomes terminal</span>, respawning the " .. ROLE_STRINGS[ROLE_PARASITE] .. " and killing their killer.</span>"
+        if infection_time > 0 then
+            html = html .. "<span style='display: block; margin-top: 10px;'>After " .. infection_time .. " seconds, the <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>infection becomes terminal</span>, respawning the " .. ROLE_STRINGS[ROLE_PARASITE] .. " and killing their killer.</span>"
+        else
+            html = html .. "<span style='display: block; margin-top: 10px;'>The " .. ROLE_STRINGS[ROLE_PARASITE] .. " will <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>be resurrected</span> if the person that killed them then dies.</span>"
+        end
 
         html = html .. "<span style='display: block; margin-top: 10px;'>Members of the <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>traitor team</span> will know who is infected via text when they look at the player or the scoreboard. This helps to let them know <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>not to kill that person</span> which would prevent the " .. ROLE_STRINGS[ROLE_PARASITE] .. " from respawning.</span>"
 

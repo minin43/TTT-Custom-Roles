@@ -290,9 +290,9 @@ ttt_single_doctor_quack_chance                 0.5     // The chance that a doct
 
 // Parasite
 ttt_parasite_is_monster                        0       // Whether the parasite should be treated as a member of the monster team (rather than the traitor team)
-ttt_parasite_infection_time                    45      // The time it takes in seconds for the parasite to fully infect someone
+ttt_parasite_infection_time                    45      // The time it takes in seconds for the parasite to fully infect someone. Set to 0 to only respawn the parasite when their killer is killed
 ttt_parasite_infection_warning_time            0       // The time in seconds after infection to warn the victim with an ambiguous message. Set to 0 to disable.
-ttt_parasite_infection_transfer                0       // Whether the parasite's infection will transfer if the parasite's killer is killed by another player
+ttt_parasite_infection_transfer                0       // Whether the parasite's infection will transfer if the parasite's killer is killed by another player. Only used when ttt_parasite_infection_time is higher than 0
 ttt_parasite_infection_transfer_reset          1       // Whether the parasite's infection progress will reset if their infection is transferred to another player
 ttt_parasite_infection_suicide_mode            0       // The way to handle when a player infected by the parasite kills themselves. 0 - Do nothing. 1 - Respawn the parasite. 2 - Respawn the parasite ONLY IF the infected player killed themselves with a console command like "kill"
 ttt_parasite_respawn_mode                      0       // The way in which the parasite respawns. 0 - Take over host. 1 - Respawn at the parasite's body. 2 - Respawn at a random location.
@@ -328,7 +328,7 @@ ttt_spy_steal_name                             1       // Whether the spy should
 ttt_spy_steal_from_respawning                  1       // Whether the spy should steal the identity of their victim even if that player is respawning
 ttt_spy_flare_gun_loadout                      1       // Whether the spy should have a flare gun given to them when they spawn. Server must be restarted for changes to take effect
 ttt_spy_flare_gun_shop                         0       // Whether the spy should have a flare gun be purchasable in the shop. Server must be restarted for changes to take effect
-ttt_spy_flare_gun_shop_rebuyable               0       // Whether the spy should be able to purchase the flare gun multiple times (requires "ttt_spy_flare_gun_shop" to be enabled). Server must be restarted for changes to take effect
+ttt_spy_flare_gun_shop_rebuyable               0       // Whether the spy should be able to purchase the flare gun multiple times (Requires "ttt_spy_flare_gun_shop" to be enabled). Server must be restarted for changes to take effect
 
 // ----------------------------------------
 
