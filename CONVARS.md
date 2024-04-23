@@ -301,6 +301,8 @@ ttt_parasite_announce_infection                0       // Whether players are no
 ttt_parasite_cure_mode                         2       // How to handle using a parasite cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on
 ttt_parasite_cure_time                         3       // The amount of time (in seconds) the parasite cure takes to use
 ttt_parasite_infection_saves_lover             1       // Whether the parasite's lover should survive if the parasite is infecting a player
+ttt_parasite_killer_smoke                      0       // Whether to show smoke on the player who killed the parasite
+ttt_parasite_killer_footstep_time              0       // The amount of time a parasite's killer's footsteps should show before fading. Set to 0 to disable
 ttt_parasite_credits_starting                  1       // The number of credits a parasite should start with
 ttt_single_phantom_parasite                    0       // Whether only a single phantom or parasite should spawn in a round
 ttt_single_phantom_parasite_chance             0.5     // The chance that a phantom should have an opportunity to spawn instead of a parasite (e.g. 0.7 = 70% chance for phantom, 30% chance for parasite. Only applies if ttt_single_phantom_parasite is enabled)

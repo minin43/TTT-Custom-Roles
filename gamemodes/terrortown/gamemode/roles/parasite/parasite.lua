@@ -28,6 +28,7 @@ local parasite_infection_transfer = GetConVar("ttt_parasite_infection_transfer")
 local parasite_respawn_mode = GetConVar("ttt_parasite_respawn_mode")
 local parasite_announce_infection = GetConVar("ttt_parasite_announce_infection")
 local parasite_infection_suicide_mode = GetConVar("ttt_parasite_infection_suicide_mode")
+local parasite_killer_footstep_time = GetConVar("ttt_parasite_killer_footstep_time")
 
 --------------
 -- HAUNTING --
@@ -265,6 +266,30 @@ hook.Add("TTTSpectatorHUDKeyPress", "Parasite_TTTSpectatorHUDKeyPress", function
     if ply:GetNWBool("ParasiteInfecting", false) then
         return true
     end
+end)
+
+---------------
+-- FOOTSTEPS --
+---------------
+
+hook.Add("PlayerFootstep", "Parasite_PlayerFootstep", function(ply, pos, foot, sound, volume, rf)
+    if not IsValid(ply) or ply:IsSpec() or not ply:Alive() then return true end
+    if ply:WaterLevel() ~= 0 then return end
+    if not ply:GetNWBool("ParasiteInfected", false) then return end
+
+    local killer_footstep_time = parasite_killer_footstep_time:GetInt()
+    if killer_footstep_time <= 0 then return end
+
+    -- This player killed a Parasite. Tell everyone where their foot steps should go
+    net.Start("TTT_PlayerFootstep")
+        net.WritePlayer(ply)
+        net.WriteVector(pos)
+        net.WriteAngle(ply:GetAimVector():Angle())
+        net.WriteBit(foot)
+        net.WriteTable(Color(138, 4, 4))
+        net.WriteUInt(killer_footstep_time, 8)
+        net.WriteFloat(1) -- Scale
+    net.Broadcast()
 end)
 
 -------------
