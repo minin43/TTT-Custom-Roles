@@ -297,6 +297,7 @@ ttt_parasite_infection_transfer_reset          1       // Whether the parasite's
 ttt_parasite_infection_suicide_mode            0       // The way to handle when a player infected by the parasite kills themselves. 0 - Do nothing. 1 - Respawn the parasite. 2 - Respawn the parasite ONLY IF the infected player killed themselves with a console command like "kill"
 ttt_parasite_respawn_mode                      0       // The way in which the parasite respawns. 0 - Take over host. 1 - Respawn at the parasite's body. 2 - Respawn at a random location.
 ttt_parasite_respawn_health                    100     // The health on which the parasite respawns
+ttt_parasite_respawn_limit                     0       // The amount of times a parasite can respawn. Set to 0 to have no limit
 ttt_parasite_announce_infection                0       // Whether players are notified immediately when they are infected with the parasite
 ttt_parasite_cure_mode                         2       // How to handle using a parasite cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on
 ttt_parasite_cure_time                         3       // The amount of time (in seconds) the parasite cure takes to use

@@ -28,6 +28,7 @@
 - Added ability for players to disable the view bob on cupid's bow from the cupid section of the roles tab in the F1 menu
 - Added ability for parasite to only respawn when their host is killed, similar to the phantom (disabled by default)
 - Added ability for parasite's killer to smoke and leave behind footprints, like a phantom's killer (both disabled by default)
+- Added ability to limit the number of times the parasite can respawn (disabled by default)
 
 ### Changes
 - Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused

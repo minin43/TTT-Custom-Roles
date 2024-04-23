@@ -22,6 +22,7 @@ local parasite_infection_warning_time = CreateConVar("ttt_parasite_infection_war
 local parasite_infection_saves_lover = CreateConVar("ttt_parasite_infection_saves_lover", "1", FCVAR_NONE, "Whether the parasite's lover should survive if the parasite is infecting a player", 0, 1)
 local parasite_infection_transfer_reset = CreateConVar("ttt_parasite_infection_transfer_reset", 1, FCVAR_NONE, "Whether the parasite's infection progress will reset if their infection is transferred to another player", 0, 1)
 local parasite_respawn_health = CreateConVar("ttt_parasite_respawn_health", 100, FCVAR_NONE, "The health on which the parasite respawns", 1, 100)
+local parasite_respawn_limit = CreateConVar("ttt_parasite_respawn_limit", "0", FCVAR_NONE, "The amount of times a parasite can respawn. Set to 0 to have no limit", 0, 20)
 
 local parasite_infection_time = GetConVar("ttt_parasite_infection_time")
 local parasite_infection_transfer = GetConVar("ttt_parasite_infection_transfer")
@@ -236,6 +237,21 @@ hook.Add("PlayerDeath", "Parasite_PlayerDeath", function(victim, infl, attacker)
             return
         end
 
+        local sid = victim:SteamID64()
+        -- Keep track of how many times this parasite has been killed and by who
+        if not deadParasites[sid] then
+            deadParasites[sid] = {times = 1, player = victim, attacker = attacker:SteamID64()}
+        else
+            deadParasites[sid] = {times = deadParasites[sid].times + 1, player = victim, attacker = attacker:SteamID64()}
+        end
+
+        local respawn_limit = parasite_respawn_limit:GetInt()
+        if respawn_limit > 0 and deadParasites[sid].times > respawn_limit then
+            victim:QueueMessage(MSG_PRINTBOTH, "Your parasite has affected too many, causing players to develop immunity. Your infection failed to take hold.")
+            ResetPlayer(victim)
+            return
+        end
+
         HandleParasiteInfection(attacker, victim)
 
         if parasite_announce_infection:GetBool() then
@@ -250,10 +266,6 @@ hook.Add("PlayerDeath", "Parasite_PlayerDeath", function(victim, infl, attacker)
                 lover:QueueMessage(MSG_PRINTCENTER, "Your lover has died... but they are infecting someone!")
             end
         end
-
-        local sid = victim:SteamID64()
-        -- Keep track of who killed this parasite
-        deadParasites[sid] = {player = victim, attacker = attacker:SteamID64()}
 
         net.Start("TTT_ParasiteInfect")
         net.WriteString(victim:Nick())
