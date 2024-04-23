@@ -850,6 +850,9 @@ ttt_arsonist_douse_corpses                     1       // Whether the Arsonist c
 ttt_arsonist_douse_require_los                 1       // Whether the Arsonist requires line of sight with their target in order to douse them
 ttt_arsonist_can_see_jesters                   1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the arsonist
 ttt_arsonist_update_scoreboard                 1       // Whether the arsonist shows dead players as missing in action
+ttt_arsonist_ignite_on_death                   0       // Whether to allow the arsonist to enable automatic triggering of their igniter on death
+ttt_arsonist_ignite_on_death_timer             0       // How long after the arsonist's death to trigger their igniter. Set to 0 to trigger instantly
+ttt_arsonist_ignite_on_death_notify            1       // Whether to notify other players that the arsonist's igniter is going to be triggered
 ttt_detectives_search_only_arsonistdouse       0       // Whether only detectives can see information about whether a corpse was doused by an arsonist and when. Once a detective searches a body, this information will be available to all players. Ignored when "ttt_detectives_search_only" is enabled.
 
 // Hive Mind
