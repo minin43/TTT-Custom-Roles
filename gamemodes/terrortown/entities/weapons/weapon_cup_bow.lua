@@ -270,6 +270,8 @@ if CLIENT then
     SWEP.LastAngles = Angle(0, 0, 0)
     SWEP.AimFOV = 25
 
+    local cupid_bow_viewbob = CreateClientConVar("ttt_cupid_bow_viewbob", "1", true, false, "Whether viewbob should be enabled for the cupid bow", 0, 1)
+
     function SWEP:PreDrawViewModel(vm, wep, ply)
         vm:InvalidateBoneCache()
         vm_angles = vm:GetAngles()
@@ -341,6 +343,10 @@ if CLIENT then
     }
 
     function SWEP:GetViewModelPosition(origin, angles)
+        if not cupid_bow_viewbob:GetBool() then
+            return origin, angles
+        end
+
         local sway_p = math.NormalizeAngle(self.LastAngles.p - EyeAngles().p) * 0.2
         local sway_y = math.NormalizeAngle(self.LastAngles.y - EyeAngles().y) * 0.2
 
@@ -368,7 +374,7 @@ if CLIENT then
     end
 
     function SWEP:CalcView(ply, origin, angles, fov)
-        if ply:GetViewEntity() ~= ply then
+        if ply:GetViewEntity() ~= ply or not cupid_bow_viewbob:GetBool() then
             return
         end
 

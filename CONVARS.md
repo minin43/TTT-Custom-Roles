@@ -1140,19 +1140,22 @@ The below role settings are for each player to set individually. They are all av
 
 // TRAITOR TEAM SETTINGS
 // Informant
-ttt_informant_show_scan_radius              0       // Whether to show the ring that shows the approximate radius of the informant's scanner
+ttt_informant_show_scan_radius                 0       // Whether to show the ring that shows the approximate radius of the informant's scanner
 
 // JESTER TEAM SETTINGS
 // Beggar
-ttt_beggar_show_scan_radius                 0       // Whether to show the ring that shows the approximate radius of the beggar's traitor scanner (when it's enabled)
+ttt_beggar_show_scan_radius                    0       // Whether to show the ring that shows the approximate radius of the beggar's traitor scanner (when it's enabled)
+
+// Cupid
+ttt_cupid_bow_viewbob                          1       // Whether viewbob should be enabled for the cupid bow
 
 // Loot Goblin
-ttt_lootgoblin_radar_beep_sound             1       // Whether to play a sound when the loot goblin radar location updates
+ttt_lootgoblin_radar_beep_sound                1       // Whether to play a sound when the loot goblin radar location updates
 
 // ----------------------------------------
 // Misc.
 // ----------------------------------------
-ttt_distance_unit                           1       // What unit to use when displaying distance. 0 - None (Source). 1 - Meters. 2 - Feet
+ttt_distance_unit                              1       // What unit to use when displaying distance. 0 - None (Source). 1 - Meters. 2 - Feet
 ```
 
 ## Role Weapon Shop

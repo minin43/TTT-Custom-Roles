@@ -26,6 +26,9 @@ local cupid_lovers_can_damage_cupid = GetConVar("ttt_cupid_lovers_can_damage_cup
 ------------------
 
 AddHook("Initialize", "Cupid_Translations_Initialize", function()
+    -- ConVars
+    LANG.AddToLanguage("english", "cupid_config_bow_viewbob", "Enable viewbob when holding bow")
+
     -- Win conditions
     LANG.AddToLanguage("english", "win_lovers", "The lovers have outlasted everyone!")
     LANG.AddToLanguage("english", "hilite_lovers_primary", "THE LOVERS WIN")
@@ -328,6 +331,17 @@ AddHook("Think", "Cupid_Highlight_Think", function()
     if lover_vision and not vision_enabled then
         RemoveHook("PreDrawHalos", "Cupid_Highlight_PreDrawHalos")
     end
+end)
+
+-------------
+-- CONVARS --
+-------------
+
+hook.Add("TTTSettingsRolesTabSections", "Cupid_TTTSettingsRolesTabSections", function(role, parentForm)
+    if role ~= ROLE_CUPID then return end
+
+    parentForm:CheckBox(LANG.GetTranslation("cupid_config_bow_viewbob"), "ttt_cupid_bow_viewbob")
+    return true
 end)
 
 --------------
