@@ -25,7 +25,6 @@
 - Added ability for the arsonist to activate their igniter so it automatically triggers upon their death (disabled by default)
   - Automatic trigger can be configured to be on a delay, allowing other players to find and deactivate the igniter
   - Notifications on when the auto-trigger activates can be disabled by configuration as well
-- Added ability for players to disable the view bob on cupid's bow from the cupid section of the roles tab in the F1 menu
 - Added ability for parasite to only respawn when their host is killed, similar to the phantom (disabled by default)
 - Added ability for parasite's killer to smoke and leave behind footprints, like a phantom's killer (both disabled by default)
 - Added ability to limit the number of times the parasite can respawn (disabled by default)
@@ -34,6 +33,7 @@
 - Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused
 - Changed sort order of items when searching a body so that important information is displayed in a consistent order
 - Changed players who use a "kill" console command to not kill their paired cupid lover
+- Removed view bob and sway on cupid's bow to be consistent with other role weapons
 
 ### Fixes
 - Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps

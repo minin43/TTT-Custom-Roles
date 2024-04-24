@@ -241,54 +241,16 @@ function SWEP:Deploy()
 end
 
 if CLIENT then
-    local ang = Angle(0, 0, 0)
-
-    local vm_origin = Vector(0, 0, 0)
-    local vm_angles = Angle(0, 0, 0)
-
-    SWEP.SwayScale = 0
-    SWEP.BobScale = 0
-
-    SWEP.VMOrigin = Vector(0, 0, 0)
-
-    SWEP.BobCycle = 0
-
-    SWEP.BobPos  = Vector(0, 0, 0)
-    SWEP.BobPos2 = Vector(0, 0, 0)
-
-    SWEP.AimOrigin = Vector(-6, -3, 1)
-    SWEP.AimAngles = Angle(1, 0, -45)
-
     SWEP.AimMult  = 0
     SWEP.AimMult2 = 0
-
-    SWEP.LastAimState = false
-
-    SWEP.SpeedMult = 0
-    SWEP.SideSpeed = 0
-
-    SWEP.LastAngles = Angle(0, 0, 0)
     SWEP.AimFOV = 25
-
-    local cupid_bow_viewbob = CreateClientConVar("ttt_cupid_bow_viewbob", "1", true, false, "Whether viewbob should be enabled for the cupid bow", 0, 1)
+    SWEP.LastAimState = false
 
     function SWEP:PreDrawViewModel(vm, wep, ply)
         vm:InvalidateBoneCache()
-        vm_angles = vm:GetAngles()
-
-        vm:SetAngles(ang)
-
-        self.AttData  = vm:GetAttachment(1)
-        self.VMOrigin = vm:GetPos()
-
-        vm:SetAngles(vm_angles)
 
         local owner = self:GetOwner()
-        local noclip = owner:GetMoveType() == MOVETYPE_NOCLIP
-        local onGround = owner:IsOnGround() or noclip
-
         local state = self.dt.WepState
-
         if (state == self.STATE_PULLED or state == self.STATE_RELEASE) and owner:KeyDown(IN_ATTACK2) then
             self.AimMult  = math.Approach(self.AimMult, 1, FrameTime() * 8)
             self.AimMult2 = Lerp(FrameTime() * 15, self.AimMult2, self.AimMult)
@@ -307,16 +269,6 @@ if CLIENT then
             end
         end
 
-        local speed_max = owner:GetWalkSpeed()
-
-        local vel   = owner:GetVelocity()
-        local speed = math.min(vel:Length2D() / speed_max, 1.5)
-
-        self.SpeedMult = Lerp(FrameTime() * 10, self.SpeedMult, (noclip or not onGround) and 0 or speed)
-        self.BobCycle = self.BobCycle + FrameTime() * self.SpeedMult * 15
-
-        local bob_mult = 1 - self.AimMult2 * 0.6
-
         local pose    = vm:GetPoseParameter("idle_pose")
         local pose_to = math.Round(self.AimMult2, 3)
 
@@ -324,90 +276,6 @@ if CLIENT then
             vm:SetPoseParameter("idle_pose", pose_to)
             vm:InvalidateBoneCache()
         end
-
-        self.BobPos.x = Lerp(FrameTime() * 15, self.BobPos.x, math.sin(self.BobCycle * 0.5) * self.SpeedMult * bob_mult)
-        self.BobPos.y = Lerp(FrameTime() * 15, self.BobPos.y, math.cos(self.BobCycle)       * self.SpeedMult * bob_mult)
-
-        self.BobPos2.x = Lerp(FrameTime() * 15, self.BobPos2.x, math.sin(self.BobCycle * 0.5 + 45) * self.SpeedMult * bob_mult)
-        self.BobPos2.y = Lerp(FrameTime() * 15, self.BobPos2.y, math.cos(self.BobCycle       + 45) * self.SpeedMult * bob_mult)
-
-        self.LastAngles = LerpAngle(FrameTime() * 15, self.LastAngles, EyeAngles())
-
-        local side_speed = math.Clamp(vel:Dot(EyeAngles():Right()), -speed_max, speed_max) / speed_max
-        self.SideSpeed   = Lerp(FrameTime() * 5, self.SideSpeed, noclip and 0 or (side_speed * bob_mult * 4))
-    end
-
-    local cam = {
-        origin = Vector(0, 0, 0),
-        angles = Angle(0, 0, 0)
-    }
-
-    function SWEP:GetViewModelPosition(origin, angles)
-        if not cupid_bow_viewbob:GetBool() then
-            return origin, angles
-        end
-
-        local sway_p = math.NormalizeAngle(self.LastAngles.p - EyeAngles().p) * 0.2
-        local sway_y = math.NormalizeAngle(self.LastAngles.y - EyeAngles().y) * 0.2
-
-        vm_origin.x = self.BobPos.x * 0.33 + sway_y * 0.1 + self.SideSpeed * 0.33
-        vm_origin.y = self.BobPos2.y * 0.2
-        vm_origin.z = self.BobPos.y * 0.43 + sway_p * 0.1
-
-        vm_angles.p = -self.BobPos2.y - sway_p
-        vm_angles.y = -self.BobPos2.x * 0.25 + sway_y
-        vm_angles.r =  self.BobPos2.x * 0.5 + self.SideSpeed
-
-        local Right   = angles:Right()
-        local Up      = angles:Up()
-        local Forward = angles:Forward()
-
-        angles:RotateAroundAxis(Right,   vm_angles.p)
-        angles:RotateAroundAxis(Up,      vm_angles.y)
-        angles:RotateAroundAxis(Forward, vm_angles.r)
-
-        origin = origin + (vm_origin.x + cam.origin.x) * Right
-        origin = origin + (vm_origin.y + cam.origin.y) * Forward
-        origin = origin + (vm_origin.z + cam.origin.z) * Up
-
-        return origin, angles
-    end
-
-    function SWEP:CalcView(ply, origin, angles, fov)
-        if ply:GetViewEntity() ~= ply or not cupid_bow_viewbob:GetBool() then
-            return
-        end
-
-        local vm = self:GetOwner():GetViewModel()
-
-        if IsValid(vm) then
-            vm_origin = vm:GetPos()
-            local att = self.AttData
-
-            if att then
-                cam.origin.x = att.Pos.x - self.VMOrigin.x
-                cam.origin.y = att.Pos.y - self.VMOrigin.y
-                cam.origin.z = att.Pos.z - self.VMOrigin.z
-
-                cam.angles.p = math.NormalizeAngle(att.Ang.r)
-                cam.angles.y = math.NormalizeAngle(att.Ang.y - 90)
-                cam.angles.r = math.NormalizeAngle(att.Ang.p)
-            end
-        end
-
-        local angles_p = cam.angles.p + self.BobPos.y  * 0.25
-        local angles_y = cam.angles.y - self.BobPos.x  * 0.25
-        local angles_r = cam.angles.r + self.BobPos2.x * 0.25
-
-        angles:RotateAroundAxis(angles:Right(), angles_p)
-        angles:RotateAroundAxis(angles:Up(), angles_y)
-        angles:RotateAroundAxis(angles:Forward(), angles_r)
-
-        origin = origin + cam.origin.x * angles:Right()
-        origin = origin + cam.origin.y * angles:Forward()
-        origin = origin + cam.origin.z * angles:Up()
-
-        return origin, angles, fov
     end
 
     function SWEP:TranslateFOV(current_fov)

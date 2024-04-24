@@ -1149,9 +1149,6 @@ ttt_informant_show_scan_radius                 0       // Whether to show the ri
 // Beggar
 ttt_beggar_show_scan_radius                    0       // Whether to show the ring that shows the approximate radius of the beggar's traitor scanner (when it's enabled)
 
-// Cupid
-ttt_cupid_bow_viewbob                          1       // Whether viewbob should be enabled for the cupid bow
-
 // Loot Goblin
 ttt_lootgoblin_radar_beep_sound                1       // Whether to play a sound when the loot goblin radar location updates
 
