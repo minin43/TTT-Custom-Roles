@@ -524,7 +524,8 @@ ttt_jesters_visible_to_monsters                1       // Whether jesters are re
 
 // Jester
 ttt_jester_win_by_traitors                     1       // Whether the jester will win the round if they are killed by a traitor
-ttt_jester_notify_mode                         0       // The logic to use when notifying players that a jester is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone.
+ttt_jester_notify_mode                         0       // The logic to use when notifying players that a jester was killed. Killer is notified unless "ttt_jester_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone.
+ttt_jester_notify_killer                       1       // Whether to notify a jester's killer
 ttt_jester_notify_sound                        0       // Whether to play a cheering sound when a jester is killed
 ttt_jester_notify_confetti                     0       // Whether to throw confetti when a jester is a killed
 ttt_jester_credits_starting                    0       // The number of credits a jester should start with
@@ -535,7 +536,8 @@ ttt_single_jester_swapper_chance               0.5     // The chance that a jest
 // Swapper
 ttt_swapper_respawn_health                     100     // What amount of health to give the swapper when they are killed and respawned
 ttt_swapper_weapon_mode                        1       // How to handle weapons when the Swapper is killed. 0 - Don't swap anything. 1 - Swap role weapons (if there are any). 2 - Swap all weapons.
-ttt_swapper_notify_mode                        0       // The logic to use when notifying players that a swapper is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_swapper_notify_mode                        0       // The logic to use when notifying players that a swapper was killed. Killer is notified unless "ttt_swapper_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_swapper_notify_killer                      1       // Whether to notify a swapper's killer
 ttt_swapper_notify_sound                       0       // Whether to play a cheering sound when a swapper is killed
 ttt_swapper_notify_confetti                    0       // Whether to throw confetti when a swapper is a killed
 ttt_swapper_killer_swap                        1       // Whether to the swapper's killer should become the new swapper
@@ -570,7 +572,8 @@ ttt_beggar_respawn                             0       // Whether the beggar res
 ttt_beggar_respawn_delay                       3       // The delay to use when respawning the beggar (if "ttt_beggar_respawn" is enabled)
 ttt_beggar_respawn_limit                       0       // The maximum number of times the beggar can respawn (if "ttt_beggar_respawn" is enabled). Set to 0 to allow infinite respawns
 ttt_beggar_respawn_change_role                 0       // Whether to change the role of the respawning the beggar (if "ttt_beggar_respawn" is enabled). Their role will be Traitor if killed by an innocent player and Innocent otherwise
-ttt_beggar_notify_mode                         0       // The logic to use when notifying players that a beggar is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_beggar_notify_mode                         0       // The logic to use when notifying players that a beggar was killed. Killer is notified unless "ttt_beggar_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_beggar_notify_killer                       1       // Whether to notify a beggar's killer
 ttt_beggar_notify_sound                        0       // Whether to play a cheering sound when a beggar is killed
 ttt_beggar_notify_confetti                     0       // Whether to throw confetti when a beggar is a killed
 ttt_beggar_scan                                0       // Whether the beggar can scan players to see if they are traitors. 0 - Disabled. 1 - Can only scan traitors. 2 - Can scan any role that has a shop.
@@ -596,7 +599,8 @@ ttt_bodysnatcher_reveal_jester                 1       // Who the bodysnatcher i
 ttt_bodysnatcher_respawn                       0       // Whether the bodysnatcher respawns when they are killed before joining another team
 ttt_bodysnatcher_respawn_delay                 3       // The delay to use when respawning the bodysnatcher (if "ttt_bodysnatcher_respawn" is enabled)
 ttt_bodysnatcher_respawn_limit                 0       // The maximum number of times the bodysnatcher can respawn (if "ttt_bodysnatcher_respawn" is enabled). Set to 0 to allow infinite respawns
-ttt_bodysnatcher_notify_mode                   0       // The logic to use when notifying players that a bodysnatcher is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_bodysnatcher_notify_mode                   0       // The logic to use when notifying players that a bodysnatcher was killed. Killer is notified unless "ttt_bodysnatcher_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_bodysnatcher_notify_killer                 1       // Whether to notify a bodysnatcher's killer
 ttt_bodysnatcher_notify_sound                  0       // Whether to play a cheering sound when a bodysnatcher is killed
 ttt_bodysnatcher_notify_confetti               0       // Whether to throw confetti when a bodysnatcher is a killed
 ttt_bodysnatcher_device_time                   5       // The amount of time (in seconds) the bodysnatcher's device takes to use
@@ -615,7 +619,8 @@ ttt_lootgoblin_weapons_dropped                 8       // How many weapons the l
 ttt_lootgoblin_jingle_enabled                  1       // Whether to play a jingle sound when an activated loot goblin is moving
 ttt_lootgoblin_speed_mult                      1.2     // The multiplier to use on the loot goblin's movement speed when they are activated (e.g. 1.2 = 120% normal speed)
 ttt_lootgoblin_sprint_recovery                 0.12    // The amount of stamina to recover per tick when the loot goblin is activated
-ttt_lootgoblin_notify_mode                     4       // The logic to use when notifying players that a loot goblin is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_lootgoblin_notify_mode                     4       // The logic to use when notifying players that a loot goblin was killed. Killer is notified unless "ttt_loot goblin_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_lootgoblin_notify_killer                   1       // Whether to notify a lootgoblin's killer
 ttt_lootgoblin_notify_sound                    1       // Whether to play a cheering sound when a loot goblin is killed
 ttt_lootgoblin_notify_confetti                 1       // Whether to throw confetti when a loot goblin is a killed
 ttt_lootgoblin_regen_mode                      2       // Whether the loot goblin should regenerate health and using what logic. 0 - No regeneration. 1 - Constant regen while active. 2 - Regen while standing still. 3 - Regen after taking damage
@@ -637,7 +642,8 @@ ttt_cupid_lovers_can_damage_cupid              0       // Whether the lovers sho
 ttt_cupid_lover_vision_enabled                 1       // Whether the lovers can see outlines of each other through walls
 ttt_cupid_arrow_hitscan                        0       // Whether the cupid's arrow should be an instant hit instead of a projectile
 ttt_cupid_arrow_speed_mult                     1       // The speed multiplier for the cupid's arrow (Only applies when ttt_cupid_arrow_hitscan is disabled)
-ttt_cupid_notify_mode                          0       // The logic to use when notifying players that a cupid is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_cupid_notify_mode                          0       // The logic to use when notifying players that a cupid was killed. Killer is notified unless "ttt_cupid_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_cupid_notify_killer                        1       // Whether to notify a cupid's killer
 ttt_cupid_notify_sound                         0       // Whether to play a cheering sound when a cupid is killed
 ttt_cupid_notify_confetti                      0       // Whether to throw confetti when a cupid is a killed
 ttt_cupid_can_see_jesters                      0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to cupid (Only applies if ttt_cupid_is_independent is enabled)
@@ -645,7 +651,8 @@ ttt_cupid_update_scoreboard                    0       // Whether cupid shows de
 
 // Sponge
 ttt_sponge_aura_radius                         5       // The radius of the sponge's aura in meters
-ttt_sponge_notify_mode                         0       // The logic to use when notifying players that the sponge is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_sponge_notify_mode                         0       // The logic to use when notifying players that a sponge was killed. Killer is notified unless "ttt_sponge_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_sponge_notify_killer                       1       // Whether to notify a sponge's killer
 ttt_sponge_notify_sound                        0       // Whether to play a cheering sound when a sponge is killed
 ttt_sponge_notify_confetti                     0       // Whether to throw confetti when a sponge is a killed
 ttt_sponge_device_time                         8       // The amount of time (in seconds) the spongifier takes to use
@@ -676,7 +683,8 @@ ttt_guesser_can_guess_detectives               0       // Whether the guesser is
 ttt_guesser_minimum_radius                     5       // The minimum radius of the guesser's device in meters. Set to 0 to disable
 ttt_guesser_show_team_threshold                50      // The amount of damage that needs to be dealt to a guesser before they learn the attacker's team
 ttt_guesser_show_role_threshold                100     // The amount of damage that needs to be dealt to a guesser before they learn the attacker's role
-ttt_guesser_notify_mode                        0       // The logic to use when notifying players that a guesser is killed. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_guesser_notify_mode                        0       // The logic to use when notifying players that a guesser was killed. Killer is notified unless "ttt_guesser_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
+ttt_guesser_notify_killer                      1       // Whether to notify a guesser's killer
 ttt_guesser_notify_sound                       0       // Whether to play a cheering sound when a guesser is killed
 ttt_guesser_notify_confetti                    0       // Whether to throw confetti when a guesser is a killed
 ttt_guesser_unguessable_roles                  "lootgoblin,zombie" // Names of roles that cannot be guessed by the guesser, separated with commas. Do not include spaces or capital letters.
@@ -855,7 +863,7 @@ ttt_arsonist_can_see_jesters                   1       // Whether jesters are re
 ttt_arsonist_update_scoreboard                 1       // Whether the arsonist shows dead players as missing in action
 ttt_arsonist_ignite_on_death                   0       // Whether to allow the arsonist to enable automatic triggering of their igniter on death
 ttt_arsonist_ignite_on_death_timer             0       // How long after the arsonist's death to trigger their igniter. Set to 0 to trigger instantly
-ttt_arsonist_ignite_on_death_notify            1       // Whether to notify other players that the arsonist's igniter is going to be triggered
+ttt_arsonist_ignite_on_death_notify            1       // Whether to notify other players that a arsonist's igniter is going to be triggered
 ttt_detectives_search_only_arsonistdouse       0       // Whether only detectives can see information about whether a corpse was doused by an arsonist and when. Once a detective searches a body, this information will be available to all players. Ignored when "ttt_detectives_search_only" is enabled.
 
 // Hive Mind

@@ -13,7 +13,8 @@ resource.AddFile("materials/particle/heart.vmt")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_cupid_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a cupid was killed", 0, 4)
+CreateConVar("ttt_cupid_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a cupid was killed. Killer is notified unless \"ttt_cupid_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_cupid_notify_killer", "1", FCVAR_NONE, "Whether to notify a cupid's killer", 0, 1)
 CreateConVar("ttt_cupid_notify_sound", "0", FCVAR_NONE, "Whether to play a cheering sound when a cupid is killed", 0, 1)
 CreateConVar("ttt_cupid_notify_confetti", "0", FCVAR_NONE, "Whether to throw confetti when a cupid is a killed", 0, 1)
 

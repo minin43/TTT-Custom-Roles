@@ -94,6 +94,12 @@
                         <td>Whether to throw confetti when this role is killed. Replace * with the name of the jester role you want to configure without spaces or capital letters. <i>(Does not apply to the Clown.)</i></td>
                     </tr>
                     <tr>
+                        <td>ttt_*_notify_killer <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                        <td>0</td>
+                        <td>Boolean</td>
+                        <td>Whether to notify the killer when this role is killed. Replace * with the name of the jester role you want to configure without spaces or capital letters. <i>(Does not apply to the Clown.)</i></td>
+                    </tr>
+                    <tr>
                         <td>ttt_*_notify_mode</td>
                         <td>0</td>
                         <td>Integer (0-4)</td>
@@ -105,7 +111,8 @@
                                 <li>Only notify detectives.</li>
                                 <li>Notify everyone.</li>
                             </ol>
-                            Replace * with the name of the jester role you want to configure without spaces or capital letters. <i>(Does not apply to the Clown.)</i>
+                            Replace * with the name of the jester role you want to configure without spaces or capital letters. <i>(Does not apply to the Clown.)</i><br>
+                            Killer is notified unless <code>ttt_*_notify_killer</code> is disabled.
                         </td>
                     </tr>
                     <tr>
