@@ -21,6 +21,8 @@ util.AddNetworkString("TTT_UpdateLootGoblinWins")
 util.AddNetworkString("TTT_ResetLootGoblinWins")
 util.AddNetworkString("TTT_LootGoblinRadar")
 
+resource.AddFile("materials/vgui/ttt/beacon_gob.vmt")
+
 resource.AddSingleFile("sound/lootgoblin/cackle1.wav")
 resource.AddSingleFile("sound/lootgoblin/cackle2.wav")
 resource.AddSingleFile("sound/lootgoblin/cackle3.wav")
