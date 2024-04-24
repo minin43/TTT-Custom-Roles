@@ -32,6 +32,10 @@ table.insert(ROLE_CONVARS[ROLE_CUPID], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_CUPID], {
+    cvar = "ttt_cupid_notify_killer",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_CUPID], {
     cvar = "ttt_cupid_notify_sound",
     type = ROLE_CONVAR_TYPE_BOOL
 })

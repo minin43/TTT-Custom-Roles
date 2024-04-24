@@ -33,6 +33,10 @@ table.insert(ROLE_CONVARS[ROLE_SWAPPER], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_SWAPPER], {
+    cvar = "ttt_swapper_notify_killer",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SWAPPER], {
     cvar = "ttt_swapper_notify_sound",
     type = ROLE_CONVAR_TYPE_BOOL
 })

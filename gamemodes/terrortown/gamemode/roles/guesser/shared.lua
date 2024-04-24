@@ -24,6 +24,10 @@ table.insert(ROLE_CONVARS[ROLE_GUESSER], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_GUESSER], {
+    cvar = "ttt_guesser_notify_killer",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_GUESSER], {
     cvar = "ttt_guesser_notify_sound",
     type = ROLE_CONVAR_TYPE_BOOL
 })
