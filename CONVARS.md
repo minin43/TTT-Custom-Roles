@@ -290,17 +290,20 @@ ttt_single_doctor_quack_chance                 0.5     // The chance that a doct
 
 // Parasite
 ttt_parasite_is_monster                        0       // Whether the parasite should be treated as a member of the monster team (rather than the traitor team)
-ttt_parasite_infection_time                    45      // The time it takes in seconds for the parasite to fully infect someone
+ttt_parasite_infection_time                    45      // The time it takes in seconds for the parasite to fully infect someone. Set to 0 to only respawn the parasite when their killer is killed
 ttt_parasite_infection_warning_time            0       // The time in seconds after infection to warn the victim with an ambiguous message. Set to 0 to disable.
-ttt_parasite_infection_transfer                0       // Whether the parasite's infection will transfer if the parasite's killer is killed by another player
+ttt_parasite_infection_transfer                0       // Whether the parasite's infection will transfer if the parasite's killer is killed by another player. Only used when ttt_parasite_infection_time is higher than 0
 ttt_parasite_infection_transfer_reset          1       // Whether the parasite's infection progress will reset if their infection is transferred to another player
 ttt_parasite_infection_suicide_mode            0       // The way to handle when a player infected by the parasite kills themselves. 0 - Do nothing. 1 - Respawn the parasite. 2 - Respawn the parasite ONLY IF the infected player killed themselves with a console command like "kill"
 ttt_parasite_respawn_mode                      0       // The way in which the parasite respawns. 0 - Take over host. 1 - Respawn at the parasite's body. 2 - Respawn at a random location.
 ttt_parasite_respawn_health                    100     // The health on which the parasite respawns
+ttt_parasite_respawn_limit                     0       // The amount of times a parasite can respawn. Set to 0 to have no limit
 ttt_parasite_announce_infection                0       // Whether players are notified immediately when they are infected with the parasite
 ttt_parasite_cure_mode                         2       // How to handle using a parasite cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on
 ttt_parasite_cure_time                         3       // The amount of time (in seconds) the parasite cure takes to use
 ttt_parasite_infection_saves_lover             1       // Whether the parasite's lover should survive if the parasite is infecting a player
+ttt_parasite_killer_smoke                      0       // Whether to show smoke on the player who killed the parasite
+ttt_parasite_killer_footstep_time              0       // The amount of time a parasite's killer's footsteps should show before fading. Set to 0 to disable
 ttt_parasite_credits_starting                  1       // The number of credits a parasite should start with
 ttt_single_phantom_parasite                    0       // Whether only a single phantom or parasite should spawn in a round
 ttt_single_phantom_parasite_chance             0.5     // The chance that a phantom should have an opportunity to spawn instead of a parasite (e.g. 0.7 = 70% chance for phantom, 30% chance for parasite. Only applies if ttt_single_phantom_parasite is enabled)
@@ -328,7 +331,7 @@ ttt_spy_steal_name                             1       // Whether the spy should
 ttt_spy_steal_from_respawning                  1       // Whether the spy should steal the identity of their victim even if that player is respawning
 ttt_spy_flare_gun_loadout                      1       // Whether the spy should have a flare gun given to them when they spawn. Server must be restarted for changes to take effect
 ttt_spy_flare_gun_shop                         0       // Whether the spy should have a flare gun be purchasable in the shop. Server must be restarted for changes to take effect
-ttt_spy_flare_gun_shop_rebuyable               0       // Whether the spy should be able to purchase the flare gun multiple times (requires "ttt_spy_flare_gun_shop" to be enabled). Server must be restarted for changes to take effect
+ttt_spy_flare_gun_shop_rebuyable               0       // Whether the spy should be able to purchase the flare gun multiple times (Requires "ttt_spy_flare_gun_shop" to be enabled). Server must be restarted for changes to take effect
 
 // ----------------------------------------
 
@@ -850,6 +853,9 @@ ttt_arsonist_douse_corpses                     1       // Whether the Arsonist c
 ttt_arsonist_douse_require_los                 1       // Whether the Arsonist requires line of sight with their target in order to douse them
 ttt_arsonist_can_see_jesters                   1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the arsonist
 ttt_arsonist_update_scoreboard                 1       // Whether the arsonist shows dead players as missing in action
+ttt_arsonist_ignite_on_death                   0       // Whether to allow the arsonist to enable automatic triggering of their igniter on death
+ttt_arsonist_ignite_on_death_timer             0       // How long after the arsonist's death to trigger their igniter. Set to 0 to trigger instantly
+ttt_arsonist_ignite_on_death_notify            1       // Whether to notify other players that the arsonist's igniter is going to be triggered
 ttt_detectives_search_only_arsonistdouse       0       // Whether only detectives can see information about whether a corpse was doused by an arsonist and when. Once a detective searches a body, this information will be available to all players. Ignored when "ttt_detectives_search_only" is enabled.
 
 // Hive Mind
@@ -1137,19 +1143,19 @@ The below role settings are for each player to set individually. They are all av
 
 // TRAITOR TEAM SETTINGS
 // Informant
-ttt_informant_show_scan_radius              0       // Whether to show the ring that shows the approximate radius of the informant's scanner
+ttt_informant_show_scan_radius                 0       // Whether to show the ring that shows the approximate radius of the informant's scanner
 
 // JESTER TEAM SETTINGS
 // Beggar
-ttt_beggar_show_scan_radius                 0       // Whether to show the ring that shows the approximate radius of the beggar's traitor scanner (when it's enabled)
+ttt_beggar_show_scan_radius                    0       // Whether to show the ring that shows the approximate radius of the beggar's traitor scanner (when it's enabled)
 
 // Loot Goblin
-ttt_lootgoblin_radar_beep_sound             1       // Whether to play a sound when the loot goblin radar location updates
+ttt_lootgoblin_radar_beep_sound                1       // Whether to play a sound when the loot goblin radar location updates
 
 // ----------------------------------------
 // Misc.
 // ----------------------------------------
-ttt_distance_unit                           1       // What unit to use when displaying distance. 0 - None (Source). 1 - Meters. 2 - Feet
+ttt_distance_unit                              1       // What unit to use when displaying distance. 0 - None (Source). 1 - Meters. 2 - Feet
 ```
 
 ## Role Weapon Shop

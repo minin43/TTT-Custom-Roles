@@ -638,13 +638,13 @@
                             <td>ttt_parasite_infection_time</td>
                             <td>45</td>
                             <td>Integer</td>
-                            <td>The time it takes in seconds for the Parasite to fully infect someone.</td>
+                            <td>The time it takes in seconds for the Parasite to fully infect someone. Set to 0 to only respawn the parasite when their killer is killed <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span>.</td>
                         </tr>
                         <tr>
                             <td>ttt_parasite_infection_transfer</td>
                             <td>0</td>
                             <td>Boolean</td>
-                            <td>Whether the Parasite's infection will transfer if the Parasite's killer is killed by another player.</td>
+                            <td>Whether the Parasite's infection will transfer if the Parasite's killer is killed by another player. <i>(Requires <code>ttt_parasite_infection_time</code> to be higher than 0.)</i></td>
                         </tr>
                         <tr>
                             <td>ttt_parasite_infection_transfer_reset</td>
@@ -665,10 +665,28 @@
                             <td>Whether the Parasite should be treated as a member of the monster team.</td>
                         </tr>
                         <tr>
+                            <td>ttt_parasite_killer_footstep_time <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Integer</td>
+                            <td>The time in seconds a Parasite's killer's footsteps should show before fading. <i>(Set to 0 to disable.)</i></td>
+                        </tr>
+                        <tr>
+                            <td>ttt_parasite_killer_smoke <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether to show smoke on the player who killed the Parasite.</td>
+                        </tr>
+                        <tr>
                             <td>ttt_parasite_respawn_health</td>
                             <td>100</td>
                             <td>Integer</td>
                             <td>The health on which the Parasite respawns.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_parasite_respawn_limit <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Integer</td>
+                            <td>The amount of times a Parasite can respawn. Set to 0 to have no limit.</td>
                         </tr>
                         <tr>
                             <td>ttt_parasite_respawn_mode</td>
@@ -818,7 +836,7 @@
                             <td>ttt_spy_flare_gun_shop_rebuyable</td>
                             <td>0</td>
                             <td>Boolean</td>
-                            <td>Whether the Spy should be able to purchase the flare gun multiple times. <i>(requires <code>ttt_spy_flare_gun_shop</code> to be enabled. Server must be restarted for changes to take effect.)</i></td>
+                            <td>Whether the Spy should be able to purchase the flare gun multiple times. <i>(Requires <code>ttt_spy_flare_gun_shop</code> to be enabled. Server must be restarted for changes to take effect.)</i></td>
                         </tr>
                         <tr>
                             <td>ttt_spy_steal_from_respawning</td>

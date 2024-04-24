@@ -13,6 +13,8 @@ local parasite_infection_transfer = GetConVar("ttt_parasite_infection_transfer")
 local parasite_respawn_mode = GetConVar("ttt_parasite_respawn_mode")
 local parasite_announce_infection = GetConVar("ttt_parasite_announce_infection")
 local parasite_infection_suicide_mode = GetConVar("ttt_parasite_infection_suicide_mode")
+local parasite_killer_smoke = GetConVar("ttt_parasite_killer_smoke")
+local parasite_killer_footstep_time = GetConVar("ttt_parasite_killer_footstep_time")
 
 ------------------
 -- TRANSLATIONS --
@@ -158,16 +160,24 @@ end
 hook.Add("TTTSpectatorShowHUD", "Parasite_Infecting_TTTSpectatorShowHUD", function(cli, tgt)
     if not cli:IsParasite() then return end
 
+    local max_power = parasite_infection_time:GetInt()
+    if max_power <= 0 then return end
+
     local L = LANG.GetUnsafeLanguageTable()
     local infection_colors = {
         border = COLOR_WHITE,
         background = Color(191, 91, 22, 222),
         fill = Color(255, 127, 39, 255)
     }
-    local max_power = parasite_infection_time:GetInt()
     local current_power = cli:GetNWInt("ParasiteInfectionProgress", 0)
 
     CRHUD:PaintPowersHUD(nil, max_power, current_power, infection_colors, L.infect_title, L.infect_help)
+end)
+
+hook.Add("TTTShouldPlayerSmoke", "Parasite_Infecting_TTShouldPlayerSmoke", function(v, client, shouldSmoke, smokeColor, smokeParticle, smokeOffset)
+    if v:GetNWBool("ParasiteInfected", false) and parasite_killer_smoke:GetBool() then
+        return true
+    end
 end)
 
 --------------
@@ -186,7 +196,11 @@ hook.Add("TTTTutorialRoleText", "Parasite_TTTTutorialRoleText", function(role, t
 
         -- Respawn
         local infection_time = parasite_infection_time:GetInt()
-        html = html .. "<span style='display: block; margin-top: 10px;'>After " .. infection_time .. " seconds, the <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>infection becomes terminal</span>, respawning the " .. ROLE_STRINGS[ROLE_PARASITE] .. " and killing their killer.</span>"
+        if infection_time > 0 then
+            html = html .. "<span style='display: block; margin-top: 10px;'>After " .. infection_time .. " seconds, the <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>infection becomes terminal</span>, respawning the " .. ROLE_STRINGS[ROLE_PARASITE] .. " and killing their killer.</span>"
+        else
+            html = html .. "<span style='display: block; margin-top: 10px;'>The " .. ROLE_STRINGS[ROLE_PARASITE] .. " will <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>be resurrected</span> if the person that killed them then dies.</span>"
+        end
 
         html = html .. "<span style='display: block; margin-top: 10px;'>Members of the <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>traitor team</span> will know who is infected via text when they look at the player or the scoreboard. This helps to let them know <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>not to kill that person</span> which would prevent the " .. ROLE_STRINGS[ROLE_PARASITE] .. " from respawning.</span>"
 
@@ -229,6 +243,26 @@ hook.Add("TTTTutorialRoleText", "Parasite_TTTTutorialRoleText", function(role, t
                 html = html .. "using the 'kill' console command "
             end
             html = html .. "then the " .. ROLE_STRINGS[ROLE_PARASITE] .. " <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>will respawn immediately</span>.</span>"
+        end
+
+        local has_smoke = parasite_killer_smoke:GetBool()
+        local has_footsteps = parasite_killer_footstep_time:GetInt() > 0
+        -- Smoke and Killer footsteps
+        if has_smoke or has_footsteps then
+            html = html .. "<span style='display: block; margin-top: 10px;'>After the " .. ROLE_STRINGS[ROLE_PARASITE] .. " is killed, their killer "
+            if has_smoke then
+                html = html .. "is enveloped in a <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>shroud of smoke</span>"
+            end
+
+            if has_smoke and has_footsteps then
+                html = html .. " and "
+            end
+
+            if has_footsteps then
+                html = html .. "leaves behind <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>bloody footprints</span>"
+            end
+
+            html = html .. ", revealing themselves as the " .. ROLE_STRINGS[ROLE_PARASITE] .. "'s killer to other players.</span>"
         end
 
         return html
