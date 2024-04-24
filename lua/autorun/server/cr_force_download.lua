@@ -8,23 +8,27 @@ if SERVER then
     -- Celebration
     resource.AddSingleFile("materials/vgui/confetti.png")
 
+    -- Corpse Search
+    resource.AddFile("materials/vgui/ttt/icon_killer.vmt")
+    resource.AddFile("materials/vgui/ttt/icon_team.vmt")
+
     -- Items
     resource.AddFile("materials/vgui/ttt/icon_bombstation.vmt")
     resource.AddFile("materials/vgui/ttt/icon_brainwash.vmt")
     resource.AddFile("materials/vgui/ttt/icon_cure.vmt")
+    resource.AddFile("materials/vgui/ttt/icon_death_radar.vmt")
     resource.AddFile("materials/vgui/ttt/icon_exor.vmt")
     resource.AddFile("materials/vgui/ttt/icon_fakecure.vmt")
     resource.AddFile("materials/vgui/ttt/icon_meddefib.vmt")
     resource.AddFile("materials/vgui/ttt/icon_regen.vmt")
     resource.AddFile("materials/vgui/ttt/icon_speed.vmt")
     resource.AddFile("materials/vgui/ttt/icon_stationbomb.vmt")
+    resource.AddFile("materials/vgui/ttt/icon_track_radar.vmt")
 
     -- Radar
     resource.AddFile("materials/vgui/ttt/beacon_back.vmt")
     resource.AddFile("materials/vgui/ttt/beacon_det.vmt")
-    resource.AddFile("materials/vgui/ttt/beacon_rev.vmt")
     resource.AddFile("materials/vgui/ttt/beacon_skull.vmt")
-    resource.AddFile("materials/vgui/ttt/beacon_trk.vmt")
 
     -- Round Summary
     resource.AddSingleFile("materials/vgui/ttt/score_disconicon.png")
