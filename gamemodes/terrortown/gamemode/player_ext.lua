@@ -406,6 +406,12 @@ function plymeta:InitialSpawn()
 
     -- We never have weapons here, but this inits our equipment state
     self:StripAll()
+
+    -- If round prep has started, call SpawnForRound on the player so all the same logic
+    -- that has been ran against the other players is run against this new player as well
+    if GetRoundState() == ROUND_PREP then
+        self:SpawnForRound(false)
+    end
 end
 
 function plymeta:KickBan(length, reason)

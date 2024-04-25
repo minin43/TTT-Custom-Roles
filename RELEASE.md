@@ -47,6 +47,8 @@
 - Fixed corpse calls duplicating when different players called the detective to the same corpse
 - Fixed corpse calls not expiring after 45 seconds like they do in vanilla TTT
   - This can be adjusted or disabled with a new convar
+- Fixed players who join during the prep phase not getting their default loadout (crowbar, magneto stick, unarmed) until the round starts
+  - This fixes players who don't pick up guns in the prep phase having their role weapons auto-selected when the round starts, giving them away
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
