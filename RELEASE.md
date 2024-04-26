@@ -30,6 +30,7 @@
 - Added ability to limit the number of times the parasite can respawn (disabled by default)
 - Added note to jester team ttt_*_notify_mode convars that the player's killer is notified
 - Added ability to control whether the killer of a member of the jester team is notified that they killed that role (enabled by default)
+- Added short message to lovers and cupid informing them which teams they can win with for clarity
 
 ### Changes
 - Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused

@@ -142,10 +142,24 @@ function ENT:Touch(ent)
                         ent:SetNWString("TTTCupidLover", target1)
                         ent2:SetNWString("TTTCupidLover", ent:SteamID64())
                         owner:SetNWString("TTTCupidTarget2", ent:SteamID64())
+                        owner:StripWeapon("weapon_cup_bow")
+
                         owner:QueueMessage(MSG_PRINTBOTH, ent:Nick() .. " has fallen in love with " .. ent2:Nick() .. ".")
                         ent2:QueueMessage(MSG_PRINTBOTH, "You have fallen in love with " .. ent:Nick() .. "!")
                         ent:QueueMessage(MSG_PRINTBOTH, "You have fallen in love with " .. ent2:Nick() .. "!")
-                        owner:StripWeapon("weapon_cup_bow")
+
+                        if ent:IsSameTeam(ent2) then
+                            ent:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_CUPID] .. " will now win with your team!")
+                            ent2:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_CUPID] .. " will now win with your team!")
+
+                            local roleTeam = ent:GetRoleTeam()
+                            local teamName = GetRawRoleTeamName(roleTeam)
+                            owner:QueueMessage(MSG_PRINTBOTH, "You will now win with the " .. teamName .. "s!")
+                        else
+                            ent:QueueMessage(MSG_PRINTBOTH, "You can now win independently!")
+                            ent2:QueueMessage(MSG_PRINTBOTH, "You can now win independently!")
+                            owner:QueueMessage(MSG_PRINTBOTH, "You can now win independently!")
+                        end
 
                         net.Start("TTT_CupidPaired")
                         net.WriteString(owner:Nick())
