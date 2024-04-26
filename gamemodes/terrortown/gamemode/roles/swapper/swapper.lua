@@ -17,7 +17,8 @@ util.AddNetworkString("TTT_SwapperSwapped")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_swapper_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that the swapper is killed", 0, 4)
+CreateConVar("ttt_swapper_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a swapper was killed. Killer is notified unless \"ttt_swapper_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_swapper_notify_killer", "1", FCVAR_NONE, "Whether to notify a swapper's killer", 0, 1)
 CreateConVar("ttt_swapper_notify_sound", "0", FCVAR_NONE, "Whether to play a cheering sound when a swapper is killed", 0, 1)
 CreateConVar("ttt_swapper_notify_confetti", "0", FCVAR_NONE, "Whether to throw confetti when a swapper is a killed", 0, 1)
 local swapper_respawn_health = CreateConVar("ttt_swapper_respawn_health", "100", FCVAR_NONE, "What amount of health to give the swapper when they are killed and respawned", 1, 200)

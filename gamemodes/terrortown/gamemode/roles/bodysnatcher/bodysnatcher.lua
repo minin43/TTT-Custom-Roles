@@ -15,7 +15,8 @@ util.AddNetworkString("TTT_BodysnatcherKilled")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_bodysnatcher_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that the bodysnatcher is killed", 0, 4)
+CreateConVar("ttt_bodysnatcher_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a bodysnatcher was killed. Killer is notified unless \"ttt_bodysnatcher_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_bodysnatcher_notify_killer", "1", FCVAR_NONE, "Whether to notify a bodysnatcher's killer", 0, 1)
 CreateConVar("ttt_bodysnatcher_notify_sound", "0", FCVAR_NONE, "Whether to play a cheering sound when a bodysnatcher is killed", 0, 1)
 CreateConVar("ttt_bodysnatcher_notify_confetti", "0", FCVAR_NONE, "Whether to throw confetti when a bodysnatcher is a killed", 0, 1)
 

@@ -226,26 +226,33 @@ function LANG.GetLanguageNames()
 -- Table of styles that can take a string and display it in some position,
 -- colour, etc.
 LANG.Styles = {
-    default = function(text)
+    default = function(text, params)
         MSTACK:AddMessage(text)
         print("TTT:   " .. text)
     end,
 
-    rolecolour = function(text)
-        local hide_role = false
-        if ConVarExists("ttt_hide_role") then
-            hide_role = GetConVar("ttt_hide_role"):GetBool()
+    rolecolour = function(text, params)
+        local color = nil
+        if params and params.color_role then
+            local role = tonumber(params.color_role)
+            if role > ROLE_NONE and role <= ROLE_MAX then
+                color = ROLE_COLORS_SPRITE[role]
+            end
+        else
+            if not cvars.Bool("ttt_hide_role", false) then
+                color = ROLE_COLORS_SPRITE[LocalPlayer():GetDisplayedRole()]
+            end
         end
 
-        if hide_role then
+        if color == nil then
             MSTACK:AddMessage(text)
         else
-            MSTACK:AddColoredBgMessage(text, ROLE_COLORS[LocalPlayer():GetDisplayedRole()])
+            MSTACK:AddColoredBgMessage(text, color)
         end
         print("TTT:   " .. text)
     end,
 
-    chat_warn = function(text)
+    chat_warn = function(text, params)
         chat.AddText(COLOR_RED, text)
     end,
 
@@ -271,8 +278,8 @@ function LANG.SetStyle(name, style)
     LANG.MsgStyle[name] = style
 end
 
-function LANG.ShowStyledMsg(text, style)
-    style(text)
+function LANG.ShowStyledMsg(text, style, params)
+    style(text, params)
 end
 
 function LANG.ProcessMsg(name, params)
@@ -294,7 +301,7 @@ function LANG.ProcessMsg(name, params)
         text = interp(raw, params)
     end
 
-    LANG.ShowStyledMsg(text, LANG.GetStyle(name))
+    LANG.ShowStyledMsg(text, LANG.GetStyle(name), params)
 end
 
 --- Message style declarations
@@ -311,6 +318,9 @@ local styledmessages = {
     rolecolour = {
         "round_traitors_one",
         "round_traitors_more",
+
+        "body_found",
+        "body_found_updated",
 
         "buy_no_stock",
         "buy_pending",

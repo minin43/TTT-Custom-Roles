@@ -153,18 +153,31 @@ local function IdentifyBody(ply, rag)
             name = nick
         end
         local role_string = "an unknown role"
+        local color_role = ROLE_NONE
         if fullSearch or AnnounceBodyRole(ply, round_state, deadply) then
             role_string = ROLE_STRINGS_EXT[role]
+            -- Use the role's color for the message background
+            color_role = role
         elseif AnnounceBodyTeam(ply, round_state, deadply) then
-            local roleTeam = player.GetRoleTeam(role)
+            local roleTeam = player.GetRoleTeam(role, true)
             local teamName = GetRoleTeamName(roleTeam)
             role_string = "on the " .. teamName .. " team"
+
+            -- Show the base team color for innocents and traitors
+            if roleTeam == ROLE_TEAM_INNOCENT then
+                color_role = ROLE_INNOCENT
+            elseif roleTeam == ROLE_TEAM_TRAITOR then
+                color_role = ROLE_TRAITOR
+            else
+                color_role = role
+            end
         end
 
         LANG.Msg("body_found", {
             finder = finder,
             victim = name,
-            role = role_string
+            role = role_string,
+            color_role = tostring(color_role)
         })
     end
 
@@ -213,7 +226,8 @@ local function IdentifyBody(ply, rag)
             LANG.Msg("body_found_updated", {
                 finder = finder,
                 victim = nick,
-                role = ROLE_STRINGS_EXT[role]
+                role = ROLE_STRINGS_EXT[role],
+                color_role = role
             })
         end
     end

@@ -16,7 +16,8 @@ util.AddNetworkString("TTT_BeggarKilled")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_beggar_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that the beggar is killed", 0, 4)
+CreateConVar("ttt_beggar_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a beggar was killed. Killer is notified unless \"ttt_beggar_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_beggar_notify_killer", "1", FCVAR_NONE, "Whether to notify a beggar's killer", 0, 1)
 CreateConVar("ttt_beggar_notify_sound", "0", FCVAR_NONE, "Whether to play a cheering sound when a beggar is killed", 0, 1)
 CreateConVar("ttt_beggar_notify_confetti", "0", FCVAR_NONE, "Whether to throw confetti when a beggar is a killed", 0, 1)
 

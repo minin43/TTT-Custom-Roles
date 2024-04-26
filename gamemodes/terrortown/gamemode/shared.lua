@@ -1704,8 +1704,9 @@ if SERVER then
         local mode = GetConVar("ttt_" .. cvar_role .. "_notify_mode"):GetInt()
         local play_sound = GetConVar("ttt_" .. cvar_role .. "_notify_sound"):GetBool()
         local show_confetti = GetConVar("ttt_" .. cvar_role .. "_notify_confetti"):GetBool()
+        local notify_killer = cvars.Bool("ttt_" .. cvar_role .. "_notify_killer", false)
         for _, ply in PlayerIterator() do
-            if ply == attacker then
+            if ply == attacker and notify_killer then
                 local role_string = ROLE_STRINGS[role]
                 ply:QueueMessage(MSG_PRINTCENTER, "You killed the " .. role_string .. "!")
             elseif (shouldshow == nil or shouldshow(ply)) and ShouldShowJesterNotification(ply, mode) then

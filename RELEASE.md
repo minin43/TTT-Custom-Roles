@@ -28,11 +28,16 @@
 - Added ability for parasite to only respawn when their host is killed, similar to the phantom (disabled by default)
 - Added ability for parasite's killer to smoke and leave behind footprints, like a phantom's killer (both disabled by default)
 - Added ability to limit the number of times the parasite can respawn (disabled by default)
+- Added note to jester team ttt_*_notify_mode convars that the player's killer is notified
+- Added ability to control whether the killer of a member of the jester team is notified that they killed that role (enabled by default)
+- Added short message to lovers and cupid informing them which teams they can win with for clarity
 
 ### Changes
 - Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused
 - Changed sort order of items when searching a body so that important information is displayed in a consistent order
 - Changed players who use a "kill" console command to not kill their paired cupid lover
+- Changed corpse found notification messages (in the top-right of the screen) to have their background color match the color of the corpse's role
+- Changed notification messages colored with a role color to use a version with some transparency to match the uncolored messages
 - Removed view bob and sway on cupid's bow to be consistent with other role weapons
 
 ### Fixes
@@ -45,6 +50,10 @@
 - Fixed corpse calls duplicating when different players called the detective to the same corpse
 - Fixed corpse calls not expiring after 45 seconds like they do in vanilla TTT
   - This can be adjusted or disabled with a new convar
+- Fixed players who join during the prep phase not getting their default loadout (crowbar, magneto stick, unarmed) until the round starts
+  - This fixes players who don't pick up guns in the prep phase having their role weapons auto-selected when the round starts, giving them away
+- Fixed body found messages showing that a corpse was on the "detective team" instead of "innocent team" for detective roles when `ttt_detectives_search_only_role` was enabled
+- Fixed arm color of player who was spectated as a zombie not being reset when the round ended
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
