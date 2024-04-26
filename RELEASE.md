@@ -36,7 +36,8 @@
 - Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused
 - Changed sort order of items when searching a body so that important information is displayed in a consistent order
 - Changed players who use a "kill" console command to not kill their paired cupid lover
-- Changed corpse found messages (in the top-right of the screen) to have their background color match the color of the corpse's role
+- Changed corpse found notification messages (in the top-right of the screen) to have their background color match the color of the corpse's role
+- Changed notification messages colored with a role color to use a version with some transparency to match the uncolored messages
 - Removed view bob and sway on cupid's bow to be consistent with other role weapons
 
 ### Fixes

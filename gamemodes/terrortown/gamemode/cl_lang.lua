@@ -236,11 +236,11 @@ LANG.Styles = {
         if params and params.color_role then
             local role = tonumber(params.color_role)
             if role > ROLE_NONE and role <= ROLE_MAX then
-                color = ROLE_COLORS[role]
+                color = ROLE_COLORS_SPRITE[role]
             end
         else
             if not cvars.Bool("ttt_hide_role", false) then
-                color = ROLE_COLORS[LocalPlayer():GetDisplayedRole()]
+                color = ROLE_COLORS_SPRITE[LocalPlayer():GetDisplayedRole()]
             end
         end
 
