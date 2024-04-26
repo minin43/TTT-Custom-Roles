@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.12 (Beta)
-**Released:**
+**Released: April 26th, 2024**
 
 ### Additions
 - Added a cheat sheet which gives a brief description of all enabled roles
