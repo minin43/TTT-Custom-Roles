@@ -21,6 +21,8 @@ util.AddNetworkString("TTT_UpdateLootGoblinWins")
 util.AddNetworkString("TTT_ResetLootGoblinWins")
 util.AddNetworkString("TTT_LootGoblinRadar")
 
+resource.AddFile("materials/vgui/ttt/beacon_gob.vmt")
+
 resource.AddSingleFile("sound/lootgoblin/cackle1.wav")
 resource.AddSingleFile("sound/lootgoblin/cackle2.wav")
 resource.AddSingleFile("sound/lootgoblin/cackle3.wav")
@@ -37,9 +39,10 @@ resource.AddSingleFile("sound/lootgoblin/jingle8.wav")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_lootgoblin_notify_mode", "4", FCVAR_NONE, "The logic to use when notifying players that the lootgoblin is killed", 0, 4)
-CreateConVar("ttt_lootgoblin_notify_sound", "1")
-CreateConVar("ttt_lootgoblin_notify_confetti", "1")
+CreateConVar("ttt_lootgoblin_notify_mode", "4", FCVAR_NONE, "The logic to use when notifying players that a lootgoblin was killed. Killer is notified unless \"ttt_lootgoblin_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_lootgoblin_notify_killer", "1", FCVAR_NONE, "Whether to notify a lootgoblin's killer", 0, 1)
+CreateConVar("ttt_lootgoblin_notify_sound", "1", FCVAR_NONE, "Whether to play a cheering sound when a loot goblin is killed", 0, 1)
+CreateConVar("ttt_lootgoblin_notify_confetti", "1", FCVAR_NONE, "Whether to throw confetti when a loot goblin is a killed", 0, 1)
 local lootgoblin_activation_timer = CreateConVar("ttt_lootgoblin_activation_timer", "30", FCVAR_NONE, "Minimum time in seconds before the loot goblin is revealed", 0, 120)
 local lootgoblin_activation_timer_max = CreateConVar("ttt_lootgoblin_activation_timer_max", "60", FCVAR_NONE, "Maximum time in seconds before the loot goblin is revealed", 0, 120)
 local lootgoblin_size = CreateConVar("ttt_lootgoblin_size", "0.5", FCVAR_NONE, "The size multiplier for the loot goblin to use when they are revealed (e.g. 0.5 = 50% size)", 0, 1)

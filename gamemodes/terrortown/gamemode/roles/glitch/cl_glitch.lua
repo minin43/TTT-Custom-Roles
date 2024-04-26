@@ -12,6 +12,9 @@ local glitch_use_traps = GetConVar("ttt_glitch_use_traps")
 ------------------
 
 hook.Add("Initialize", "Glitch_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_glitch", "Appears as a Traitor to members of the traitor team but they are actually a member of the innocent team.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_glitch", [[You are {role}! The {traitors} think you are one of them.
 Try to blend in and don't give yourself away.]])

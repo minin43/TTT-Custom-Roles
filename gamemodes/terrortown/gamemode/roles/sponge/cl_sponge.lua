@@ -30,6 +30,9 @@ hook.Add("Initialize", "Sponge_Translations_Initialize", function()
     LANG.AddToLanguage("english", "score_sponge_killedby", "Killed by")
     LANG.AddToLanguage("english", "score_sponge_damaging", "{attacker} damaging")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_sponge", "Has a visible aura that absorbs damage that would be dealt to nearby players and wins the round if they die.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_sponge", [[You are {role}! You want to die but you
 deal no damage so you must be killed by absorbing

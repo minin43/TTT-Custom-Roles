@@ -2,9 +2,23 @@ AddCSLuaFile()
 
 local table = table
 
+-- Initialize role features
+hook.Add("TTTIsPlayerRespawning", "Infected_TTTIsPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:GetNWBool("InfectedIsZombifying", false) then
+        return true
+    end
+end)
+
 ------------------
 -- ROLE CONVARS --
 ------------------
+
+local infected_is_jester = CreateConVar("ttt_infected_is_jester", "0", FCVAR_REPLICATED)
+local infected_is_independent = CreateConVar("ttt_infected_is_independent", "0", FCVAR_REPLICATED)
+CreateConVar("ttt_infected_block_win", "0", FCVAR_NONE, "Blocks other teams from winning and causes the infected to succumb immediately when they would have. Only used when \"ttt_infected_is_jester\" or \"ttt_infected_is_independent\" are enabled", 0, 1)
 
 CreateConVar("ttt_infected_prime", "1", FCVAR_NONE, "Whether the infected will become a prime zombie", 0, 1)
 CreateConVar("ttt_infected_cough_enabled", "1", FCVAR_REPLICATED, "Whether the infected coughs periodically", 0, 1)
@@ -49,3 +63,27 @@ table.insert(ROLE_CONVARS[ROLE_INFECTED], {
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 0
 })
+table.insert(ROLE_CONVARS[ROLE_INFECTED], {
+    cvar = "ttt_infected_is_jester",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_INFECTED], {
+    cvar = "ttt_infected_is_independent",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_INFECTED], {
+    cvar = "ttt_infected_block_win",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+
+-------------------
+-- ROLE FEATURES --
+-------------------
+
+hook.Add("TTTUpdateRoleState", "Infected_Team_TTTUpdateRoleState", function()
+    local is_jester = infected_is_jester:GetBool()
+    local is_independent = not is_jester and infected_is_independent:GetBool()
+    JESTER_ROLES[ROLE_INFECTED] = is_jester
+    INDEPENDENT_ROLES[ROLE_INFECTED] = is_independent
+    INNOCENT_ROLES[ROLE_INFECTED] = not is_jester and not is_independent
+end)

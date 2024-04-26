@@ -33,6 +33,7 @@ hook.Add("PlayerCanHearPlayersVoice", "Hypnotist_PlayerCanHearPlayersVoice", fun
     if not listener:Alive() or listener:IsSpec() then return end
 
     if not IsPlayer(speaker) then return end
+    if not speaker:IsSpeaking() then return end
     if not speaker:Alive() or speaker:IsSpec() then return end
 
     if speaker == listener then return end

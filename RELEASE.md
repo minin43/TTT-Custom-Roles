@@ -1,5 +1,65 @@
 # Release Notes
 
+## 2.1.12 (Beta)
+**Released: April 26th, 2024**
+
+### Additions
+- Added a cheat sheet which gives a brief description of all enabled roles
+- Added ability for DNA Scanner to be given to all detective roles (disabled by default)
+  - When disabled, only the vanilla Detective role will be given the DNA scanner as part of their loadout
+- Added ability to disable DNA Scanner from being dropped, except for when the player holding it dies (disabled by default)
+- Added ability to allow any player holding the DNA scanner to search bodies as if they were a detective (disabled by default)
+- Added ability to control whether a spy who kills a respawning player will steal their identity anyway (enabled by default)
+- Added ability to limit the number of times the phantom can respawn (disabled by default)
+- Added ability to change the informant's scan time based on the team of their target (defaults to 1x speed for all teams)
+- Added ability to limit the amount of max health the hive mind gains when they assimilate a player (defaults to 100%)
+- Added ability to sort by known player role back to the scoreboard
+- Added ability for infected to be a jester or an independent (disabled by default)
+- Added ability for infected to immediately succumb and become a zombie when another team would have won (disabled by default)
+  - Only used when infected is jester or independent
+- Added ability to show the killer's team information on the corpse search screen (disabled by default)
+  - There are convars to control showing the text by corpse's team as well as by the killer's team
+    - This allows the granularity to do something like: Show the team info if a traitor is killed only by a monster or independent
+  - Plain text that explicitly states the killer's team can also be enabled in addition to the flavor text
+- Added ability to make the shadow target buff progress bar resumable if they get too far away from their target for a short time (disabled by default)
+- Added ability for the arsonist to activate their igniter so it automatically triggers upon their death (disabled by default)
+  - Automatic trigger can be configured to be on a delay, allowing other players to find and deactivate the igniter
+  - Notifications on when the auto-trigger activates can be disabled by configuration as well
+- Added ability for parasite to only respawn when their host is killed, similar to the phantom (disabled by default)
+- Added ability for parasite's killer to smoke and leave behind footprints, like a phantom's killer (both disabled by default)
+- Added ability to limit the number of times the parasite can respawn (disabled by default)
+- Added note to jester team ttt_*_notify_mode convars that the player's killer is notified
+- Added ability to control whether the killer of a member of the jester team is notified that they killed that role (enabled by default)
+- Added short message to lovers and cupid informing them which teams they can win with for clarity
+
+### Changes
+- Changed body search icon for when a player has been doused by the arsonist to show the time since that player was doused
+- Changed sort order of items when searching a body so that important information is displayed in a consistent order
+- Changed players who use a "kill" console command to not kill their paired cupid lover
+- Changed corpse found notification messages (in the top-right of the screen) to have their background color match the color of the corpse's role
+- Changed notification messages colored with a role color to use a version with some transparency to match the uncolored messages
+- Removed view bob and sway on cupid's bow to be consistent with other role weapons
+
+### Fixes
+- Fixed not being able to change role loadouts using `ttt_roleweapons` or `ttt_rolepacks` without changing maps
+- Fixed potential issues when a parasite or phantom is killed by a role that changes their victim's role
+- Fixed cupid's lovers getting penalized karma when they side with their opposite-team lover and attacker their teammates
+- Fixed player resurrected by the paramedic getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_paramedic_revive_muted` enabled
+- Fixed player brainwashed by the hypnotist getting spammed with "You have not yet regained your ability to speak" after using voice chat with `ttt_hypnotist_brainwash_muted` enabled
+- Fixed "call detective" button not working on corpse search dialog
+- Fixed corpse calls duplicating when different players called the detective to the same corpse
+- Fixed corpse calls not expiring after 45 seconds like they do in vanilla TTT
+  - This can be adjusted or disabled with a new convar
+- Fixed players who join during the prep phase not getting their default loadout (crowbar, magneto stick, unarmed) until the round starts
+  - This fixes players who don't pick up guns in the prep phase having their role weapons auto-selected when the round starts, giving them away
+- Fixed body found messages showing that a corpse was on the "detective team" instead of "innocent team" for detective roles when `ttt_detectives_search_only_role` was enabled
+- Fixed arm color of player who was spectated as a zombie not being reset when the round ended
+
+### Developer
+- Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook
+- Added `plymeta:StopRespawning` fed by the new `TTTStopPlayerRespawning` hook
+- Added ability to open role tutorial to a specific role via `HELPSCRN:OpenRoleTutorial(ROLE_ID)`
+
 ## 2.1.11
 **Released: April 15th, 2024**\
 Includes beta update [2.1.10](#2110-beta).

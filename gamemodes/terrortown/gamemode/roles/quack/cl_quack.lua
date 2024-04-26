@@ -32,6 +32,9 @@ Detonates when used by a non-{traitor}.
 Converts a {healthstation}
 into a {bombstation}.]])
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_quack", "Can buy healing items and fake healing items that kill players instead of healing them.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_quack", [[You are {role}! {comrades}
 

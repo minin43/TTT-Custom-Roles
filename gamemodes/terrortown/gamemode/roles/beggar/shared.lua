@@ -75,6 +75,10 @@ table.insert(ROLE_CONVARS[ROLE_BEGGAR], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_BEGGAR], {
+    cvar = "ttt_beggar_notify_killer",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_BEGGAR], {
     cvar = "ttt_beggar_notify_sound",
     type = ROLE_CONVAR_TYPE_BOOL
 })
@@ -168,4 +172,13 @@ hook.Add("TTTUpdateRoleState", "Beggar_TTTUpdateRoleState", function()
     local is_independent = beggar_is_independent:GetBool()
     INDEPENDENT_ROLES[ROLE_BEGGAR] = is_independent
     JESTER_ROLES[ROLE_BEGGAR] = not is_independent
+end)
+
+hook.Add("TTTIsPlayerRespawning", "Beggar_TTTIsPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:GetNWBool("BeggarIsRespawning", false) then
+        return true
+    end
 end)

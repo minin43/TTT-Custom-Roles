@@ -15,7 +15,8 @@ util.AddNetworkString("TTT_GuesserGuessed")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_guesser_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a guesser was killed", 0, 4)
+CreateConVar("ttt_guesser_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a guesser was killed. Killer is notified unless \"ttt_guesser_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_guesser_notify_killer", "1", FCVAR_NONE, "Whether to notify a guesser's killer", 0, 1)
 CreateConVar("ttt_guesser_notify_sound", "0", FCVAR_NONE, "Whether to play a cheering sound when a guesser is killed", 0, 1)
 CreateConVar("ttt_guesser_notify_confetti", "0", FCVAR_NONE, "Whether to throw confetti when a guesser is a killed", 0, 1)
 

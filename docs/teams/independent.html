@@ -212,6 +212,24 @@
                             <td>Whether to allow the Arsonist to use their igniter without dousing everyone first.</td>
                         </tr>
                         <tr>
+                            <td>ttt_arsonist_ignite_on_death <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether to allow the arsonist to enable automatic triggering of their igniter on death</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_arsonist_ignite_on_death_timer <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Integer</td>
+                            <td>How long after the arsonist's death to trigger their igniter. Set to 0 to trigger instantly</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_arsonist_ignite_on_death_notify <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether to notify other players that the arsonist's igniter is going to be triggered</td>
+                        </tr>
+                        <tr>
                             <td>ttt_arsonist_update_scoreboard</td>
                             <td>1</td>
                             <td>Boolean</td>
@@ -408,6 +426,12 @@
                             <td>0.25</td>
                             <td>Float</td>
                             <td>The percentage a new member's maximum health that the Hive Mind should be healed. <i>(e.g. 0.25 = 25% of their health healed.)</i></td>
+                        </tr>
+                        <tr>
+                            <td>ttt_hivemind_join_max_hp_pct</td>
+                            <td>1</td>
+                            <td>Float</td>
+                            <td>The percentage a new member's maximum health that the hive mind should gain <i>(e.g. 1 = 100% of their previous max health gained)</i></td>
                         </tr>
                         <tr>
                             <td>ttt_hivemind_regen_max_pct</td>
@@ -916,6 +940,12 @@
                             <td>How often in seconds before the Shadow's target should respawn.</td>
                         </tr>
                         <tr>
+                            <td>ttt_shadow_target_buff_resumable <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether the shadow's buff should retain progress if they move away from their target.</td>
+                        </tr>
+                        <tr>
                             <td>ttt_shadow_target_buff_role_copy</td>
                             <td>0</td>
                             <td>Boolean</td>
@@ -1166,7 +1196,7 @@
         <div class="noncollapsible">
             <button class="header" style="cursor: default; background-color:var(--independent);"><i class="icon-team"></i>Configurable Independents</button>
             <div class="content">
-                <p>The following roles can be configured to be an <span style="color:var(--independent);">independent</span> instead of their default team: <span class="inline-icon" style="color:var(--jester);"><i class="icon-beggar"></i><a href="../teams/jester.html#beggar">Beggar</a></span>, <span class="inline-icon" style="color:var(--jester);"><i class="icon-bodysnatcher"></i><a href="../teams/jester.html#bodysnatcher">Bodysnatcher</a></span>, <span class="inline-icon" style="color:var(--jester);"><i class="icon-cupid"></i><a href="../teams/jester.html#cupid">Cupid</a></span>, and <span class="inline-icon" style="color:var(--special-traitor);"><i class="icon-vampire"></i><a href="../teams/traitor.html#vampire">Vampire</a></span>.</p>
+                <p>The following roles can be configured to be an <span style="color:var(--independent);">independent</span> instead of their default team: <span class="inline-icon" style="color:var(--jester);"><i class="icon-beggar"></i><a href="../teams/jester.html#beggar">Beggar</a></span>, <span class="inline-icon" style="color:var(--jester);"><i class="icon-bodysnatcher"></i><a href="../teams/jester.html#bodysnatcher">Bodysnatcher</a></span>, <span class="inline-icon" style="color:var(--jester);"><i class="icon-cupid"></i><a href="../teams/jester.html#cupid">Cupid</a></span>, <span class="inline-icon" style="color:var(--special-innocent);"><i class="icon-infected"></i><a href="../teams/innocent.html#infected">Infected</a></span>, and <span class="inline-icon" style="color:var(--special-traitor);"><i class="icon-vampire"></i><a href="../teams/traitor.html#vampire">Vampire</a></span>.</p>
             </div>
         </div>
     </div>

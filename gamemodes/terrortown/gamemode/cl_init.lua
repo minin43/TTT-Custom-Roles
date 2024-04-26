@@ -79,6 +79,7 @@ include("cl_roleweapons.lua")
 include("cl_hitmarkers.lua")
 include("cl_deathnotify.lua")
 include("cl_sprint.lua")
+include("cl_cheatsheet.lua")
 
 local traitor_vision = false
 local jesters_visible_to_traitors = false
@@ -296,12 +297,6 @@ function GM:ClearClientState()
     client.radio = nil
     client.called_corpses = {}
 
-    -- Reset the player's viewmodel color
-    local vm = client:GetViewModel()
-    if IsValid(vm) then
-        vm:SetColor(COLOR_WHITE)
-    end
-
     VOICE.InitBattery()
 
     for _, p in PlayerIterator() do
@@ -309,6 +304,12 @@ function GM:ClearClientState()
             p.sb_tag = nil
             p:SetRole(ROLE_INNOCENT)
             p.search_result = nil
+
+            -- Reset the player's viewmodel color
+            local vm = p:GetViewModel()
+            if IsValid(vm) and vm:GetColor() ~= COLOR_WHITE then
+                vm:SetColor(COLOR_WHITE)
+            end
         end
     end
 

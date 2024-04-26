@@ -19,6 +19,8 @@ local dtt = { search_dmg_crush = DMG_CRUSH, search_dmg_bullet = DMG_BULLET, sear
 
 local client
 
+local corpse_search_killer_team_text_plain = GetConVar("ttt_corpse_search_killer_team_text_plain")
+
 -- "From their body you can tell XXX"
 local function DmgToText(d)
     for k, v in pairs(dtt) do
@@ -77,7 +79,8 @@ local TypeToMat = {
     dtime = "time",
     stime = "wtester",
     lastid = "lastid",
-    kills = "list"
+    kills = "list",
+    killer = "killer"
 }
 
 -- Accessor for better fail handling
@@ -123,7 +126,7 @@ function PreprocSearch(raw)
     local hasRole = false
     local search = {}
     for t, d in pairs(raw) do
-        search[t] = { img = nil, text = "", p = 10 }
+        search[t] = { img = nil, text = "", p = 30 }
 
         local convar = string.StartsWith(t, "eq_") and "equipment" or t
         if not ShowSearchInfo(convar, detectiveSearchOnly, raw.owner) then
@@ -150,26 +153,56 @@ function PreprocSearch(raw)
                 search[t].color = color
                 search[t].p = 2
             end
+        elseif t == "killer" then
+            -- If we don't have a killer or a source player then just don't show this at all
+            if not d or not raw.owner then
+                search[t] = nil
+                continue
+            end
+
+            -- Make sure showing killer info for the ragdoll's team is enabled
+            local ragTeam = raw.owner:GetRoleTeam(true)
+            local ragTeamName = GetRawRoleTeamName(ragTeam)
+            if not cvars.Bool("ttt_corpse_search_team_text_" .. ragTeamName) then
+                search[t] = nil
+                continue
+            end
+
+            -- Make sure showing killer info for the killer's team is enabled
+            local roleTeam = player.GetRoleTeam(d:GetRole(), true)
+            local teamName = GetRawRoleTeamName(roleTeam)
+            if not cvars.Bool("ttt_corpse_search_killer_team_text_" .. teamName, false) then
+                search[t] = nil
+                continue
+            end
+
+            search[t].text = T("search_killer_team_" .. teamName)
+            search[t].color = GetRoleTeamColor(roleTeam)
+            search[t].p = 4
+            if corpse_search_killer_team_text_plain:GetBool() then
+                search[t].text = search[t].text .. "\n" .. PT("search_killer_team", { team = teamName })
+            end
         elseif t == "words" then
             if #d > 0 then
                 -- only append "--" if there's no ending interpunction
                 local final = string.match(d, "[\\.\\!\\?]$") ~= nil
                 search[t].text = PT("search_words", { lastwords = d .. (final and "" or "--.") })
+                search[t].p = 16
             end
         elseif t == "eq_armor" then
             if d then
                 search[t].text = T("search_armor")
-                search[t].p = 17
+                search[t].p = 20
             end
         elseif t == "eq_disg" then
             if d then
                 search[t].text = T("search_disg")
-                search[t].p = 18
+                search[t].p = 20
             end
         elseif t == "eq_radar" then
             if d then
                 search[t].text = T("search_radar")
-                search[t].p = 19
+                search[t].p = 20
             end
         elseif t == "eq_speed" then
             if d then
@@ -179,11 +212,12 @@ function PreprocSearch(raw)
         elseif t == "eq_regen" then
             if d then
                 search[t].text = T("search_regen")
-                search[t].p = 21
+                search[t].p = 20
             end
         elseif t == "c4" then
             if d > 0 then
                 search[t].text = PT("search_c4", { num = d })
+                search[t].p = 10
             end
         elseif t == "dmg" then
             search[t].text = DmgToText(d)
@@ -194,12 +228,13 @@ function PreprocSearch(raw)
 
             if wname then
                 search[t].text = PT("search_weapon", { weapon = wname })
+                search[t].p = 11
             end
         elseif t == "head" then
             if d then
                 search[t].text = T("search_head")
             end
-            search[t].p = 15
+            search[t].p = 13
         elseif t == "dtime" then
             if d ~= 0 then
                 local ftime = util.SimpleTime(d, "%02i:%02i")
@@ -207,7 +242,7 @@ function PreprocSearch(raw)
 
                 search[t].text_icon = ftime
 
-                search[t].p = 8
+                search[t].p = 3
             end
         elseif t == "stime" then
             if d > 0 then
@@ -215,6 +250,7 @@ function PreprocSearch(raw)
                 search[t].text = PT("search_dna", { time = ftime })
 
                 search[t].text_icon = ftime
+                search[t].p = 5
             end
         elseif t == "kills" then
             local num = table.Count(d)
@@ -241,7 +277,7 @@ function PreprocSearch(raw)
                 search[t].text = txt
             end
 
-            search[t].p = 30
+            search[t].p = 15
         elseif t == "lastid" then
             if d and d.idx ~= -1 then
                 local ent = Entity(d.idx)
@@ -249,6 +285,7 @@ function PreprocSearch(raw)
                     search[t].text = PT("search_eyes", { player = ent:Nick() })
 
                     search[t].ply = ent
+                    search[t].p = 14
                 end
             end
         else
@@ -411,7 +448,7 @@ local function ShowSearchScreen(search_raw)
                     table.insert(client.called_corpses, search_raw.eidx)
                     btn:SetDisabled(true)
 
-                    RunConsoleCommand("ttt_call_detective", search_raw.eidx, search_raw.sid)
+                    RunConsoleCommand("ttt_call_detective", search_raw.eidx)
                 end,
                 disabled = function()
                     return client:IsSpec() or table.HasValue(client.called_corpses or {}, search_raw.eidx)
@@ -606,6 +643,7 @@ local function ReceiveRagdollSearch()
     search.wep = net.ReadString()
     search.head = net.ReadBit() == 1
     search.dtime = net.ReadInt(16)
+    search.killer = player.GetBySteamID64(net.ReadUInt64())
     search.stime = net.ReadInt(16)
 
     -- Players killed

@@ -37,6 +37,9 @@ AddHook("Initialize", "Guesser_Translations_Initialize", function()
 
     LANG.AddToLanguage("english", "ev_guesser_incorrect", "{guesser} incorrectly guessed {victim}'s role")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_guesser", "Must guess another player's role to swap roles with them. If they guess wrong, they die.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_guesser", [[You are {role}! {traitors} think you are {ajester} and you deal no
 damage. However, you can use your role guesser to try and guess a player's role. Guess

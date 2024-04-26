@@ -20,6 +20,9 @@ hook.Add("Initialize", "Jester_Translations_Initialize", function()
     -- Scoring
     LANG.AddToLanguage("english", "score_jester_killedby", "Killed by")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_jester", "Wins the round if they can get another player to kill them.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_jester", [[You are {role}! You want to die but you
 deal no damage so you must be killed by some one else.]])
