@@ -169,7 +169,7 @@ local function IdentifyBody(ply, rag)
             elseif roleTeam == ROLE_TEAM_TRAITOR then
                 color_role = ROLE_TRAITOR
             else
-                color_colr = role
+                color_role = role
             end
         end
 
