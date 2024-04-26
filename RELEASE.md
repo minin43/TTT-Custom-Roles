@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.1.13 (Beta)
+**Released**
+
+### Changes
+- Ported "TTT: Optimize ragdoll search network traffic + fix disconnected player networking"
+
 ## 2.1.12 (Beta)
 **Released: April 26th, 2024**
 

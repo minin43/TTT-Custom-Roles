@@ -235,7 +235,7 @@ local function IdentifyBody(ply, rag)
     if not announceName then return end
 
     -- Handle kill list
-    for _, vicsid in pairs(rag.kills) do
+    for _, vicsid in ipairs(rag.kills) do
         -- filter out disconnected
         local vic = player.GetBySteamID64(vicsid) or player.GetBySteamID(vicsid)
 
@@ -327,6 +327,8 @@ local function bitsRequired(num)
     return bits
 end
 
+local plyBits = bitsRequired(game.MaxPlayers()) -- first game.MaxPlayers() of entities are for players.
+
 function GM:TTTCanSearchCorpse(ply, corpse, is_covert, is_long_range, was_traitor)
     -- return true to allow corpse search, false to disallow.
     return true
@@ -353,7 +355,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     local role = rag.was_role
     local nick = CORPSE.GetPlayerNick(rag)
     local eq = rag.equipment or {}
-    local c4 = rag.bomb_wire or -1
+    local c4 = rag.bomb_wire or 0
     local dmg = rag.dmgtype or DMG_GENERIC
     local wep = rag.dmgwep or ""
     local words = rag.last_words or ""
@@ -361,7 +363,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     local dtime = rag.time or 0
 
     local ownerEnt = player.GetBySteamID64(rag.sid64) or player.GetBySteamID(rag.sid)
-    local owner = IsValid(ownerEnt) and ownerEnt:EntIndex() or -1
+    local owner = IsValid(ownerEnt) and ownerEnt:EntIndex() or 0
 
     -- basic sanity check
     if nick == nil or eq == nil or role == nil then return end
@@ -419,17 +421,17 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
 
     -- build list of people this traitor killed
     local kill_entids = {}
-    for _, vicsid in pairs(rag.kills) do
+    for _, vicsid in ipairs(rag.kills) do
         -- also send disconnected players as a marker
         local vic = player.GetBySteamID64(vicsid) or player.GetBySteamID(vicsid)
-        table.insert(kill_entids, IsValid(vic) and vic:EntIndex() or -1)
+        table.insert(kill_entids, IsValid(vic) and vic:EntIndex() or 0)
     end
 
-    local lastid = -1
+    local lastid = 0
     if rag.lastid and ply:IsActiveDetectiveLike() then
         -- if the person this victim last id'd has since disconnected, send -1 to
         -- indicate this
-        lastid = IsValid(rag.lastid.ent) and rag.lastid.ent:EntIndex() or -1
+        lastid = IsValid(rag.lastid.ent) and rag.lastid.ent:EntIndex() or 0
     end
 
     local round_state = GetRoundState()
@@ -439,37 +441,35 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     -- Send a message with basic info
     net.Start("TTT_RagdollSearch")
     net.WriteUInt(rag:EntIndex(), 16) -- 16 bits
-    net.WriteUInt(owner, 8) -- 128 max players. ( 8 bits )
+    net.WriteUInt(owner, plyBits) -- 128 max players. ( 8 bits )
     net.WriteString(sendName and nick or "<Unknown>")
     -- Equipment table
-    net.WriteUInt(#eq, 8)
+    local eq_bits = bitsRequired(EQUIP_MAX)
+    net.WriteUInt(#eq, eq_bits)
     for _, v in ipairs(eq) do
-        net.WriteUInt(v, 8)
+        net.WriteUInt(v, eq_bits)
     end
-    net.WriteInt(sendRole and role or -1, 8) -- ( 8 bits )
-    net.WriteInt(c4, bitsRequired(C4_WIRE_COUNT) + 1) -- -1 -> 2^bits ( default c4: 4 bits )
+    net.WriteInt(sendRole and role or ROLE_NONE, 8) -- ( 8 bits )
+    net.WriteUInt(c4, bitsRequired(C4_WIRE_COUNT)) -- 0 -> 2^bits ( default c4: 3 bits )
     net.WriteUInt(dmg, 30) -- DMG_BUCKSHOT is the highest. ( 30 bits )
     net.WriteString(wep)
-    net.WriteBit(hshot) -- ( 1 bit )
-    net.WriteInt(dtime, 16)
+    net.WriteBool(hshot) -- ( 1 bit )
+    net.WriteUInt(dtime, 15)
     net.WriteUInt64(killerid)
-    net.WriteInt(stime, 16)
+    net.WriteUInt(stime, 15)
 
     net.WriteUInt(#kill_entids, 8)
-    for _, idx in pairs(kill_entids) do
-        net.WriteUInt(idx, 8) -- first game.MaxPlayers() of entities are for players.
+    for _, idx in ipairs(kill_entids) do
+        net.WriteUInt(idx, plyBits) -- first game.MaxPlayers() of entities are for players.
     end
 
-    net.WriteUInt(lastid, 8)
+    net.WriteUInt(lastid, plyBits)
 
     -- Who found this, so if we get this from a detective we can decide not to
     -- show a window
-    net.WriteUInt(ply:EntIndex(), 8)
+    net.WriteUInt(ply:EntIndex(), plyBits)
 
     net.WriteString(words)
-
-    -- 133 + string data + #kill_entids * 8
-    -- 200
 
     if ply:IsActive() and not covert then
         net.Broadcast()
