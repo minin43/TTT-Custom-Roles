@@ -49,6 +49,7 @@
   - This can be adjusted or disabled with a new convar
 - Fixed players who join during the prep phase not getting their default loadout (crowbar, magneto stick, unarmed) until the round starts
   - This fixes players who don't pick up guns in the prep phase having their role weapons auto-selected when the round starts, giving them away
+- Fixed body found messages showing that a corpse was on the "detective team" instead of "innocent team" for detective roles when `ttt_detectives_search_only_role` was enabled
 
 ### Developer
 - Added `plymeta:IsRespawning` fed by the new `TTTIsPlayerRespawning` hook

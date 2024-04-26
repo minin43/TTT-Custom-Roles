@@ -156,7 +156,7 @@ local function IdentifyBody(ply, rag)
         if fullSearch or AnnounceBodyRole(ply, round_state, deadply) then
             role_string = ROLE_STRINGS_EXT[role]
         elseif AnnounceBodyTeam(ply, round_state, deadply) then
-            local roleTeam = player.GetRoleTeam(role)
+            local roleTeam = player.GetRoleTeam(role, true)
             local teamName = GetRoleTeamName(roleTeam)
             role_string = "on the " .. teamName .. " team"
         end
