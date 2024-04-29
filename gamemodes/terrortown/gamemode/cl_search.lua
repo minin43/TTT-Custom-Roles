@@ -663,7 +663,6 @@ local function ReceiveRagdollSearch()
 
     -- should we show a menu for this result?
     search.finder = net.ReadUInt(plyBits)
-    print(search.finder, client:EntIndex())
 
     search.show = (client:EntIndex() == search.finder)
 
