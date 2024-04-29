@@ -24,8 +24,8 @@ local StringSub = string.sub
 include("player_class/player_ttt.lua")
 
 -- Version string for display and function for version checks
-CR_VERSION = "2.1.11"
-CR_BETA = false
+CR_VERSION = "2.1.13"
+CR_BETA = true
 CR_WORKSHOP_ID = CR_BETA and "2404251054" or "2421039084"
 
 function CRVersion(version)
@@ -177,17 +177,17 @@ ROLE_VINDICATOR = 45
 ROLE_MAX = 45
 ROLE_EXTERNAL_START = ROLE_MAX + 1
 
-local function AddRoleAssociations(list, roles)
+local function AddRoleAssociations(tbl, roles)
     -- Use an associative array so we can do a O(1) lookup by role
     -- See: https://wiki.facepunch.com/gmod/table.HasValue
     for _, r in ipairs(roles) do
-        list[r] = true
+        tbl[r] = true
     end
 end
 
-function GetTeamRoles(list, excludes)
+function GetTeamRoles(tbl, excludes)
     local roles = {}
-    for r, v in pairs(list) do
+    for r, v in pairs(tbl) do
         if v and (not excludes or not excludes[r]) then
             table.insert(roles, r)
         end
@@ -970,6 +970,7 @@ function RegisterRole(tbl)
 
     -- Create the role description translation automatically
     ROLE_TRANSLATIONS[roleID]["english"]["info_popup_" .. tbl.nameraw] = tbl.desc
+    ROLE_TRANSLATIONS[roleID]["english"]["cheatsheet_desc_" .. tbl.nameraw] = tbl.shortdesc
 
     if type(tbl.selectionpredicate) == "function" then
         ROLE_SELECTION_PREDICATE[roleID] = tbl.selectionpredicate
@@ -1342,8 +1343,9 @@ WIN_SPONGE = 15
 WIN_ARSONIST = 16
 WIN_HIVEMIND = 17
 WIN_VINDICATOR = 18
+WIN_INFECTED = 19
 
-WIN_MAX = WIN_MAX or 18
+WIN_MAX = WIN_MAX or 19
 WINS_BY_ROLE = WINS_BY_ROLE or {}
 
 if SERVER then
@@ -1453,6 +1455,7 @@ CORPSE_ICON_TYPES = {
     "equipment",
     "head",
     "kills",
+    "killer",
     "lastid",
     "nick",
     "role",
@@ -1537,9 +1540,9 @@ local ttt_playercolors = {
     }
 };
 
-CreateConVar("ttt_playercolor_mode", "1")
+local playercolor_mode = CreateConVar("ttt_playercolor_mode", "1")
 function GM:TTTPlayerColor(model)
-    local mode = GetConVar("ttt_playercolor_mode"):GetInt()
+    local mode = playercolor_mode:GetInt()
     if mode == 1 then
         return table.Random(ttt_playercolors.serious)
     elseif mode == 2 then
@@ -1701,8 +1704,9 @@ if SERVER then
         local mode = GetConVar("ttt_" .. cvar_role .. "_notify_mode"):GetInt()
         local play_sound = GetConVar("ttt_" .. cvar_role .. "_notify_sound"):GetBool()
         local show_confetti = GetConVar("ttt_" .. cvar_role .. "_notify_confetti"):GetBool()
+        local notify_killer = cvars.Bool("ttt_" .. cvar_role .. "_notify_killer", false)
         for _, ply in PlayerIterator() do
-            if ply == attacker then
+            if ply == attacker and notify_killer then
                 local role_string = ROLE_STRINGS[role]
                 ply:QueueMessage(MSG_PRINTCENTER, "You killed the " .. role_string .. "!")
             elseif (shouldshow == nil or shouldshow(ply)) and ShouldShowJesterNotification(ply, mode) then

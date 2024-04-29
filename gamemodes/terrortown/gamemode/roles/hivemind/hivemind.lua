@@ -23,6 +23,7 @@ local hivemind_block_environmental = CreateConVar("ttt_hivemind_block_environmen
 local hivemind_vision_enabled = GetConVar("ttt_hivemind_vision_enabled")
 local hivemind_friendly_fire = GetConVar("ttt_hivemind_friendly_fire")
 local hivemind_join_heal_pct = GetConVar("ttt_hivemind_join_heal_pct")
+local hivemind_join_max_hp_pct = GetConVar("ttt_hivemind_join_max_hp_pct")
 local hivemind_regen_timer = GetConVar("ttt_hivemind_regen_timer")
 local hivemind_regen_per_member_amt = GetConVar("ttt_hivemind_regen_per_member_amt")
 local hivemind_regen_max_pct = GetConVar("ttt_hivemind_regen_max_pct")
@@ -51,13 +52,21 @@ end)
 
 -- Players killed by the hive mind join the hive mind
 AddHook("PlayerDeath", "HiveMind_Assimilate_PlayerDeath", function(victim, infl, attacker)
-    if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
+    if not IsPlayer(victim) or victim:IsHiveMind() then return end
     if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
 
+    -- Hive Mind bypasses whatever respawn feature the victim's old role had
+    if victim:IsRespawning() then
+        victim:StopRespawning()
+    end
+
+    victim:SetNWBool("HiveMindRespawning", true)
     timer.Create("HiveMindRespawn_" .. victim:SteamID64(), 0.25, 1, function()
         -- Double-check
-        if not IsPlayer(victim) or victim:IsHiveMind() or victim:IsZombifying() then return end
+        if not IsPlayer(victim) or victim:IsHiveMind() then return end
         if not IsPlayer(attacker) or not attacker:IsHiveMind() then return end
+
+        victim:SetNWBool("HiveMindRespawning", false)
 
         local body = victim.server_ragdoll or victim:GetRagdollEntity()
         victim.HiveMindPreviousMaxHealth = victim:GetMaxHealth()
@@ -75,6 +84,16 @@ AddHook("PlayerDeath", "HiveMind_Assimilate_PlayerDeath", function(victim, infl,
 
         SendFullStateUpdate()
     end)
+end)
+
+hook.Add("TTTStopPlayerRespawning", "HiveMind_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:GetNWBool("HiveMindRespawning", false) then
+        timer.Remove("HiveMindRespawn_" .. ply:SteamID64())
+        ply:SetNWBool("HiveMindRespawning", false)
+    end
 end)
 
 --------------------
@@ -149,7 +168,7 @@ AddHook("TTTPlayerRoleChanged", "HiveMind_HealthSync_TTTPlayerRoleChanged", func
         elseif oldRole > ROLE_NONE and oldRole <= ROLE_MAX then
             roleMaxHealth = cvars.Number("ttt_" .. ROLE_STRINGS_RAW[oldRole] .. "_max_health", 100)
         end
-        maxHealth = maxHealth + roleMaxHealth
+        maxHealth = maxHealth + (roleMaxHealth * hivemind_join_max_hp_pct:GetFloat())
 
         local heal_pct = hivemind_join_heal_pct:GetFloat()
         if heal_pct > 0 then
@@ -364,6 +383,7 @@ AddHook("TTTPrepareRound", "HiveMind_PrepareRound", function()
     primeAssigned = false
     for _, v in PlayerIterator() do
         timer.Remove("HiveMindRespawn_" .. v:SteamID64())
+        v:SetNWBool("HiveMindRespawning", false)
         v.HiveMindPreviousMaxHealth = nil
         v.HiveMindPrime = nil
     end

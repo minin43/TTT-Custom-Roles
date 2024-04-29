@@ -152,6 +152,18 @@
                         <td>Whether non-detectives can search bodies if they are using binoculars.</td>
                     </tr>
                     <tr>
+                        <td>ttt_all_search_dnascanner</td>
+                        <td>0</td>
+                        <td>Boolean</td>
+                        <td>Whether non-detectives can search bodies if they are holding the DNA scanner.</td>
+                    </tr>
+                    <tr>
+                        <td>ttt_detectives_corpse_call_expiration</td>
+                        <td>45</td>
+                        <td>Integer</td>
+                        <td>How many seconds before detective corpse calls should expire. Set to 0 to disable.</td>
+                    </tr>
+                    <tr>
                         <td>ttt_detectives_disable_looting</td>
                         <td>0</td>
                         <td>Boolean</td>
@@ -176,6 +188,7 @@
                                 <li><code>equipment</code> - Any equipment the dead player had on them.</li>
                                 <li><code>head</code> - If the dead player was killed by a headshot.</li>
                                 <li><code>kills</code> - A list of players that the dead player killed.</li>
+                                <li><code>killer</code> - Information about team of the player's killer. <i>(Requires one of the <code>ttt_corpse_search_killer_team_text_*</code> team convars to be enabled.)</i></li>
                                 <li><code>lastid</code> - The last player the dead player saw before they died.</li>
                                 <li><code>nick</code> - The dead player's name.</li>
                                 <li><code>role</code> - The dead player's role.</li>

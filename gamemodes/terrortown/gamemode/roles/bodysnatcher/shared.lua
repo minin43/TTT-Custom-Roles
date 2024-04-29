@@ -66,6 +66,10 @@ table.insert(ROLE_CONVARS[ROLE_BODYSNATCHER], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_BODYSNATCHER], {
+    cvar = "ttt_bodysnatcher_notify_killer",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_BODYSNATCHER], {
     cvar = "ttt_bodysnatcher_notify_sound",
     type = ROLE_CONVAR_TYPE_BOOL
 })

@@ -17,7 +17,8 @@ util.AddNetworkString("TTT_SwapperSwapped")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_swapper_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that the swapper is killed", 0, 4)
+CreateConVar("ttt_swapper_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a swapper was killed. Killer is notified unless \"ttt_swapper_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_swapper_notify_killer", "1", FCVAR_NONE, "Whether to notify a swapper's killer", 0, 1)
 CreateConVar("ttt_swapper_notify_sound", "0", FCVAR_NONE, "Whether to play a cheering sound when a swapper is killed", 0, 1)
 CreateConVar("ttt_swapper_notify_confetti", "0", FCVAR_NONE, "Whether to throw confetti when a swapper is a killed", 0, 1)
 local swapper_respawn_health = CreateConVar("ttt_swapper_respawn_health", "100", FCVAR_NONE, "What amount of health to give the swapper when they are killed and respawned", 1, 200)
@@ -154,7 +155,7 @@ hook.Add("PlayerDeath", "Swapper_KillCheck_PlayerDeath", function(victim, infl, 
     end
     local victim_weapons = GetPlayerWeaponInfo(victim)
 
-    timer.Simple(0.01, function()
+    timer.Create("Swapping_" .. victim:SteamID64(), 0.01, 1, function()
         local body = victim.server_ragdoll or victim:GetRagdollEntity()
         victim:SetRole(attacker:GetRole())
         victim:SpawnForRound(true)
@@ -254,6 +255,16 @@ hook.Add("PlayerDeath", "Swapper_KillCheck_PlayerDeath", function(victim, infl, 
     net.Broadcast()
 end)
 
+hook.Add("TTTStopPlayerRespawning", "Swapper_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:GetNWBool("IsSwapping", false) then
+        timer.Remove("Swapping_" .. ply:SteamID64())
+        ply:SetNWBool("IsSwapping", false)
+    end
+end)
+
 hook.Add("TTTCupidShouldLoverSurvive", "Swapper_TTTCupidShouldLoverSurvive", function(ply, lover)
     if ply:GetNWBool("IsSwapping", false) or lover:GetNWBool("IsSwapping", false) then
         return true
@@ -264,5 +275,6 @@ hook.Add("TTTPrepareRound", "Swapper_PrepareRound", function()
     for _, v in PlayerIterator() do
         v:SetNWString("SwappedWith", "")
         v:SetNWBool("IsSwapping", false)
+        timer.Remove("Swapping_" .. v:SteamID64())
     end
 end)

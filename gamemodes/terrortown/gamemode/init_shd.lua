@@ -17,7 +17,16 @@ for role = 0, ROLE_MAX do
     end
 end
 
+-- Role spawn parameters
+CreateConVar("ttt_special_innocent_pct", 0.33, FCVAR_REPLICATED)
+CreateConVar("ttt_special_innocent_chance", 0.5, FCVAR_REPLICATED)
+CreateConVar("ttt_special_traitor_pct", 0.33, FCVAR_REPLICATED)
+CreateConVar("ttt_special_traitor_chance", 0.5, FCVAR_REPLICATED)
+CreateConVar("ttt_special_detective_pct", 0.33, FCVAR_REPLICATED)
+CreateConVar("ttt_special_detective_chance", 0.5, FCVAR_REPLICATED)
+
 CreateConVar("ttt_all_search_binoc", "0", FCVAR_REPLICATED)
+CreateConVar("ttt_all_search_dnascanner", "0", FCVAR_REPLICATED)
 CreateConVar("ttt_all_search_postround", "1", FCVAR_REPLICATED)
 CreateConVar("ttt_color_mode_override", "none", FCVAR_REPLICATED)
 
@@ -29,6 +38,7 @@ CreateConVar("ttt_detectives_search_only", "1", FCVAR_REPLICATED)
 for _, dataType in ipairs(CORPSE_ICON_TYPES) do
     CreateConVar("ttt_detectives_search_only_" .. dataType, "0", FCVAR_REPLICATED)
 end
+CreateConVar("ttt_detectives_corpse_call_expiration", "45", FCVAR_REPLICATED, "How many seconds before detective corpse calls should expire. Set to 0 to disable", 0, 180)
 
 -- Traitor role properties
 CreateConVar("ttt_traitors_vision_enabled", "0", FCVAR_REPLICATED)

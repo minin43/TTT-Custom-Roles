@@ -27,6 +27,9 @@ hook.Add("Initialize", "Clown_Translations_Initialize", function()
     LANG.AddToLanguage("english", "win_clown", "The {role} has murdered you all!")
     LANG.AddToLanguage("english", "ev_win_clown", "The vicious {role} won the round!")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_clown", "Pretends to be a Jester until someone is about to win, then they become an independent and must kill everyone else to win.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_clown", [[You are {role}! {traitors} think you are {ajester} and you
 deal no damage. However if one team would win the round instead you

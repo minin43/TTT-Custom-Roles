@@ -10,7 +10,8 @@ resource.AddFile("materials/particle/sponge.vmt")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_sponge_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that the sponge is killed", 0, 4)
+CreateConVar("ttt_sponge_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a sponge was killed. Killer is notified unless \"ttt_sponge_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_sponge_notify_killer", "1", FCVAR_NONE, "Whether to notify a sponge's killer", 0, 1)
 CreateConVar("ttt_sponge_notify_sound", "0", FCVAR_NONE, "Whether to play a cheering sound when a sponge is killed", 0, 1)
 CreateConVar("ttt_sponge_notify_confetti", "0", FCVAR_NONE, "Whether to throw confetti when a sponge is a killed", 0, 1)
 local sponge_aura_float_time = CreateConVar("ttt_sponge_aura_float_time", "0", FCVAR_NONE, "The amount of time (in seconds) a player can spend outside the Sponge's aura before they are no longer considered inside", 0, 10)

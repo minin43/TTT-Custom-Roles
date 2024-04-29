@@ -241,6 +241,15 @@ function plymeta:ResetRoundFlags()
 end
 
 function plymeta:GiveEquipmentItem(id)
+    -- Backwards compatibility for addons that call GetEquipmentItems and pass the result in here
+    if id and istable(id) then
+        local result = true
+        for _, e in pairs(id) do
+            result = result and self:GiveEquipmentItem(e)
+        end
+        return result
+    end
+
     if self:HasEquipmentItem(id) then
         return false
     elseif id and id > EQUIP_NONE then
@@ -406,6 +415,12 @@ function plymeta:InitialSpawn()
 
     -- We never have weapons here, but this inits our equipment state
     self:StripAll()
+
+    -- If round prep has started, call SpawnForRound on the player so all the same logic
+    -- that has been ran against the other players is run against this new player as well
+    if GetRoundState() == ROUND_PREP then
+        self:SpawnForRound(false)
+    end
 end
 
 function plymeta:KickBan(length, reason)

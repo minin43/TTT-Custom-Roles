@@ -102,6 +102,10 @@ table.insert(ROLE_CONVARS[ROLE_SHADOW], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_SHADOW], {
+    cvar = "ttt_shadow_target_buff_resumable",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SHADOW], {
     cvar = "ttt_shadow_target_buff_notify",
     type = ROLE_CONVAR_TYPE_BOOL
 })
@@ -316,4 +320,13 @@ hook.Add("TTTUpdateRoleState", "Shadow_TTTUpdateRoleState", function()
     local is_jester = shadow_is_jester:GetBool()
     JESTER_ROLES[ROLE_SHADOW] = is_jester
     INDEPENDENT_ROLES[ROLE_SHADOW] = not is_jester
+end)
+
+hook.Add("TTTIsPlayerRespawning", "Shadow_TTTIsPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:GetNWBool("ShadowTargetRespawning", false) then
+        return true
+    end
 end)

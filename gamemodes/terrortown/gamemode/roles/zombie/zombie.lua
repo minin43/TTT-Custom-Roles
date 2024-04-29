@@ -334,6 +334,16 @@ function plymeta:RespawnAsZombie(prime)
     end)
 end
 
+hook.Add("TTTStopPlayerRespawning", "Zombie_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:IsZombifying() then
+        timer.Remove("Zombify_" .. ply:SteamID64())
+        ply:SetNWBool("IsZombifying", false)
+    end
+end)
+
 hook.Add("TTTCupidShouldLoverSurvive", "Zombie_TTTCupidShouldLoverSurvive", function(ply, lover)
     if ply:IsZombifying() or lover:IsZombifying() then
         return true

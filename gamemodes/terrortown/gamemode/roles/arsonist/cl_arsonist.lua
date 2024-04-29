@@ -18,8 +18,9 @@ local arsonist_early_ignite = GetConVar("ttt_arsonist_early_ignite")
 
 hook.Add("Initialize", "Arsonist_Translations_Initialize", function()
     -- Weapons
-    LANG.AddToLanguage("english", "arsonistigniter_help_pri", "Press {primaryfire} to ignite doused players.")
-    LANG.AddToLanguage("english", "arsonistigniter_help_sec", "Can only be used once")
+    LANG.AddToLanguage("english", "arsonistigniter_help_pri", "Press {primaryfire} to ignite doused players. Can only be used once.")
+    LANG.AddToLanguage("english", "arsonistigniter_help_sec", "")
+    LANG.AddToLanguage("english", "arsonistigniter_help_sec_ondeath", "Press {secondaryfire} to toggle automatic ignition on death.")
 
     -- Body Search
     LANG.AddToLanguage("english", "arsonist_body_doused", "They were doused {time} ago by {anarsonist}!")
@@ -37,6 +38,10 @@ hook.Add("Initialize", "Arsonist_Translations_Initialize", function()
     LANG.AddToLanguage("english", "arsdouse_doused", "DOUSED")
     LANG.AddToLanguage("english", "arsdouse_failed", "DOUSING FAILED")
     LANG.AddToLanguage("english", "arsonist_hud", "Dousing complete. Igniter active.")
+    LANG.AddToLanguage("english", "arsonist_igniter_ondeath_hud", "Igniter on-death trigger active.")
+
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_arsonist", "Can douse players and set them on fire. They win if they are the last player alive.")
 
     -- Popup
     LANG.AddToLanguage("english", "info_popup_arsonist", [[You are {role}! Get close to other players
@@ -128,13 +133,11 @@ hook.Add("TTTBodySearchPopulate", "Arsonist_TTTBodySearchPopulate", function(sea
     local time = util.SimpleTime(CurTime() - douseTime, "%02i:%02i")
     local message = LANG.GetParamTranslation("arsonist_body_doused", {time = time, anarsonist = ROLE_STRINGS_EXT[ROLE_ARSONIST]})
 
-    local roleString = ROLE_STRINGS_SHORT[ROLE_ARSONIST]
-    local img = util.GetRoleIconPath(roleString, "icon", "vtf")
     search["arsonistdouse"] = {
         text = message,
-        img = img,
-        color = ROLE_COLORS[ROLE_ARSONIST],
-        p = 3
+        img = "vgui/ttt/icon_arsonistdouse",
+        text_icon = time,
+        p = 10
     }
 end)
 

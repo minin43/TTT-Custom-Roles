@@ -35,6 +35,10 @@ table.insert(ROLE_CONVARS[ROLE_SPONGE], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_SPONGE], {
+    cvar = "ttt_sponge_notify_killer",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SPONGE], {
     cvar = "ttt_sponge_notify_sound",
     type = ROLE_CONVAR_TYPE_BOOL
 })

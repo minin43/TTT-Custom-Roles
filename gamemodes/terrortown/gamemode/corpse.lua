@@ -142,26 +142,42 @@ local function IdentifyBody(ply, rag)
     -- will return either false or a valid ply
     local deadply = player.GetBySteamID64(rag.sid64) or player.GetBySteamID(rag.sid)
 
+    -- If the we're allowing anyone with a DNA scanner to cosplay as a detective, show them everything
+    local fullSearch = GetConVar("ttt_all_search_dnascanner"):GetBool() and WEPS.GetClass(ply.GetActiveWeapon and ply:GetActiveWeapon()) == "weapon_ttt_wtester"
+
     -- Announce body
-    local announceName = AnnounceBodyName(ply, round_state, deadply)
+    local announceName = fullSearch or AnnounceBodyName(ply, round_state, deadply)
     if bodyfound:GetBool() and not CORPSE.GetFound(rag, false) and (not IsValid(deadply) or announceName or not deadply:GetNWBool("body_found", false)) then
         local name = "someone"
         if announceName then
             name = nick
         end
         local role_string = "an unknown role"
-        if AnnounceBodyRole(ply, round_state, deadply) then
+        local color_role = ROLE_NONE
+        if fullSearch or AnnounceBodyRole(ply, round_state, deadply) then
             role_string = ROLE_STRINGS_EXT[role]
+            -- Use the role's color for the message background
+            color_role = role
         elseif AnnounceBodyTeam(ply, round_state, deadply) then
-            local roleTeam = player.GetRoleTeam(role)
+            local roleTeam = player.GetRoleTeam(role, true)
             local teamName = GetRoleTeamName(roleTeam)
             role_string = "on the " .. teamName .. " team"
+
+            -- Show the base team color for innocents and traitors
+            if roleTeam == ROLE_TEAM_INNOCENT then
+                color_role = ROLE_INNOCENT
+            elseif roleTeam == ROLE_TEAM_TRAITOR then
+                color_role = ROLE_TRAITOR
+            else
+                color_role = role
+            end
         end
 
         LANG.Msg("body_found", {
             finder = finder,
             victim = name,
-            role = role_string
+            role = role_string,
+            color_role = tostring(color_role)
         })
     end
 
@@ -174,10 +190,15 @@ local function IdentifyBody(ply, rag)
                 deadply:SetNWBool("body_found", true)
                 deadply:SetNWBool("body_searched", true)
             end
-            -- Keep track if this body was searched specifically by a detective
-            if ply:IsDetectiveLike() and not deadply:GetNWBool("body_searched_det", false) then
-                deadply:SetNWBool("body_searched_det", true)
-                HandleDetectiveSearchCredits(ply, deadply)
+
+            if not deadply:GetNWBool("body_searched_det", false) then
+                -- Keep track if this body was searched specifically by a detective
+                if ply:IsDetectiveLike() then
+                    deadply:SetNWBool("body_searched_det", true)
+                    HandleDetectiveSearchCredits(ply, deadply)
+                elseif fullSearch then
+                    deadply:SetNWBool("body_searched_det", true)
+                end
             end
 
             -- Don't cache this in case the hook wants to change the corpse's role
@@ -205,7 +226,8 @@ local function IdentifyBody(ply, rag)
             LANG.Msg("body_found_updated", {
                 finder = finder,
                 victim = nick,
-                role = ROLE_STRINGS_EXT[role]
+                role = ROLE_STRINGS_EXT[role],
+                color_role = role
             })
         end
     end
@@ -213,7 +235,7 @@ local function IdentifyBody(ply, rag)
     if not announceName then return end
 
     -- Handle kill list
-    for _, vicsid in pairs(rag.kills) do
+    for _, vicsid in ipairs(rag.kills) do
         -- filter out disconnected
         local vic = player.GetBySteamID64(vicsid) or player.GetBySteamID(vicsid)
 
@@ -262,15 +284,17 @@ end
 -- Call detectives to a corpse
 local function CallDetective(ply, cmd, args)
     if not IsValid(ply) then return end
-    if #args ~= 2 then return end
+    if #args ~= 1 then return end
     if not ply:IsActive() then return end
 
     local eidx = tonumber(args[1])
     if not eidx then return end
 
-    local sid = args[2]
     local rag = Entity(eidx)
     if not (IsValid(rag) and rag.player_ragdoll) then return end
+
+    local owner = CORPSE.GetPlayer(rag)
+    if not IsPlayer(owner) then return end
 
     if ((rag.last_detective_call or 0) < (CurTime() - 5)) and (rag:GetPos():Distance(ply:GetPos()) < 128) then
         rag.last_detective_call = CurTime()
@@ -278,8 +302,8 @@ local function CallDetective(ply, cmd, args)
         if CORPSE.GetFound(rag, false) then
             -- show indicator to detectives
             net.Start("TTT_CorpseCall")
-            net.WriteVector(rag:GetPos())
-            net.WriteString(sid)
+                net.WriteVector(rag:GetPos())
+                net.WriteString(owner:SteamID())
             net.Send(GetExtendedDetectiveFilter(true))
 
             LANG.Msg("body_call", {
@@ -302,6 +326,8 @@ local function bitsRequired(num)
     end
     return bits
 end
+
+local plyBits = bitsRequired(game.MaxPlayers()) -- first game.MaxPlayers() of entities are for players.
 
 function GM:TTTCanSearchCorpse(ply, corpse, is_covert, is_long_range, was_traitor)
     -- return true to allow corpse search, false to disallow.
@@ -329,7 +355,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     local role = rag.was_role
     local nick = CORPSE.GetPlayerNick(rag)
     local eq = rag.equipment or {}
-    local c4 = rag.bomb_wire or -1
+    local c4 = rag.bomb_wire or 0
     local dmg = rag.dmgtype or DMG_GENERIC
     local wep = rag.dmgwep or ""
     local words = rag.last_words or ""
@@ -337,7 +363,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     local dtime = rag.time or 0
 
     local ownerEnt = player.GetBySteamID64(rag.sid64) or player.GetBySteamID(rag.sid)
-    local owner = IsValid(ownerEnt) and ownerEnt:EntIndex() or -1
+    local owner = IsValid(ownerEnt) and ownerEnt:EntIndex() or 0
 
     -- basic sanity check
     if nick == nil or eq == nil or role == nil then return end
@@ -360,8 +386,8 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
             if IsValid(rag) and rag:GetPos():Distance(ply:GetPos()) < 128 then
                 hook.Call("TTTBodyFound", GAMEMODE, ply, ownerEnt, rag)
                 net.Start("TTT_CorpseCall")
-                net.WriteVector(rag:GetPos())
-                net.WriteString(rag.sid)
+                    net.WriteVector(rag:GetPos())
+                    net.WriteString(rag.sid)
                 net.Send(GetExtendedDetectiveFilter(true))
                 ownerEnt:SetNWBool("det_called", true)
                 ownerEnt:SetNWBool("body_found", true)
@@ -382,6 +408,11 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     -- identifier so we know whether a ttt_confirm_death was legit
     ply.search_id = { eidx = rag:EntIndex(), id = rag:EntIndex() + dtime }
 
+    local killerid = "0"
+    if IsPlayer(rag.killer) then
+        killerid = rag.killer:SteamID64()
+    end
+
     -- time of dna sample decay relative to current time
     local stime = 0
     if rag.killer_sample then
@@ -390,17 +421,17 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
 
     -- build list of people this traitor killed
     local kill_entids = {}
-    for _, vicsid in pairs(rag.kills) do
+    for _, vicsid in ipairs(rag.kills) do
         -- also send disconnected players as a marker
         local vic = player.GetBySteamID64(vicsid) or player.GetBySteamID(vicsid)
-        table.insert(kill_entids, IsValid(vic) and vic:EntIndex() or -1)
+        table.insert(kill_entids, IsValid(vic) and vic:EntIndex() or 0)
     end
 
-    local lastid = -1
+    local lastid = 0
     if rag.lastid and ply:IsActiveDetectiveLike() then
         -- if the person this victim last id'd has since disconnected, send -1 to
         -- indicate this
-        lastid = IsValid(rag.lastid.ent) and rag.lastid.ent:EntIndex() or -1
+        lastid = IsValid(rag.lastid.ent) and rag.lastid.ent:EntIndex() or 0
     end
 
     local round_state = GetRoundState()
@@ -410,43 +441,42 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     -- Send a message with basic info
     net.Start("TTT_RagdollSearch")
     net.WriteUInt(rag:EntIndex(), 16) -- 16 bits
-    net.WriteUInt(owner, 8) -- 128 max players. ( 8 bits )
+    net.WriteUInt(owner, plyBits) -- 128 max players. ( 8 bits )
     net.WriteString(sendName and nick or "<Unknown>")
     -- Equipment table
-    net.WriteUInt(#eq, 8)
+    local eq_bits = bitsRequired(EQUIP_MAX)
+    net.WriteUInt(#eq, eq_bits)
     for _, v in ipairs(eq) do
-        net.WriteUInt(v, 8)
+        net.WriteUInt(v, eq_bits)
     end
-    net.WriteInt(sendRole and role or -1, 8) -- ( 8 bits )
-    net.WriteInt(c4, bitsRequired(C4_WIRE_COUNT) + 1) -- -1 -> 2^bits ( default c4: 4 bits )
+    net.WriteInt(sendRole and role or ROLE_NONE, 8) -- ( 8 bits )
+    net.WriteUInt(c4, bitsRequired(C4_WIRE_COUNT)) -- 0 -> 2^bits ( default c4: 3 bits )
     net.WriteUInt(dmg, 30) -- DMG_BUCKSHOT is the highest. ( 30 bits )
     net.WriteString(wep)
-    net.WriteBit(hshot) -- ( 1 bit )
-    net.WriteInt(dtime, 16)
-    net.WriteInt(stime, 16)
+    net.WriteBool(hshot) -- ( 1 bit )
+    net.WriteUInt(dtime, 15)
+    net.WriteUInt64(killerid)
+    net.WriteUInt(stime, 15)
 
     net.WriteUInt(#kill_entids, 8)
-    for _, idx in pairs(kill_entids) do
-        net.WriteUInt(idx, 8) -- first game.MaxPlayers() of entities are for players.
+    for _, idx in ipairs(kill_entids) do
+        net.WriteUInt(idx, plyBits) -- first game.MaxPlayers() of entities are for players.
     end
 
-    net.WriteUInt(lastid, 8)
+    net.WriteUInt(lastid, plyBits)
 
     -- Who found this, so if we get this from a detective we can decide not to
     -- show a window
-    net.WriteUInt(ply:EntIndex(), 8)
+    net.WriteUInt(ply:EntIndex(), plyBits)
 
     net.WriteString(words)
-
-    -- 133 + string data + #kill_entids * 8
-    -- 200
 
     if ply:IsActive() and not covert then
         net.Broadcast()
 
         -- Let detctives know that this body has already been searched
         net.Start("TTT_RemoveCorpseCall")
-        net.WriteString(rag.sid)
+            net.WriteString(rag.sid)
         net.Send(GetExtendedDetectiveFilter(true))
     else
         net.Send(ply)
@@ -471,14 +501,14 @@ local function GetKillerSample(victim, attacker, dmg)
     if IsValid(infl) and infl:IsNPC() then return end
 
     local dist = victim:GetPos():Distance(attacker:GetPos())
-    if dist > GetConVar("ttt_killer_dna_range"):GetInt() then return nil end
+    if dist > GetConVar("ttt_killer_dna_range"):GetFloat() then return nil end
 
     local sample = {}
     sample.killer = attacker
     sample.killer_sid = attacker:SteamID() -- backwards compatibility; use sample.killer_sid64 instead
     sample.killer_sid64 = attacker:SteamID64()
     sample.victim = victim
-    sample.t = CurTime() + (-1 * (0.019 * dist) ^ 2 + GetConVar("ttt_killer_dna_basetime"):GetInt())
+    sample.t = CurTime() + (-1 * (0.019 * dist) ^ 2 + GetConVar("ttt_killer_dna_basetime"):GetFloat())
 
     return sample
 end
@@ -586,6 +616,7 @@ function CORPSE.Create(ply, attacker, dmginfo)
     rag.time = CurTime()
     rag.kills = table.Copy(ply.kills)
 
+    rag.killer = attacker
     rag.killer_sample = GetKillerSample(ply, attacker, dmginfo)
 
     -- crime scene data

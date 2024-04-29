@@ -24,6 +24,9 @@ hook.Add("Initialize", "Killer_Translations_Initialize", function()
     LANG.AddToLanguage("english", "win_killer", "The {role} has murdered you all!")
     LANG.AddToLanguage("english", "ev_win_killer", "The butchering {role} won the round!")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_killer", "Spawns with a knife and throwable crowbar. They win if they are the last player alive.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_killer", [[You are {role}! Try to kill everyone and be the last one standing!
 

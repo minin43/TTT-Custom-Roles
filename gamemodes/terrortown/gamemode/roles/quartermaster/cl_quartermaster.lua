@@ -13,6 +13,9 @@ local quartermaster_limited_loot = GetConVar("ttt_quartermaster_limited_loot")
 ------------------
 
 AddHook("Initialize", "Quartermaster_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_quartermaster", "Can buy items available to Traitors as weapon crates for other players.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_quartermaster", [[You are {role}! As {adetective}, HQ has given you special resources to find the {traitors}.
 You've infiltrated their supply lines, allowing you to drop weapons crates of goodies for your allies.

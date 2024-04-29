@@ -208,6 +208,15 @@ Called when an informant has scanned additional information from a target player
 - *tgt* - The player being scanned
 - *stage* - The new scan stage
 
+### TTTIsPlayerRespawning(ply)
+Called to check whether a player is currently respawning.\
+*Realm:* Client and Server\
+*Added in:* 2.1.12\
+*Parameters:*
+- *ply*</em>* - The player being queried for respawn status
+
+*Return:* `true` if the player is currently respawning, `false` if they are not. If you have no opinion (e.g. let other logic determine this) then don't return anything at all.
+
 ### TTTKarmaGiveReward(ply, reward, victim)
 Called before a player is rewarded with karma. Used to block a player's karma reward.\
 *Realm:* Server\
@@ -707,6 +716,24 @@ Called when a player buys a random item from the shop.\
 - *client* - The player who is buying a random item
 - *item* - The random item that was selected
 
+### TTTShouldPlayerSmoke(ply, client, shouldSmoke, smokeColor, smokeParticle, smokeOffset)
+Called when during a player's `Think`, allowing a player to emit smoke with different visual effects.\
+*Realm:* Client\
+*Added in:* 1.2.7\
+*Parameters:*
+- *ply* - The target player being rendered
+- *client* - The local player
+- *shouldSmoke* - Whether the player would normally emit smoke
+- *smokeColor* - What [Color](https://wiki.facepunch.com/gmod/Color) the smoke will be. (Defaults to `COLOR_BLACK`)
+- *smokeParticle* - What particle the smoke will use. Should be the relative path the the `.vmt` file for the particle. (Defaults to `"particle/snow.vmt"`)
+- *smokeOffset* - A [Vector](https://wiki.facepunch.com/gmod/Vector) representing the relative offset from the player's feet. (Defaults to `Vector(0, 0, 30)`)
+
+*Return:*
+- *shouldSmoke* - The new shouldSmoke value to use or the original passed into the hook
+- *smokeColor* - The new smokeColor value to use or the original passed into the hook
+- *smokeParticle* - The new smokeParticle value to use or the original passed into the hook
+- *smokeOffset* - The new smokeOffset value to use or the original passed into the hook
+
 ### TTTShowSearchScreen(search)
 Called when a body search screen would be shown.\
 *Realm:* Client\
@@ -802,23 +829,10 @@ Called when a player starts or stops sprinting.\
 - *sprinting* - Whether the player is now sprinting
 - *wasSprinting* - Whether the player was sprinting
 
-### TTTShouldPlayerSmoke(ply, client, shouldSmoke, smokeColor, smokeParticle, smokeOffset)
-.\
-*Realm:* Client\
-*Added in:* 1.2.7\
-*Parameters:*
-- *ply* - The target player being rendered
-- *client* - The local player
-- *shouldSmoke* - Whether the player would normally emit smoke
-- *smokeColor* - What [Color](https://wiki.facepunch.com/gmod/Color) the smoke will be. (Defaults to `COLOR_BLACK`)
-- *smokeParticle* - What particle the smoke will use. Should be the relative path the the `.vmt` file for the particle. (Defaults to `"particle/snow.vmt"`)
-- *smokeOffset* - A [Vector](https://wiki.facepunch.com/gmod/Vector) representing the relative offset from the player's feet. (Defaults to `Vector(0, 0, 30)`)
-
-*Return:*
-- *shouldSmoke* - The new shouldSmoke value to use or the original passed into the hook
-- *smokeColor* - The new smokeColor value to use or the original passed into the hook
-- *smokeParticle* - The new smokeParticle value to use or the original passed into the hook
-- *smokeOffset* - The new smokeOffset value to use or the original passed into the hook
+### TTTStopPlayerRespawning(ply)
+Called when something has requested that a player stop respawning due to a role feature.\
+*Realm:* Server\
+*Added in:* 2.1.12
 
 ### TTTSyncEventIDs()
 Called when the server is syncing generated event IDs to the client.\

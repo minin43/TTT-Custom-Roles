@@ -17,6 +17,10 @@ table.insert(ROLE_CONVARS[ROLE_JESTER], {
     isNumeric = true
 })
 table.insert(ROLE_CONVARS[ROLE_JESTER], {
+    cvar = "ttt_jester_notify_killer",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_JESTER], {
     cvar = "ttt_jester_notify_sound",
     type = ROLE_CONVAR_TYPE_BOOL
 })

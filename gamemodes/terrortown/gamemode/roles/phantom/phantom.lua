@@ -30,6 +30,7 @@ local phantom_killer_footstep_time = GetConVar("ttt_phantom_killer_footstep_time
 local phantom_respawn = GetConVar("ttt_phantom_respawn")
 
 local phantom_respawn_health = CreateConVar("ttt_phantom_respawn_health", "50", FCVAR_NONE, "The amount of health a phantom will respawn with", 1, 100)
+local phantom_respawn_limit = CreateConVar("ttt_phantom_respawn_limit", "0", FCVAR_NONE, "The amount of times a phantom can respawn. Set to 0 to have no limit", 0, 20)
 local phantom_killer_haunt_power_rate = CreateConVar("ttt_phantom_killer_haunt_power_rate", "10", FCVAR_NONE, "The amount of power to regain per second when a phantom is haunting their killer", 1, 25)
 local phantom_killer_haunt_power_starting = CreateConVar("ttt_phantom_killer_haunt_power_starting", "0", FCVAR_NONE, "The amount of power to the phantom starts with", 0, 200)
 local phantom_killer_haunt_without_body = CreateConVar("ttt_phantom_killer_haunt_without_body", "1")
@@ -105,7 +106,7 @@ hook.Add("PlayerDeath", "Phantom_PlayerDeath", function(victim, infl, attacker)
     local valid_kill = IsPlayer(attacker) and attacker ~= victim and GetRoundState() == ROUND_ACTIVE
     if valid_kill and victim:IsPhantom() then
         local attacker_alive = attacker:IsActive()
-        local will_posses = phantom_killer_haunt:GetBool() and not victim:IsZombifying() and attacker_alive
+        local will_posses = phantom_killer_haunt:GetBool() and not attacker:IsVictimChangingRole(victim) and attacker_alive
 
         -- Only bother looking this up if we're going to use it
         local loverSID = ""
@@ -121,7 +122,7 @@ hook.Add("PlayerDeath", "Phantom_PlayerDeath", function(victim, infl, attacker)
             end
         end
 
-        if victim:IsZombifying() then return end
+        if attacker:IsVictimChangingRole(victim) then return end
 
         if not attacker_alive then
             victim:QueueMessage(MSG_PRINTBOTH, "Your attacker is already dead so you have nobody to haunt.")
@@ -276,7 +277,10 @@ hook.Add("DoPlayerDeath", "Phantom_DoPlayerDeath", function(ply, attacker, dmgin
 
         if not deadPhantom:IsPhantom() or deadPhantom:Alive() then continue end
 
-        if not phantom_respawn:GetBool() then
+        local respawn_limit = phantom_respawn_limit:GetInt()
+        if respawn_limit > 0 and phantom.times > respawn_limit then
+            deadPhantom:QueueMessage(MSG_PRINTBOTH, "Your attacker died and you have reached your respawn limit so your spirit is now free to roam.")
+        elseif not phantom_respawn:GetBool() then
             deadPhantom:QueueMessage(MSG_PRINTBOTH, "Your attacker died and your spirit is now free to roam.")
         else
             -- Find the Phantom's corpse

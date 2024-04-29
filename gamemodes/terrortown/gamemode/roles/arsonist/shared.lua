@@ -92,3 +92,16 @@ table.insert(ROLE_CONVARS[ROLE_ARSONIST], {
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 0
 })
+table.insert(ROLE_CONVARS[ROLE_ARSONIST], {
+    cvar = "ttt_arsonist_ignite_on_death",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_ARSONIST], {
+    cvar = "ttt_arsonist_ignite_on_death_notify",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_ARSONIST], {
+    cvar = "ttt_arsonist_ignite_on_death_timer",
+    type = ROLE_CONVAR_TYPE_NUM,
+    decimal = 0
+})

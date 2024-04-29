@@ -20,6 +20,9 @@ hook.Add("Initialize", "Hypnotist_Translations_Initialize", function()
     -- Event
     LANG.AddToLanguage("english", "ev_hypno", "{victim} was hypnotised")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_hypnotist", "Can use their brainwashing device to revive someone as a Traitor.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_hypnotist", [[You are {role}! {comrades}
 

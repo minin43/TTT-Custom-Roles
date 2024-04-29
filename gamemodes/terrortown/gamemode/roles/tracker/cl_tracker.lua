@@ -12,6 +12,9 @@ local tracker_footstep_color = GetConVar("ttt_tracker_footstep_color")
 ------------------
 
 hook.Add("Initialize", "Tracker_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_tracker", "Can see a trail of footsteps left by other players.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_tracker", [[You are {role}! As {adetective}, HQ has given you special resources to find the {traitors}.
 You can see players' footsteps and follow their trails.

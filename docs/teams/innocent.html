@@ -284,7 +284,7 @@
             </div>
         </div>
         <div id="infected" class="collapsible">
-            <button class="header" style="background-color:var(--special-innocent);"><i class="icon-infected"></i>Infected</button>
+            <button class="header" style="background-image:linear-gradient(110deg, var(--special-innocent) 0%, var(--special-innocent) 70%, var(--jester) 70%, var(--jester) 85%, var(--independent) 85%, var(--independent) 100%);"><i class="icon-infected"></i>Infected</button>
             <div class="content">
                 <div class="moreless">[more]</div>
                 <p>The <span class="inline-icon" style="color:var(--special-innocent);"><i class="icon-infected"></i><a href="#infected">Infected</a></span> turns into a <span class="inline-icon" style="color:var(--independent);"><i class="icon-zombie"></i><a href="../teams/independent.html#zombie">Zombie</a></span> if the round goes on for too long.</p>
@@ -305,6 +305,12 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>ttt_infected_block_win <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Blocks other teams from winning and causes the Infected to succumb immediately when they would have. Only used when <code>ttt_infected_is_jester</code> or <code>ttt_infected_is_independent</code> are enabled.</td>
+                        </tr>
                         <tr>
                             <td>ttt_infected_cough_enabled</td>
                             <td>1</td>
@@ -328,6 +334,18 @@
                             <td>1</td>
                             <td>Boolean</td>
                             <td>Whether the Infected's health is refilled when they become a Zombie.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_infected_is_independent <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether the Infected should be treated as am independent.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_infected_is_jester <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether the Infected should be treated as a jester.</td>
                         </tr>
                         <tr>
                             <td>ttt_infected_prime</td>
@@ -604,6 +622,12 @@
                             <td>50</td>
                             <td>Integer</td>
                             <td>The amount of health a Phantom will respawn with.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_phantom_respawn_limit <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Integer</td>
+                            <td>The amount of times a Phantom can respawn. Set to 0 to have no limit.</td>
                         </tr>
                         <tr>
                             <td>ttt_phantom_weaker_each_respawn</td>

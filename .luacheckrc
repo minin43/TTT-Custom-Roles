@@ -1024,6 +1024,7 @@ globals = {
     "WIN_CLOWN",
     "WIN_CUPID",
     "WIN_HIVEMIND",
+    "WIN_INFECTED",
     "WIN_INNOCENT",
     "WIN_JESTER",
     "WIN_KILLER",

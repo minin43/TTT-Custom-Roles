@@ -6,6 +6,7 @@
    1. [Role Table](#Role-Table)
    1. [Role Strings](#Role-Strings)
    1. [Description](#Description)
+   1. [Short Description](#Short-Description)
    1. [Team](#Team)
    1. [Shop and Loadout Items](#Shop-and-Loadout-Items)
       1. [Weapon](#Weapon)
@@ -53,7 +54,7 @@ In order to create your own role you will need to make sure you have downloaded 
 
 - **.psd** - For this guide we will be using Photoshop but [GIMP](https://www.gimp.org/) is a great free alternative.
 - **.lua** - This can be done in Notepad in a pinch but at the very least we would recommend [Notepad++](https://notepad-plus-plus.org/).
-- **.vmt and .vtf** - [VTFEdit](https://nemstools.github.io/pages/VTFLib-Download.html) is the best way to edit these files but if you know what you are doing there are plugins for other apps.
+- **.vmt and .vtf** - [VTFEdit Reloaded](https://github.com/Sky-rym/VTFEdit-Reloaded/releases) is the best way to edit these files but if you know what you are doing there are plugins for other apps.
 
 In this guide we will be walking through how we made the Summoner role and you can download all the templates we are using [here](/templates).
 
@@ -77,6 +78,8 @@ ROLE.nameext = ""
 ROLE.nameshort = ""
 
 ROLE.desc = [[]]
+
+ROLE.shortdesc = ""
 
 ROLE.team = 
 
@@ -175,6 +178,16 @@ ROLE.desc = [[You are {role}! {comrades}
 Summon minions to help defeat your enemies.  
   
 Press {menukey} to receive your special equipment!]]
+```
+
+### Short Description
+
+Along with the full role description, you need a short description that is no longer than two sentences that will be displayed in the cheat sheet. This is just to convey a general idea of what you role does and does not need to convey much detail. Keep it short and sweet.
+
+The short description for the Summoner will look like this:
+
+```lua
+ROLE.shortdesc = "Can buy items that summon minions."
 ```
 
 ### Team
@@ -854,6 +867,8 @@ Summon minions to help defeat your enemies.
 
 Press {menukey} to receive your special equipment!]]
 
+ROLE.shortdesc = "Can buy items that summon minions."
+
 ROLE.team = ROLE_TEAM_TRAITOR
 
 ROLE.shop = {"weapon_ttt_beenade", "weapon_ttt_barnacle", "surprisecombine", "weapon_antlionsummoner", "weapon_controllable_manhack", "weapon_doncombinesummoner"} 
@@ -938,9 +953,7 @@ Here is what we have for 'score_sum.png':
 
 The sprite file is what shows up above players heads when you know their role. Open up 'Sprite Template.psd' and once again you should see a white dashed outline. Repeat the same process as you did for the score icon. Click on the 'Icon' layer, paste in your role icon, resize to fit the outline and hide the outline guide layer. Save this image as 'sprite_%NAMESHORT%.png'.
 
-For some icons GMod likes to use a .vtf or Valve Texture Format file. In order to do this we need to first create a .tga or Targa file. Targa files use an alpha layer for transparency so we need to convert our .png into a .tga. While Photoshop and GIMP can do this natively they do not properly create the alpha layer we need. The best method we have found is to use [Aconvert.com](https://www.aconvert.com/image/png-to-tga/) so upload your 'sprite_%NAMESHORT%.png' file here and download the converted Targa file.
-
-Finally we can turn our .tga into the .vtf file we need. Open VTFEdit, click 'File' > 'Import' and select the converted Targa file. You should see your icon inside of VTFEdit except the shadows should have turned solid black and any transparency is now white. While this may look incredibly strange, this is actually exactly what we want! Save this file as 'sprite_%NAMESHORT%.vtf' in 'Role Addon Template' > 'materials' > 'vgui' > 'ttt' > 'roles' > '%NAMESHORT%'.
+Finally we can turn our .png into the .vtf file we need. Open VTFEdit Reloaded, click 'File' > 'Import' and select your .png file. You should see your icon inside of VTFEdit Reloaded except the shadows should have turned solid black and any transparency is now white. While this may look incredibly strange, this is actually exactly what we want! Save this file as 'sprite_%NAMESHORT%.vtf' in 'Role Addon Template' > 'materials' > 'vgui' > 'ttt' > 'roles' > '%NAMESHORT%'.
 
 Here is the final version of 'sprite_sum.vtf':
 
@@ -948,7 +961,7 @@ Here is the final version of 'sprite_sum.vtf':
 
 ### Icon File
 
-The icon file is shown when a body is searched to reveal that players role. Open up 'Icon Template.psd' and yet again you should see a guide outline. Repeat the same process you did for both the score and sprite files. The icon file also needs to have a .vtf format so save your file as a .png, upload it to [Aconvert.com](https://www.aconvert.com/image/png-to-tga/), download your .tga file and import it into VTFEdit. Save this file as 'icon_%NAMESHORT%.vtf' in 'Role Addon Template' > 'materials' > 'vgui' > 'ttt' > 'roles' > '%NAMESHORT%'.
+The icon file is shown when a body is searched to reveal that players role. Open up 'Icon Template.psd' and yet again you should see a guide outline. Repeat the same process you did for both the score and sprite files. The icon file also needs to have a .vtf format so save your file as a .png and import it into VTFEdit Reloaded. Save this file as 'icon_%NAMESHORT%.vtf' in 'Role Addon Template' > 'materials' > 'vgui' > 'ttt' > 'roles' > '%NAMESHORT%'.
 
 Here is the final version of 'icon_sum.vtf':
 

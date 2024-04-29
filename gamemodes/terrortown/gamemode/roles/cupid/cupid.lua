@@ -13,7 +13,8 @@ resource.AddFile("materials/particle/heart.vmt")
 -- CONVARS --
 -------------
 
-CreateConVar("ttt_cupid_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a cupid was killed", 0, 4)
+CreateConVar("ttt_cupid_notify_mode", "0", FCVAR_NONE, "The logic to use when notifying players that a cupid was killed. Killer is notified unless \"ttt_cupid_notify_killer\" is disabled", 0, 4)
+CreateConVar("ttt_cupid_notify_killer", "1", FCVAR_NONE, "Whether to notify a cupid's killer", 0, 1)
 CreateConVar("ttt_cupid_notify_sound", "0", FCVAR_NONE, "Whether to play a cheering sound when a cupid is killed", 0, 1)
 CreateConVar("ttt_cupid_notify_confetti", "0", FCVAR_NONE, "Whether to throw confetti when a cupid is a killed", 0, 1)
 
@@ -35,6 +36,8 @@ hook.Add("TTTBeginRound", "Cupid_TTTBeginRound", function()
 
             local lover = player.GetBySteamID64(lover_sid64)
             if not IsPlayer(lover) or lover:IsActive() then continue end
+            -- Don't kill a lover if their pair used a "kill" bind
+            if lover.TTTCupidKillbindUsed then continue end
 
             local should_survive = HookCall("TTTCupidShouldLoverSurvive", nil, v, lover)
             if type(should_survive) == "boolean" and should_survive then continue end
@@ -43,6 +46,24 @@ hook.Add("TTTBeginRound", "Cupid_TTTBeginRound", function()
             v:QueueMessage(MSG_PRINTBOTH, "Your lover has died!")
         end
     end)
+end)
+
+-- Keep track if a lover uses a "kill" bind so we don't punish their pair
+hook.Add("PlayerDeath", "Cupid_Killbind_PlayerDeath", function(victim, infl, attacker)
+    if not IsPlayer(victim) then return end
+
+    local lover_sid64 = victim:GetNWString("TTTCupidLover", "")
+    if #lover_sid64 == 0 then return end
+
+    -- If the victim and the inflictor and the attacker are all the same thing then they probably used the "kill" console command
+    if victim == attacker and IsValid(infl) and victim == infl then
+        victim.TTTCupidKillbindUsed = true
+
+        local lover = player.GetBySteamID64(lover_sid64)
+        if lover and IsPlayer(lover) then
+            lover:QueueMessage(MSG_PRINTBOTH, "Your lover has died by their own hand! Try to survive without them...")
+        end
+    end
 end)
 
 -------------
@@ -55,8 +76,18 @@ hook.Add("TTTPrepareRound", "Cupid_TTTPrepareRound", function()
         v:SetNWString("TTTCupidLover", "")
         v:SetNWString("TTTCupidTarget1", "")
         v:SetNWString("TTTCupidTarget2", "")
+        v.TTTCupidKillbindUsed = false
     end
     timer.Remove("TTTCupidTimer")
+end)
+
+-- Reset the "kill" bind tracking when players respawn
+hook.Add("TTTPlayerSpawnForRound", "Cupid_TTTPlayerSpawnForRound", function(ply, dead_only)
+    if not dead_only then return end
+    if not IsValid(ply) then return end
+    if ply:Alive() then return end
+
+    ply.TTTCupidKillbindUsed = false
 end)
 
 ------------
@@ -72,6 +103,25 @@ hook.Add("ScalePlayerDamage", "Cupid_ScalePlayerDamage", function(ply, hitgroup,
                 or (att:GetNWString("TTTCupidShooter", "") == target and not cupid_lovers_can_damage_cupid:GetBool()) then
             dmginfo:ScaleDamage(0)
         end
+    end
+end)
+
+-- Don't penalize karma for lovers who kill members on their team when their lover is not
+hook.Add("TTTKarmaShouldGivePenalty", "Cupid_TTTKarmaShouldGivePenalty", function(attacker, victim)
+    -- We only care about attackers who have lovers
+    local attLover = attacker:GetNWString("TTTCupidLover", "")
+    if not attLover or #attLover == 0 then return end
+
+    -- Specifically lovers that are alive
+    local lover = player.GetBySteamID64(attLover)
+    if not lover or not IsPlayer(lover) then return end
+
+    -- If the attacker and their lover are on the same team then just let normal karma rules work
+    if not attacker:IsSameTeam(lover) then return end
+
+    -- Otherwise, if the attacker and their victim are on the same team, block karma penalties
+    if attacker:IsSameTeam(victim) then
+        return true
     end
 end)
 
