@@ -241,6 +241,15 @@ function plymeta:ResetRoundFlags()
 end
 
 function plymeta:GiveEquipmentItem(id)
+    -- Backwards compatibility for addons that call GetEquipmentItems and pass the result in here
+    if id and istable(id) then
+        local result = true
+        for _, e in pairs(id) do
+            result = result and self:GiveEquipmentItem(e)
+        end
+        return result
+    end
+
     if self:HasEquipmentItem(id) then
         return false
     elseif id and id > EQUIP_NONE then

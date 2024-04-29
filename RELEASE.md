@@ -1,5 +1,15 @@
 # Release Notes
 
+## 2.1.13
+**Released April 29th, 2024**\
+Includes beta update [2.1.12](#2112-beta).
+
+### Changes
+- Ported "TTT: Optimize ragdoll search network traffic + fix disconnected player networking"
+
+### Developer
+- Updated `plymeta:GiveEquipmentItem(id)` to accept a table for compatibility with addons that were calling `plymeta:GetEquipmentItems` and then passing the result into `plymeta:GiveEquipmentItem`
+
 ## 2.1.12 (Beta)
 **Released: April 26th, 2024**
 
