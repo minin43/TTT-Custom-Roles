@@ -10,6 +10,9 @@
 ### Fixes
 - Fixed "found" bodies not having an expandable scoreboard info section
 
+### Developer
+- Implemented `plymeta:IsRespawning` and `plymeta:StopRespawning` for bodysnatcher
+
 ## 2.1.13
 **Released April 29th, 2024**\
 Includes beta update [2.1.12](#2112-beta).

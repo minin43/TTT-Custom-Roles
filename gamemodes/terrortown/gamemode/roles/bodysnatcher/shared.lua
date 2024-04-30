@@ -162,3 +162,12 @@ hook.Add("TTTUpdateRoleState", "Bodysnatcher_Team_TTTUpdateRoleState", function(
     INDEPENDENT_ROLES[ROLE_BODYSNATCHER] = is_independent
     JESTER_ROLES[ROLE_BODYSNATCHER] = not is_independent
 end)
+
+hook.Add("TTTIsPlayerRespawning", "Bodysnatcher_TTTIsPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:GetNWBool("BodysnatcherIsRespawning", false) then
+        return true
+    end
+end)
