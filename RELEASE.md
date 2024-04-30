@@ -3,6 +3,10 @@
 ## 2.1.14 (Beta)
 **Released:**
 
+### Additions
+- Added ability for paramedic to revive players as their original role (disabled by default)
+- Added ability for paramedic to revive detective roles as a promoted deputy (disabled by default)
+
 ### Changes
 - Changed `ttt_corpse_search_not_shared` to behave like searching in vanilla TTT
   - The corpse found message is broadcast but body info is not shown on the scoreboard unless the corpse is searched by a detective-like role
