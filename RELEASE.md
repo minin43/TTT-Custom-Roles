@@ -1,5 +1,12 @@
 # Release Notes
 
+## 2.1.14 (Beta)
+**Released:**
+
+### Changes
+- Changed `ttt_corpse_search_not_shared` to behave like searching in vanilla TTT
+  - The corpse found message is broadcast but body info is not shown on the scoreboard unless the corpse is searched by a detective-like role
+
 ## 2.1.13
 **Released April 29th, 2024**\
 Includes beta update [2.1.12](#2112-beta).
