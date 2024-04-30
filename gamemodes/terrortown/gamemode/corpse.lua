@@ -188,7 +188,10 @@ local function IdentifyBody(ply, rag)
             -- Otherwise the scoreboard gets updated which reveals their name anyway
             if announceName then
                 deadply:SetNWBool("body_found", true)
-                deadply:SetNWBool("body_searched", true)
+                -- Don't set "searched" if we're not sharing this information
+                if ply:IsDetectiveLike() or not GetConVar("ttt_corpse_search_not_shared"):GetBool() then
+                    deadply:SetNWBool("body_searched", true)
+                end
             end
 
             if not deadply:GetNWBool("body_searched_det", false) then
