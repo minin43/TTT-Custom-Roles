@@ -160,7 +160,9 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
         return ply:GetRole()
     end
 
-    if (ply.search_result and ply.search_result.role > ROLE_NONE) or ply == client then
+    if (ply.search_result and ply.search_result.role > ROLE_NONE) or
+        ply == client or
+        (ply:GetNWBool("body_found", false) and GetConVar("ttt_corpse_search_not_shared"):GetBool()) then
         return ply:GetRole()
     end
 
