@@ -347,7 +347,7 @@ function PANEL:SetPlayer(ply)
             self.info:SetPlayer(ply)
 
             self:InvalidateLayout()
-        elseif g == GROUP_SEARCHED or g == GROUP_NOTFOUND then
+        elseif g == GROUP_SEARCHED or g == GROUP_FOUND or g == GROUP_NOTFOUND then
             self.info = vgui.Create("TTTScorePlayerInfoSearch", self)
             self.info:SetPlayer(ply)
             self:InvalidateLayout()
