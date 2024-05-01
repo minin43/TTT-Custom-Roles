@@ -14,6 +14,7 @@
 
 ### Fixes
 - Fixed "found" bodies not having an expandable scoreboard info section
+- Fixed issue where player who killed someone hosting a parasite would also be killed when `ttt_parasite_infection_time` was `0`
 
 ### Developer
 - Implemented `plymeta:IsRespawning` and `plymeta:StopRespawning` for bodysnatcher
