@@ -7,6 +7,8 @@
 - Added ability for paramedic to revive players as their original role (disabled by default)
 - Added ability for paramedic to revive detective roles as a promoted deputy (disabled by default)
 - Added ability to control whether the jester winning causes the round to end (enabled by default)
+- Added ability to send credits between cupid and lovers if they have equipment shops
+  - This allows Cupid <-> Lover as well as Lover <-> Lover
 
 ### Changes
 - Changed `ttt_corpse_search_not_shared` to behave like searching in vanilla TTT
