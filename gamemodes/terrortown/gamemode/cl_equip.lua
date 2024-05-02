@@ -14,6 +14,7 @@ local weapons = weapons
 ---- Traitor equipment menu
 
 local CallHook = hook.Call
+local RunHook = hook.Run
 local GetWeapon = weapons.GetStored
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
@@ -1033,7 +1034,7 @@ local function TraitorMenuPopup()
             local random_panel = buyable_items[math.random(1, #buyable_items)]
             dlist:SelectPanel(random_panel)
             dconfirm.DoClick()
-            hook.Call("TTTShopRandomBought", nil, LocalPlayer(), random_panel.item)
+            CallHook("TTTShopRandomBought", nil, LocalPlayer(), random_panel.item)
         end
 
         FillEquipmentList(GetEquipmentForRole(ply:GetRole(), ply:IsDetectiveLike() and not ply:IsDetectiveTeam(), false))
@@ -1061,13 +1062,16 @@ local function TraitorMenuPopup()
     end
 
     -- Credit transferring, but only for roles that have a shop and are allowed to transfer
-    if credits > 0 and hasShop and (ply:IsTraitorTeam() or ply:IsMonsterTeam()) then
+    local canSend = credits > 0 and hasShop and (ply:IsTraitorTeam() or ply:IsMonsterTeam())
+    local newCanSend = CallHook("TTTPlayerCanSendCredits", nil, ply, credits, hasShop, canSend)
+    if type(newCanSend) == "boolean" then canSend = newCanSend end
+    if canSend then
         local dtransfer = CreateTransferMenu(dsheet)
         dsheet:AddSheet(GetTranslation("xfer_name"), dtransfer, "icon16/group_gear.png", false, false, GetTranslation("equip_tooltip_xfer"))
         show = true
     end
 
-    local new_show = hook.Run("TTTEquipmentTabs", dsheet, dframe)
+    local new_show = RunHook("TTTEquipmentTabs", dsheet, dframe)
     if new_show then show = new_show end
 
     dframe:MakePopup()
@@ -1159,6 +1163,6 @@ local function ReceiveBoughtItem()
     end
 
     -- I can imagine custom equipment wanting this, so making a hook
-    hook.Run("TTTBoughtItem", is_item, id)
+    RunHook("TTTBoughtItem", is_item, id)
 end
 net.Receive("TTT_BoughtItem", ReceiveBoughtItem)

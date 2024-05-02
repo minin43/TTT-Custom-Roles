@@ -19,6 +19,8 @@
 
 ### Developer
 - Implemented `plymeta:IsRespawning` and `plymeta:StopRespawning` for bodysnatcher
+- Added `TTTPlayerCanSendCredits` hook to allow overriding who can see the credits transfer tab in the equipment menu
+- Added `TTTPlayerCanSendCreditsTo` hook to allow overriding who a player can send credits to
 
 ## 2.1.13
 **Released April 29th, 2024**\
