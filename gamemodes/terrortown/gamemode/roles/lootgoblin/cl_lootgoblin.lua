@@ -131,13 +131,11 @@ end)
 local lootgoblin_wins = false
 net.Receive("TTT_UpdateLootGoblinWins", function()
     -- Log the win event with an offset to force it to the end
-    if net.ReadBool() then
-        lootgoblin_wins = true
-        CLSCORE:AddEvent({
-            id = EVENT_FINISH,
-            win = WIN_LOOTGOBLIN
-        }, 1)
-    end
+    lootgoblin_wins = true
+    CLSCORE:AddEvent({
+        id = EVENT_FINISH,
+        win = WIN_LOOTGOBLIN
+    }, 1)
 end)
 
 local function ResetLootGoblinWin()
