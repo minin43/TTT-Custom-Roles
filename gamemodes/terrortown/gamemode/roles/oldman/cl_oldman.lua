@@ -36,13 +36,11 @@ end)
 local oldman_wins = false
 net.Receive("TTT_UpdateOldManWins", function()
     -- Log the win event with an offset to force it to the end
-    if net.ReadBool() then
-        oldman_wins = true
-        CLSCORE:AddEvent({
-            id = EVENT_FINISH,
-            win = WIN_OLDMAN
-        }, 1)
-    end
+    oldman_wins = true
+    CLSCORE:AddEvent({
+        id = EVENT_FINISH,
+        win = WIN_OLDMAN
+    }, 1)
 end)
 
 local function ResetOldManWin()

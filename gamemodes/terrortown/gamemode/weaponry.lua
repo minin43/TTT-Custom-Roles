@@ -726,8 +726,18 @@ local function TransferCredits(ply, cmd, args)
     local sid64 = tostring(args[1])
     local credits = tonumber(args[2])
     if sid64 and credits then
+        -- Make sure the target is a valid player
         local target = player.GetBySteamID64(sid64)
-        if (not IsValid(target)) or (not target:IsActiveSpecial()) or not ply:IsSameTeam(target) or (target == ply) then
+        if not IsValid(target) or not target:IsActive() or target == ply then
+            LANG.Msg(ply, "xfer_no_recip")
+            return
+        end
+
+        -- Then make sure they are a valid role
+        local canSend = ply:IsSameTeam(target)
+        local newCanSend = CallHook("TTTPlayerCanSendCreditsTo", nil, ply, target, canSend)
+        if type(newCanSend) == "boolean" then canSend = newCanSend end
+        if not canSend then
             LANG.Msg(ply, "xfer_no_recip")
             return
         end
@@ -750,14 +760,14 @@ end
 concommand.Add("ttt_transfer_credits", TransferCredits)
 
 local function FakeTransferCredits(ply, cmd, args)
-    if (not IsValid(ply)) or (not ply:IsActiveSpecial()) then return end
+    if not IsValid(ply) or not ply:IsActive() then return end
     if #args ~= 2 then return end
 
     local sid = tostring(args[1])
     local credits = tonumber(args[2])
     if credits then
         local target = player.GetBySteamID64(sid)
-        if (not IsValid(target)) or (target == ply) then
+        if not IsValid(target) or target == ply then
             LANG.Msg(ply, "xfer_no_recip")
             return
         end

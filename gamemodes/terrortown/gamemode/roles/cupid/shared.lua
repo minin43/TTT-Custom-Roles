@@ -87,3 +87,38 @@ hook.Add("TTTUpdateRoleState", "Cupid_TTTUpdateRoleState", function()
     INDEPENDENT_ROLES[ROLE_CUPID] = is_independent
     JESTER_ROLES[ROLE_CUPID] = not is_independent
 end)
+
+hook.Add("TTTPlayerCanSendCreditsTo", "Cupid_TTTPlayerCanSendCreditsTo", function(ply, target, canSend)
+    -- Don't block a role that can send credits already
+    if canSend then return end
+    -- Only roles that have shops can transfer
+    if not ply:CanUseShop() then return end
+    -- and be transferred to
+    if not target:CanUseShop() then return end
+
+    local targetSid64 = target:SteamID64()
+
+    -- If this is a cupid
+    if ply:IsActiveCupid() then
+        -- with both targets
+        local target1 = ply:GetNWString("TTTCupidTarget1", "")
+        if not target1 or #target1 == 0 then return end
+        local target2 = ply:GetNWString("TTTCupidTarget2", "")
+        if not target2 or #target2 == 0 then return end
+
+        -- and we're being queried about one of their targets who has a shop, then they can be sent to
+        if targetSid64 == target1 or targetSid64 == target2 then
+            return true
+        end
+    end
+
+    -- If this target is the player's lover then they can be sent to
+    if targetSid64 == ply:GetNWString("TTTCupidLover", "") then
+        return true
+    end
+
+    -- Or if they are the player's cupid then they can be sent to
+    if targetSid64 == ply:GetNWString("TTTCupidShooter", "") then
+        return true
+    end
+end)

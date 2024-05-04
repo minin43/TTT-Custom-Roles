@@ -110,6 +110,16 @@ hook.Add("PlayerDeath", "Bodysnatcher_KillCheck_PlayerDeath", function(victim, i
     end
 end)
 
+hook.Add("TTTStopPlayerRespawning", "Bodysnatcher_TTTStopPlayerRespawning", function(ply)
+    if not IsPlayer(ply) then return end
+    if ply:Alive() then return end
+
+    if ply:GetNWBool("BodysnatcherIsRespawning", false) then
+        timer.Remove(ply:Nick() .. "BodysnatcherRespawn")
+        ply:SetNWBool("BodysnatcherIsRespawning", false)
+    end
+end)
+
 ------------------
 -- CUPID LOVERS --
 ------------------

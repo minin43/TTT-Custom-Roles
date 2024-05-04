@@ -278,6 +278,30 @@ Called for each player who is alive during the `Tick` hook.\
 *Parameters:*
 - *ply* - The current alive player target
 
+### TTTPlayerCanSendCredits(ply, credits, hasShop, canSend)
+Called when a player opens the equipment window to determine whether the credits transfer tab should show.\
+*Realm*: Client\
+*Added in*: 2.1.14\
+*Parameters*:
+- *ply* - The player that is trying to send credits
+- *credits* - The number of credits the player has
+- *hasShop* - Whether the player has a shop
+- *canSend* - Whether the player can normally send credits
+
+*Return:* `true` if the player should be able to send credits. Don't return anything otherwise.
+
+### TTTPlayerCanSendCreditsTo(ply, target, canSend)
+Called on the client when a player opens the equipment window to determine which other players are valid transfer targets.\
+Called on the server when a player attempts to transfer credits to another player to determine whether the target is valid.\
+*Realm*: Client and Server\
+*Added in*: 2.1.14\
+*Parameters*:
+- *ply* - The player that is trying to send credits
+- *target* - The player that we're checking as a potential target
+- *canSend* - Whether the player can normally send credits
+
+*Return:* `true` if the player should be able to send credits to the target. Don't return anything otherwise. 
+
 ### TTTPlayerCreditsChanged(ply, amount)
 Called whenever a player's credits are added to or subtracted from.\
 *Realm:* Server\

@@ -330,6 +330,52 @@ AddHook("Think", "Cupid_Highlight_Think", function()
     end
 end)
 
+---------------------
+-- CREDIT TRANSFER --
+---------------------
+
+local function LoverHasShop(sid64)
+    local ply = player.GetBySteamID64(sid64)
+    if not ply or not IsPlayer(ply) then return false end
+    return ply:CanUseShop()
+end
+
+AddHook("TTTPlayerCanSendCredits", "Cupid_TTTPlayerCanSendCredits", function(ply, credits, hasShop, canSend)
+    -- Don't block a role that can send credits already
+    if canSend then return end
+    -- Make sure they have credits to send
+    if credits <= 0 then return end
+    -- Only roles that have shops can transfer
+    if not hasShop then return end
+
+    -- If this is a cupid
+    if ply:IsActiveCupid() then
+        -- with both targets
+        local target1 = ply:GetNWString("TTTCupidTarget1", "")
+        if not target1 or #target1 == 0 then return end
+        local target2 = ply:GetNWString("TTTCupidTarget2", "")
+        if not target2 or #target2 == 0 then return end
+
+        -- and at least one of them has a shop
+        if not LoverHasShop(target1) and not LoverHasShop(target2) then return end
+
+        -- then they can send
+        return true
+    end
+
+    -- If this is a player with a lover that has a shop then they can send
+    local lover = ply:GetNWString("TTTCupidLover", "")
+    if lover and #lover > 0 and LoverHasShop(lover) then
+        return true
+    end
+
+    -- Or if they have a cupid with a shop then they can send
+    local shooter = ply:GetNWString("TTTCupidShooter", "")
+    if shooter and #shooter > 0 and LoverHasShop(shooter) then
+        return true
+    end
+end)
+
 --------------
 -- TUTORIAL --
 --------------

@@ -614,7 +614,6 @@ hook.Add("TTTWinCheckComplete", "Shadow_TTTWinCheckComplete", function(win_type)
     if not player.IsRoleLiving(ROLE_SHADOW) then return end
 
     net.Start("TTT_UpdateShadowWins")
-    net.WriteBool(true)
     net.Broadcast()
 end)
 

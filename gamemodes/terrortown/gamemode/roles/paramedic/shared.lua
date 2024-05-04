@@ -24,14 +24,24 @@ end)
 -- ROLE CONVARS --
 ------------------
 
-CreateConVar("ttt_paramedic_defib_as_innocent", "0", FCVAR_REPLICATED)
-local paramedic_device_loadout = CreateConVar("ttt_paramedic_device_loadout", "1", FCVAR_REPLICATED)
-local paramedic_device_shop = CreateConVar("ttt_paramedic_device_shop", "0", FCVAR_REPLICATED)
-local paramedic_device_shop_rebuyable = CreateConVar("ttt_paramedic_device_shop_rebuyable", "0", FCVAR_REPLICATED)
+CreateConVar("ttt_paramedic_defib_as_innocent", "0", FCVAR_REPLICATED, "Whether the paramedic's defib brings back everyone as a vanilla innocent role", 0, 1)
+CreateConVar("ttt_paramedic_defib_as_is", "0", FCVAR_REPLICATED, "Whether the paramedic's defib brings back everyone as their previous role", 0, 1)
+CreateConVar("ttt_paramedic_defib_detectives_as_deputy", "0", FCVAR_REPLICATED, "Whether the paramedic's defib brings back detective roles as a promoted deputy", 0, 1)
+local paramedic_device_loadout = CreateConVar("ttt_paramedic_device_loadout", "1", FCVAR_REPLICATED, "Whether the paramedic's defib should be given to them when they spawn", 0, 1)
+local paramedic_device_shop = CreateConVar("ttt_paramedic_device_shop", "0", FCVAR_REPLICATED, "Whether the paramedic's defib should be purchasable in the shop", 0, 1)
+local paramedic_device_shop_rebuyable = CreateConVar("ttt_paramedic_device_shop_rebuyable", "0", FCVAR_REPLICATED, "Whether the paramedic's defib should be purchaseable multiple times", 0, 1)
 
 ROLE_CONVARS[ROLE_PARAMEDIC] = {}
 table.insert(ROLE_CONVARS[ROLE_PARAMEDIC], {
     cvar = "ttt_paramedic_defib_as_innocent",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_PARAMEDIC], {
+    cvar = "ttt_paramedic_defib_as_is",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_PARAMEDIC], {
+    cvar = "ttt_paramedic_defib_detectives_as_deputy",
     type = ROLE_CONVAR_TYPE_BOOL
 })
 table.insert(ROLE_CONVARS[ROLE_PARAMEDIC], {

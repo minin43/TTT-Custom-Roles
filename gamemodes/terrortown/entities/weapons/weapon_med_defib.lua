@@ -55,19 +55,35 @@ if SERVER then
         ply:SetPos(self.Location or body:GetPos())
         ply:SetEyeAngles(Angle(0, body:GetAngles().y, 0))
         ply:SetNWBool("WasRevivedByParamedic", true)
-        if GetConVar("ttt_paramedic_defib_as_innocent"):GetBool() then
-            ply:SetRole(ROLE_INNOCENT)
-            ply:StripRoleWeapons()
-        elseif ply:GetDetectiveLike() then
-            if ply:IsJesterTeam() then
-                ply:SetRole(ROLE_JESTER)
-            elseif ply:IsTraitorTeam() then
-                ply:SetRole(ROLE_TRAITOR)
-            else
+
+        -- Only change the player's role if we're not reviving them as-is
+        if not GetConVar("ttt_paramedic_defib_as_is"):GetBool() then
+            if GetConVar("ttt_paramedic_defib_as_innocent"):GetBool() then
                 ply:SetRole(ROLE_INNOCENT)
+                ply:StripRoleWeapons()
+            elseif ply:GetDetectiveLike() then
+                -- Convert detective roles to promoted deputy
+                -- This leaves everyone else as their existing role
+                if GetConVar("ttt_paramedic_defib_detectives_as_deputy"):GetBool() then
+                    if ply:IsDetectiveTeam() then
+                        ply:SetRole(ROLE_DEPUTY)
+                        ply:StripRoleWeapons()
+                        ply:HandleDetectiveLikePromotion()
+                    end
+                -- Otherwise demote detective-like roles to their base role
+                else
+                    if ply:IsJesterTeam() then
+                        ply:SetRole(ROLE_JESTER)
+                    elseif ply:IsTraitorTeam() then
+                        ply:SetRole(ROLE_TRAITOR)
+                    else
+                        ply:SetRole(ROLE_INNOCENT)
+                    end
+                    ply:StripRoleWeapons()
+                end
             end
-            ply:StripRoleWeapons()
         end
+
         ply:QueueMessage(MSG_PRINTCENTER, "You have been revived by " .. ROLE_STRINGS_EXT[ROLE_PARAMEDIC] .. "!")
         if GetConVar("ttt_paramedic_revive_muted"):GetBool() then
             ply:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")

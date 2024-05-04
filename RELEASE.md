@@ -1,5 +1,30 @@
 # Release Notes
 
+## 2.1.14 (Beta)
+**Released: May 4th, 2024**
+
+### Additions
+- Added ability for paramedic to revive players as their original role (disabled by default)
+- Added ability for paramedic to revive detective roles as a promoted deputy (disabled by default)
+- Added ability to control whether the jester winning causes the round to end (enabled by default)
+- Added ability to send credits between cupid and lovers if they have equipment shops
+  - This allows Cupid <-> Lover as well as Lover <-> Lover
+
+### Changes
+- Changed `ttt_corpse_search_not_shared` to behave like searching in vanilla TTT
+  - The corpse found message is broadcast but body info is not shown on the scoreboard unless the corpse is searched by a detective-like role
+
+### Fixes
+- Fixed "found" bodies not having an expandable scoreboard info section
+- Fixed issue where player who killed someone hosting a parasite would also be killed when `ttt_parasite_infection_time` was `0`
+- Fixed cupid lover who is killed receiving message saying their lover killed themselves
+- Fixed placeholder not being replaced in swapper role popup message
+
+### Developer
+- Implemented `plymeta:IsRespawning` and `plymeta:StopRespawning` for bodysnatcher
+- Added `TTTPlayerCanSendCredits` hook to allow overriding who can see the credits transfer tab in the equipment menu
+- Added `TTTPlayerCanSendCreditsTo` hook to allow overriding who a player can send credits to
+
 ## 2.1.13
 **Released April 29th, 2024**\
 Includes beta update [2.1.12](#2112-beta).

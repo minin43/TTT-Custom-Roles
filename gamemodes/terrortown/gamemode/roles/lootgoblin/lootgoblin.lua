@@ -302,7 +302,6 @@ local function HandleLootGoblinWinChecks(win_type)
     if not hasLootGoblin then return end
 
     net.Start("TTT_UpdateLootGoblinWins")
-    net.WriteBool(true)
     net.Broadcast()
 end
 hook.Add("TTTWinCheckComplete", "LootGoblin_TTTWinCheckComplete", HandleLootGoblinWinChecks)
