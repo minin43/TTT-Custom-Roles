@@ -95,13 +95,11 @@ end
 local shadow_wins = false
 net.Receive("TTT_UpdateShadowWins", function()
     -- Log the win event with an offset to force it to the end
-    if net.ReadBool() then
-        shadow_wins = true
-        CLSCORE:AddEvent({
-            id = EVENT_FINISH,
-            win = WIN_SHADOW
-        }, 1)
-    end
+    shadow_wins = true
+    CLSCORE:AddEvent({
+        id = EVENT_FINISH,
+        win = WIN_SHADOW
+    }, 1)
 end)
 
 local function ResetShadowWin()

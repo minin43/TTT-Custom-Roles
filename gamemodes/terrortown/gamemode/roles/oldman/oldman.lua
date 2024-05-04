@@ -34,7 +34,6 @@ local function HandleOldManWinChecks(win_type)
     if not player.IsRoleLiving(ROLE_OLDMAN) then return end
 
     net.Start("TTT_UpdateOldManWins")
-    net.WriteBool(true)
     net.Broadcast()
 end
 hook.Add("TTTWinCheckComplete", "OldMan_TTTWinCheckComplete", HandleOldManWinChecks)

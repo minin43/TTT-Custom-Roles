@@ -23,6 +23,12 @@ hook.Add("TTTUpdateRoleState", "Glitch_TTTUpdateRoleState", function()
     TRAITOR_BUTTON_ROLES[ROLE_GLITCH] = glitch_use_traps
 end)
 
+hook.Add("TTTPlayerCanSendCreditsTo", "Glitch_TTTPlayerCanSendCreditsTo", function(sender, target, canSend)
+    if sender:IsTraitorTeam() and target:IsGlitch() then
+        return true
+    end
+end)
+
 ------------------
 -- ROLE CONVARS --
 ------------------

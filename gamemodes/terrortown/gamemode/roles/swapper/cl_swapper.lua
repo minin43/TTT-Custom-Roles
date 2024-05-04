@@ -29,6 +29,12 @@ deal no damage however, if anyone kills you, they become
 the {swapper} and you take their role and can join the fight.]])
 end)
 
+hook.Add("TTTRolePopupParams", "Swapper_TTTRolePopupParams", function(cli)
+    if not cli:IsSwapper() then return end
+
+    return { swapper = ROLE_STRINGS[ROLE_SWAPPER] }
+end)
+
 -------------
 -- SCORING --
 -------------

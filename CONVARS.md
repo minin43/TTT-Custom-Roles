@@ -393,6 +393,8 @@ ttt_doctor_credits_starting                    1       // The number of credits 
 
 // Paramedic
 ttt_paramedic_defib_as_innocent                0       // Whether the paramedic's defib brings back everyone as a vanilla innocent role
+ttt_paramedic_defib_as_is                      0       // Whether the paramedic's defib brings back everyone as their previous role
+ttt_paramedic_defib_detectives_as_deputy       0       // Whether the paramedic's defib brings back detective roles as a promoted deputy
 ttt_paramedic_device_loadout                   1       // Whether the paramedic's defib should be given to them when they spawn. Server must be restarted for changes to take effect
 ttt_paramedic_device_shop                      0       // Whether the paramedic's defib should be purchasable in the shop (requires "ttt_shop_for_all" to be enabled). Server must be restarted for changes to take effect
 ttt_paramedic_device_shop_rebuyable            0       // Whether the paramedic's defib should be purchaseable multiple times (requires "ttt_paramedic_device_shop" to be enabled). Server must be restarted for changes to take effect
@@ -524,6 +526,7 @@ ttt_jesters_visible_to_monsters                1       // Whether jesters are re
 
 // Jester
 ttt_jester_win_by_traitors                     1       // Whether the jester will win the round if they are killed by a traitor
+ttt_jester_win_ends_round                      1       // Whether the jester winning causes the round to end
 ttt_jester_notify_mode                         0       // The logic to use when notifying players that a jester was killed. Killer is notified unless "ttt_jester_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone.
 ttt_jester_notify_killer                       1       // Whether to notify a jester's killer
 ttt_jester_notify_sound                        0       // Whether to play a cheering sound when a jester is killed
