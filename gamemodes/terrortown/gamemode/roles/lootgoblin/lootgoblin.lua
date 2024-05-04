@@ -5,7 +5,6 @@ local ipairs = ipairs
 local math = math
 local net = net
 local player = player
-local resource = resource
 local table = table
 local timer = timer
 local util = util
@@ -20,20 +19,6 @@ local TableRemove = table.remove
 util.AddNetworkString("TTT_UpdateLootGoblinWins")
 util.AddNetworkString("TTT_ResetLootGoblinWins")
 util.AddNetworkString("TTT_LootGoblinRadar")
-
-resource.AddFile("materials/vgui/ttt/beacon_gob.vmt")
-
-resource.AddSingleFile("sound/lootgoblin/cackle1.wav")
-resource.AddSingleFile("sound/lootgoblin/cackle2.wav")
-resource.AddSingleFile("sound/lootgoblin/cackle3.wav")
-resource.AddSingleFile("sound/lootgoblin/jingle1.wav")
-resource.AddSingleFile("sound/lootgoblin/jingle2.wav")
-resource.AddSingleFile("sound/lootgoblin/jingle3.wav")
-resource.AddSingleFile("sound/lootgoblin/jingle4.wav")
-resource.AddSingleFile("sound/lootgoblin/jingle5.wav")
-resource.AddSingleFile("sound/lootgoblin/jingle6.wav")
-resource.AddSingleFile("sound/lootgoblin/jingle7.wav")
-resource.AddSingleFile("sound/lootgoblin/jingle8.wav")
 
 -------------
 -- CONVARS --

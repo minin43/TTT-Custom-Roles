@@ -28,6 +28,10 @@ CR_VERSION = "2.1.14"
 CR_BETA = true
 CR_WORKSHOP_ID = CR_BETA and "2404251054" or "2421039084"
 
+if SERVER then
+    resource.AddWorkshop(CR_WORKSHOP_ID)
+end
+
 function CRVersion(version)
     local installedVersionRaw = StringSplit(CR_VERSION, ".")
     local installedVersion = {

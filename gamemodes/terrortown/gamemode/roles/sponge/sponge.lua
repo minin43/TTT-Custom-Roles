@@ -4,8 +4,6 @@ local player = player
 
 local PlayerIterator = player.Iterator
 
-resource.AddFile("materials/particle/sponge.vmt")
-
 -------------
 -- CONVARS --
 -------------

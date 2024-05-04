@@ -85,7 +85,6 @@ local math = math
 local net = net
 local pairs = pairs
 local player = player
-local resource = resource
 local string = string
 local table = table
 local timer = timer
@@ -132,7 +131,6 @@ CreateConVar("ttt_monster_chance", 0.5)
 
 for role = 0, ROLE_MAX do
     local rolestring = ROLE_STRINGS_RAW[role]
-    local shortstring = ROLE_STRINGS_SHORT[role]
     if not DEFAULT_ROLES[role] and not ROLE_BLOCK_SPAWN_CONVARS[role] then
         CreateConVar("ttt_" .. rolestring .. "_spawn_weight", "1")
         CreateConVar("ttt_" .. rolestring .. "_min_players", "0")
@@ -148,19 +146,6 @@ for role = 0, ROLE_MAX do
         CreateConVar("ttt_" .. rolestring .. "_starting_health", starting_health)
         CreateConVar("ttt_" .. rolestring .. "_max_health", max_health or starting_health)
     end
-
-    -- Body icon
-    resource.AddFile(util.GetRoleIconPath(shortstring, "icon", "vmt"))
-
-    -- Round summary icon
-    resource.AddSingleFile(util.GetRoleIconPath(shortstring, "score", "png"))
-
-    -- Scoreboard icon
-    resource.AddSingleFile(util.GetRoleIconPath(shortstring, "tab", "png"))
-
-    -- Target ID icons
-    resource.AddFile(util.GetRoleIconPath(shortstring, "sprite", "vmt"))
-    resource.AddSingleFile(util.GetRoleIconPath(shortstring, "sprite", "vtf", StringFormat("%s_noz", shortstring)))
 end
 
 -- Jester role properties

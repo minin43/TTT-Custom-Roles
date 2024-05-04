@@ -10,8 +10,6 @@ local FindEntsByClass = ents.FindByClass
 local PlayerIterator = player.Iterator
 local MathRandom = math.random
 
-resource.AddFile("materials/vgui/ttt/icon_arsonistdouse.vmt")
-
 -------------
 -- CONVARS --
 -------------

@@ -8,7 +8,6 @@ local math = math
 local net = net
 local pairs = pairs
 local player = player
-local resource = resource
 local table = table
 local util = util
 
@@ -16,10 +15,6 @@ local PlayerIterator = player.Iterator
 local MathRandom = math.random
 
 util.AddNetworkString("TTT_VampirePrimeDeath")
-
-resource.AddSingleFile("sound/weapons/ttt/fade.wav")
-resource.AddSingleFile("sound/weapons/ttt/unfade.wav")
-resource.AddSingleFile("sound/weapons/ttt/vampireeat.wav")
 
 -------------
 -- CONVARS --

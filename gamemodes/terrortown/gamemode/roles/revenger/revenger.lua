@@ -13,8 +13,6 @@ local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_RevengerLoverKillerRadar")
 
-resource.AddFile("materials/vgui/ttt/beacon_rev.vmt")
-
 -------------
 -- CONVARS --
 -------------

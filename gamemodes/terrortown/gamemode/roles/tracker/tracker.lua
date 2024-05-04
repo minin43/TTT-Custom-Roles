@@ -8,8 +8,6 @@ local table = table
 
 local PlayerIterator = player.Iterator
 
-resource.AddFile("materials/vgui/ttt/beacon_trk.vmt")
-
 -------------
 -- CONVARS --
 -------------
