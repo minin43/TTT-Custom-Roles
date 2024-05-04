@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.14 (Beta)
-**Released:**
+**Released: May 4th, 2024**
 
 ### Additions
 - Added ability for paramedic to revive players as their original role (disabled by default)
