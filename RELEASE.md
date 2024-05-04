@@ -19,6 +19,7 @@
 - Fixed issue where player who killed someone hosting a parasite would also be killed when `ttt_parasite_infection_time` was `0`
 - Fixed cupid lover who is killed receiving message saying their lover killed themselves
 - Fixed placeholder not being replaced in swapper role popup message
+- Fixed paramedic and hypnotist muting functionality not working for voice or radio messages
 
 ### Developer
 - Implemented `plymeta:IsRespawning` and `plymeta:StopRespawning` for bodysnatcher

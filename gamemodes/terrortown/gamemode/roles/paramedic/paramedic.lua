@@ -26,10 +26,13 @@ hook.Add("PlayerCanHearPlayersVoice", "Paramedic_PlayerCanHearPlayersVoice", fun
     if not paramedic_revive_muted:GetBool() then return end
     if not GetConVar("sv_voiceenable"):GetBool() then return end
     if not speaker:GetNWBool("WasRevivedByParamedic", false) then return end
-    if speaker.NextParamedicMuteWarning and speaker.NextParamedicMuteWarning > CurTime() then return end
 
-    speaker.NextParamedicMuteWarning = CurTime() + 1
-    speaker:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
+    -- Warn them in chat periodically
+    if not speaker.NextParamedicMuteWarning or speaker.NextParamedicMuteWarning <= CurTime() then
+        speaker.NextParamedicMuteWarning = CurTime() + 1
+        speaker:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
+    end
+
     return false, false
 end)
 
@@ -44,6 +47,19 @@ hook.Add("PlayerSay", "Paramedic_PlayerSay", function(ply, text, team_only)
 
     ply:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
     return ""
+end)
+
+hook.Add("TTTPlayerRadioCommand", "Paramedic_TTTPlayerRadioCommand", function(ply, msg_name, msg_target)
+    if GetRoundState() ~= ROUND_ACTIVE then return end
+
+    if not IsPlayer(ply) then return end
+    if not ply:Alive() or ply:IsSpec() then return end
+
+    if not paramedic_revive_muted:GetBool() then return end
+    if not ply:GetNWBool("WasRevivedByParamedic", false) then return end
+
+    ply:PrintMessage(HUD_PRINTTALK, "You have not yet regained your ability to speak")
+    return true
 end)
 
 ----------------
