@@ -322,6 +322,12 @@ function GM:ClearClientState()
 end
 net.Receive("TTT_ClearClientState", GM.ClearClientState)
 
+net.Receive("TTT_ClearSearchResult", function()
+    local ply = net.ReadPlayer()
+    if not IsPlayer(ply) then return end
+    ply.search_result = nil
+end)
+
 function GM:CleanUpMap()
     -- Ragdolls sometimes stay around on clients. Deleting them can create issues
     -- so all we can do is try to hide them.

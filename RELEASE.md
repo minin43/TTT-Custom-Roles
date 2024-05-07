@@ -5,6 +5,7 @@
 
 ### Changes
 - Changed resource download logic to hopefully fix missing textures when a user wasn't subscribed to the addon
+- Changed players to have their search information cleared when they resurrect to avoid confusion of the scoreboard showing their old role
 
 ### Fixes
 - Fixed trash added to the end of some messages printed in chat (such as the detective call notification)
