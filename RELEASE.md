@@ -9,6 +9,7 @@
 ### Fixes
 - Fixed trash added to the end of some messages printed in chat (such as the detective call notification)
 - Fixed scoreboard showing a player's current role when their search information should have been showing something different
+- Fixed changing a rolepack's role settings resetting the weights of all role slots back to 1
 
 ## 2.1.14 (Beta)
 **Released: May 4th, 2024**
