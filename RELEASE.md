@@ -1,5 +1,14 @@
 # Release Notes
 
+## 2.1.15
+**Released:**
+
+### Changes
+- Changed resource download logic to hopefully fix missing textures when a user wasn't subscribed to the addon
+
+### Fixes
+- Fixed trash added to the end of some messages printed in chat (such as the detective call notification)
+
 ## 2.1.14 (Beta)
 **Released: May 4th, 2024**
 

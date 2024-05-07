@@ -256,7 +256,9 @@ LANG.Styles = {
         chat.AddText(COLOR_RED, text)
     end,
 
-    chat_plain = chat.AddText
+    chat_plain = function(text, params)
+        chat.AddText(text)
+    end
 };
 
 -- Table mapping message name => message style name. If no message style is
