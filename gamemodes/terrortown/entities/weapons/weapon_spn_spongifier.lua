@@ -14,7 +14,7 @@ SWEP.Base = "weapon_cr_defibbase"
 SWEP.Category = WEAPON_CATEGORY_ROLE
 SWEP.InLoadoutFor = {}
 SWEP.InLoadoutForDefault = {}
--- Make this its own kind so it doesn't conflict with all the other role weapons
+-- Make this its own kind so it doesn't conflict with all the other role weapons and the DNA scanner
 SWEP.Kind = WEAPON_ROLE + 2
 
 SWEP.FindRespawnLocation = false

@@ -39,6 +39,7 @@ SWEP.Secondary.Automatic   = false
 SWEP.Secondary.Ammo        = "none"
 SWEP.Secondary.Delay       = 2
 
+-- Make this its own kind so it doesn't conflict with all the other role weapons
 SWEP.Kind                  = WEAPON_ROLE + 1
 SWEP.CanBuy                = nil -- no longer a buyable thing
 SWEP.WeaponID              = AMMO_WTESTER
