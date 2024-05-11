@@ -20,6 +20,9 @@ local key_params = { usekey = Key("+use", "USE"), walkkey = Key("+walk", "WALK")
 
 local spectator_corpse_search = nil
 
+local hide_role = GetConVar("ttt_hide_role")
+local spectators_see_roles = GetConVar("ttt_spectators_see_roles")
+
 local ClassHint = {
     prop_ragdoll = {
         name = "corpse",
@@ -176,16 +179,12 @@ end
 -- happen before certain entities are drawn, which then clip over the sprite
 function GM:PostDrawTranslucentRenderables()
     client = LocalPlayer()
-    local spectatorOverride = client:GetRole() == ROLE_NONE and client:IsSpec() and GetConVar("ttt_spectators_see_roles"):GetBool()
+    local spectatorOverride = client:GetRole() == ROLE_NONE and client:IsSpec() and spectators_see_roles:GetBool()
 
     dir = client:GetForward() * -1
 
     local glitchMode = GetConVar("ttt_glitch_mode"):GetInt()
     local glitchRound = GetGlobalBool("ttt_glitch_round", false)
-    local hide_roles = false
-    if ConVarExists("ttt_hide_role") then
-        hide_roles = GetConVar("ttt_hide_role"):GetBool()
-    end
 
     for _, v in PlayerIterator() do
         -- Compatibility with the disguises, Dead Ringer (810154456), and Prop Disguiser (310403737 and 2127939503)
@@ -216,7 +215,8 @@ function GM:PostDrawTranslucentRenderables()
                 elseif v:IsDetectiveLike() and not (v:IsImpersonator() and client:IsTraitorTeam()) then
                     role = GetDetectiveIconRole(false)
                 end
-                if not hide_roles then
+
+                if not hide_role:GetBool() then
                     if v:ShouldRevealRoleWhenActive() and v:IsRoleActive() then
                         role = v:GetRole()
                     elseif client:IsTraitorTeam() then
@@ -429,11 +429,6 @@ function GM:HUDDrawTargetID()
         hint = hint()
     end
 
-    local hide_roles = false
-    if ConVarExists("ttt_hide_role") then
-        hide_roles = GetConVar("ttt_hide_role"):GetBool()
-    end
-
     local spectatorOverride = client:GetRole() == ROLE_NONE and client:IsSpec() and GetConVar("ttt_spectators_see_roles"):GetBool()
 
     if ent:IsPlayer() and ent:Alive() then
@@ -461,7 +456,7 @@ function GM:HUDDrawTargetID()
             _, color = util.HealthToString(ent:Health(), ent:GetMaxHealth())
         end
 
-        if (not hide_roles or spectatorOverride) and GetRoundState() == ROUND_ACTIVE then
+        if (spectatorOverride or not hide_role:GetBool()) and GetRoundState() == ROUND_ACTIVE then
             if spectatorOverride then
                 target_role = true
             else

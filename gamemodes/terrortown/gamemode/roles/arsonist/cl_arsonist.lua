@@ -11,6 +11,7 @@ local arsonist_douse_notify_delay_min = GetConVar("ttt_arsonist_douse_notify_del
 local arsonist_douse_notify_delay_max = GetConVar("ttt_arsonist_douse_notify_delay_max")
 local arsonist_douse_corpses = GetConVar("ttt_arsonist_douse_corpses")
 local arsonist_early_ignite = GetConVar("ttt_arsonist_early_ignite")
+local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -247,14 +248,8 @@ hook.Add("HUDPaint", "Arsonist_HUDPaint", function()
 end)
 
 hook.Add("TTTHUDInfoPaint", "Arsonist_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    if GetConVar("ttt_arsonist_early_ignite"):GetBool() then return end
-
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if not arsonist_early_ignite then arsonist_early_ignite = GetConVar("ttt_arsonist_early_ignite") end
+    if arsonist_early_ignite:GetBool() or hide_role:GetBool() then return end
 
     if cli:IsArsonist() and cli:GetNWBool("TTTArsonistDouseComplete", false) and not arsonist_early_ignite:GetBool() then
         surface.SetFont("TabLarge")
@@ -288,7 +283,7 @@ hook.Add("TTTTutorialRoleText", "Arsonist_TTTTutorialRoleText", function(role, t
 
         html = html .. "<span style='display: block; margin-top: 10px;'>To help accomplish this, they can <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>douse players in gasoline</span> by standing near them.</span>"
 
-        local early_ignite = GetConVar("ttt_arsonist_early_ignite"):GetBool()
+        local early_ignite = arsonist_early_ignite:GetBool()
         if early_ignite then
             html = html .. "<span style='display: block; margin-top: 10px;'>They can use their igniter to <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>burn</span> all the doused players at any time. The igniter can only be used once, though, so plan accordingly.</span>"
         else

@@ -43,6 +43,8 @@ surface.CreateFont("Trebuchet22", {
     size = 22,
     weight = 900 })
 
+CreateClientConVar("ttt_hide_role", "0", true, false)
+
 include("corpse_shd.lua")
 include("player_ext_shd.lua")
 include("weaponry_shd.lua")
@@ -207,7 +209,8 @@ CreateConVar("ttt_cl_soundcues", "0", FCVAR_ARCHIVE)
 local cues = {
     Sound("ttt/thump01e.mp3"),
     Sound("ttt/thump02e.mp3")
-};
+}
+
 local function PlaySoundCue()
     if GetConVar("ttt_cl_soundcues"):GetBool() then
         surface.PlaySound(table.Random(cues))

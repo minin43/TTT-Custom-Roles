@@ -33,6 +33,7 @@ local shadow_speed_mult = GetConVar("ttt_shadow_speed_mult")
 local shadow_sprint_recovery = GetConVar("ttt_shadow_sprint_recovery")
 local shadow_failure_mode = GetConVar("ttt_shadow_failure_mode")
 local shadow_target_buff_show_progress = GetConVar("ttt_shadow_target_buff_show_progress")
+local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -415,12 +416,7 @@ end)
 ---------
 
 AddHook("TTTHUDInfoPaint", "Shadow_Delay_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     if cli:IsActiveShadow() and not cli:IsRoleActive() then
         local target = cli:GetNWString("ShadowTarget", "")
@@ -503,14 +499,7 @@ AddHook("HUDPaint", "Shadow_HUDPaint", function()
 end)
 
 AddHook("TTTHUDInfoPaint", "Shadow_Buff_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    if not cli:IsShadow() then return end
-
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if not cli:IsShadow() or hide_role:GetBool() then return end
 
     local shadowBuff = shadow_target_buff:GetInt()
     if shadowBuff <= SHADOW_BUFF_NONE then return end

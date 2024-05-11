@@ -11,7 +11,10 @@ local StringUpper = string.upper
 local guesser_show_team_threshold = GetConVar("ttt_guesser_show_team_threshold")
 local guesser_show_role_threshold = GetConVar("ttt_guesser_show_role_threshold")
 local guesser_can_guess_detectives = GetConVar("ttt_guesser_can_guess_detectives")
+local guesser_unguessable_roles = GetConVar("ttt_guesser_unguessable_roles")
 local guesser_warn_all = GetConVar("ttt_guesser_warn_all")
+local glitch_mode = GetConVar("ttt_glitch_mode")
+local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -100,7 +103,7 @@ end)
 ---------------
 
 local function GetTeamRole(ply, cli)
-    local glitchMode = GetConVar("ttt_glitch_mode"):GetInt()
+    local glitchMode = glitch_mode:GetInt()
 
     -- Treat hidden beggars and bodysnatchers as if they are still on the jester team
     if (ply:GetNWBool("WasBeggar", false) and not cli:ShouldRevealBeggar(ply)) or
@@ -203,7 +206,7 @@ hook.Add("TTTTargetIDPlayerText", "Guesser_TTTTargetIDPlayerText", function(ent,
         local labelParam
 
         if TRAITOR_ROLES[role] then
-            local glitchMode = GetConVar("ttt_glitch_mode"):GetInt()
+            local glitchMode = glitch_mode:GetInt()
             if glitchMode == GLITCH_SHOW_AS_TRAITOR or glitchMode == GLITCH_HIDE_SPECIAL_TRAITOR_ROLES then
                 labelParam = T("traitor")
             elseif glitchMode == GLITCH_SHOW_AS_SPECIAL_TRAITOR then
@@ -288,12 +291,7 @@ end
 ---------
 
 AddHook("TTTHUDInfoPaint", "Guesser_TTTHUDInfoPaint", function(client, label_left, label_top, active_labels)
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     if client:IsGuesser() then
         surface.SetFont("TabLarge")
@@ -338,7 +336,7 @@ hook.Add("TTTTutorialRoleText", "Guesser_TTTTutorialRoleText", function(role, ti
         html = html .. "<span style='display: block; margin-top: 10px;'>After swapping roles, the new " .. ROLE_STRINGS[ROLE_GUESSER] .. " <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>cannot guess</span> the roles of any players that were previously " .. ROLE_STRINGS_EXT[ROLE_GUESSER] .. " and must guess someone else's role instead.</span>"
 
         local unguessableRoles = {}
-        local unguessableRolesString = GetConVar("ttt_guesser_unguessable_roles"):GetString()
+        local unguessableRolesString = guesser_unguessable_roles:GetString()
         if #unguessableRolesString > 0 then
             unguessableRoles = string.Explode(",", unguessableRolesString)
         end

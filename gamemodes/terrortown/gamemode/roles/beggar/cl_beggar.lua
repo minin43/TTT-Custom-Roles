@@ -21,6 +21,7 @@ local beggar_reveal_innocent = GetConVar("ttt_beggar_reveal_innocent")
 local beggar_scan = GetConVar("ttt_beggar_scan")
 local beggar_scan_time = GetConVar("ttt_beggar_scan_time")
 local beggar_announce_delay = GetConVar("ttt_beggar_announce_delay")
+local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -321,12 +322,8 @@ end
 --------------
 
 hook.Add("TTTHUDInfoPaint", "Beggar_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if not hide_role then hide_role = GetConVar("ttt_hide_role") end
+    if hide_role:GetBool() then return end
 
     if (cli:IsInnocent() or cli:IsTraitor()) and cli:GetNWBool("WasBeggar", false) then
         local beggarMode = BEGGAR_REVEAL_ALL

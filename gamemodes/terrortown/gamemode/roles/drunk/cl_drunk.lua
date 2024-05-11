@@ -11,6 +11,7 @@ local MathMax = math.max
 -------------
 
 local drunk_become_clown = GetConVar("ttt_drunk_become_clown")
+local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -79,12 +80,7 @@ end)
 ---------
 
 hook.Add("TTTHUDInfoPaint", "Drunk_TTTHUDInfoPaint", function(client, label_left, label_top, active_labels)
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     if client:IsDrunk() then
         surface.SetFont("TabLarge")
