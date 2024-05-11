@@ -367,6 +367,9 @@ local MAX_TRACE_LENGTH = math.sqrt(3) * 2 * 16384
 
 function GM:HUDDrawTargetID()
     client = LocalPlayer()
+    if not hide_role then
+        hide_role = GetConVar("ttt_hide_role")
+    end
 
     local L = GetLang()
 
