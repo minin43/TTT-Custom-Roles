@@ -302,6 +302,10 @@ local function GetAmmo(ply)
 end
 
 local function DrawBg(x, y, width, height, client)
+    if not hide_role then
+        hide_role = GetConVar("ttt_hide_role")
+    end
+
     -- Traitor area sizes
     local th = 30
     local tw = 170
