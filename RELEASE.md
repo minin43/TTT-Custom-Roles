@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.15 (Beta)
-**Released:**
+**Released: May 11th, 2024**
 
 ### Changes
 - Changed resource download logic to hopefully fix missing textures when a user wasn't subscribed to the addon
