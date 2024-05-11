@@ -4,7 +4,8 @@
 **Released:**
 
 ### Changes
-- Changed logic surrounding the `ttt_hide_role` convar to be more efficient (Thanks Callum!)
+- Changed logic for the `ttt_hide_role` convar to be more efficient (Thanks Callum!)
+- Changed logic for recording which players spawned at the start of the round to be more efficient
 
 ## 2.1.15 (Beta)
 **Released: May 11th, 2024**

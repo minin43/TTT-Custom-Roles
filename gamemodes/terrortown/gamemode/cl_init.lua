@@ -167,9 +167,11 @@ local function RoundStateChange(o, n)
         VOICE.CycleMuteState(MUTE_NONE)
 
         CLSCORE:ClearPanel()
+        CLSCORE:ResetScoreboard()
 
-        -- people may have died and been searched during prep
         for _, p in PlayerIterator() do
+            CLSCORE:PlayerSpawned(p)
+            -- people may have died and been searched during prep
             p.search_result = nil
         end
 
