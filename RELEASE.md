@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.1.16 (Beta)
+**Released:**
+
+### Changes
+- Changed logic surrounding the `ttt_hide_role` convar to be more efficient (Thanks Callum!)
+
 ## 2.1.15 (Beta)
 **Released: May 11th, 2024**
 
