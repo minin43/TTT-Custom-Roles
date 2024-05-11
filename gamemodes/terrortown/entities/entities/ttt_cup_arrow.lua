@@ -9,11 +9,6 @@ ENT.Spawnable = false
 
 ENT.Model = "models/weapons/w_huntingbow_arrow.mdl"
 
-if SERVER then
-    resource.AddFile("models/weapons/w_huntingbow_arrow.mdl")
-    resource.AddFile("materials/models/weapons/huntingbow/steelarrow.vmt")
-end
-
 local ARROW_MINS = Vector(-0.3, -0.3, 0.3)
 local ARROW_MAXS = Vector(0.3, 0.3, 0.3)
 
@@ -64,15 +59,6 @@ local FleshSound = {
 local CollisionIgnoreClasses = {
     "trigger_*"
 }
-
-if SERVER then
-    for _, s in ipairs(StickSound) do
-        resource.AddSingleFile("sound/" .. s)
-    end
-    for _, s in ipairs(FleshSound) do
-        resource.AddSingleFile("sound/" .. s)
-    end
-end
 
 local function ShouldIgnoreCollision(ent)
     for _, c in ipairs(CollisionIgnoreClasses) do

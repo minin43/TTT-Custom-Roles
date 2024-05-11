@@ -7,8 +7,6 @@ local timer = timer
 local PlayerIterator = player.Iterator
 local HookCall = hook.Call
 
-resource.AddFile("materials/particle/heart.vmt")
-
 -------------
 -- CONVARS --
 -------------

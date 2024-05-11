@@ -206,7 +206,7 @@ local function BuildRoleConfig(dsheet, packName, tab)
             drole:SetSize(iconWidth, iconHeight)
             drole:SetPaintBackground(false)
             drole.role = role
-            drole.weight = 1
+            drole.weight = weight
 
             local dicon = vgui.Create("SimpleIcon", drole)
 

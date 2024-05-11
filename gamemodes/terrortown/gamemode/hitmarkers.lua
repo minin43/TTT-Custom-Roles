@@ -1,6 +1,5 @@
 local hook = hook
 local net = net
-local resource = resource
 local string = string
 local util = util
 
@@ -16,7 +15,6 @@ util.AddNetworkString("TTT_DrawHitMarker")
 util.AddNetworkString("TTT_CreateBlood")
 util.AddNetworkString("TTT_OpenMixer")
 
-resource.AddFile("sound/hitmarkers/mlghit.wav")
 AddHook("EntityTakeDamage", "HitmarkerDetector", function(ent, dmginfo)
     local att = dmginfo:GetAttacker()
     local pos = dmginfo:GetDamagePosition()

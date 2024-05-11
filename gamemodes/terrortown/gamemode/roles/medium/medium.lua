@@ -11,8 +11,6 @@ local PlayerIterator = player.Iterator
 local CreateEntity = ents.Create
 local FindEntsByClass = ents.FindByClass
 
-resource.AddFile("materials/particle/wisp.vmt")
-
 -------------
 -- CONVARS --
 -------------

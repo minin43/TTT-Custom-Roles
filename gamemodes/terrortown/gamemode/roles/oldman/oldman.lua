@@ -5,7 +5,6 @@ local ipairs = ipairs
 local IsValid = IsValid
 local net = net
 local player = player
-local resource = resource
 local timer = timer
 local util = util
 
@@ -13,8 +12,6 @@ local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_UpdateOldManWins")
 util.AddNetworkString("TTT_ResetOldManWins")
-
-resource.AddSingleFile("sound/oldmanramble.wav")
 
 -------------
 -- CONVARS --
