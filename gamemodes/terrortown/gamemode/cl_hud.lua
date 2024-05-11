@@ -22,7 +22,6 @@ local interp = string.Interp
 local format = string.format
 
 local hide_role = GetConVar("ttt_hide_role")
-local hide_role_enabled = hide_role:GetBool()
 
 -- Fonts
 surface.CreateFont("TraitorState", {
@@ -319,7 +318,7 @@ local function DrawBg(x, y, width, height, client)
     local col = ROLE_COLORS[client:GetDisplayedRole()]
     if GAMEMODE.round_state ~= ROUND_ACTIVE then
         col = bg_colors.noround
-    elseif hide_role_enabled then
+    elseif hide_role:GetBool() then
         col = bg_colors.hidden
     end
 
@@ -416,8 +415,6 @@ local function InfoPaint(client)
     local x = margin
     local y = ScrH() - margin - height
 
-    hide_role_enabled = hide_role:GetBool()
-
     DrawBg(x, y, width, height, client)
 
     local bar_height = 25
@@ -489,7 +486,7 @@ local function InfoPaint(client)
     local traitor_y = y - 30
     local text
     if round_state == ROUND_ACTIVE then
-        if hide_role_enabled then
+        if hide_role:GetBool() then
             text = GetTranslation("hidden")
         else
             text = client:GetRoleString()

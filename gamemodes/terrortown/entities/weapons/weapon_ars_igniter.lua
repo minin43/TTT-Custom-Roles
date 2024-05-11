@@ -57,7 +57,7 @@ SWEP.Secondary.Sound        = ""
 SWEP.InLoadoutFor           = {ROLE_ARSONIST}
 SWEP.InLoadoutForDefault    = {ROLE_ARSONIST}
 
-local arsonist_early_ignite = CreateConVar("ttt_arsonist_early_ignite", "0", FCVAR_REPLICATED, "Whether to allow the arsonist to use their igniter without dousing everyone first", 0, 1)
+local arsonist_early_ignite = GetConVar("ttt_arsonist_early_ignite")
 local arsonist_ignite_on_death = CreateConVar("ttt_arsonist_ignite_on_death", "0", FCVAR_REPLICATED, "Whether to allow the arsonist to enable automatic triggering of their igniter on death", 0, 1)
 local arsonist_ignite_on_death_timer = CreateConVar("ttt_arsonist_ignite_on_death_timer", "0", FCVAR_REPLICATED, "How long after the arsonist's death to trigger their igniter. Set to 0 to trigger instantly", 0, 180)
 local arsonist_ignite_on_death_notify = CreateConVar("ttt_arsonist_ignite_on_death_notify", "1", FCVAR_REPLICATED, "Whether to notify other players that the arsonist's igniter is going to be triggered", 0, 1)

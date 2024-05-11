@@ -248,10 +248,10 @@ hook.Add("HUDPaint", "Arsonist_HUDPaint", function()
 end)
 
 hook.Add("TTTHUDInfoPaint", "Arsonist_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    if not arsonist_early_ignite then arsonist_early_ignite = GetConVar("ttt_arsonist_early_ignite") end
-    if arsonist_early_ignite:GetBool() or hide_role:GetBool() then return end
+    if arsonist_early_ignite:GetBool() then return end
+    if hide_role:GetBool() then return end
 
-    if cli:IsArsonist() and cli:GetNWBool("TTTArsonistDouseComplete", false) and not arsonist_early_ignite:GetBool() then
+    if cli:IsArsonist() and cli:GetNWBool("TTTArsonistDouseComplete", false) then
         surface.SetFont("TabLarge")
         surface.SetTextColor(255, 255, 255, 230)
 

@@ -322,7 +322,6 @@ end
 --------------
 
 hook.Add("TTTHUDInfoPaint", "Beggar_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    if not hide_role then hide_role = GetConVar("ttt_hide_role") end
     if hide_role:GetBool() then return end
 
     if (cli:IsInnocent() or cli:IsTraitor()) and cli:GetNWBool("WasBeggar", false) then

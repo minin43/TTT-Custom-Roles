@@ -43,8 +43,6 @@ surface.CreateFont("Trebuchet22", {
     size = 22,
     weight = 900 })
 
-CreateClientConVar("ttt_hide_role", "0", true, false)
-
 include("corpse_shd.lua")
 include("player_ext_shd.lua")
 include("weaponry_shd.lua")

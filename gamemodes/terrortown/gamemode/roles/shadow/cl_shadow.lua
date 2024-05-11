@@ -499,7 +499,8 @@ AddHook("HUDPaint", "Shadow_HUDPaint", function()
 end)
 
 AddHook("TTTHUDInfoPaint", "Shadow_Buff_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    if not cli:IsShadow() or hide_role:GetBool() then return end
+    if not cli:IsShadow() then return end
+    if hide_role:GetBool() then return end
 
     local shadowBuff = shadow_target_buff:GetInt()
     if shadowBuff <= SHADOW_BUFF_NONE then return end
