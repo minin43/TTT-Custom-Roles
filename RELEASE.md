@@ -1,5 +1,18 @@
 # Release Notes
 
+## 2.1.15 (Beta)
+**Released:**
+
+### Changes
+- Changed resource download logic to hopefully fix missing textures when a user wasn't subscribed to the addon
+- Changed players to have their search information cleared when they resurrect to avoid confusion of the scoreboard showing their old role
+
+### Fixes
+- Fixed trash added to the end of some messages printed in chat (such as the detective call notification)
+- Fixed scoreboard showing a player's current role when their search information should have been showing something different
+- Fixed changing a rolepack's role settings resetting the weights of all role slots back to 1
+- Fixed not being able to have the DNA tester and another detective role item at the same time
+
 ## 2.1.14 (Beta)
 **Released: May 4th, 2024**
 

@@ -24,9 +24,13 @@ local StringSub = string.sub
 include("player_class/player_ttt.lua")
 
 -- Version string for display and function for version checks
-CR_VERSION = "2.1.14"
+CR_VERSION = "2.1.15"
 CR_BETA = true
 CR_WORKSHOP_ID = CR_BETA and "2404251054" or "2421039084"
+
+if SERVER then
+    resource.AddWorkshop(CR_WORKSHOP_ID)
+end
 
 function CRVersion(version)
     local installedVersionRaw = StringSplit(CR_VERSION, ".")

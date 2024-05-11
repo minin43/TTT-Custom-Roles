@@ -379,6 +379,16 @@ function plymeta:SpawnForRound(dead_only)
         net.WriteString(self:Nick())
         net.Broadcast()
 
+        -- Clear all search information for this resurrected player
+        self:SetNWBool("det_called", false)
+        self:SetNWBool("body_found", false)
+        self:SetNWBool("body_searched", false)
+        self:SetNWBool("body_searched_det", false)
+
+        net.Start("TTT_ClearSearchResult")
+        net.WritePlayer(self)
+        net.Broadcast()
+
         SetRoleHealth(self)
     end
 

@@ -3,7 +3,6 @@ AddCSLuaFile()
 local hook = hook
 local net = net
 local player = player
-local resource = resource
 local table = table
 local util = util
 
@@ -11,8 +10,6 @@ local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_ClownTeamChange")
 util.AddNetworkString("TTT_ClownActivate")
-
-resource.AddSingleFile("sound/clown.wav")
 
 -------------
 -- CONVARS --

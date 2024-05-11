@@ -38,7 +38,6 @@ local coughs = {}
 for i=1, coughCount do
     local coughName = StringFormat("infected/cough%i.wav", i)
     table.insert(coughs, Sound(coughName))
-    resource.AddSingleFile("sound/" .. coughName)
 end
 
 local function StartCoughTimer()

@@ -6,7 +6,6 @@ local IsValid = IsValid
 local math = math
 local net = net
 local player = player
-local resource = resource
 local timer = timer
 local util = util
 
@@ -24,10 +23,6 @@ if CLIENT then
 else
     util.AddNetworkString("TTT_Vampified")
     util.AddNetworkString("TTT_Vampire_Fade")
-
-    resource.AddSingleFile("sound/weapons/ttt/vampireeat.wav")
-    resource.AddSingleFile("sound/weapons/ttt/fade.wav")
-    resource.AddSingleFile("sound/weapons/ttt/unfade.wav")
 end
 
 SWEP.InLoadoutFor = { ROLE_VAMPIRE }
