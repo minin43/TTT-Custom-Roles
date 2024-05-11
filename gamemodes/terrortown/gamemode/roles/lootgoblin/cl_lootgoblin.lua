@@ -55,6 +55,8 @@ local lootgoblin_drop_timer = GetConVar("ttt_lootgoblin_drop_timer")
 local lootgoblin_radar_beep_sound = CreateClientConVar("ttt_lootgoblin_radar_beep_sound", "1", true, false, "Whether the loot goblin's radar should play a beep sound whenever the location updates", 0, 1)
 local lootgoblin_radar_beep_sound_override = GetConVar("ttt_lootgoblin_radar_beep_sound_override")
 
+local hide_role = GetConVar("ttt_hide_role")
+
 hook.Add("TTTSettingsRolesTabSections", "LootGoblin_TTTSettingsRolesTabSections", function(role, parentForm)
     if role ~= ROLE_LOOTGOBLIN then return end
     if not lootgoblin_radar_enabled:GetBool() then return end
@@ -176,12 +178,7 @@ end)
 ---------
 
 hook.Add("TTTHUDInfoPaint", "LootGoblin_TTTHUDInfoPaint", function(client, label_left, label_top, active_labels)
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     if client:IsActiveLootGoblin() and not client:IsRoleActive() then
         surface.SetFont("TabLarge")

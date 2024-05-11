@@ -16,6 +16,8 @@ local TableInsert = table.insert
 -------------
 
 local detectives_glow_enabled = GetConVar("ttt_detectives_glow_enabled")
+local detectives_hide_special_mode = GetConVar("ttt_detectives_hide_special_mode")
+local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -60,15 +62,10 @@ end)
 ---------
 
 AddHook("TTTHUDInfoPaint", "DetectiveLike_TTTHUDInfoPaint", function(client, label_left, label_top, active_labels)
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     if client:IsDetectiveTeam() then
-        if GetConVar("ttt_detectives_hide_special_mode"):GetInt() == SPECIAL_DETECTIVE_HIDE_FOR_OTHERS then
+        if detectives_hide_special_mode:GetInt() == SPECIAL_DETECTIVE_HIDE_FOR_OTHERS then
             surface.SetFont("TabLarge")
             surface.SetTextColor(255, 255, 255, 230)
 

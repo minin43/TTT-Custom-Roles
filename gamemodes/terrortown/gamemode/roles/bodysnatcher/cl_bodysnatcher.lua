@@ -19,6 +19,7 @@ local bodysnatcher_is_independent = GetConVar("ttt_bodysnatcher_is_independent")
 local bodysnatcher_destroy_body = GetConVar("ttt_bodysnatcher_destroy_body")
 local bodysnatcher_show_role = GetConVar("ttt_bodysnatcher_show_role")
 local bodysnatcher_swap_mode = GetConVar("ttt_bodysnatcher_swap_mode")
+local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -121,7 +122,7 @@ end)
 hook.Add("TTTScoringSummaryRender", "Bodysnatcher_TTTScoringSummaryRender", function(ply, roleFileName, groupingRole, roleColor, name, startingRole, finalRole)
     if not IsPlayer(ply) then return end
 
-    if GetConVar("ttt_bodysnatcher_swap_mode"):GetInt() == BODYSNATCHER_SWAP_MODE_NOTHING then
+    if bodysnatcher_swap_mode:GetInt() == BODYSNATCHER_SWAP_MODE_NOTHING then
         if startingRole == ROLE_BODYSNATCHER then
             return ROLE_STRINGS_SHORT[ROLE_BODYSNATCHER]
         end
@@ -138,12 +139,7 @@ end)
 ---------
 
 hook.Add("TTTHUDInfoPaint", "Bodysnatcher_TTTHUDInfoPaint", function(client, label_left, label_top, active_labels)
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     if client:GetNWBool("WasBodysnatcher", false) then
         local bodysnatcherMode = BODYSNATCHER_REVEAL_ALL

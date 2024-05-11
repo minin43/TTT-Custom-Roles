@@ -36,6 +36,8 @@ local last_slot = -1
 local last_kind = -1
 local selection_changed = false
 
+local hide_role = GetConVar("ttt_hide_role")
+
 local function GetColors(dark)
     if dark then
         return {
@@ -77,13 +79,9 @@ function WSWITCH:DrawBarBg(x, y, w, h, col)
     local bh = b / 2
 
     local role = LocalPlayer().GetDisplayedRole and LocalPlayer():GetDisplayedRole() or ROLE_INNOCENT
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
 
     local c = col.none
-    if not hide_role and GAMEMODE.round_state == ROUND_ACTIVE then
+    if GAMEMODE.round_state == ROUND_ACTIVE and not hide_role:GetBool() then
         c = col.tip[role]
     end
 
