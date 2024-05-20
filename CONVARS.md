@@ -89,6 +89,7 @@ ttt_paramedic_enabled                          0       // Whether or not the par
 ttt_turncoat_enabled                           0       // Whether or not the turncoat should spawn
 ttt_infected_enabled                           0       // Whether or not the infected should spawn
 ttt_vindicator_enabled                         0       // Whether or not the vindicator should spawn
+ttt_scout_enabled                              0       // Whether or not the scout should spawn
 ttt_paladin_enabled                            0       // Whether or not the paladin should spawn
 ttt_tracker_enabled                            0       // Whether or not the tracker should spawn
 ttt_medium_enabled                             0       // Whether or not the medium should spawn
@@ -134,6 +135,7 @@ ttt_paramedic_spawn_weight                     1       // The weight assigned to
 ttt_turncoat_spawn_weight                      1       // The weight assigned to spawning the turncoat
 ttt_infected_spawn_weight                      1       // The weight assigned to spawning the infected
 ttt_vindicator_spawn_weight                    1       // The weight assigned to spawning the vindicator
+ttt_scout_spawn_weight                         1       // The weight assigned to spawning the scout
 ttt_paladin_spawn_weight                       1       // The weight assigned to spawning the paladin
 ttt_tracker_spawn_weight                       1       // The weight assigned to spawning the tracker
 ttt_medium_spawn_weight                        1       // The weight assigned to spawning the medium
@@ -181,6 +183,7 @@ ttt_paramedic_min_players                      0       // The minimum number of 
 ttt_turncoat_min_players                       0       // The minimum number of players required to spawn the turncoat
 ttt_infected_min_players                       0       // The minimum number of players required to spawn the infected
 ttt_vindicator_min_players                     0       // The minimum number of players required to spawn the vindicator
+ttt_scout_min_players                          0       // The minimum number of players required to spawn the scout
 ttt_paladin_min_players                        0       // The minimum number of players required to spawn the paladin
 ttt_tracker_min_players                        0       // The minimum number of players required to spawn the tracker
 ttt_medium_min_players                         0       // The minimum number of players required to spawn the medium
@@ -435,6 +438,12 @@ ttt_vindicator_kill_on_success                 0       // Whether the vindicator
 ttt_vindicator_can_see_jesters                 0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to vindicators when they are on the independent team
 ttt_vindicator_update_scoreboard               0       // Whether vindicators show dead players as missing in action when they are on the independent team
 
+// Scout
+ttt_scout_reveal_jesters                       0       // Whether jester roles should also be revealed to the Scout.
+ttt_scout_reveal_independents                  0       // Whether independent roles should also be revealed to the Scout.
+ttt_scout_delay_intel                          0       // How long (in seconds) to delay the information that is given to the Scout.
+ttt_scout_alert_targets                        0       // Whether players whose roles are revealed by the Scout should be notified.
+ttt_scout_hidden_roles                         ""      // Names of roles that cannot be revealed by the Scout, separated with commas. Do not include spaces or capital letters.
 
 // ----------------------------------------
 
