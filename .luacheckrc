@@ -1089,6 +1089,7 @@ globals = {
     "ROLE_QUARTERMASTER",
     "ROLE_REVENGER",
     "ROLE_SAPPER",
+    "ROLE_SCOUT",
     "ROLE_SHADOW",
     "ROLE_SPONGE",
     "ROLE_SPY",

@@ -42,7 +42,7 @@ local function RevealRoles(ply, delay_intel)
     ply:QueueMessage(MSG_PRINTBOTH, message)
 
     if scout_alert_targets:GetBool() then
-        for _, p in player.Iterator do
+        for _, p in player.Iterator() do
             local role = p:GetRole()
             if table.HasValue(rolesToReveal[sid64], role) then
                 ply:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_SCOUT] .. " knows your role is in play.")
@@ -51,7 +51,7 @@ local function RevealRoles(ply, delay_intel)
     end
 end
 
-ROLE_ON_ROLE_ASSIGNED[ROLE_SCOUT] = function(ply)
+local function GatherIntel(ply)
     local hiddenRoles = {}
     local hiddenRolesString = scout_hidden_roles:GetString()
     if #hiddenRolesString > 0 then
@@ -59,7 +59,7 @@ ROLE_ON_ROLE_ASSIGNED[ROLE_SCOUT] = function(ply)
     end
 
     local currentRoles = {}
-    for _, p in player.Iterator do
+    for _, p in player.Iterator() do
         local role = p:GetRole()
         if table.HasValue(hiddenRoles, ROLE_STRINGS_RAW[role]) then continue end
         if (p:IsTraitorTeam() and not p:IsTraitor()) or (scout_reveal_jesters:GetBool() and p:IsJesterTeam()) or (scout_reveal_independents:GetBool() and p:IsIndependentTeam()) then
@@ -81,6 +81,20 @@ ROLE_ON_ROLE_ASSIGNED[ROLE_SCOUT] = function(ply)
     end
 end
 
+hook.Add("TTTBeginRound", "Scout_TTTBeginRound", function()
+    for _, p in player.Iterator() do
+        if p:IsScout() then
+            GatherIntel(p)
+        end
+    end
+end)
+
+ROLE_ON_ROLE_ASSIGNED[ROLE_SCOUT] = function(ply)
+    if GetRoundState() == ROUND_ACTIVE then
+        GatherIntel(ply)
+    end
+end
+
 -------------
 -- CLEANUP --
 -------------
@@ -91,8 +105,8 @@ local function CleanupTimers(ply)
 end
 
 hook.Add("TTTPrepareRound", "Scout_TTTPrepareRound", function()
-    for _, v in player.Iterator do
-        CleanupTimers(v)
+    for _, p in player.Iterator() do
+        CleanupTimers(p)
     end
 end)
 
