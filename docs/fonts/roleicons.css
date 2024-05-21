@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'roleicons';
-  src:  url('roleicons.eot?22sjfw');
-  src:  url('roleicons.eot?22sjfw#iefix') format('embedded-opentype'),
-    url('roleicons.ttf?22sjfw') format('truetype'),
-    url('roleicons.woff?22sjfw') format('woff'),
-    url('roleicons.svg?22sjfw#icomoon') format('svg');
+  src:  url('roleicons.eot?ug4zu4');
+  src:  url('roleicons.eot?ug4zu4#iefix') format('embedded-opentype'),
+    url('roleicons.ttf?ug4zu4') format('truetype'),
+    url('roleicons.woff?ug4zu4') format('woff'),
+    url('roleicons.svg?ug4zu4#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -55,114 +55,132 @@
 .icon-drunk:before {
   content: "\e909";
 }
-.icon-glitch:before {
+.icon-evil-twin:before {
   content: "\e90a";
 }
-.icon-guesser:before {
-  content: "\e929";
-}
-.icon-hive-mind:before {
-  content: "\e92b";
-}
-.icon-hypnotist:before {
+.icon-glitch:before {
   content: "\e90b";
 }
-.icon-impersonator:before {
+.icon-good-twin:before {
   content: "\e90c";
 }
-.icon-infected:before {
+.icon-guesser:before {
   content: "\e90d";
 }
-.icon-informant:before {
+.icon-hive-mind:before {
   content: "\e90e";
 }
-.icon-innocent:before {
+.icon-hypnotist:before {
   content: "\e90f";
 }
-.icon-jester:before {
+.icon-illusionist:before {
   content: "\e910";
 }
-.icon-killer:before {
+.icon-impersonator:before {
   content: "\e911";
 }
-.icon-loot-goblin:before {
+.icon-infected:before {
   content: "\e912";
 }
-.icon-mad-scientist:before {
+.icon-informant:before {
   content: "\e913";
 }
-.icon-marshal:before {
+.icon-innocent:before {
   content: "\e914";
 }
-.icon-medium:before {
+.icon-jester:before {
   content: "\e915";
 }
-.icon-mercenary:before {
+.icon-killer:before {
   content: "\e916";
 }
-.icon-old-man:before {
+.icon-loot-goblin:before {
   content: "\e917";
 }
-.icon-paladin:before {
+.icon-mad-scientist:before {
   content: "\e918";
 }
-.icon-paramedic:before {
+.icon-marshal:before {
   content: "\e919";
 }
-.icon-parasite:before {
+.icon-medium:before {
   content: "\e91a";
 }
-.icon-phantom:before {
+.icon-mercenary:before {
   content: "\e91b";
 }
-.icon-quack:before {
+.icon-old-man:before {
   content: "\e91c";
 }
-.icon-quartermaster:before {
-  content: "\e92c";
-}
-.icon-revenger:before {
+.icon-paladin:before {
   content: "\e91d";
 }
-.icon-sapper:before {
+.icon-paramedic:before {
   content: "\e91e";
 }
-.icon-shadow:before {
+.icon-parasite:before {
   content: "\e91f";
 }
-.icon-sponge:before {
+.icon-phantom:before {
   content: "\e920";
 }
-.icon-spy:before {
-  content: "\e92d";
-}
-.icon-swapper:before {
+.icon-plaguemaster:before {
   content: "\e921";
 }
-.icon-team:before {
-  content: "\e92a";
-}
-.icon-tracker:before {
+.icon-quack:before {
   content: "\e922";
 }
-.icon-traitor:before {
+.icon-quartermaster:before {
   content: "\e923";
 }
-.icon-trickster:before {
+.icon-revenger:before {
   content: "\e924";
 }
-.icon-turncoat:before {
+.icon-sapper:before {
   content: "\e925";
 }
-.icon-vampire:before {
+.icon-scout:before {
   content: "\e926";
 }
-.icon-veteran:before {
+.icon-shadow:before {
   content: "\e927";
 }
-.icon-vindicator:before {
+.icon-sponge:before {
+  content: "\e928";
+}
+.icon-spy:before {
+  content: "\e929";
+}
+.icon-summoner:before {
+  content: "\e92a";
+}
+.icon-swapper:before {
+  content: "\e92b";
+}
+.icon-team:before {
+  content: "\e92c";
+}
+.icon-tracker:before {
+  content: "\e92d";
+}
+.icon-traitor:before {
   content: "\e92e";
 }
+.icon-trickster:before {
+  content: "\e92f";
+}
+.icon-turncoat:before {
+  content: "\e930";
+}
+.icon-vampire:before {
+  content: "\e931";
+}
+.icon-veteran:before {
+  content: "\e932";
+}
+.icon-vindicator:before {
+  content: "\e933";
+}
 .icon-zombie:before {
-  content: "\e928";
+  content: "\e934";
 }
