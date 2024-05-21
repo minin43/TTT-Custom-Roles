@@ -1023,6 +1023,8 @@ ttt_trickster_starting_health                  100     // The amount of health t
 ttt_paramedic_starting_health                  100     // The amount of health the paramedic starts with
 ttt_turncoat_starting_health                   100     // The amount of health the turncoat starts with
 ttt_infected_starting_health                   100     // The amount of health the infected starts with
+ttt_vindicator_starting_health                 100     // The amount of health the vindicator starts with
+ttt_scout_starting_health                      100     // The amount of health the scout starts with
 ttt_detective_starting_health                  100     // The amount of health the detective starts with
 ttt_paladin_starting_health                    100     // The amount of health the paladin starts with
 ttt_tracker_starting_health                    100     // The amount of health the tracker starts with
@@ -1070,6 +1072,8 @@ ttt_trickster_max_health                       100     // The maximum amount of 
 ttt_paramedic_max_health                       100     // The maximum amount of health the paramedic can have
 ttt_turncoat_max_health                        100     // The maximum amount of health the turncoat can have
 ttt_infected_max_health                        100     // The maximum amount of health the infected can have
+ttt_vindicator_max_health                      100     // The maximum amount of health the vindicator can have
+ttt_scout_max_health                           100     // The maximum amount of health the scout can have
 ttt_detective_max_health                       100     // The maximum amount of health the detective can have
 ttt_paladin_max_health                         100     // The maximum amount of health the paladin can have
 ttt_tracker_max_health                         100     // The maximum amount of health the tracker can have
