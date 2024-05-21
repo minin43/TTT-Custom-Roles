@@ -26,15 +26,15 @@ local function RevealRoles(ply, delay_intel)
     end
     local message = "The following roles are in play: "
     if delay_intel > 0 then
-        message = "As of " .. delay_intel .. " second(s) ago, the following roles were in play: "
+        message = "As of " .. delay_intel .. " seconds ago, the following roles were in play: "
     end
     for k, v in ipairs(rolesToReveal[sid64]) do
         if k == 1 then
             message = message .. ROLE_STRINGS[v]
         elseif k == 2 and #rolesToReveal[sid64] == 2 then
-            message = message .. " and " .. ROLE_STRINGS[v] "."
+            message = message .. " and " .. ROLE_STRINGS[v] .. "."
         elseif k == #rolesToReveal[sid64] then
-            message = message .. ", and " .. ROLE_STRINGS[v] "."
+            message = message .. ", and " .. ROLE_STRINGS[v] .. "."
         else
             message = message .. ", " .. ROLE_STRINGS[v]
         end
@@ -45,7 +45,7 @@ local function RevealRoles(ply, delay_intel)
         for _, p in player.Iterator() do
             local role = p:GetRole()
             if table.HasValue(rolesToReveal[sid64], role) then
-                ply:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_SCOUT] .. " knows your role is in play.")
+                p:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_SCOUT] .. " knows your role is in play.")
             end
         end
     end
@@ -75,7 +75,8 @@ local function GatherIntel(ply)
     if delay_intel == 0 then
         RevealRoles(ply, 0)
     else
-        timer.Create("Scout_RevealRoles_" .. sid64, delay_intel, 0, function()
+        ply:QueueMessage(MSG_PRINTBOTH, "Your intel is on it's way. You will learn which roles are in play in " .. delay_intel .. " seconds.")
+        timer.Create("Scout_RevealRoles_" .. sid64, delay_intel, 1, function()
             RevealRoles(ply, delay_intel)
         end)
     end
