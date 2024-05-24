@@ -81,7 +81,7 @@ hook.Add("TTTScoreboardPlayerRole", "Twins_TTTScoreboardPlayerRole", function(pl
     if ply == cli then return end
 
     if ply:IsTwin() then
-        local role = ent:GetRole()
+        local role = ply:GetRole()
         return ROLE_COLORS_SCOREBOARD[role], ROLE_STRINGS_SHORT[role]
     end
 end)
