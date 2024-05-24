@@ -31,7 +31,7 @@ hook.Add("TTTTargetIDPlayerRoleIcon", "Twins_TTTTargetIDPlayerRoleIcon", functio
     if ply:IsActiveGoodTwin() then
         return ROLE_GOODTWIN, false
     elseif ply:IsActiveEvilTwin() then
-        return ROLE_EVILTWIN, false
+        return ROLE_EVILTWIN, cli:IsActiveEvilTwin()
     end
 end)
 

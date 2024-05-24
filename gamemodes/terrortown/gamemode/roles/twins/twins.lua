@@ -140,10 +140,10 @@ local invulnerabilityEnd = nil
 local invulnerabilityTeam = nil
 local twinsCanDamageEachOther = false
 
-hook.Add("PlayerDeath", "Twins_PlayerDeath", function(victim, infl, attacker)
+local function CheckTwinsInvulnerability(ply, oldRole)
     if twinsCanDamageEachOther then return end
 
-    if victim:IsTwin() and not invulnerabilityEnd then
+    if (ply:IsTwin() or oldRole == ROLE_GOODTWIN or oldRole == ROLE_EVILTWIN) and not invulnerabilityEnd then
         local invulnerability_timer = twins_invulnerability_timer:GetInt()
         if invulnerability_timer == 0 then return end
 
@@ -188,6 +188,14 @@ hook.Add("PlayerDeath", "Twins_PlayerDeath", function(victim, infl, attacker)
             p:QueueMessage(MSG_PRINTBOTH, "Only twins remain! You can now damage each other freely.")
         end
     end
+end
+
+hook.Add("PlayerDeath", "Twins_PlayerDeath", function(victim, infl, attacker)
+    CheckTwinsInvulnerability(victim)
+end)
+
+hook.Add("TTTPlayerRoleChanged", "Twins_TTTPlayerRoleChanged", function(ply, oldRole, newRole)
+    CheckTwinsInvulnerability(ply, oldRole)
 end)
 
 ---------------------
