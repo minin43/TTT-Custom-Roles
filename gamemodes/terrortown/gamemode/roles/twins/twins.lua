@@ -39,7 +39,7 @@ hook.Add("TTTSelectRoles", "Twins_TTTSelectRoles", function()
             if role == ROLE_GOODTWIN then
                 forcedGoodTwin = true
             elseif role == ROLE_EVILTWIN then
-                forcedGoodTwin = true
+                forcedEvilTwin = true
             end
         end
     end
@@ -142,6 +142,7 @@ local twinsCanDamageEachOther = false
 
 local function CheckTwinsInvulnerability(ply, oldRole)
     if twinsCanDamageEachOther then return end
+    if GetRoundState() ~= ROUND_ACTIVE then return end
 
     if (ply:IsTwin() or oldRole == ROLE_GOODTWIN or oldRole == ROLE_EVILTWIN) and not invulnerabilityEnd then
         local invulnerability_timer = twins_invulnerability_timer:GetInt()
@@ -252,3 +253,6 @@ hook.Add("TTTPrepareRound", "Twins_TTTPrepareRound", function()
     invulnerabilityTeam = nil
     twinsCanDamageEachOther = false
 end)
+
+-- TODO: Add visual indicator of when a player is invulnerable
+-- TODO: Notify player when their invulnerability ends
