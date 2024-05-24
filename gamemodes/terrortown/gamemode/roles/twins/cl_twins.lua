@@ -83,9 +83,9 @@ hook.Add("TTTScoreboardPlayerRole", "Twins_TTTScoreboardPlayerRole", function(pl
     if not cli:IsActiveTwin() then return end
     if ply == cli then return end
 
-    if ply:IsActiveGoodTwin() then
+    if ply:IsGoodTwin() then
         return ROLE_COLORS_SCOREBOARD[ROLE_GOODTWIN], ROLE_STRINGS_SHORT[ROLE_GOODTWIN]
-    elseif ply:IsActiveEvilTwin() then
+    elseif ply:IsEvilTwin() then
         return ROLE_COLORS_SCOREBOARD[ROLE_EVILTWIN], ROLE_STRINGS_SHORT[ROLE_EVILTWIN]
     end
 end)

@@ -147,8 +147,8 @@ local function CheckTwinsInvulnerability(ply, oldRole)
         local invulnerability_timer = twins_invulnerability_timer:GetInt()
         if invulnerability_timer == 0 then return end
 
-        local livingGoodTwins = false
-        local livingEvilTwins = false
+        local livingGoodTwins = {}
+        local livingEvilTwins = {}
         for _, p in player.Iterator() do
             if p:IsActiveGoodTwin() then
                 table.insert(livingGoodTwins, p)
