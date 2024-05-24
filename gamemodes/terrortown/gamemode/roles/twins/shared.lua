@@ -2,8 +2,8 @@
 -- CONVARS --
 -------------
 
-local twins_enabled = CreateConVar("ttt_twins_enabled", "0", FCVAR_REPLICATED)
-local twins_invulnerability_timer = CreateConVar("ttt_twins_invulnerability_timer", "20", FCVAR_REPLICATED)
+CreateConVar("ttt_twins_enabled", "0", FCVAR_REPLICATED)
+CreateConVar("ttt_twins_invulnerability_timer", "20", FCVAR_REPLICATED)
 
 -- TODO: Figure out where to put twins ConVars in ULX, CONVARS.md, and the docs website
 

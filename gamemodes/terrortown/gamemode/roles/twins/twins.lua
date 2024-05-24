@@ -91,7 +91,7 @@ hook.Add("TTTBeginRound", "Twins_TTTBeginRound", function()
         return
     end
 
-    local message = ""
+    local message
 
     if #goodTwins == 1 then
         message = goodTwins[1]:Nick() .. " is your " .. ROLE_STRINGS[ROLE_GOODTWIN] .. "."
