@@ -1,10 +1,15 @@
 # Release Notes
 
-## 2.1.16 (Beta)
+## 2.1.17 (Beta)
 **Released:**
 
 ### Additions
 - Added new innocent role: scout
+- Added new innocent role: good twin
+- Added new traitor role: evil twin
+
+### Developer
+- Added `util.FormattedList` method to allow for easy conversion from tables to a formatted string
 
 ## 2.1.15 (Beta)
 **Released: May 11th, 2024**

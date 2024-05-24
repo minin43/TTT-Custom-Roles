@@ -81,7 +81,7 @@ Gets the role that should be displayed for the player.\
 - *display_role* - The role that should be displayed for the player.
 - *changed* - Whether the return value was changed and should be hidden
 
-### plymeta:GetForcedRole(role)
+### plymeta:GetForcedRole()
 Gets the player's forced role if one was set with `plymeta:ForceRoleNextRound(role)`. Returns `false` otherwise.\
 *Realm:* Server\
 *Added in:* 2.0.7

@@ -28,17 +28,7 @@ local function RevealRoles(ply, delay_intel)
     if delay_intel > 0 then
         message = "As of " .. delay_intel .. " seconds ago, the following roles were in play: "
     end
-    for k, v in ipairs(rolesToReveal[sid64]) do
-        if k == 1 then
-            message = message .. ROLE_STRINGS[v]
-        elseif k == 2 and #rolesToReveal[sid64] == 2 then
-            message = message .. " and " .. ROLE_STRINGS[v] .. "."
-        elseif k == #rolesToReveal[sid64] then
-            message = message .. ", and " .. ROLE_STRINGS[v] .. "."
-        else
-            message = message .. ", " .. ROLE_STRINGS[v]
-        end
-    end
+    message = message .. util.FormattedList(rolesToReveal[sid64], function(str) return ROLE_STRINGS[str] end) .. "."
     ply:QueueMessage(MSG_PRINTBOTH, message)
 
     if scout_alert_targets:GetBool() then
