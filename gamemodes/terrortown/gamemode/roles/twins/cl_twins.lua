@@ -40,10 +40,8 @@ hook.Add("TTTTargetIDPlayerRing", "Twins_TTTTargetIDPlayerRing", function(ent, c
     if not cli:IsActiveTwin() then return end
     if ent == cli then return end
 
-    if ent:IsActiveGoodTwin() then
-        return true, ROLE_COLORS_RADAR[ROLE_GOODTWIN]
-    elseif ent:IsActiveEvilTwin() then
-        return true, ROLE_COLORS_RADAR[ROLE_EVILTWIN]
+    if ent:IsActiveTwin() then
+        return true, ROLE_COLORS_RADAR[ent:GetRole()]
     end
 end)
 
@@ -52,10 +50,9 @@ hook.Add("TTTTargetIDPlayerText", "Twins_TTTTargetIDPlayerText", function(ent, c
     if not cli:IsActiveTwin() then return end
     if ent == cli then return end
 
-    if ent:IsActiveGoodTwin() then
-        return string.upper(ROLE_STRINGS[ROLE_GOODTWIN]), ROLE_COLORS_RADAR[ROLE_GOODTWIN]
-    elseif ent:IsActiveEvilTwin() then
-        return string.upper(ROLE_STRINGS[ROLE_EVILTWIN]), ROLE_COLORS_RADAR[ROLE_EVILTWIN]
+    if ent:IsActiveTwin() then
+        local role = ent:GetRole()
+        return string.upper(ROLE_STRINGS[role]), ROLE_COLORS_RADAR[role]
     end
 end)
 
@@ -83,10 +80,9 @@ hook.Add("TTTScoreboardPlayerRole", "Twins_TTTScoreboardPlayerRole", function(pl
     if not cli:IsActiveTwin() then return end
     if ply == cli then return end
 
-    if ply:IsGoodTwin() then
-        return ROLE_COLORS_SCOREBOARD[ROLE_GOODTWIN], ROLE_STRINGS_SHORT[ROLE_GOODTWIN]
-    elseif ply:IsEvilTwin() then
-        return ROLE_COLORS_SCOREBOARD[ROLE_EVILTWIN], ROLE_STRINGS_SHORT[ROLE_EVILTWIN]
+    if ply:IsTwin() then
+        local role = ent:GetRole()
+        return ROLE_COLORS_SCOREBOARD[role], ROLE_STRINGS_SHORT[role]
     end
 end)
 

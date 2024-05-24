@@ -14,8 +14,8 @@ CreateConVar("ttt_twins_invulnerability_timer", "20", FCVAR_REPLICATED)
 local plymeta = FindMetaTable("Player")
 
 function plymeta:GetTwin() return self:GetGoodTwin() or self:GetEvilTwin() end
-function plymeta:IsTwin() return self:GetTwin() end
-function plymeta:IsActiveTwin() return self:IsActiveGoodTwin() or self:IsActiveEvilTwin() end
+plymeta.IsTwin = plymeta.GetTwin
+function plymeta:IsActiveTwin() return self:IsActive() and self:IsTwin() end
 
 -------------------
 -- ROLE SPAWNING --
