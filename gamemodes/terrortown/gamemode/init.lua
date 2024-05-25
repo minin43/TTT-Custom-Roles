@@ -275,11 +275,9 @@ util.AddNetworkString("TTT_Radar")
 util.AddNetworkString("TTT_Spectate")
 util.AddNetworkString("TTT_TeleportMark")
 util.AddNetworkString("TTT_ClearRadarExtras")
-util.AddNetworkString("TTT_SpawnedPlayers")
 util.AddNetworkString("TTT_Defibrillated")
 util.AddNetworkString("TTT_RoleChanged")
 util.AddNetworkString("TTT_LogInfo")
-util.AddNetworkString("TTT_ResetScoreboard")
 util.AddNetworkString("TTT_BuyableWeapons")
 util.AddNetworkString("TTT_UpdateBuyableWeapons")
 util.AddNetworkString("TTT_ResetBuyableWeaponsCache")
@@ -861,18 +859,6 @@ function BeginRound()
         v:BeginRoleChecks()
 
         SetRoleHealth(v)
-    end
-
-    net.Start("TTT_ResetScoreboard")
-    net.Broadcast()
-
-    for _, v in PlayerIterator() do
-        if v:Alive() and v:IsTerror() then
-            net.Start("TTT_SpawnedPlayers")
-            net.WriteString(v:Nick())
-            net.WriteInt(v:GetRole(), 8)
-            net.Broadcast()
-        end
     end
 
     -- Give the StateUpdate messages ample time to arrive

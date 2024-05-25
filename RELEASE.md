@@ -1,5 +1,15 @@
 # Release Notes
 
+## 2.1.16 (Beta)
+**Released: May 25th, 2024**
+
+### Additions
+- Added ability to show killer team instead of role in death notification messages (disabled by default)
+
+### Changes
+- Changed logic for the `ttt_hide_role` convar to be more efficient (Thanks Callum!)
+- Changed logic for recording which players spawned at the start of the round to be more efficient
+
 ## 2.1.15 (Beta)
 **Released: May 11th, 2024**
 

@@ -67,8 +67,9 @@ CreateClientConVar("ttt_custom_mon_color_b", "0", true, false)
 UpdateRoleColours()
 
 CreateClientConVar("ttt_avoid_detective", "0", true, true)
-CreateClientConVar("ttt_hide_role", "0", true, false)
 CreateClientConVar("ttt_hide_ammo", "0", true, false)
+
+local hide_role = CreateClientConVar("ttt_hide_role", "0", true, false)
 
 CreateClientConVar("ttt_bypass_culling", "1", true, true, "Whether to bypass vis leafs and culling in maps for player icons and highlighting", 0, 1)
 
@@ -665,12 +666,7 @@ end
 function HELPSCRN:OpenRoleTutorial(role)
     if role <= ROLE_NONE or role > ROLE_MAX then return end
 
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     -- Open the window if it isn't already
     if not IsValid(dframe) then

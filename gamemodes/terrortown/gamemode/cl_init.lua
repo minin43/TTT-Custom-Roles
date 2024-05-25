@@ -167,9 +167,11 @@ local function RoundStateChange(o, n)
         VOICE.CycleMuteState(MUTE_NONE)
 
         CLSCORE:ClearPanel()
+        CLSCORE:ResetScoreboard()
 
-        -- people may have died and been searched during prep
         for _, p in PlayerIterator() do
+            CLSCORE:PlayerSpawned(p)
+            -- people may have died and been searched during prep
             p.search_result = nil
         end
 
@@ -207,7 +209,8 @@ CreateConVar("ttt_cl_soundcues", "0", FCVAR_ARCHIVE)
 local cues = {
     Sound("ttt/thump01e.mp3"),
     Sound("ttt/thump02e.mp3")
-};
+}
+
 local function PlaySoundCue()
     if GetConVar("ttt_cl_soundcues"):GetBool() then
         surface.PlaySound(table.Random(cues))

@@ -148,6 +148,7 @@ if CLIENT then
     local crosshair_brightness = CreateConVar("ttt_crosshair_brightness", "1.0", FCVAR_ARCHIVE)
     local crosshair_size = CreateConVar("ttt_crosshair_size", "1.0", FCVAR_ARCHIVE)
     local disable_crosshair = CreateConVar("ttt_disable_crosshair", "0", FCVAR_ARCHIVE)
+    local hide_role = GetConVar("ttt_hide_role")
 
     function SWEP:DrawHUD()
         if self.HUDHelp then
@@ -169,15 +170,10 @@ if CLIENT then
         local alpha = sights and sights_opacity:GetFloat() or 1
         local bright = crosshair_brightness:GetFloat() or 1
 
-        local hide_role = false;
-        if ConVarExists("ttt_hide_role") then
-            hide_role = GetConVar("ttt_hide_role"):GetBool()
-        end
-
         -- somehow it seems this can be called before my player metatable
         -- additions have loaded
         local color
-        if hide_role then
+        if hide_role:GetBool() then
             color = COLOR_WHITE
         elseif client.IsTraitorTeam and client:IsTraitorTeam() then
             color = ROLE_COLORS_HIGHLIGHT[ROLE_TRAITOR]

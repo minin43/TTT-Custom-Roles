@@ -16,15 +16,12 @@ GM.PickupHistoryWide = 300
 GM.PickupHistoryCorner = surface.GetTextureID("gui/corner8")
 
 local custom_ammo = CreateClientConVar("ttt_custom_ammo", 0, true, false, "Use custom ammo names.")
+local hide_role = GetConVar("ttt_hide_role")
 
 local function GetPickupColor()
     local role = LocalPlayer().GetDisplayedRole and LocalPlayer():GetDisplayedRole() or ROLE_INNOCENT
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
 
-    if not hide_role and GAMEMODE.round_state == ROUND_ACTIVE then
+    if GAMEMODE.round_state == ROUND_ACTIVE and not hide_role:GetBool() then
         return ROLE_COLORS[role]
     end
 
@@ -63,7 +60,6 @@ function GM:HUDWeaponPickedUp(wep)
 end
 
 function GM:HUDItemPickedUp(itemname)
-
     if not (IsValid(LocalPlayer()) and LocalPlayer():Alive()) then return end
 
     local pickup = {}
@@ -89,7 +85,6 @@ function GM:HUDItemPickedUp(itemname)
 
     table.insert(self.PickupHistory, pickup)
     self.PickupHistoryLast = pickup.time
-
 end
 
 function GM:HUDAmmoPickedUp(itemname, amount)
@@ -145,7 +140,6 @@ function GM:HUDAmmoPickedUp(itemname, amount)
 
     table.insert(self.PickupHistory, pickup)
     self.PickupHistoryLast = pickup.time
-
 end
 
 function GM:HUDDrawPickupHistory()
