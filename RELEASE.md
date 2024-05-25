@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.16 (Beta)
-**Released:**
+**Released: May 25th, 2024**
 
 ### Additions
 - Added ability to show killer team instead of role in death notification messages (disabled by default)
