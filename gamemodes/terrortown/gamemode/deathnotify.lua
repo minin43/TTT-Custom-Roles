@@ -9,8 +9,9 @@ local StringStartsWith = string.StartsWith
 
 util.AddNetworkString("TTT_ClientDeathNotify")
 
-local death_notifier_enabled = CreateConVar("ttt_death_notifier_enabled", "1")
+local death_notifier_enabled = CreateConVar("ttt_death_notifier_enabled", "1", FCVAR_NONE, "Whether to show death notification messages", 0, 1)
 local death_notifier_show_role = CreateConVar("ttt_death_notifier_show_role", "1", FCVAR_NONE, "Whether to show the killer's role in death notification messages", 0, 1)
+local death_notifier_show_team = CreateConVar("ttt_death_notifier_show_team", "0", FCVAR_NONE, "Whether to show the killer's team in death notification messages (only used when \"ttt_death_notifier_show_role\" is disabled)", 0, 1)
 
 hook.Add("PlayerDeath", "TTT_ClientDeathNotify", function(victim, inflictor, attacker)
     if gmod.GetGamemode().Name ~= "Trouble in Terrorist Town" then return end
@@ -37,6 +38,16 @@ hook.Add("PlayerDeath", "TTT_ClientDeathNotify", function(victim, inflictor, att
                 reason = "ply"
                 killerName = attacker:Nick()
                 role = attacker:GetRole()
+
+                if not death_notifier_show_role:GetBool() then
+                    -- Show team info instead of player info
+                    if death_notifier_show_team:GetBool() then
+                        reason = "team"
+                    -- If we're not showing team or role, send ROLE_NONE to hide it
+                    else
+                        role = ROLE_NONE
+                    end
+                end
             end
         end
     end
@@ -45,11 +56,6 @@ hook.Add("PlayerDeath", "TTT_ClientDeathNotify", function(victim, inflictor, att
     if type(new_reason) == "string" then reason = new_reason end
     if type(new_killer) == "string" then killerName = new_killer end
     if type(new_role) == "number" and new_role >= ROLE_NONE and new_role <= ROLE_MAX then role = new_role end
-
-    -- Always use NONE if showing the role is disabled
-    if not death_notifier_show_role:GetBool() then
-        role = ROLE_NONE
-    end
 
     -- Send the buffer message with the death information to the victim
     net.Start("TTT_ClientDeathNotify")
