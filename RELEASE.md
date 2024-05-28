@@ -10,6 +10,7 @@
 
 ### Developer
 - Added `util.FormattedList` method to allow for easy conversion from tables to a formatted string
+- Added `plymeta:SetInvulnerable` method to enable or disable invulnerability for a player
 
 ## 2.1.16 (Beta)
 **Released: May 25th, 2024**

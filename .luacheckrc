@@ -109,6 +109,7 @@ globals = {
     "COLLISION_GROUP_WORLD",
     "COLOR_BLACK",
     "COLOR_BLUE",
+    "COLOR_CYAN",
     "COLOR_DGRAY",
     "COLOR_DGREEN",
     "COLOR_DGREY",

@@ -1504,6 +1504,7 @@ COLOR_NAVY = Color(0, 0, 100, 255)
 COLOR_PINK = Color(255, 0, 255, 255)
 COLOR_ORANGE = Color(250, 100, 0, 255)
 COLOR_OLIVE = Color(100, 100, 0, 255)
+COLOR_CYAN = Color(0, 255, 255, 255)
 
 include("lang_shd.lua") -- uses some of util
 include("equip_items_shd.lua")

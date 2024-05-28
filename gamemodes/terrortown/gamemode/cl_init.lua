@@ -442,6 +442,31 @@ function GM:Think()
                 v.SmokeEmitter:Finish()
                 v.SmokeEmitter = nil
             end
+
+            if v ~= client and v:GetNWBool("CRTTT_Invulnerable", false) then
+                if not v.InvulnerableEmitter then v.InvulnerableEmitter = ParticleEmitter(v:GetPos()) end
+                if not v.InvulnerableNextPart then v.InvulnerableNextPart = CurTime() end
+                local pos = v:GetPos()
+                if v.InvulnerableNextPart < CurTime() and client:GetPos():Distance(pos) <= 3000 then
+                    v.InvulnerableEmitter:SetPos(pos)
+                    v.InvulnerableNextPart = CurTime() + MathRand(0.0005, 0.02)
+                    local vec = Vector(MathRand(-8, 8), MathRand(-8, 8), MathRand(-25, 25))
+                    local particle = v.InvulnerableEmitter:Add("particle/wisp.vmt", v:LocalToWorld(vec + Vector(0, 0, 35)))
+                    particle:SetVelocity(vec:GetNormalized() * 50)
+                    particle:SetDieTime(MathRand(0.2, 0.5))
+                    particle:SetStartAlpha(MathRandom(150, 220))
+                    particle:SetEndAlpha(0)
+                    local size = MathRandom(2, 5)
+                    particle:SetStartSize(size)
+                    particle:SetEndSize(size + 1)
+                    particle:SetRoll(MathRand(0, math.pi))
+                    particle:SetRollDelta(0)
+                    particle:SetColor(0, 255, 255)
+                end
+            elseif v.InvulnerableEmitter then
+                v.InvulnerableEmitter:Finish()
+                v.InvulnerableEmitter = nil
+            end
         end
     end
 end

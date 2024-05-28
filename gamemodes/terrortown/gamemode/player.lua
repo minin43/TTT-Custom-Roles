@@ -1094,6 +1094,11 @@ function GM:EntityTakeDamage(ent, dmginfo)
         ent:OnPinnedDamage(dmginfo)
         dmginfo:SetDamage(0)
     end
+
+    if IsPlayer(ent) and ent:GetNWBool("CRTTT_Invulnerable", false) then
+        dmginfo:ScaleDamage(0)
+        dmginfo:SetDamage(0)
+    end
 end
 
 function GM:PlayerTakeDamage(ent, infl, att, amount, dmginfo)
@@ -1307,6 +1312,12 @@ function GM:Tick()
             -- Run DNA Scanner think also when it is not deployed
             if IsValid(ply.scanner_weapon) and ply:GetActiveWeapon() ~= ply.scanner_weapon then
                 ply.scanner_weapon:Think()
+            end
+
+            if ply:GetNWBool("CRTTT_Invulnerable", false) then
+                ply:SetColor(COLOR_CYAN)
+            else
+                ply:SetColor(COLOR_WHITE)
             end
 
             CallHook("TTTPlayerAliveThink", nil, ply)

@@ -360,6 +360,14 @@ Sets the credits on the player based on their role's starting credits convars.\
 *Parameters:*
 - *keep_existing* - Whether to keep the player's existing credits (Defaults to `false`) *(Added in 1.6.2)*
 
+### plymeta:SetInvulnerable(invulnerable, play_sound)
+Controls if the player should be invulnerable or not.\
+*Realm:* Server\
+*Added in:* 2.1.17\
+*Parameters:*
+- *invulnerable* - `true` to enable invulnerability, `false` to disable
+- *play_sound* - Whether to play sound effects or not
+
 ### plymeta:SetPlayerScale(scale)
 Sets the player's size by adjusting models, step sizes, hulls and view offsets.\
 *Realm:* Server\

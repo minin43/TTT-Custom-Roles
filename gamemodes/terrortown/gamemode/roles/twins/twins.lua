@@ -136,15 +136,14 @@ end)
 -- DEATH CHECKS --
 ------------------
 
-local invulnerabilityEnd = nil
-local invulnerabilityTeam = nil
+local invulnerabilityTriggered = false
 local twinsCanDamageEachOther = false
 
 local function CheckTwinsInvulnerability(ply, oldRole)
     if twinsCanDamageEachOther then return end
     if GetRoundState() ~= ROUND_ACTIVE then return end
 
-    if (ply:IsTwin() or oldRole == ROLE_GOODTWIN or oldRole == ROLE_EVILTWIN) and not invulnerabilityEnd then
+    if (ply:IsTwin() or oldRole == ROLE_GOODTWIN or oldRole == ROLE_EVILTWIN) and not invulnerabilityTriggered then
         local invulnerability_timer = twins_invulnerability_timer:GetInt()
         if invulnerability_timer == 0 then return end
 
@@ -160,24 +159,38 @@ local function CheckTwinsInvulnerability(ply, oldRole)
             end
         end
 
-        invulnerabilityEnd = CurTime() + invulnerability_timer
+        invulnerabilityTriggered = true
         if #livingGoodTwins > 0 then
-            invulnerabilityTeam = ROLE_TEAM_INNOCENT
             for _, p in ipairs(livingGoodTwins) do
                 p:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_EVILTWIN] .. " has died! You have been granted " .. invulnerability_timer .. " seconds of invulnerability.")
+                p:SetInvulnerable(true, true)
+                timer.Create("TwinInvulnerabilityEnd_" .. p:SteamID64(), invulnerability_timer, 1, function()
+                    p:QueueMessage(MSG_PRINTTALK, "Your invulnerability period has ended.")
+                    p:SetInvulnerable(false, true)
+                end)
             end
         elseif #livingEvilTwins > 0 then
-            invulnerabilityTeam = ROLE_TEAM_TRAITOR
-            for _, p in ipairs(livingGoodTwins) do
+            for _, p in ipairs(livingEvilTwins) do
                 p:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_GOODTWIN] .. " has died! You have been granted " .. invulnerability_timer .. " seconds of invulnerability.")
+                p:SetInvulnerable(true, true)
+                timer.Create("TwinInvulnerabilityEnd_" .. p:SteamID64(), invulnerability_timer, 1, function()
+                    p:QueueMessage(MSG_PRINTTALK, "Your invulnerability period has ended.")
+                    p:SetInvulnerable(false, true)
+                end)
             end
         end
     else
         local twins = {}
+        local hasGoodTwin = false
+        local hasEvilTwin = false
         for _, p in player.Iterator() do
             if p:IsActive() then
-                if p:IsTwin() then
+                if p:IsGoodTwin() then
                     table.insert(twins, p)
+                    hasGoodTwin = true
+                elseif p:IsEvilTwin() then
+                    table.insert(twins, p)
+                    hasEvilTwin = true
                 elseif not p:ShouldActLikeJester() then
                     return
                 end
@@ -185,8 +198,10 @@ local function CheckTwinsInvulnerability(ply, oldRole)
         end
 
         twinsCanDamageEachOther = true
-        for _, p in ipairs(twins) do
-            p:QueueMessage(MSG_PRINTBOTH, "Only twins remain! You can now damage each other freely.")
+        if hasGoodTwin and hasEvilTwin then
+            for _, p in ipairs(twins) do
+                p:QueueMessage(MSG_PRINTBOTH, "Only twins remain! You can now damage each other freely.")
+            end
         end
     end
 end
@@ -206,14 +221,6 @@ end)
 hook.Add("EntityTakeDamage", "Twins_EntityTakeDamage", function(target, dmginfo)
     if not IsPlayer(target) then return end
     if not target:IsTwin() then return end
-
-    if invulnerabilityEnd and CurTime() < invulnerabilityEnd then
-        if (target:IsGoodTwin() and invulnerabilityTeam == ROLE_TEAM_INNOCENT) or (target:IsEvilTwin() and invulnerabilityTeam == ROLE_TEAM_TRAITOR) then
-            dmginfo:ScaleDamage(0)
-            dmginfo:SetDamage(0)
-            return
-        end
-    end
 
     local att = dmginfo:GetAttacker()
     if not IsPlayer(att) then return end
@@ -236,12 +243,6 @@ hook.Add("TTTDrawHitMarker", "Twins_TTTDrawHitMarker", function(victim, dmginfo)
     if not twinsCanDamageEachOther and att:IsTwin() and victim:IsTwin() then
         return true, false, true, false
     end
-
-    if invulnerabilityEnd and CurTime() < invulnerabilityEnd then
-        if (victim:IsGoodTwin() and invulnerabilityTeam == ROLE_TEAM_INNOCENT) or (victim:IsEvilTwin() and invulnerabilityTeam == ROLE_TEAM_TRAITOR) then
-            return true, false, true, false
-        end
-    end
 end)
 
 -------------
@@ -249,10 +250,10 @@ end)
 -------------
 
 hook.Add("TTTPrepareRound", "Twins_TTTPrepareRound", function()
-    invulnerabilityEnd = nil
-    invulnerabilityTeam = nil
+    invulnerabilityTriggered = false
     twinsCanDamageEachOther = false
-end)
 
--- TODO: Add visual indicator of when a player is invulnerable
--- TODO: Notify player when their invulnerability ends
+    for _, p in player.Iterator() do
+        timer.Remove("TwinInvulnerabilityEnd_" .. p:SteamID64())
+    end
+end)
