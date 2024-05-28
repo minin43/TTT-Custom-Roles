@@ -762,7 +762,7 @@ function GM:HUDDrawTargetID()
     local secondary_text
     local secondary_col
 
-    if IsPlayer(ent) and ent:GetNWBool("CRTTT_Invulnerable", false) then
+    if IsPlayer(ent) and ent:IsInvulnerable() then
         secondary_text = "INVULNERABLE"
         secondary_col = COLOR_CYAN
     end

@@ -443,7 +443,7 @@ function GM:Think()
                 v.SmokeEmitter = nil
             end
 
-            if v ~= client and v:GetNWBool("CRTTT_Invulnerable", false) then
+            if v ~= client and v:IsInvulnerable() then
                 if not v.InvulnerableEmitter then v.InvulnerableEmitter = ParticleEmitter(v:GetPos()) end
                 if not v.InvulnerableNextPart then v.InvulnerableNextPart = CurTime() end
                 local pos = v:GetPos()

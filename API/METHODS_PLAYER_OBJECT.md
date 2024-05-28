@@ -198,6 +198,11 @@ Whether the player is on the innocent team.\
 *Realm:* Client and Server\
 *Added in:* 1.0.0
 
+### plymeta:IsInvulnerable()
+Whether the player is invulnerable.\
+*Realm:* Server\
+*Added in:* 2.1.17
+
 ### plymeta:IsJesterTeam()
 Whether the player is on the jester team.\
 *Realm:* Client and Server\

@@ -212,6 +212,12 @@ end)
 
 hook.Add("TTTPlayerRoleChanged", "Twins_TTTPlayerRoleChanged", function(ply, oldRole, newRole)
     CheckTwinsInvulnerability(ply, oldRole)
+    if (oldRole == ROLE_GOODTWIN or oldRole == ROLE_EVILTWIN) and newRole ~= ROLE_GOODTWIN and newRole ~= ROLE_EVILTWIN then
+        if timer.Exists("TwinInvulnerabilityEnd_" .. ply:SteamID64()) then
+            timer.Remove("TwinInvulnerabilityEnd_" .. ply:SteamID64())
+            ply:SetInvulnerable(false, true)
+        end
+    end
 end)
 
 ---------------------

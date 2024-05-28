@@ -673,6 +673,10 @@ function plymeta:SetInvulnerable(invulnerable, play_sound)
     end
 end
 
+function plymeta:IsInvulnerable()
+    return self:GetNWBool("CRTTT_Invulnerable", false)
+end
+
 -- Run these overrides when the round is preparing the first time to ensure their addons have been loaded
 hook.Add("TTTPrepareRound", "PostLoadOverride", function()
     -- Compatibility with Dead Ringer (810154456)

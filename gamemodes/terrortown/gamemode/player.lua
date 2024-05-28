@@ -818,6 +818,8 @@ function GM:DoPlayerDeath(ply, attacker, dmginfo)
         end
     end
 
+    ply:SetInvulnerable(false, false)
+
     ply:SetTeam(TEAM_SPEC)
 end
 
@@ -1095,7 +1097,7 @@ function GM:EntityTakeDamage(ent, dmginfo)
         dmginfo:SetDamage(0)
     end
 
-    if IsPlayer(ent) and ent:GetNWBool("CRTTT_Invulnerable", false) then
+    if IsPlayer(ent) and ent:IsInvulnerable() then
         dmginfo:ScaleDamage(0)
         dmginfo:SetDamage(0)
     end
@@ -1314,7 +1316,7 @@ function GM:Tick()
                 ply.scanner_weapon:Think()
             end
 
-            if ply:GetNWBool("CRTTT_Invulnerable", false) then
+            if ply:IsInvulnerable() then
                 ply:SetColor(COLOR_CYAN)
             else
                 ply:SetColor(COLOR_WHITE)
