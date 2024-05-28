@@ -178,6 +178,10 @@ end
 -- using this hook instead of pre/postplayerdraw because playerdraw seems to
 -- happen before certain entities are drawn, which then clip over the sprite
 function GM:PostDrawTranslucentRenderables()
+    if not hide_role then
+        hide_role = GetConVar("ttt_hide_role")
+    end
+
     client = LocalPlayer()
     local spectatorOverride = client:GetRole() == ROLE_NONE and client:IsSpec() and spectators_see_roles:GetBool()
 
@@ -367,6 +371,9 @@ local MAX_TRACE_LENGTH = math.sqrt(3) * 2 * 16384
 
 function GM:HUDDrawTargetID()
     client = LocalPlayer()
+    if not hide_role then
+        hide_role = GetConVar("ttt_hide_role")
+    end
 
     local L = GetLang()
 

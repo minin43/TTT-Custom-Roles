@@ -1134,6 +1134,7 @@ ttt_round_summary_tabs                         summary,hilite,events,scores // T
 // Misc.
 ttt_death_notifier_enabled                     1       // Whether the name and role of a player's killer should be shown to the victim
 ttt_death_notifier_show_role                   1       // Whether to show the killer's role in death notification messages
+ttt_death_notifier_show_team                   0       // Whether to show the killer's team in death notification messages (only used when "ttt_death_notifier_show_role" is disabled)
 ttt_smokegrenade_extinguish                    1       // Whether smoke grenades should extinguish fire
 ttt_player_set_color                           1       // Whether player colors are set each time that player spawns
 ttt_dna_scan_detectives_loadout                0       // Whether all detectives should be given a DNA scanner. If disabled, only the Detective role will get one
