@@ -343,9 +343,6 @@ ttt_spy_flare_gun_loadout                      1       // Whether the spy should
 ttt_spy_flare_gun_shop                         0       // Whether the spy should have a flare gun be purchasable in the shop. Server must be restarted for changes to take effect
 ttt_spy_flare_gun_shop_rebuyable               0       // Whether the spy should be able to purchase the flare gun multiple times (Requires "ttt_spy_flare_gun_shop" to be enabled). Server must be restarted for changes to take effect
 
-// Evil Twin
-ttt_twins_invulnerability_timer                20      // How long (in seconds) the twins should be made invulnerable for if only one type of twin is alive. (Set to 0 to disable. ConVar shared with the Good Twin.)
-
 // ----------------------------------------
 
 // INNOCENT TEAM SETTINGS
@@ -452,9 +449,6 @@ ttt_scout_reveal_independents                  0       // Whether independent ro
 ttt_scout_delay_intel                          0       // How long (in seconds) to delay the information that is given to the Scout.
 ttt_scout_alert_targets                        0       // Whether players whose roles are revealed by the Scout should be notified.
 ttt_scout_hidden_roles                         ""      // Names of roles that cannot be revealed by the Scout, separated with commas. Do not include spaces or capital letters.
-
-// Good Twin
-ttt_twins_invulnerability_timer                20      // How long (in seconds) the twins should be made invulnerable for if only one type of twin is alive. (Set to 0 to disable. ConVar shared with the Evil Twin.)
 
 // ----------------------------------------
 
@@ -904,6 +898,13 @@ ttt_hivemind_chat_mode                         1       // How to handle chat by 
 ttt_hivemind_block_environmental               0       // Whether to block environmental damage to the hive mind
 ttt_hivemind_can_see_jesters                   1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the hive mind
 ttt_hivemind_update_scoreboard                 1       // Whether the hive mind shows dead players as missing in action
+
+// ----------------------------------------
+
+// GROUPED ROLE SETTINGS
+// Twins (Evil Twin, Good Twin)
+ttt_twins_invulnerability_timer                20      // How long (in seconds) the twins should be made invulnerable for if only one type of twin is alive. (Set to 0 to disable.)
+
 // ----------------------------------------
 
 // WEAPON SHOP SETTINGS
