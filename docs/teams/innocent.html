@@ -303,7 +303,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>twins_invulnerability_timer</td>
+                            <td>ttt_twins_invulnerability_timer</td>
                             <td>20</td>
                             <td>Integer</td>
                             <td>How long (in seconds) the twins should be made invulnerable for if only one type of twin is alive. <i>(Set to 0 to disable. ConVar shared with the Evil Twin.)</i></td>
@@ -776,16 +776,10 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>ttt_scout_reveal_jesters</td>
+                            <td>ttt_scout_alert_targets</td>
                             <td>0</td>
                             <td>Boolean</td>
-                            <td>Whether jester roles should also be revealed to the Scout.</td>
-                        </tr>
-                        <tr>
-                            <td>ttt_scout_reveal_independents</td>
-                            <td>0</td>
-                            <td>Boolean</td>
-                            <td>Whether independent roles should also be revealed to the Scout.</td>
+                            <td>Whether players whose roles are revealed by the Scout should be notified..</td>
                         </tr>
                         <tr>
                             <td>ttt_scout_delay_intel</td>
@@ -794,16 +788,22 @@
                             <td>How long (in seconds) to delay the information that is given to the Scout.</td>
                         </tr>
                         <tr>
-                            <td>ttt_scout_alert_targets</td>
-                            <td>0</td>
-                            <td>Boolean</td>
-                            <td>Whether players whose roles are revealed by the Scout should be notified..</td>
-                        </tr>
-                        <tr>
                             <td>ttt_scout_hidden_roles</td>
                             <td>"" <i>Empty string</i></td>
                             <td>String</td>
                             <td>Names of roles that cannot be revealed by the Scout, separated with commas. Do not include spaces or capital letters.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_scout_reveal_independents</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether independent roles should also be revealed to the Scout.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_scout_reveal_jesters</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether jester roles should also be revealed to the Scout.</td>
                         </tr>
                         </tbody>
                     </table>
