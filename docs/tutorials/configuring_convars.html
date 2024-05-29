@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Custom Roles for TTT - Tutorials - Configuring ConVars</title>
+    <link type="text/css" rel="stylesheet" href="../fonts/roleicons.css">
     <link rel="stylesheet" href="../css/style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark-dimmed.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
@@ -34,6 +35,7 @@
             <li><a href="#custom-roles-for-ttt-convars">Custom Roles for TTT ConVars</a>
                 <ol>
                     <li><a href="#shared-role-convars">Shared Role ConVars</a></li>
+                    <li><a href="#grouped-role-convars">Grouped Role ConVars</a></li>
                     <li><a href="#shop-convars">Shop ConVars</a></li>
                     <li><a href="#miscellaneous-convars">Miscellaneous ConVars</a></li>
                 </ol>
@@ -136,6 +138,45 @@ ttt_another_string "custom roles for ttt" // This line would set the value of th
             </tr>
             </tbody>
         </table>
+
+        <h3 id="grouped-role-convars">Grouped Role ConVars</h3>
+        <p>Some roles can only spawn in groups and do not use the same role spawning system as other roles. In these cases <code>the ttt_*_enabled</code>, <code>the ttt_*_spawn_weight</code>, and <code>the ttt_*_min_players</code> are not used to configure each role individually and the following ConVars are used instead. For each of these ConVars replace the '<b>*</b>' with the name of the group you want to configure in lower case and without spaces. <i>(e.g. replace '<b>*</b>' with 'twins' to configure the Twins group containing the Evil Twin and the Good Twin.)</i></p>
+        <p>The following roles are grouped:</p>
+        <ul>
+            <li><strong>Twins: </strong><span class="inline-icon" style="color:var(--special-traitor);"><i class="icon-evil-twin"></i><a href="../teams/traitor.html#evil-twin">Evil Twin</a></span>, <span class="inline-icon" style="color:var(--special-innocent);"><i class="icon-good-twin"></i><a href="../teams/innocent.html#good-twin">Good Twin</a></span>.</li>
+        </ul>
+        <table style="width:100%;">
+            <thead>
+            <tr>
+                <th>ConVar</th>
+                <th>Default</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>ttt_*_enabled</td>
+                <td>0</td>
+                <td>Boolean</td>
+                <td>Whether this group is able to spawn at the start of the round.</td>
+            </tr>
+            <tr>
+                <td>ttt_*_spawn_chance</td>
+                <td>0.1</td>
+                <td>Float</td>
+                <td>The chance that this group will spawn in a round. <i>(e.g. 0.1 = 10%.)</i></td>
+            </tr>
+            <tr>
+                <td>ttt_*_min_players</td>
+                <td>0</td>
+                <td>Integer</td>
+                <td>The minimum number of players required to spawn this group.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p><em>NOTE</em>: Health and name ConVars can still be used to configure each role individually, even if those roles are part of a group.</p>
 
         <h3 id="shop-convars">Shop ConVars</h3>
         <p>Some ConVars are used to configure who has access to a shop, what items are available and how many credits they have. For each of these ConVars replace the '<b>*</b>' with the name of the role you want to configure in lower case and without spaces. These ConVars only apply to roles that are configured to have access to a shop.</p>

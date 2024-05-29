@@ -2,7 +2,7 @@
 -- CONVARS --
 -------------
 
-local twins_chance = CreateConVar("ttt_twins_chance", "0.1", FCVAR_REPLICATED)
+local twins_spawn_chance = CreateConVar("ttt_twins_spawn_chance", "0.1", FCVAR_REPLICATED)
 local twins_min_players = CreateConVar("ttt_twins_min_players", "0", FCVAR_REPLICATED)
 
 local twins_enabled = GetConVar("ttt_twins_enabled")
@@ -49,7 +49,7 @@ hook.Add("TTTSelectRoles", "Twins_TTTSelectRoles", function()
     -- If neither twin has been forced then we spawn them as normal
     elseif not forcedGoodTwin and not forcedEvilTwin then
         if not twins_enabled:GetBool() then return end
-        if math.random() > twins_chance:GetFloat() then return end
+        if math.random() > twins_spawn_chance:GetFloat() then return end
         if twins_min_players:GetInt() ~= 0 and #players < twins_min_players:GetInt() then return end
         if #choices < 2 then return end
 

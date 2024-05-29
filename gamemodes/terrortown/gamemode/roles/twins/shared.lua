@@ -3,9 +3,21 @@
 -------------
 
 CreateConVar("ttt_twins_enabled", "0", FCVAR_REPLICATED)
-CreateConVar("ttt_twins_invulnerability_timer", "20", FCVAR_REPLICATED)
+CreateConVar("ttt_twins_invulnerability_timer", "20", FCVAR_REPLICATED, "How long (in seconds) the twins should be made invulnerable for if only one type of twin is alive. (Set to 0 to disable.)", 0, 60)
 
--- TODO: Figure out where to put twins ConVars in ULX, CONVARS.md, and the docs website
+ROLE_CONVARS[ROLE_GOODTWIN] = {}
+table.insert(ROLE_CONVARS[ROLE_GOODTWIN], {
+    cvar = "ttt_twins_invulnerability_timer",
+    type = ROLE_CONVAR_TYPE_NUM,
+    decimal = 0
+})
+
+ROLE_CONVARS[ROLE_EVILTWIN] = {}
+table.insert(ROLE_CONVARS[ROLE_EVILTWIN], {
+    cvar = "ttt_twins_invulnerability_timer",
+    type = ROLE_CONVAR_TYPE_NUM,
+    decimal = 0
+})
 
 --------------------
 -- PLAYER METHODS --
