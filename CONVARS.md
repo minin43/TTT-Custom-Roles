@@ -733,6 +733,7 @@ ttt_drunk_can_be_vampire                       1       // Whether the drunk can 
 ttt_drunk_can_be_quack                         1       // Whether the drunk can become a quack
 ttt_drunk_can_be_parasite                      1       // Whether the drunk can become a parasite
 ttt_drunk_can_be_informant                     1       // Whether the drunk can become an informant
+ttt_drunk_can_be_spy                           1       // Whether the drunk can become a spy
 ttt_drunk_can_be_innocent                      1       // Whether the drunk can become an innocent
 ttt_drunk_can_be_phantom                       1       // Whether the drunk can become a phantom
 ttt_drunk_can_be_revenger                      1       // Whether the drunk can become a revenger
@@ -750,6 +751,7 @@ ttt_drunk_can_be_tracker                       1       // Whether the drunk can 
 ttt_drunk_can_be_medium                        1       // Whether the drunk can become a medium
 ttt_drunk_can_be_sapper                        1       // Whether the drunk can become a sapper
 ttt_drunk_can_be_marshal                       1       // Whether the drunk can become a marshal
+ttt_drunk_can_be_quartermaster                 1       // Whether the drunk can become a quartermaster
 ttt_drunk_can_be_jester                        1       // Whether the drunk can become a jester
 ttt_drunk_can_be_swapper                       1       // Whether the drunk can become a swapper
 ttt_drunk_can_be_clown                         1       // Whether the drunk can become a clown
@@ -758,16 +760,14 @@ ttt_drunk_can_be_bodysnatcher                  1       // Whether the drunk can 
 ttt_drunk_can_be_lootgoblin                    1       // Whether the drunk can become a loot goblin
 ttt_drunk_can_be_cupid                         1       // Whether the drunk can become a cupid
 ttt_drunk_can_be_sponge                        1       // Whether the drunk can become a sponge
+ttt_drunk_can_be_guesser                       1       // Whether the drunk can become a guesser
 ttt_drunk_can_be_oldman                        1       // Whether the drunk can become an old man
 ttt_drunk_can_be_killer                        1       // Whether the drunk can become a killer
 ttt_drunk_can_be_zombie                        1       // Whether the drunk can become a zombie
 ttt_drunk_can_be_madscientist                  1       // Whether the drunk can become a mad scientist
 ttt_drunk_can_be_shadow                        1       // Whether the drunk can become a shadow
 ttt_drunk_can_be_arsonist                      1       // Whether the drunk can become a arsonist
-ttt_drunk_can_be_spy                           1       // Whether the drunk can become a spy
 ttt_drunk_can_be_hivemind                      1       // Whether the drunk can become the hive mind
-ttt_drunk_can_be_guesser                       1       // Whether the drunk can become a guesser
-ttt_drunk_can_be_quartermaster                 1       // Whether the drunk can become a quartermaster
 
 // Old Man
 ttt_oldman_drain_health_to                     0       // The amount of health to drain the old man down to. Set to 0 to disable
