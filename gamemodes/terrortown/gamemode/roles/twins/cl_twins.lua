@@ -3,6 +3,9 @@
 ------------------
 
 hook.Add("Initialize", "Twins_Translations_Initialize", function()
+    -- HUD
+    LANG.AddToLanguage("english", "twins_hud", "Invulnerability ends in: {time}")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_goodtwin", [[You are {role}!
 You have a twin on the traitor team that knows who you are.
@@ -93,6 +96,36 @@ end
 ROLE_IS_SCOREBOARD_INFO_OVERRIDDEN[ROLE_EVILTWIN] = function(ply, target)
     return false, ply:IsActiveEvilTwin() and target:IsActiveTwin()
 end
+
+---------
+-- HUD --
+---------
+
+local hide_role = GetConVar("ttt_hide_role")
+
+hook.Add("TTTHUDInfoPaint", "Twins_TTTHUDInfoPaint", function(client, label_left, label_top, active_labels)
+    if hide_role:GetBool() then return end
+
+    local invulnerabilityEnd = client:GetNWFloat("TTTTwinsInvulnerabilityEnd", 0)
+
+    if client:IsActiveTwin() and client:IsInvulnerable() and invulnerabilityEnd > 0 then
+        surface.SetFont("TabLarge")
+        surface.SetTextColor(255, 255, 255, 230)
+
+        local remaining = math.max(0, invulnerabilityEnd - CurTime())
+        local text = LANG.GetParamTranslation("twins_hud", { time = util.SimpleTime(remaining, "%02i:%02i") })
+        local _, h = surface.GetTextSize(text)
+
+        -- Move this up based on how many other labels here are
+        label_top = label_top + (20 * #active_labels)
+
+        surface.SetTextPos(label_left, ScrH() - label_top - h)
+        surface.DrawText(text)
+
+        -- Track that the label was added so others can position accurately
+        table.insert(active_labels, "twins")
+    end
+end)
 
 --------------
 -- TUTORIAL --

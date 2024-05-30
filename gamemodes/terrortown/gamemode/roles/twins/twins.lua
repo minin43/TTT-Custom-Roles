@@ -164,18 +164,22 @@ local function CheckTwinsInvulnerability(ply, oldRole)
             for _, p in ipairs(livingGoodTwins) do
                 p:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_EVILTWIN] .. " has died! You have been granted " .. invulnerability_timer .. " seconds of invulnerability.")
                 p:SetInvulnerable(true, true)
+                p:SetNWFloat("TTTTwinsInvulnerabilityEnd", CurTime() + invulnerability_timer)
                 timer.Create("TwinInvulnerabilityEnd_" .. p:SteamID64(), invulnerability_timer, 1, function()
                     p:QueueMessage(MSG_PRINTTALK, "Your invulnerability period has ended.")
                     p:SetInvulnerable(false, true)
+                    p:SetNWFloat("TTTTwinsInvulnerabilityEnd", 0)
                 end)
             end
         elseif #livingEvilTwins > 0 then
             for _, p in ipairs(livingEvilTwins) do
                 p:QueueMessage(MSG_PRINTBOTH, "The " .. ROLE_STRINGS[ROLE_GOODTWIN] .. " has died! You have been granted " .. invulnerability_timer .. " seconds of invulnerability.")
                 p:SetInvulnerable(true, true)
+                p:SetNWFloat("TTTTwinsInvulnerabilityEnd", CurTime() + invulnerability_timer)
                 timer.Create("TwinInvulnerabilityEnd_" .. p:SteamID64(), invulnerability_timer, 1, function()
                     p:QueueMessage(MSG_PRINTTALK, "Your invulnerability period has ended.")
                     p:SetInvulnerable(false, true)
+                    p:SetNWFloat("TTTTwinsInvulnerabilityEnd", 0)
                 end)
             end
         end
@@ -216,6 +220,7 @@ hook.Add("TTTPlayerRoleChanged", "Twins_TTTPlayerRoleChanged", function(ply, old
         if timer.Exists("TwinInvulnerabilityEnd_" .. ply:SteamID64()) then
             timer.Remove("TwinInvulnerabilityEnd_" .. ply:SteamID64())
             ply:SetInvulnerable(false, true)
+            ply:SetNWFloat("TTTTwinsInvulnerabilityEnd", 0)
         end
     end
 end)
@@ -261,5 +266,6 @@ hook.Add("TTTPrepareRound", "Twins_TTTPrepareRound", function()
 
     for _, p in player.Iterator() do
         timer.Remove("TwinInvulnerabilityEnd_" .. p:SteamID64())
+        p:SetNWFloat("TTTTwinsInvulnerabilityEnd", 0)
     end
 end)
