@@ -623,7 +623,7 @@ function GM:HUDPaintBackground()
     local client = LocalPlayer()
 
     if not IsPlayer(client) then return end
-    if not client:Alive() then return end
+    if not client:Alive() or client:IsSpec() then return end
 
     CRHUD:PaintStatusEffect(client:IsInvulnerable(), COLOR_CYAN, wisp, "Invulnerability")
 end
