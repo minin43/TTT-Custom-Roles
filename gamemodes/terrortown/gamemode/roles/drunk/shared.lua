@@ -62,7 +62,7 @@ table.insert(ROLE_CONVARS[ROLE_DRUNK], {
 })
 
 for r = 0, ROLE_MAX do
-    if r ~= ROLE_DRUNK and r ~= ROLE_GLITCH then
+    if r ~= ROLE_DRUNK and r ~= ROLE_GLITCH and r ~= ROLE_GOODTWIN and r ~= ROLE_EVILTWIN then
         local rolestring = ROLE_STRINGS_RAW[r]
         table.insert(ROLE_CONVARS[ROLE_DRUNK], {
             cvar = "ttt_drunk_can_be_" .. rolestring,

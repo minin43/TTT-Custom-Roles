@@ -47,6 +47,10 @@ local function GetTraitorTeamDrunkExcludes()
         end
     end
 
+    -- Always exclude the evil twin because a twin suddenly appearing
+    -- in the middle of a round without a counterpart will cause issues
+    excludes[ROLE_EVILTWIN] = true
+
     return excludes
 end
 
@@ -63,6 +67,10 @@ local function GetInnocentTeamDrunkExcludes()
     -- Always exclude the glitch because a glitch suddenly appearing
     -- in the middle of a round makes it obvious who is not a real traitor
     excludes[ROLE_GLITCH] = true
+
+    -- Always exclude the good twin because a twin suddenly appearing
+    -- in the middle of a round without a counterpart will cause issues
+    excludes[ROLE_GOODTWIN] = true
 
     return excludes
 end
