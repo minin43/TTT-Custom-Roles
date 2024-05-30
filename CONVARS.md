@@ -720,7 +720,7 @@ ttt_drunk_innocent_chance                      0.7     // Chance that the drunk 
 ttt_drunk_traitor_chance                       0       // Chance that the drunk will become a traitor role when remembering their role and ttt_drunk_any_role is enabled. If disabled (0), player chance of becoming a traitor is equal to every other non-innocent role
 ttt_drunk_become_clown                         0       // Whether the drunk should become a clown (instead of joining the losing team) if the round would end before they sober up
 ttt_drunk_notify_mode                          0       // The logic to use when notifying players that a drunk has sobered up. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
-ttt_drunk_any_role                             0       // Whether the drunk can become any enabled role (other than the drunk, the glitch, or roles that were already used this round). The ttt_drunk_can_be_* convars below can be used to prevent the drunk from becoming specific roles
+ttt_drunk_any_role                             0       // Whether the drunk can become any enabled role (other than the drunk, glitch, good twin, evil twin, or roles that were already used this round). The ttt_drunk_can_be_* convars below can be used to prevent the drunk from becoming specific roles
 ttt_drunk_any_role_include_disabled            0       // Whether disabled roles (e.g., roles with their ttt_*_enabled convar set to 0) should be included in the list of possible roles for the drunk to sober up to. Only used when ttt_drunk_any_role is enabled. Does not ignore ttt_drunk_can_be_* convars
 ttt_drunk_join_losing_team                     0       // Whether the drunk should join the losing team when their sober timer runs out. Please note this isn't 100% accurate as we can't know for sure which team is losing but we can try based on the available information
 ttt_drunk_can_see_jesters                      0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the drunk
@@ -745,6 +745,8 @@ ttt_drunk_can_be_trickster                     1       // Whether the drunk can 
 ttt_drunk_can_be_paramedic                     1       // Whether the drunk can become a paramedic
 ttt_drunk_can_be_turncoat                      1       // Whether the drunk can become a turncoat
 ttt_drunk_can_be_infected                      1       // Whether the drunk can become an infected
+ttt_drunk_can_be_vindicator                    1       // Whether the drunk can become a vindicator
+ttt_drunk_can_be_scout                         1       // Whether the drunk can become a scout
 ttt_drunk_can_be_detective                     1       // Whether the drunk can become a detective
 ttt_drunk_can_be_paladin                       1       // Whether the drunk can become a paladin
 ttt_drunk_can_be_tracker                       1       // Whether the drunk can become a tracker
