@@ -289,6 +289,37 @@
                 </div>
             </div>
         </div>
+        <div id="evil-twin" class="collapsible">
+            <button class="header" style="background-color:var(--special-traitor);"><i class="icon-evil-twin"></i>Evil Twin<span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></button>
+            <div class="content">
+                <div class="moreless">[more]</div>
+                <p>The <span class="inline-icon" style="color:var(--special-traitor);"><i class="icon-evil-twin"></i><a href="#evil-twin">Evil Twin</a></span> spawns with an <span class="inline-icon" style="color:var(--special-innocent);"><i class="icon-good-twin"></i><a href="../teams/innocent.html#good-twin">Good Twin</a></span> and they must trick everyone else into thinking that they are the Good Twin.</p>
+                <div class="expansion">
+                    <p>Twins are unable to damage each other unless there are no other non-<span style="color:var(--jester)"><a href="../teams/jester.html">jester</a></span> players alive.</p>
+                    <p>If all Good Twins die then Evil Twins are temporarily invulnerable unless <code>ttt_twins_invulnerability_timer</code> is set to 0, but the reverse is also true. If all Evil Twins die then Good Twins will become invulnerable.</p>
+                    <h3 style="margin: 10px 0; padding: 0;">Role Configuration:</h3>
+                    <table style="width:100%; margin-bottom: 10px;">
+                        <thead>
+                        <tr>
+                            <th>ConVar</th>
+                            <th>Default</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>ttt_twins_invulnerability_timer</td>
+                            <td>20</td>
+                            <td>Integer</td>
+                            <td>How long (in seconds) the twins should be made invulnerable for if only one type of twin is alive.  <i>(Set to 0 to disable. ConVar shared with the Good Twin.)</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p>A list of ConVars shared by every role and instructions for using ConVars can be found on the <a href="../tutorials/configuring_convars.html">Configuring ConVars</a> tutorial page.</p>
+                </div>
+            </div>
+        </div>
         <div id="hypnotist" class="collapsible">
             <button class="header" style="background-color:var(--special-traitor);"><i class="icon-hypnotist"></i>Hypnotist</button>
             <div class="content">

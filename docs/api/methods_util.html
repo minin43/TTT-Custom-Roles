@@ -75,6 +75,18 @@
             <li><em>errorIfMissing</em> - Whether to throw an error if the file is missing (Defaults to <code>false</code>)</li>
         </ul>
 
+        <h3><a id="utilformattedlist-tbl-formatting" href="#utilformattedlist-tbl-formatting">util.FormattedList(tbl, formatting)</a></h3>
+        <p>
+            Turns a table of items into a string with commas and grammar.<br>
+            <em>Realm:</em> Client and Server<br>
+            <em>Added in:</em> 2.1.17<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>tbl</em> - The table of items in question</li>
+            <li><em>formatting</em> - A function to apply formatting to each item in the provided table. (Optional, if not provided will just attempt to use table items as given)</li>
+        </ul>
+
         <h3><a id="utilgetroleiconpathrole_str-typ-ext-file_name_override" href="#utilgetroleiconpathrole_str-typ-ext-file_name_override">util.GetRoleIconPath(role_str, typ, ext, file_name_override)</a></h3>
         <p>
             Gets the path to a role's icon of the given type.<br>
