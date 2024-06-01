@@ -89,6 +89,7 @@ ttt_paramedic_enabled                          0       // Whether or not the par
 ttt_turncoat_enabled                           0       // Whether or not the turncoat should spawn
 ttt_infected_enabled                           0       // Whether or not the infected should spawn
 ttt_vindicator_enabled                         0       // Whether or not the vindicator should spawn
+ttt_scout_enabled                              0       // Whether or not the scout should spawn
 ttt_paladin_enabled                            0       // Whether or not the paladin should spawn
 ttt_tracker_enabled                            0       // Whether or not the tracker should spawn
 ttt_medium_enabled                             0       // Whether or not the medium should spawn
@@ -134,6 +135,7 @@ ttt_paramedic_spawn_weight                     1       // The weight assigned to
 ttt_turncoat_spawn_weight                      1       // The weight assigned to spawning the turncoat
 ttt_infected_spawn_weight                      1       // The weight assigned to spawning the infected
 ttt_vindicator_spawn_weight                    1       // The weight assigned to spawning the vindicator
+ttt_scout_spawn_weight                         1       // The weight assigned to spawning the scout
 ttt_paladin_spawn_weight                       1       // The weight assigned to spawning the paladin
 ttt_tracker_spawn_weight                       1       // The weight assigned to spawning the tracker
 ttt_medium_spawn_weight                        1       // The weight assigned to spawning the medium
@@ -181,6 +183,7 @@ ttt_paramedic_min_players                      0       // The minimum number of 
 ttt_turncoat_min_players                       0       // The minimum number of players required to spawn the turncoat
 ttt_infected_min_players                       0       // The minimum number of players required to spawn the infected
 ttt_vindicator_min_players                     0       // The minimum number of players required to spawn the vindicator
+ttt_scout_min_players                          0       // The minimum number of players required to spawn the scout
 ttt_paladin_min_players                        0       // The minimum number of players required to spawn the paladin
 ttt_tracker_min_players                        0       // The minimum number of players required to spawn the tracker
 ttt_medium_min_players                         0       // The minimum number of players required to spawn the medium
@@ -204,6 +207,11 @@ ttt_madscientist_min_players                   0       // The minimum number of 
 ttt_shadow_min_players                         0       // The minimum number of players required to spawn the shadow
 ttt_arsonist_min_players                       0       // The minimum number of players required to spawn the arsonist
 ttt_hivemind_min_players                       0       // The minimum number of players required to spawn the hive mind
+
+// Grouped Role Spawn Settings
+ttt_twins_enabled                              0       // Whether or not the twins should spawn
+ttt_twins_spawn_chance                         0.1     // The chance that the twins will spawn in a round
+ttt_twins_min_players                          0       // The minimum number of players required to spawn the twins
 
 // ----------------------------------------
 
@@ -435,6 +443,12 @@ ttt_vindicator_kill_on_success                 0       // Whether the vindicator
 ttt_vindicator_can_see_jesters                 0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to vindicators when they are on the independent team
 ttt_vindicator_update_scoreboard               0       // Whether vindicators show dead players as missing in action when they are on the independent team
 
+// Scout
+ttt_scout_reveal_jesters                       0       // Whether jester roles should also be revealed to the Scout.
+ttt_scout_reveal_independents                  0       // Whether independent roles should also be revealed to the Scout.
+ttt_scout_delay_intel                          0       // How long (in seconds) to delay the information that is given to the Scout.
+ttt_scout_alert_targets                        0       // Whether players whose roles are revealed by the Scout should be notified.
+ttt_scout_hidden_roles                         ""      // Names of roles that cannot be revealed by the Scout, separated with commas. Do not include spaces or capital letters.
 
 // ----------------------------------------
 
@@ -706,7 +720,7 @@ ttt_drunk_innocent_chance                      0.7     // Chance that the drunk 
 ttt_drunk_traitor_chance                       0       // Chance that the drunk will become a traitor role when remembering their role and ttt_drunk_any_role is enabled. If disabled (0), player chance of becoming a traitor is equal to every other non-innocent role
 ttt_drunk_become_clown                         0       // Whether the drunk should become a clown (instead of joining the losing team) if the round would end before they sober up
 ttt_drunk_notify_mode                          0       // The logic to use when notifying players that a drunk has sobered up. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone
-ttt_drunk_any_role                             0       // Whether the drunk can become any enabled role (other than the drunk, the glitch, or roles that were already used this round). The ttt_drunk_can_be_* convars below can be used to prevent the drunk from becoming specific roles
+ttt_drunk_any_role                             0       // Whether the drunk can become any enabled role (other than the drunk, glitch, good twin, evil twin, or roles that were already used this round). The ttt_drunk_can_be_* convars below can be used to prevent the drunk from becoming specific roles
 ttt_drunk_any_role_include_disabled            0       // Whether disabled roles (e.g., roles with their ttt_*_enabled convar set to 0) should be included in the list of possible roles for the drunk to sober up to. Only used when ttt_drunk_any_role is enabled. Does not ignore ttt_drunk_can_be_* convars
 ttt_drunk_join_losing_team                     0       // Whether the drunk should join the losing team when their sober timer runs out. Please note this isn't 100% accurate as we can't know for sure which team is losing but we can try based on the available information
 ttt_drunk_can_see_jesters                      0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the drunk
@@ -719,6 +733,7 @@ ttt_drunk_can_be_vampire                       1       // Whether the drunk can 
 ttt_drunk_can_be_quack                         1       // Whether the drunk can become a quack
 ttt_drunk_can_be_parasite                      1       // Whether the drunk can become a parasite
 ttt_drunk_can_be_informant                     1       // Whether the drunk can become an informant
+ttt_drunk_can_be_spy                           1       // Whether the drunk can become a spy
 ttt_drunk_can_be_innocent                      1       // Whether the drunk can become an innocent
 ttt_drunk_can_be_phantom                       1       // Whether the drunk can become a phantom
 ttt_drunk_can_be_revenger                      1       // Whether the drunk can become a revenger
@@ -730,12 +745,15 @@ ttt_drunk_can_be_trickster                     1       // Whether the drunk can 
 ttt_drunk_can_be_paramedic                     1       // Whether the drunk can become a paramedic
 ttt_drunk_can_be_turncoat                      1       // Whether the drunk can become a turncoat
 ttt_drunk_can_be_infected                      1       // Whether the drunk can become an infected
+ttt_drunk_can_be_vindicator                    1       // Whether the drunk can become a vindicator
+ttt_drunk_can_be_scout                         1       // Whether the drunk can become a scout
 ttt_drunk_can_be_detective                     1       // Whether the drunk can become a detective
 ttt_drunk_can_be_paladin                       1       // Whether the drunk can become a paladin
 ttt_drunk_can_be_tracker                       1       // Whether the drunk can become a tracker
 ttt_drunk_can_be_medium                        1       // Whether the drunk can become a medium
 ttt_drunk_can_be_sapper                        1       // Whether the drunk can become a sapper
 ttt_drunk_can_be_marshal                       1       // Whether the drunk can become a marshal
+ttt_drunk_can_be_quartermaster                 1       // Whether the drunk can become a quartermaster
 ttt_drunk_can_be_jester                        1       // Whether the drunk can become a jester
 ttt_drunk_can_be_swapper                       1       // Whether the drunk can become a swapper
 ttt_drunk_can_be_clown                         1       // Whether the drunk can become a clown
@@ -744,16 +762,14 @@ ttt_drunk_can_be_bodysnatcher                  1       // Whether the drunk can 
 ttt_drunk_can_be_lootgoblin                    1       // Whether the drunk can become a loot goblin
 ttt_drunk_can_be_cupid                         1       // Whether the drunk can become a cupid
 ttt_drunk_can_be_sponge                        1       // Whether the drunk can become a sponge
+ttt_drunk_can_be_guesser                       1       // Whether the drunk can become a guesser
 ttt_drunk_can_be_oldman                        1       // Whether the drunk can become an old man
 ttt_drunk_can_be_killer                        1       // Whether the drunk can become a killer
 ttt_drunk_can_be_zombie                        1       // Whether the drunk can become a zombie
 ttt_drunk_can_be_madscientist                  1       // Whether the drunk can become a mad scientist
 ttt_drunk_can_be_shadow                        1       // Whether the drunk can become a shadow
 ttt_drunk_can_be_arsonist                      1       // Whether the drunk can become a arsonist
-ttt_drunk_can_be_spy                           1       // Whether the drunk can become a spy
 ttt_drunk_can_be_hivemind                      1       // Whether the drunk can become the hive mind
-ttt_drunk_can_be_guesser                       1       // Whether the drunk can become a guesser
-ttt_drunk_can_be_quartermaster                 1       // Whether the drunk can become a quartermaster
 
 // Old Man
 ttt_oldman_drain_health_to                     0       // The amount of health to drain the old man down to. Set to 0 to disable
@@ -884,6 +900,13 @@ ttt_hivemind_chat_mode                         1       // How to handle chat by 
 ttt_hivemind_block_environmental               0       // Whether to block environmental damage to the hive mind
 ttt_hivemind_can_see_jesters                   1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the hive mind
 ttt_hivemind_update_scoreboard                 1       // Whether the hive mind shows dead players as missing in action
+
+// ----------------------------------------
+
+// GROUPED ROLE SETTINGS
+// Twins (Evil Twin, Good Twin)
+ttt_twins_invulnerability_timer                20      // How long (in seconds) the twins should be made invulnerable for if only one type of twin is alive. (Set to 0 to disable.)
+
 // ----------------------------------------
 
 // WEAPON SHOP SETTINGS
@@ -903,6 +926,7 @@ ttt_quack_shop_random_percent                  0       // The percent chance tha
 ttt_parasite_shop_random_percent               0       // The percent chance that a weapon in the shop will be not be shown for parasites
 ttt_informant_shop_random_percent              0       // The percent chance that a weapon in the shop will be not be shown for informants
 ttt_spy_shop_random_percent                    0       // The percent chance that a weapon in the shop will be not be shown for spies
+ttt_eviltwin_shop_random_percent               0       // The percent chance that a weapon in the shop will be not be shown for evil twins
 ttt_deputy_shop_random_percent                 0       // The percent chance that a weapon in the shop will be not be shown for deputies
 ttt_mercenary_shop_random_percent              0       // The percent chance that a weapon in the shop will be not be shown for mercenaries
 ttt_veteran_shop_random_percent                0       // The percent chance that a weapon in the shop will be not be shown for veterans
@@ -931,6 +955,7 @@ ttt_quack_shop_random_enabled                  0       // Whether role shop rand
 ttt_parasite_shop_random_enabled               0       // Whether role shop randomization is enabled for parasites
 ttt_informant_shop_random_enabled              0       // Whether role shop randomization is enabled for informants
 ttt_spy_shop_random_enabled                    0       // Whether role shop randomization is enabled for spies
+ttt_eviltwin_shop_random_enabled               0       // Whether role shop randomazation is enabled for evil twins
 ttt_deputy_shop_random_enabled                 0       // Whether role shop randomization is enabled for deputies
 ttt_mercenary_shop_random_enabled              0       // Whether role shop randomization is enabled for mercenaries
 ttt_veteran_shop_random_enabled                0       // Whether role shop randomization is enabled for veterans
@@ -1002,6 +1027,8 @@ ttt_vampire_starting_health                    100     // The amount of health t
 ttt_quack_starting_health                      100     // The amount of health the quack starts with
 ttt_parasite_starting_health                   100     // The amount of health the parasite starts with
 ttt_informant_starting_health                  100     // The amount of health the informant starts with
+ttt_spy_starting_health                        100     // The amount of health the spy starts with
+ttt_eviltwin_starting_health                   100     // The amount of health the evil twin starts with
 ttt_innocent_starting_health                   100     // The amount of health an innocent starts with
 ttt_glitch_starting_health                     100     // The amount of health the glitch starts with
 ttt_phantom_starting_health                    100     // The amount of health the phantom starts with
@@ -1014,12 +1041,16 @@ ttt_trickster_starting_health                  100     // The amount of health t
 ttt_paramedic_starting_health                  100     // The amount of health the paramedic starts with
 ttt_turncoat_starting_health                   100     // The amount of health the turncoat starts with
 ttt_infected_starting_health                   100     // The amount of health the infected starts with
+ttt_vindicator_starting_health                 100     // The amount of health the vindicator starts with
+ttt_scout_starting_health                      100     // The amount of health the scout starts with
+ttt_goodtwin_starting_health                   100     // The amount of health the good twin starts with
 ttt_detective_starting_health                  100     // The amount of health the detective starts with
 ttt_paladin_starting_health                    100     // The amount of health the paladin starts with
 ttt_tracker_starting_health                    100     // The amount of health the tracker starts with
 ttt_medium_starting_health                     100     // The amount of health the medium starts with
 ttt_sapper_starting_health                     100     // The amount of health the sapper starts with
 ttt_marshal_starting_health                    100     // The amount of health the marshal starts with
+ttt_quartermaster_starting_health              100     // The amount of health the quartermaster starts with
 ttt_jester_starting_health                     100     // The amount of health the jester starts with
 ttt_swapper_starting_health                    100     // The amount of health the swapper starts with
 ttt_clown_starting_health                      100     // The amount of health the clown starts with
@@ -1028,6 +1059,7 @@ ttt_bodysnatcher_starting_health               100     // The amount of health t
 ttt_lootgoblin_starting_health                 50      // The amount of health the loot goblin starts with
 ttt_cupid_starting_health                      100     // The amount of health the cupid starts with
 ttt_sponge_starting_health                     150     // The amount of health the sponge starts with
+ttt_guesser_starting_health                    100     // The amount of health the guesser starts with
 ttt_drunk_starting_health                      100     // The amount of health the drunk starts with
 ttt_oldman_starting_health                     1       // The amount of health the old man starts with
 ttt_killer_starting_health                     150     // The amount of health the killer starts with
@@ -1035,10 +1067,7 @@ ttt_zombie_starting_health                     100     // The amount of health t
 ttt_madscientist_starting_health               100     // The amount of health the mad scientist starts with
 ttt_shadow_starting_health                     100     // The amount of health the shadow starts with
 ttt_arsonist_starting_health                   100     // The amount of health the arsonist starts with
-ttt_spy_starting_health                        100     // The amount of health the spy starts with
 ttt_hivemind_starting_health                   100     // The amount of health the hive mind starts with
-ttt_guesser_starting_health                    100     // The amount of health the guesser starts with
-ttt_quartermaster_starting_health              100     // The amount of health the quartermaster starts with
 
 // Individual Role Max Health. Set to 0 or -1 to use the game's default maximum health.
 ttt_traitor_max_health                         100     // The maximum amount of health a traitor can have
@@ -1049,6 +1078,8 @@ ttt_vampire_max_health                         100     // The maximum amount of 
 ttt_quack_max_health                           100     // The maximum amount of health the quack can have
 ttt_parasite_max_health                        100     // The maximum amount of health the parasite can have
 ttt_informant_max_health                       100     // The maximum amount of health the informant can have
+ttt_spy_max_health                             100     // The maximum amount of health the spy can have
+ttt_eviltwin_max_health                        100     // The maximum amount of health the evil twin can have
 ttt_innocent_max_health                        100     // The maximum amount of health an innocent can have
 ttt_glitch_max_health                          100     // The maximum amount of health the glitch can have
 ttt_phantom_max_health                         100     // The maximum amount of health the phantom can have
@@ -1061,12 +1092,16 @@ ttt_trickster_max_health                       100     // The maximum amount of 
 ttt_paramedic_max_health                       100     // The maximum amount of health the paramedic can have
 ttt_turncoat_max_health                        100     // The maximum amount of health the turncoat can have
 ttt_infected_max_health                        100     // The maximum amount of health the infected can have
+ttt_vindicator_max_health                      100     // The maximum amount of health the vindicator can have
+ttt_scout_max_health                           100     // The maximum amount of health the scout can have
+ttt_goodtwin_max_health                        100     // The maximum amount of health the good twin can have
 ttt_detective_max_health                       100     // The maximum amount of health the detective can have
 ttt_paladin_max_health                         100     // The maximum amount of health the paladin can have
 ttt_tracker_max_health                         100     // The maximum amount of health the tracker can have
 ttt_medium_max_health                          100     // The maximum amount of health the medium can have
 ttt_sapper_max_health                          100     // The maximum amount of health the sapper can have
 ttt_marshal_max_health                         100     // The maximum amount of health the marshal can have
+ttt_quartermaster_max_health                   100     // The maximum amount of health the quartermaster can have
 ttt_jester_max_health                          100     // The maximum amount of health the jester can have
 ttt_swapper_max_health                         100     // The maximum amount of health the swapper can have
 ttt_clown_max_health                           100     // The maximum amount of health the clown can have
@@ -1075,6 +1110,7 @@ ttt_bodysnatcher_max_health                    100     // The maximum amount of 
 ttt_lootgoblin_max_health                      50      // The maximum amount of health the loot goblin can have
 ttt_cupid_max_health                           100     // The maximum amount of health the cupid can have
 ttt_sponge_max_health                          150     // The maximum amount of health the sponge can have
+ttt_guesser_max_health                         100     // The maximum amount of health the guesser can have
 ttt_drunk_max_health                           100     // The maximum amount of health the drunk can have
 ttt_oldman_max_health                          1       // The maximum amount of health the old man can have
 ttt_killer_max_health                          150     // The maximum amount of health the killer can have
@@ -1082,10 +1118,7 @@ ttt_zombie_max_health                          100     // The maximum amount of 
 ttt_madscientist_max_health                    100     // The maximum amount of health the mad scientist can have
 ttt_shadow_max_health                          100     // The maximum amount of health the shadow can have
 ttt_arsonist_max_health                        100     // The maximum amount of health the arsonist can have
-ttt_spy_max_health                             100     // The maximum amount of health the spy can have
 ttt_hivemind_max_health                        100     // The maximum amount of health the hive can have
-ttt_guesser_max_health                         100     // The maximum amount of health the guesser can have
-ttt_quartermaster_max_health                   100     // The maximum amount of health the quartermaster can have
 
 // Round Time
 ttt_roundtime_win_draw                         0       // Whether a round that ends because the round time limit has passed counts as a draw. If it is not a draw, the traitor team loses

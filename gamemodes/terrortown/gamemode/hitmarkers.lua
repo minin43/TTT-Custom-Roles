@@ -23,7 +23,11 @@ AddHook("EntityTakeDamage", "HitmarkerDetector", function(ent, dmginfo)
     if IsPlayer(att) and att ~= ent and (ent:IsPlayer() or ent:IsNPC()) then
         local drawCrit = ent:GetNWBool("LastHitCrit", false) and not GetConVar("ttt_disable_headshots"):GetBool()
 
-        local shouldDraw, newDrawCrit, drawImmune, drawJester = HookCall("TTTDrawHitMarker", nil, ent, dmginfo)
+        local drawImmune = IsPlayer(ent) and ent:IsInvulnerable()
+
+        local shouldDraw, newDrawCrit, newDrawImmune, drawJester = HookCall("TTTDrawHitMarker", nil, ent, dmginfo)
+
+        if newDrawImmune or (type(newDrawImmune) == "boolean" and not newDrawImmune) then drawImmune = newDrawImmune end
 
         if type(shouldDraw) == "boolean" and not shouldDraw then return end
         if type(newDrawCrit) == "boolean" then

@@ -761,6 +761,12 @@ function GM:HUDDrawTargetID()
 
     local secondary_text
     local secondary_col
+
+    if IsPlayer(ent) and ent:IsInvulnerable() then
+        secondary_text = "INVULNERABLE"
+        secondary_col = COLOR_CYAN
+    end
+
     if not spectatorOverride then
         local new_text, new_color, new_secondary_text, new_secondary_col = CallHook("TTTTargetIDPlayerText", nil, ent, client, text, col)
         -- If either text return value is a boolean and it's "false" then save that so we know to skip rendering the text

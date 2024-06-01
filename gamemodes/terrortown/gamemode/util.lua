@@ -526,6 +526,28 @@ function util.GetRoleIconPath(role_str, typ, ext, file_name_override)
     return file_path
 end
 
+function util.FormattedList(tbl, formatting)
+    if type(formatting) ~= "function" then
+        formatting = function(str) return str end
+    end
+
+    local result = ""
+
+    for k, v in ipairs(tbl) do
+        if k == 1 then
+            result = result .. formatting(v)
+        elseif k == 2 and #tbl == 2 then
+            result = result .. " and " .. formatting(v)
+        elseif k == #tbl then
+            result = result .. ", and " .. formatting(v)
+        else
+            result = result .. ", " .. formatting(v)
+        end
+    end
+
+    return result
+end
+
 ----------------------------
 -- ADAPTED FROM FLARE GUN --
 ----------------------------

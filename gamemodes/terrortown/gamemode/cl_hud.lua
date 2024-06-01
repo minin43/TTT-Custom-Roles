@@ -616,6 +616,18 @@ function GM:HUDPaint()
     end
 end
 
+-- Draw the invulnerability status effect
+local wisp = Material("particle/wisp.vmt")
+
+function GM:HUDPaintBackground()
+    local client = LocalPlayer()
+
+    if not IsPlayer(client) then return end
+    if not client:Alive() or client:IsSpec() then return end
+
+    CRHUD:PaintStatusEffect(client:IsInvulnerable(), COLOR_CYAN, wisp, "Invulnerability")
+end
+
 -- Hide the standard HUD stuff
 local hud = {
     -- Stuff we replace
