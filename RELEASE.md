@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.17 (Beta)
-**Released:**
+**Released: June 1st, 2024**
 
 ### Additions
 - Added new innocent role: scout
