@@ -1,5 +1,17 @@
 # Release Notes
 
+## 2.1.17 (Beta)
+**Released: June 1st, 2024**
+
+### Additions
+- Added new innocent role: scout
+- Added new innocent role: good twin
+- Added new traitor role: evil twin
+
+### Developer
+- Added `util.FormattedList` method to allow for easy conversion from tables to a formatted string
+- Added `plymeta:SetInvulnerable` and `plymeta:IsInvulnerable` methods to control invulnerability for a player
+
 ## 2.1.16
 **Released: June 3rd, 2024**\
 Includes beta updates [2.1.14](#2114-beta) and [2.1.15](#2115-beta).

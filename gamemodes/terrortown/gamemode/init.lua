@@ -598,6 +598,7 @@ end
 
 function PrepareRound()
     for _, v in PlayerIterator() do
+        v:SetInvulnerable(false, false)
         v:SetNWVector("PlayerColor", Vector(1, 1, 1))
         -- Workaround to prevent GMod sprint from working
         v:SetRunSpeed(v:GetWalkSpeed())
@@ -847,6 +848,7 @@ function BeginRound()
     SCORE:HandleSelection() -- log traitors and detectives
 
     for _, v in PlayerIterator() do
+        v:SetInvulnerable(false, false)
         -- Player color
         -- Generate a new color, but make sure it's not too bright or too dark
         local col = HSLToColor(colorGenerationHue, MathRand(0.5, 1), MathRand(0.25, 0.75))

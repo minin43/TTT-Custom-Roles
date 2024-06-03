@@ -387,6 +387,10 @@ function plymeta:IsOnScreen(ent_or_pos, limit)
     return MathAcos(dir:Dot(eye)) <= limit
 end
 
+function plymeta:IsInvulnerable()
+    return self:GetNWBool("CRTTT_Invulnerable", false)
+end
+
 if CLIENT then
     local function GetMaxBoneZ(ply, pred)
         local max_bone_z = 0

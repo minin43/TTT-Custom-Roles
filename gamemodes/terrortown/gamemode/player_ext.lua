@@ -666,6 +666,13 @@ function plymeta:ClearForcedRole()
     self.forcedRole = ROLE_NONE
 end
 
+function plymeta:SetInvulnerable(invulnerable, play_sound)
+    self:SetNWBool("CRTTT_Invulnerable", invulnerable)
+    if play_sound then
+        self:EmitSound(invulnerable and "invulnerablestart.wav" or "invulnerableend.wav")
+    end
+end
+
 -- Run these overrides when the round is preparing the first time to ensure their addons have been loaded
 hook.Add("TTTPrepareRound", "PostLoadOverride", function()
     -- Compatibility with Dead Ringer (810154456)
