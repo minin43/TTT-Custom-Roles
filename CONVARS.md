@@ -13,10 +13,12 @@
           1. [Adding Weapons](#Adding-Weapons)
           1. [Removing Weapons](#Removing-Weapons)
           1. [Bypassing Weapon Randomization](#Bypassing-Weapon-Randomization)
+          1. [Adding Weapons to a Role's Loadout](#Adding-Weapons-to-a-Roles-Loadout)
           1. [Finding a Weapon's Class](#Finding-a-Weapons-Class)
        1. [Equipment](#Equipment)
           1. [Adding Equipment](#Adding-Equipment)
           1. [Removing Equipment](#Removing-Equipment)
+          1. [Adding Equipment to a Role's Loadout](#Adding-Equipment-to-a-Roles-Loadout)
           1. [Finding an Equipment Item's Name](#Finding-an-Equipment-Items-Name)
 1. [Role Packs](#Role-Packs)
    1. [Overall](#role-pack-overall)
@@ -393,6 +395,8 @@ ttt_doctor_credits_starting                    1       // The number of credits 
 
 // Paramedic
 ttt_paramedic_defib_as_innocent                0       // Whether the paramedic's defib brings back everyone as a vanilla innocent role
+ttt_paramedic_defib_as_is                      0       // Whether the paramedic's defib brings back everyone as their previous role
+ttt_paramedic_defib_detectives_as_deputy       0       // Whether the paramedic's defib brings back detective roles as a promoted deputy
 ttt_paramedic_device_loadout                   1       // Whether the paramedic's defib should be given to them when they spawn. Server must be restarted for changes to take effect
 ttt_paramedic_device_shop                      0       // Whether the paramedic's defib should be purchasable in the shop (requires "ttt_shop_for_all" to be enabled). Server must be restarted for changes to take effect
 ttt_paramedic_device_shop_rebuyable            0       // Whether the paramedic's defib should be purchaseable multiple times (requires "ttt_paramedic_device_shop" to be enabled). Server must be restarted for changes to take effect
@@ -524,6 +528,7 @@ ttt_jesters_visible_to_monsters                1       // Whether jesters are re
 
 // Jester
 ttt_jester_win_by_traitors                     1       // Whether the jester will win the round if they are killed by a traitor
+ttt_jester_win_ends_round                      1       // Whether the jester winning causes the round to end
 ttt_jester_notify_mode                         0       // The logic to use when notifying players that a jester was killed. Killer is notified unless "ttt_jester_notify_killer" is disabled. 0 - Don't notify anyone. 1 - Only notify traitors and detective. 2 - Only notify traitors. 3 - Only notify detective. 4 - Notify everyone.
 ttt_jester_notify_killer                       1       // Whether to notify a jester's killer
 ttt_jester_notify_sound                        0       // Whether to play a cheering sound when a jester is killed
@@ -1116,6 +1121,7 @@ ttt_round_summary_tabs                         summary,hilite,events,scores // T
 // Misc.
 ttt_death_notifier_enabled                     1       // Whether the name and role of a player's killer should be shown to the victim
 ttt_death_notifier_show_role                   1       // Whether to show the killer's role in death notification messages
+ttt_death_notifier_show_team                   0       // Whether to show the killer's team in death notification messages (only used when "ttt_death_notifier_show_role" is disabled)
 ttt_smokegrenade_extinguish                    1       // Whether smoke grenades should extinguish fire
 ttt_player_set_color                           1       // Whether player colors are set each time that player spawns
 ttt_dna_scan_detectives_loadout                0       // Whether all detectives should be given a DNA scanner. If disabled, only the Detective role will get one
@@ -1189,8 +1195,9 @@ Apart from those familiar pieces, this window also adds a few more controls spec
     - *Include* - Mark this weapon as explicitly buyable
     - *Exclude* - Mark this weapon as explicitly NOT buyable
   - *No Random* - Ensure this weapon stays in the shop, regardless of randomization
+  - *Loadout* - Give this weapon to the target role for free each round
   - *Update* - Save the configuration changes
-- *Close* - This button will close the window, discarding any unsaved changes
+  - *Close* - This button will close the window, discarding any unsaved changes
 
 #### **Example**
 
@@ -1214,7 +1221,7 @@ Before a role's shop can be modified, the initial folder and file structure will
 1. If the _roleweapons_ folder does not already exist in garrysmod/data, create it.
 1. If the there is no .json file for the role you want to modify, create an empty text file and rename it to be {rolename}.json. For example: _detective.json_
     1. Make sure the file extension is _.json_ and not _.json.txt_. By default, Windows hides known file extensions like .txt so be careful.
-    1. Once the .json file is created, open it in a text editor (like Notepad++) and copy the following empty data structure into it: `{"Excludes":[],"Buyables":[],"NoRandoms":[]}`
+    1. Once the .json file is created, open it in a text editor (like Notepad++) and copy the following empty data structure into it: `{"Excludes":[],"Buyables":[],"NoRandoms":[],"Loadouts":[]}`
 
 **NOTE**: The name of the role must be all lowercase for cross-operating system compatibility. For example: garrysmod/data/roleweapons/detective.json
 
@@ -1222,7 +1229,7 @@ Before a role's shop can be modified, the initial folder and file structure will
 
 #### *Adding Weapons*
 
-To add weapons to a role (that already has a shop), modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the class name of the weapon wrapped in double quotes (e.g. "weapon_ttt_somethingcool") to the `Buyables` array. For example, `{"Excludes":[],"Buyables":["weapon_ttt_somethingcool"],"NoRandoms":[]}`
+To add weapons to a role (that already has a shop), modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the class name of the weapon wrapped in double quotes (e.g. "weapon_ttt_somethingcool") to the `Buyables` array. For example, `{"Excludes":[],"Buyables":["weapon_ttt_somethingcool"],"NoRandoms":[],"Loadouts":[]}`
 
 Also note the ttt_shop_* ConVars that are available above which can help control some of the role weapon shop lists.
 
@@ -1230,13 +1237,19 @@ Also note the ttt_shop_* ConVars that are available above which can help control
 
 At the same time, there are some workshop weapons that are given to multiple roles that maybe you don't want to be available to certain roles. In order to handle that case, the ability to exclude weapons from a role's weapon shop has been added.
 
-To remove weapons from a role's shop, modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the class name of the weapon wrapped in double quotes (e.g. "weapon_ttt_somethingcool") to the `Excludes` array. For example, `{"Excludes":["weapon_ttt_somethingcool"],"Buyables":[],"NoRandoms":[]}`
+To remove weapons from a role's shop, modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the class name of the weapon wrapped in double quotes (e.g. "weapon_ttt_somethingcool") to the `Excludes` array. For example, `{"Excludes":["weapon_ttt_somethingcool"],"Buyables":[],"NoRandoms":[],"Loadouts":[]}`
 
 #### *Bypassing Weapon Randomization*
 
 With the addition of the Shop Randomization feature (and the ttt_shop_random_* ConVars), weapons may not always appear in the shop (which is the point). If, however, you want certain weapons to _always_ be in the shop while other weapons are randomized, the ability to bypass shop randomization for a weapon in a role's weapon shop has been added.
 
-To stop a weapon from being removed from a role's shop via randomization, modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the class name of the weapon wrapped in double quotes (e.g. "weapon_ttt_somethingcool") to the `NoRandoms` array. For example, `{"Excludes":[],"Buyables":[],"NoRandoms":["weapon_ttt_somethingcool"]}`.
+To stop a weapon from being removed from a role's shop via randomization, modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the class name of the weapon wrapped in double quotes (e.g. "weapon_ttt_somethingcool") to the `NoRandoms` array. For example, `{"Excludes":[],"Buyables":[],"NoRandoms":["weapon_ttt_somethingcool"],"Loadouts":[]}`.
+
+#### *Adding Weapons to a Role's Loadout*
+
+You can also use the roleweapons system to add a weapon to a role's loadout, meaning they would get that weapon automatically at the beginning of each round.
+
+To add a weapon to a role's loadout, modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the class name of the weapon wrapped in double quotes (e.g. "weapon_ttt_somethingcool") to the `Loadouts` array. For example, `{"Excludes":[],"Buyables":[],"NoRandoms":[],"Loadouts":["weapon_ttt_somethingcool"]}`.
 
 #### *Finding a Weapon's Class*
 
@@ -1252,13 +1265,19 @@ Equipment are items that a role can use that do not take up a weapon slot, such 
 
 #### *Adding Equipment*
 
-To add equipment items to a role (that already has a shop), modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the name of the equipment item wrapped in double quotes (e.g. "bruh bunker") to the `Buyables` array. For example, `{"Excludes":[],"Buyables":["bruh bunker"],"NoRandoms":[]}`
+To add equipment items to a role (that already has a shop), modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the name of the equipment item wrapped in double quotes (e.g. "bruh bunker") to the `Buyables` array. For example, `{"Excludes":[],"Buyables":["bruh bunker"],"NoRandoms":[],"Loadouts":[]}`
 
 #### *Removing Equipment*
 
 Similarly there are some equipment items that you want to prevent a specific role from buying. To handle that case, the addon has the ability to exclude specific equipment items from the shop in a similar way.
 
-To remove equipment from a role's shop, modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the name of the equipment item wrapped in double quotes (e.g. "bruh bunker") to the `Excludes` array. For example, `{"Excludes":["bruh bunker"],"Buyables":[],"NoRandoms":[]}`
+To remove equipment from a role's shop, modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the name of the equipment item wrapped in double quotes (e.g. "bruh bunker") to the `Excludes` array. For example, `{"Excludes":["bruh bunker"],"Buyables":[],"NoRandoms":[],"Loadouts":[]}`
+
+#### *Adding Equipment to a Role's Loadout*
+
+You can also use the roleweapons system to add an equipment item to a role's loadout, meaning they would get that equipment item automatically at the beginning of each round.
+
+To add a weapon to a role's loadout, modify the garrysmod/data/roleweapons/{rolename}.json file (using a text editor like Notepad++) and add the name of the equipment item wrapped in double quotes (e.g. "bruh bunker") to the `Loadouts` array. For example, `{"Excludes":[],"Buyables":[],"NoRandoms":[],"Loadouts":["bruh bunker"]}`.
 
 #### *Finding an Equipment Item's Name*
 

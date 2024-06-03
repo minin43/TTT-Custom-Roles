@@ -1,5 +1,55 @@
 # Release Notes
 
+## 2.1.16
+**Released: June 3rd, 2024**\
+Includes beta updates [2.1.14](#214-beta) and [2.1.15](#215-beta).
+
+### Additions
+- Added ability to show killer team instead of role in death notification messages (disabled by default)
+
+### Changes
+- Changed logic for the `ttt_hide_role` convar to be more efficient (Thanks Callum!)
+- Changed logic for recording which players spawned at the start of the round to be more efficient
+
+## 2.1.15 (Beta)
+**Released: May 11th, 2024**
+
+### Changes
+- Changed resource download logic to hopefully fix missing textures when a user wasn't subscribed to the addon
+- Changed players to have their search information cleared when they resurrect to avoid confusion of the scoreboard showing their old role
+
+### Fixes
+- Fixed trash added to the end of some messages printed in chat (such as the detective call notification)
+- Fixed scoreboard showing a player's current role when their search information should have been showing something different
+- Fixed changing a rolepack's role settings resetting the weights of all role slots back to 1
+- Fixed not being able to have the DNA tester and another detective role item at the same time
+
+## 2.1.14 (Beta)
+**Released: May 4th, 2024**
+
+### Additions
+- Added ability for paramedic to revive players as their original role (disabled by default)
+- Added ability for paramedic to revive detective roles as a promoted deputy (disabled by default)
+- Added ability to control whether the jester winning causes the round to end (enabled by default)
+- Added ability to send credits between cupid and lovers if they have equipment shops
+  - This allows Cupid <-> Lover as well as Lover <-> Lover
+
+### Changes
+- Changed `ttt_corpse_search_not_shared` to behave like searching in vanilla TTT
+  - The corpse found message is broadcast but body info is not shown on the scoreboard unless the corpse is searched by a detective-like role
+
+### Fixes
+- Fixed "found" bodies not having an expandable scoreboard info section
+- Fixed issue where player who killed someone hosting a parasite would also be killed when `ttt_parasite_infection_time` was `0`
+- Fixed cupid lover who is killed receiving message saying their lover killed themselves
+- Fixed placeholder not being replaced in swapper role popup message
+- Fixed paramedic and hypnotist muting functionality not working for voice or radio messages
+
+### Developer
+- Implemented `plymeta:IsRespawning` and `plymeta:StopRespawning` for bodysnatcher
+- Added `TTTPlayerCanSendCredits` hook to allow overriding who can see the credits transfer tab in the equipment menu
+- Added `TTTPlayerCanSendCreditsTo` hook to allow overriding who a player can send credits to
+
 ## 2.1.13
 **Released April 29th, 2024**\
 Includes beta update [2.1.12](#2112-beta).

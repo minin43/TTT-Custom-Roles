@@ -19,7 +19,9 @@ local StringUpper = string.upper
 local key_params = { usekey = Key("+use", "USE"), walkkey = Key("+walk", "WALK"), adetective = ROLE_STRINGS_EXT[ROLE_DETECTIVE] }
 
 local spectator_corpse_search = nil
-local corpse_search_not_shared = nil
+
+local hide_role = GetConVar("ttt_hide_role")
+local spectators_see_roles = GetConVar("ttt_spectators_see_roles")
 
 local ClassHint = {
     prop_ragdoll = {
@@ -45,14 +47,9 @@ local ClassHint = {
                     end
                 -- Only show covert search label if the body can be searched
                 elseif CORPSE.CanBeSearched(ply, ent) then
-                    -- Cache the convar reference
-                    if not corpse_search_not_shared then
-                        corpse_search_not_shared = GetConVar("ttt_corpse_search_not_shared")
-                    end
-
                     local ownerEnt = CORPSE.GetPlayer(ent)
                     -- and has not already
-                    if (ply:IsActiveDetectiveLike() or not corpse_search_not_shared:GetBool()) and IsValid(ownerEnt) and not ownerEnt:GetNWBool("body_searched", false) then
+                    if IsValid(ownerEnt) and not ownerEnt:GetNWBool("body_searched", false) then
                         txt = txt .. "_covert"
                     end
                 -- If the body can't be searched, change the label to say "call a Detective" instead
@@ -181,17 +178,17 @@ end
 -- using this hook instead of pre/postplayerdraw because playerdraw seems to
 -- happen before certain entities are drawn, which then clip over the sprite
 function GM:PostDrawTranslucentRenderables()
+    if not hide_role then
+        hide_role = GetConVar("ttt_hide_role")
+    end
+
     client = LocalPlayer()
-    local spectatorOverride = client:GetRole() == ROLE_NONE and client:IsSpec() and GetConVar("ttt_spectators_see_roles"):GetBool()
+    local spectatorOverride = client:GetRole() == ROLE_NONE and client:IsSpec() and spectators_see_roles:GetBool()
 
     dir = client:GetForward() * -1
 
     local glitchMode = GetConVar("ttt_glitch_mode"):GetInt()
     local glitchRound = GetGlobalBool("ttt_glitch_round", false)
-    local hide_roles = false
-    if ConVarExists("ttt_hide_role") then
-        hide_roles = GetConVar("ttt_hide_role"):GetBool()
-    end
 
     for _, v in PlayerIterator() do
         -- Compatibility with the disguises, Dead Ringer (810154456), and Prop Disguiser (310403737 and 2127939503)
@@ -222,7 +219,8 @@ function GM:PostDrawTranslucentRenderables()
                 elseif v:IsDetectiveLike() and not (v:IsImpersonator() and client:IsTraitorTeam()) then
                     role = GetDetectiveIconRole(false)
                 end
-                if not hide_roles then
+
+                if not hide_role:GetBool() then
                     if v:ShouldRevealRoleWhenActive() and v:IsRoleActive() then
                         role = v:GetRole()
                     elseif client:IsTraitorTeam() then
@@ -373,6 +371,9 @@ local MAX_TRACE_LENGTH = math.sqrt(3) * 2 * 16384
 
 function GM:HUDDrawTargetID()
     client = LocalPlayer()
+    if not hide_role then
+        hide_role = GetConVar("ttt_hide_role")
+    end
 
     local L = GetLang()
 
@@ -435,11 +436,6 @@ function GM:HUDDrawTargetID()
         hint = hint()
     end
 
-    local hide_roles = false
-    if ConVarExists("ttt_hide_role") then
-        hide_roles = GetConVar("ttt_hide_role"):GetBool()
-    end
-
     local spectatorOverride = client:GetRole() == ROLE_NONE and client:IsSpec() and GetConVar("ttt_spectators_see_roles"):GetBool()
 
     if ent:IsPlayer() and ent:Alive() then
@@ -467,7 +463,7 @@ function GM:HUDDrawTargetID()
             _, color = util.HealthToString(ent:Health(), ent:GetMaxHealth())
         end
 
-        if (not hide_roles or spectatorOverride) and GetRoundState() == ROUND_ACTIVE then
+        if (spectatorOverride or not hide_role:GetBool()) and GetRoundState() == ROUND_ACTIVE then
             if spectatorOverride then
                 target_role = true
             else

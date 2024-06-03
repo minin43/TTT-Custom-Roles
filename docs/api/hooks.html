@@ -429,6 +429,40 @@
             <li><em>ply</em> - The current alive player target</li>
         </ul>
 
+        <h3><a id="tttplayercansendcreditsply-credits-hasShop-canSend" href="#tttplayercansendcreditsply-credits-hasShop-canSend">TTTPlayerCanSendCredits(ply, credits, hasShop, canSend)</a></h3>
+        <p>
+            Called when a player opens the equipment window to determine whether the credits transfer tab should show.<br>
+            <em>Realm:</em> Client<br>
+            <em>Added in:</em> 2.1.14<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>ply</em> - The player that is trying to send credits</li>
+            <li><em>credits</em> - The number of credits the player has</li>
+            <li><em>hasShop</em> - Whether the player has a shop</li>
+            <li><em>canSend</em> - Whether the player can normally send credits</li>
+        </ul>
+        <p>
+            <em>Return:</em> <code>true</code> if the player should be able to send credits. Don't return anything otherwise.
+        </p>
+
+        <h3><a id="tttplayercansendcreditstoply-target-canSend" href="#tttplayercansendcreditstoply-target-canSend">TTTPlayerCanSendCreditsTo(ply, target, canSend)</a></h3>
+        <p>
+            Called on the client when a player opens the equipment window to determine which other players are valid transfer targets.<br>
+            Called on the server when a player attempts to transfer credits to another player to determine whether the target is valid.<br>
+            <em>Realm:</em> Client and Server<br>
+            <em>Added in:</em> 2.1.14<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>ply</em> - The player that is trying to send credits</li>
+            <li><em>target</em> - The player that we're checking as a potential target</li>
+            <li><em>canSend</em> - Whether the player can normally send credits</li>
+        </ul>
+        <p>
+            <em>Return:</em> <code>true</code> if the player should be able to send credits to the target. Don't return anything otherwise.
+        </p>
+
         <h3><a id="tttplayercreditschangedply-amount" href="#tttplayercreditschangedply-amount">TTTPlayerCreditsChanged(ply, amount)</a></h3>
         <p>
             Called whenever a player's credits are added to or subtracted from.<br>

@@ -188,7 +188,10 @@ local function IdentifyBody(ply, rag)
             -- Otherwise the scoreboard gets updated which reveals their name anyway
             if announceName then
                 deadply:SetNWBool("body_found", true)
-                deadply:SetNWBool("body_searched", true)
+                -- Don't set "searched" if we're not sharing this information
+                if ply:IsDetectiveLike() or not GetConVar("ttt_corpse_search_not_shared"):GetBool() then
+                    deadply:SetNWBool("body_searched", true)
+                end
             end
 
             if not deadply:GetNWBool("body_searched_det", false) then
@@ -343,9 +346,6 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
         return
     end
 
-    -- Force covert searching for non-Detective-like players when the convar is enabled
-    covert = covert or (not ply:IsActiveDetectiveLike() and GetConVar("ttt_corpse_search_not_shared"):GetBool())
-
     if not hook.Run("TTTCanSearchCorpse", ply, rag, covert, long_range, TRAITOR_ROLES[rag.was_role]) then
         return
     end
@@ -471,15 +471,17 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
 
     net.WriteString(words)
 
-    if ply:IsActive() and not covert then
+    -- If this was covertly searched, searched by a spectator, or searched by a non-detective when sharing is disabled
+    -- then only send this information to the current player. Otherwise send to everyone
+    if covert or not ply:IsActive() or (not ply:IsDetectiveLike() and GetConVar("ttt_corpse_search_not_shared"):GetBool()) then
+        net.Send(ply)
+    else
         net.Broadcast()
 
         -- Let detctives know that this body has already been searched
         net.Start("TTT_RemoveCorpseCall")
             net.WriteString(rag.sid)
         net.Send(GetExtendedDetectiveFilter(true))
-    else
-        net.Send(ply)
     end
 end
 

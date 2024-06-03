@@ -38,6 +38,14 @@ hook.Add("TTTScoringWinTitle", "Jester_TTTScoringWinTitle", function(wintype, wi
     end
 end)
 
+-- Track when the jester gets a secondary win
+local jester_secondary_wins = false
+hook.Add("TTTScoringSecondaryWins", "Jester_TTTScoringSecondaryWins", function(wintype, secondary_wins)
+    if jester_secondary_wins then
+        table.insert(secondary_wins, ROLE_JESTER)
+    end
+end)
+
 ------------
 -- EVENTS --
 ------------
@@ -57,6 +65,17 @@ end)
 -------------
 -- SCORING --
 -------------
+
+net.Receive("TTT_UpdateJesterSecondaryWins", function()
+    jester_secondary_wins = true
+end)
+
+local function ResetJesterSecondaryWin()
+    jester_secondary_wins = false
+end
+net.Receive("TTT_ResetJesterSecondaryWins", ResetJesterSecondaryWin)
+hook.Add("TTTPrepareRound", "Jester_WinTracking_TTTPrepareRound", ResetJesterSecondaryWin)
+hook.Add("TTTBeginRound", "Jester_WinTracking_TTTBeginRound", ResetJesterSecondaryWin)
 
 -- Show who killed the jester (if anyone)
 hook.Add("TTTScoringSummaryRender", "Jester_TTTScoringSummaryRender", function(ply, roleFileName, groupingRole, roleColor, name, startingRole, finalRole)

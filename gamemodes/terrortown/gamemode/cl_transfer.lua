@@ -1,6 +1,8 @@
+local hook = hook
 local player = player
 local vgui = vgui
 
+local CallHook = hook.Call
 local PlayerIterator = player.Iterator
 
 --- Credit transfer tab for equipment menu
@@ -36,15 +38,14 @@ function CreateTransferMenu(parent)
     dpick:SetWide(250)
 
     -- fill combobox
-    local r = client:GetRole()
     for _, p in PlayerIterator() do
-        if (IsValid(p) and p ~= client) and
-                -- Same role
-                (p:IsActiveRole(r) or
-                -- Traitor team or Glitch
-                (client:IsActiveTraitorTeam() and (p:IsActiveTraitorTeam() or p:IsActiveGlitch())) or
-                -- Monster team
-                (client:IsActiveMonsterTeam() and p:IsActiveMonsterTeam())) then
+        if not IsValid(p) or p == client then continue end
+        if not p:IsActive() then continue end
+
+        local canSend = client:IsSameTeam(p)
+        local newCanSend = CallHook("TTTPlayerCanSendCreditsTo", nil, client, p, canSend)
+        if type(newCanSend) == "boolean" then canSend = newCanSend end
+        if canSend then
             dpick:AddChoice(p:Nick(), p:SteamID64())
         end
     end

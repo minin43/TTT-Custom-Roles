@@ -160,7 +160,12 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
         return ply:GetRole()
     end
 
-    if (ply.search_result and ply.search_result.role > ROLE_NONE) or ply == client then
+    if ply.search_result and ply.search_result.role > ROLE_NONE then
+        return ply.search_result.role
+    end
+
+    if ply == client or
+        (ply:GetNWBool("body_found", false) and GetConVar("ttt_corpse_search_not_shared"):GetBool()) then
         return ply:GetRole()
     end
 
@@ -345,7 +350,7 @@ function PANEL:SetPlayer(ply)
             self.info:SetPlayer(ply)
 
             self:InvalidateLayout()
-        elseif g == GROUP_SEARCHED or g == GROUP_NOTFOUND then
+        elseif g == GROUP_SEARCHED or g == GROUP_FOUND or g == GROUP_NOTFOUND then
             self.info = vgui.Create("TTTScorePlayerInfoSearch", self)
             self.info:SetPlayer(ply)
             self:InvalidateLayout()

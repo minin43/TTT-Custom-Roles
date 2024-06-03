@@ -321,7 +321,7 @@ hook.Add("DoPlayerDeath", "Parasite_DoPlayerDeath", function(ply, attacker, dmgi
             -- If we're not infecting, but haunting then we just respawning immediately
             if parasite_infection_time:GetInt() <= 0 then
                 deadParasite:QueueMessage(MSG_PRINTCENTER, "Your host has been killed, allowing your infection to take over.")
-                DoParasiteRespawn(deadParasite, attacker, true)
+                DoParasiteRespawn(deadParasite, ply, true)
                 continue
             end
 

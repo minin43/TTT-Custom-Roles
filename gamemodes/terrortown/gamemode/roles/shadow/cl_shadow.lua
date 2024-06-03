@@ -33,6 +33,7 @@ local shadow_speed_mult = GetConVar("ttt_shadow_speed_mult")
 local shadow_sprint_recovery = GetConVar("ttt_shadow_sprint_recovery")
 local shadow_failure_mode = GetConVar("ttt_shadow_failure_mode")
 local shadow_target_buff_show_progress = GetConVar("ttt_shadow_target_buff_show_progress")
+local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
 -- TRANSLATIONS --
@@ -95,13 +96,11 @@ end
 local shadow_wins = false
 net.Receive("TTT_UpdateShadowWins", function()
     -- Log the win event with an offset to force it to the end
-    if net.ReadBool() then
-        shadow_wins = true
-        CLSCORE:AddEvent({
-            id = EVENT_FINISH,
-            win = WIN_SHADOW
-        }, 1)
-    end
+    shadow_wins = true
+    CLSCORE:AddEvent({
+        id = EVENT_FINISH,
+        win = WIN_SHADOW
+    }, 1)
 end)
 
 local function ResetShadowWin()
@@ -417,12 +416,7 @@ end)
 ---------
 
 AddHook("TTTHUDInfoPaint", "Shadow_Delay_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     if cli:IsActiveShadow() and not cli:IsRoleActive() then
         local target = cli:GetNWString("ShadowTarget", "")
@@ -506,13 +500,7 @@ end)
 
 AddHook("TTTHUDInfoPaint", "Shadow_Buff_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
     if not cli:IsShadow() then return end
-
-    local hide_role = false
-    if ConVarExists("ttt_hide_role") then
-        hide_role = GetConVar("ttt_hide_role"):GetBool()
-    end
-
-    if hide_role then return end
+    if hide_role:GetBool() then return end
 
     local shadowBuff = shadow_target_buff:GetInt()
     if shadowBuff <= SHADOW_BUFF_NONE then return end

@@ -95,10 +95,29 @@ local PT = LANG.GetParamTranslation
 local spawnedPlayers = {}
 local disconnected = {}
 local customEvents = {}
+local secondary_win_roles = {}
+
+function CLSCORE:ResetScoreboard()
+    spawnedPlayers = {}
+    disconnected = {}
+    customEvents = {}
+    secondary_win_roles = {}
+end
 
 function CLSCORE:AddEvent(e, offset)
     e["t"] = math.Round(CurTime() + (offset or 0), 2)
     table.insert(customEvents, e)
+end
+
+function CLSCORE:PlayerSpawned(ply)
+    local name = ply:Nick()
+    local role = ply:GetRole()
+    table.insert(spawnedPlayers, name)
+    CLSCORE:AddEvent({
+        id = EVENT_SPAWN,
+        ply = name,
+        rol = role
+    })
 end
 
 local function FitNicknameLabel(nicklbl, maxwidth, getstring, args)
@@ -127,26 +146,6 @@ net.Receive("TTT_PlayerDisconnected", function(len)
         id = EVENT_DISCONNECTED,
         vic = name
     })
-end)
-
-net.Receive("TTT_ResetScoreboard", function(len)
-    spawnedPlayers = {}
-    disconnected = {}
-    customEvents = {}
-end)
-
-local secondary_win_roles = {}
-net.Receive("TTT_SpawnedPlayers", function(len)
-    local name = net.ReadString()
-    local role = net.ReadInt(8)
-    table.insert(spawnedPlayers, name)
-    CLSCORE:AddEvent({
-        id = EVENT_SPAWN,
-        ply = name,
-        rol = role
-    })
-
-    table.Empty(secondary_win_roles)
 end)
 
 net.Receive("TTT_LogInfo", function(len)

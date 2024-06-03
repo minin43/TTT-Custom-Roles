@@ -5,6 +5,8 @@ local hook = hook
 -------------
 
 local paramedic_defib_as_innocent = GetConVar("ttt_paramedic_defib_as_innocent")
+local paramedic_defib_as_is = GetConVar("ttt_paramedic_defib_as_is")
+local paramedic_defib_detectives_as_deputy = GetConVar("ttt_paramedic_defib_detectives_as_deputy")
 local paramedic_device_loadout = GetConVar("ttt_paramedic_device_loadout")
 local paramedic_device_shop = GetConVar("ttt_paramedic_device_shop")
 
@@ -55,7 +57,14 @@ hook.Add("TTTTutorialRoleText", "Paramedic_TTTTutorialRoleText", function(role, 
         if paramedic_defib_as_innocent:GetBool() then
             html = html .. " is converted to " .. ROLE_STRINGS_EXT[ROLE_INNOCENT]
         else
-            html = html .. " retains their previous role, with the exception of " .. ROLE_STRINGS[ROLE_DETECTIVE] .. "-like roles (e.g. " .. ROLE_STRINGS[ROLE_DETECTIVE] .. ", " .. ROLE_STRINGS[ROLE_DEPUTY] .. ", " .. ROLE_STRINGS[ROLE_IMPERSONATOR] .. ", etc.) which are converted to the vanilla role for their team (" .. ROLE_STRINGS[ROLE_INNOCENT] .. ", " .. ROLE_STRINGS[ROLE_TRAITOR] .. ", etc.)"
+            html = html .. " retains their previous role"
+            if not paramedic_defib_as_is:GetBool() then
+                if paramedic_defib_detectives_as_deputy:GetBool() then
+                    html = html .. ", with the exception of " .. ROLE_STRINGS[ROLE_DETECTIVE] .. " roles (e.g. " .. ROLE_STRINGS[ROLE_DETECTIVE] .. ", " .. ROLE_STRINGS[ROLE_TRACKER] .. ", " .. ROLE_STRINGS[ROLE_PALADIN] .. ", etc.) which are converted to a promoted ".. ROLE_STRINGS[ROLE_DEPUTY]
+                else
+                    html = html .. ", with the exception of " .. ROLE_STRINGS[ROLE_DETECTIVE] .. "-like roles (e.g. " .. ROLE_STRINGS[ROLE_DETECTIVE] .. ", " .. ROLE_STRINGS[ROLE_DEPUTY] .. ", " .. ROLE_STRINGS[ROLE_IMPERSONATOR] .. ", etc.) which are converted to the vanilla role for their team (" .. ROLE_STRINGS[ROLE_INNOCENT] .. ", " .. ROLE_STRINGS[ROLE_TRAITOR] .. ", etc.)"
+                end
+            end
         end
         html = html .. ".</span>"
 

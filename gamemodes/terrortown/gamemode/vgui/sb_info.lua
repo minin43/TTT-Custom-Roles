@@ -105,8 +105,7 @@ function PANEL:UpdatePlayerData(force)
             ic = vgui.Create("SimpleIconLabelled", self.List)
             ic:SetIconText(info.text_icon)
         else
-            local parent = self.List
-            ic = vgui.Create("SimpleIcon", parent)
+            ic = vgui.Create("SimpleIcon", self.List)
             if info.color then
                 ic:SetBackgroundColor(info.color)
             end

@@ -85,7 +85,6 @@ local math = math
 local net = net
 local pairs = pairs
 local player = player
-local resource = resource
 local string = string
 local table = table
 local timer = timer
@@ -132,7 +131,6 @@ CreateConVar("ttt_monster_chance", 0.5)
 
 for role = 0, ROLE_MAX do
     local rolestring = ROLE_STRINGS_RAW[role]
-    local shortstring = ROLE_STRINGS_SHORT[role]
     if not DEFAULT_ROLES[role] and not ROLE_BLOCK_SPAWN_CONVARS[role] then
         CreateConVar("ttt_" .. rolestring .. "_spawn_weight", "1")
         CreateConVar("ttt_" .. rolestring .. "_min_players", "0")
@@ -148,19 +146,6 @@ for role = 0, ROLE_MAX do
         CreateConVar("ttt_" .. rolestring .. "_starting_health", starting_health)
         CreateConVar("ttt_" .. rolestring .. "_max_health", max_health or starting_health)
     end
-
-    -- Body icon
-    resource.AddFile(util.GetRoleIconPath(shortstring, "icon", "vmt"))
-
-    -- Round summary icon
-    resource.AddSingleFile(util.GetRoleIconPath(shortstring, "score", "png"))
-
-    -- Scoreboard icon
-    resource.AddSingleFile(util.GetRoleIconPath(shortstring, "tab", "png"))
-
-    -- Target ID icons
-    resource.AddFile(util.GetRoleIconPath(shortstring, "sprite", "vmt"))
-    resource.AddSingleFile(util.GetRoleIconPath(shortstring, "sprite", "vtf", StringFormat("%s_noz", shortstring)))
 end
 
 -- Jester role properties
@@ -273,6 +258,7 @@ util.AddNetworkString("TTT_PlayerDisconnected")
 util.AddNetworkString("TTT_CorpseCall")
 util.AddNetworkString("TTT_RemoveCorpseCall")
 util.AddNetworkString("TTT_ClearClientState")
+util.AddNetworkString("TTT_ClearSearchResult")
 util.AddNetworkString("TTT_PerformGesture")
 util.AddNetworkString("TTT_Role")
 util.AddNetworkString("TTT_RoleList")
@@ -289,11 +275,9 @@ util.AddNetworkString("TTT_Radar")
 util.AddNetworkString("TTT_Spectate")
 util.AddNetworkString("TTT_TeleportMark")
 util.AddNetworkString("TTT_ClearRadarExtras")
-util.AddNetworkString("TTT_SpawnedPlayers")
 util.AddNetworkString("TTT_Defibrillated")
 util.AddNetworkString("TTT_RoleChanged")
 util.AddNetworkString("TTT_LogInfo")
-util.AddNetworkString("TTT_ResetScoreboard")
 util.AddNetworkString("TTT_BuyableWeapons")
 util.AddNetworkString("TTT_UpdateBuyableWeapons")
 util.AddNetworkString("TTT_ResetBuyableWeaponsCache")
@@ -875,18 +859,6 @@ function BeginRound()
         v:BeginRoleChecks()
 
         SetRoleHealth(v)
-    end
-
-    net.Start("TTT_ResetScoreboard")
-    net.Broadcast()
-
-    for _, v in PlayerIterator() do
-        if v:Alive() and v:IsTerror() then
-            net.Start("TTT_SpawnedPlayers")
-            net.WriteString(v:Nick())
-            net.WriteInt(v:GetRole(), 8)
-            net.Broadcast()
-        end
     end
 
     -- Give the StateUpdate messages ample time to arrive

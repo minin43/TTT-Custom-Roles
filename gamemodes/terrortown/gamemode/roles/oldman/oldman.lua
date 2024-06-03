@@ -5,7 +5,6 @@ local ipairs = ipairs
 local IsValid = IsValid
 local net = net
 local player = player
-local resource = resource
 local timer = timer
 local util = util
 
@@ -13,8 +12,6 @@ local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_UpdateOldManWins")
 util.AddNetworkString("TTT_ResetOldManWins")
-
-resource.AddSingleFile("sound/oldmanramble.wav")
 
 -------------
 -- CONVARS --
@@ -34,7 +31,6 @@ local function HandleOldManWinChecks(win_type)
     if not player.IsRoleLiving(ROLE_OLDMAN) then return end
 
     net.Start("TTT_UpdateOldManWins")
-    net.WriteBool(true)
     net.Broadcast()
 end
 hook.Add("TTTWinCheckComplete", "OldMan_TTTWinCheckComplete", HandleOldManWinChecks)

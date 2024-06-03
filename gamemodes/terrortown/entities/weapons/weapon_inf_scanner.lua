@@ -6,12 +6,6 @@ DEFINE_BASECLASS "weapon_tttbase"
 
 SWEP.HoldType               = "normal"
 
-if SERVER then
-    resource.AddFile("models/weapons/v_binoculars.mdl")
-    resource.AddFile("models/weapons/w_binoculars.mdl")
-    resource.AddFile("materials/models/weapons/v_binoculars/binocular2.vmt")
-end
-
 if CLIENT then
    SWEP.PrintName           = "Scanner"
    SWEP.Slot                = 8

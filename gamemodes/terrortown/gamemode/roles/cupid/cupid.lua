@@ -7,8 +7,6 @@ local timer = timer
 local PlayerIterator = player.Iterator
 local HookCall = hook.Call
 
-resource.AddFile("materials/particle/heart.vmt")
-
 -------------
 -- CONVARS --
 -------------
@@ -57,10 +55,9 @@ hook.Add("PlayerDeath", "Cupid_Killbind_PlayerDeath", function(victim, infl, att
 
     -- If the victim and the inflictor and the attacker are all the same thing then they probably used the "kill" console command
     if victim == attacker and IsValid(infl) and victim == infl then
-        victim.TTTCupidKillbindUsed = true
-
         local lover = player.GetBySteamID64(lover_sid64)
-        if lover and IsPlayer(lover) then
+        if lover and IsPlayer(lover) and lover:Alive() then
+            victim.TTTCupidKillbindUsed = true
             lover:QueueMessage(MSG_PRINTBOTH, "Your lover has died by their own hand! Try to survive without them...")
         end
     end
