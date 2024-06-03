@@ -12,8 +12,9 @@
 - Added `util.FormattedList` method to allow for easy conversion from tables to a formatted string
 - Added `plymeta:SetInvulnerable` and `plymeta:IsInvulnerable` methods to control invulnerability for a player
 
-## 2.1.16 (Beta)
-**Released: May 25th, 2024**
+## 2.1.16
+**Released: June 3rd, 2024**\
+Includes beta updates [2.1.14](#2114-beta) and [2.1.15](#2115-beta).
 
 ### Additions
 - Added ability to show killer team instead of role in death notification messages (disabled by default)
