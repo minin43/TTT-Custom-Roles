@@ -2,7 +2,7 @@
 
 ## 2.1.16
 **Released: June 3rd, 2024**\
-Includes beta updates [2.1.14](#214-beta) and [2.1.15](#215-beta).
+Includes beta updates [2.1.14](#2114-beta) and [2.1.15](#2115-beta).
 
 ### Additions
 - Added ability to show killer team instead of role in death notification messages (disabled by default)
