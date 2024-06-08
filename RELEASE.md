@@ -1,11 +1,5 @@
 # Release Notes
 
-## 2.1.18 (Beta)
-**Released:**
-
-### Fixes
-- Fixed cupid getting their bow back if a lover left the game and the other lover was already dead
-
 ## 2.1.17 (Beta)
 **Released: June 1st, 2024**
 
@@ -13,6 +7,9 @@
 - Added new innocent role: scout
 - Added new innocent role: good twin
 - Added new traitor role: evil twin
+
+### Fixes
+- Fixed cupid getting their bow back if a lover left the game and the other lover was already dead
 
 ### Developer
 - Added `util.FormattedList` method to allow for easy conversion from tables to a formatted string
