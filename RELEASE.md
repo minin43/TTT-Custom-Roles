@@ -8,6 +8,9 @@
 - Added new innocent role: good twin
 - Added new traitor role: evil twin
 
+### Fixes
+- Fixed cupid getting their bow back if a lover left the game and the other lover was already dead
+
 ### Developer
 - Added `util.FormattedList` method to allow for easy conversion from tables to a formatted string
 - Added `plymeta:SetInvulnerable` and `plymeta:IsInvulnerable` methods to control invulnerability for a player
