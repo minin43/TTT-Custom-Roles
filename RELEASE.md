@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.1.18 (Beta)
+**Released:**
+
+### Fixes
+- Fixed role names in info HUD not being translatable
+
 ## 2.1.17 (Beta)
 **Released: June 1st, 2024**
 
