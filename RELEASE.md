@@ -6,6 +6,9 @@
 ### Additions
 - Added ability for scout to determine whether monster roles are revealed to them (enabled by default)
 
+### Changes
+- Renamed old man's shotgun model files to not conflict with the M9K addon
+
 ### Fixes
 - Fixed role names in info HUD not being translatable
 

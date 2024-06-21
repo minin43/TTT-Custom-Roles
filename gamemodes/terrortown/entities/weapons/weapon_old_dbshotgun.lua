@@ -35,8 +35,8 @@ SWEP.AllowDrop = false
 SWEP.UseHands = false
 SWEP.ViewModelFlip = false
 SWEP.ViewModelFOV = 70
-SWEP.ViewModel = "models/weapons/v_doublebarrl.mdl"
-SWEP.WorldModel = "models/weapons/w_double_barrel_shotgun.mdl"
+SWEP.ViewModel = "models/weapons/v_old_doublebarrel.mdl"
+SWEP.WorldModel = "models/weapons/w_old_doublebarrel.mdl"
 
 SWEP.IronSightsPos = vector_origin
 SWEP.IronSightsAng = vector_origin
