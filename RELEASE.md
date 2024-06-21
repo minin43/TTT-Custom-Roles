@@ -3,6 +3,9 @@
 ## 2.1.18 (Beta)
 **Released:**
 
+### Additions
+- Added ability for scout to determine whether monster roles are revealed to them (enabled by default)
+
 ### Fixes
 - Fixed role names in info HUD not being translatable
 

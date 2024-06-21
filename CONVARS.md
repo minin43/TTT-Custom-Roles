@@ -446,6 +446,7 @@ ttt_vindicator_update_scoreboard               0       // Whether vindicators sh
 // Scout
 ttt_scout_reveal_jesters                       0       // Whether jester roles should also be revealed to the Scout.
 ttt_scout_reveal_independents                  0       // Whether independent roles should also be revealed to the Scout.
+ttt_scout_reveal_monsters                      1       // Whether monster roles should also be revealed to the Scout.
 ttt_scout_delay_intel                          0       // How long (in seconds) to delay the information that is given to the Scout.
 ttt_scout_alert_targets                        0       // Whether players whose roles are revealed by the Scout should be notified.
 ttt_scout_hidden_roles                         ""      // Names of roles that cannot be revealed by the Scout, separated with commas. Do not include spaces or capital letters.
