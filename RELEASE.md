@@ -8,6 +8,7 @@
 
 ### Changes
 - Renamed old man's shotgun model files to not conflict with the M9K addon
+- Changed role weapons that use the SLAM model to use one that is compatible with custom player models
 
 ### Fixes
 - Fixed role names in info HUD not being translatable
