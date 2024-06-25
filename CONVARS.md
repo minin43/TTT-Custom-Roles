@@ -113,6 +113,7 @@ ttt_madscientist_enabled                       0       // Whether or not the mad
 ttt_shadow_enabled                             0       // Whether or not the shadow should spawn
 ttt_arsonist_enabled                           0       // Whether or not the arsonist should spawn
 ttt_hivemind_enabled                           0       // Whether or not the hive mind should spawn
+ttt_plaguemaster_enabled                       0       // Whether or not the plaguemaster should spawn
 
 // Individual Role Spawn Weights
 ttt_hypnotist_spawn_weight                     1       // The weight assigned to spawning the hypnotist
@@ -159,6 +160,7 @@ ttt_madscientist_spawn_weight                  1       // The weight assigned to
 ttt_shadow_spawn_weight                        1       // The weight assigned to spawning the shadow
 ttt_arsonist_spawn_weight                      1       // The weight assigned to spawning the arsonist
 ttt_hivemind_spawn_weight                      1       // The weight assigned to spawning the hive mind
+ttt_plaguemaster_spawn_weight                  1       // The weight assigned to spawning the plaguemaster
 
 // (Note: Each role is limited to one player per round.)
 
@@ -207,6 +209,7 @@ ttt_madscientist_min_players                   0       // The minimum number of 
 ttt_shadow_min_players                         0       // The minimum number of players required to spawn the shadow
 ttt_arsonist_min_players                       0       // The minimum number of players required to spawn the arsonist
 ttt_hivemind_min_players                       0       // The minimum number of players required to spawn the hive mind
+ttt_plaguemaster_min_players                   0       // The minimum number of players required to spawn the plaguemaster
 
 // Grouped Role Spawn Settings
 ttt_twins_enabled                              0       // Whether or not the twins should spawn
@@ -290,8 +293,9 @@ ttt_vampire_update_scoreboard                  1       // Whether vampires show 
 
 // Quack
 ttt_quack_credits_starting                     1       // The number of credits a quack should start with
-ttt_quack_fake_cure_mode                       0       // How to handle using a fake parasite cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on
-ttt_quack_fake_cure_time                       -1      // The amount of time (in seconds) the fake parasite cure takes to use. If set to -1, the ttt_parasite_cure_time value will be used instead
+ttt_quack_fake_cure_mode                       0       // How to handle using a fake cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on
+ttt_quack_fake_cure_time                       -1      // The amount of time (in seconds) the fake parasite cure takes to use. If set to -1, the ttt_doctor_cure_time value will be used instead
+ttt_quack_fake_cure_rebuyable                  0       // Whether the fake cure can be bought multiple times
 ttt_quack_phantom_cure                         0       // Whether to allow the quack to buy the phantom exorcism device which can remove a haunting phantom. Server must be restarted for changes to take effect
 ttt_quack_station_bomb                         0       // Whether the quack should be able to buy a device which converts a health station to a bomb station
 ttt_quack_station_bomb_time                    4       // The amount of time (in seconds) the station bomb takes to plant
@@ -309,8 +313,6 @@ ttt_parasite_respawn_mode                      0       // The way in which the p
 ttt_parasite_respawn_health                    100     // The health on which the parasite respawns
 ttt_parasite_respawn_limit                     0       // The amount of times a parasite can respawn. Set to 0 to have no limit
 ttt_parasite_announce_infection                0       // Whether players are notified immediately when they are infected with the parasite
-ttt_parasite_cure_mode                         2       // How to handle using a parasite cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on
-ttt_parasite_cure_time                         3       // The amount of time (in seconds) the parasite cure takes to use
 ttt_parasite_infection_saves_lover             1       // Whether the parasite's lover should survive if the parasite is infecting a player
 ttt_parasite_killer_smoke                      0       // Whether to show smoke on the player who killed the parasite
 ttt_parasite_killer_footstep_time              0       // The amount of time a parasite's killer's footsteps should show before fading. Set to 0 to disable
@@ -400,6 +402,9 @@ ttt_veteran_activation_credits                 0       // The number of credits 
 
 // Doctor
 ttt_doctor_credits_starting                    1       // The number of credits a doctor should start with
+ttt_doctor_cure_mode                           2       // How to handle using a cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on
+ttt_doctor_cure_time                           3       // The amount of time (in seconds) the cure takes to use
+ttt_doctor_cure_rebuyable                      0       // Whether the cure can be bought multiple times
 
 // Paramedic
 ttt_paramedic_defib_as_innocent                0       // Whether the paramedic's defib brings back everyone as a vanilla innocent role
@@ -771,6 +776,7 @@ ttt_drunk_can_be_madscientist                  1       // Whether the drunk can 
 ttt_drunk_can_be_shadow                        1       // Whether the drunk can become a shadow
 ttt_drunk_can_be_arsonist                      1       // Whether the drunk can become a arsonist
 ttt_drunk_can_be_hivemind                      1       // Whether the drunk can become the hive mind
+ttt_drunk_can_be_plaguemaster                  1       // Whether the drunk can become the plaguemaster
 
 // Old Man
 ttt_oldman_drain_health_to                     0       // The amount of health to drain the old man down to. Set to 0 to disable
@@ -902,6 +908,16 @@ ttt_hivemind_block_environmental               0       // Whether to block envir
 ttt_hivemind_can_see_jesters                   1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the hive mind
 ttt_hivemind_update_scoreboard                 1       // Whether the hive mind shows dead players as missing in action
 
+// Plaguemaster
+ttt_plaguemaster_plague_length                 180     // How long (in seconds) before a player with the plague dies
+ttt_plaguemaster_warning_time                  30      // How long (in seconds) before dying to the plague that the target should be warned. Set to 0 to disable
+ttt_plaguemaster_spread_time                   30      // How long (in seconds) someone with the plague needs to be near someone else before it spreads
+ttt_plaguemaster_spread_distance               500     // The maximum distance away a player can be and still be infected
+ttt_plaguemaster_spread_require_los            1       // Whether players need to be in line-of-sight of a target to spread the plague
+ttt_plaguemaster_immune                        1       // Whether the plaguemaster is immune to the plague
+ttt_plaguemaster_can_see_jesters               0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the plaguemaster
+ttt_plaguemaster_update_scoreboard             1       // Whether the plaguemaster shows dead players as missing in action
+
 // ----------------------------------------
 
 // GROUPED ROLE SETTINGS
@@ -992,9 +1008,12 @@ ttt_quartermaster_shop_random_enabled          0       // Whether role shop rand
 // 4 (Traitor) - "radar" and "banana bomb"
 
 ttt_mercenary_shop_mode                        2       // What additional items are available to the mercenary in the shop (See above for possible values)
+ttt_deputy_shop_mode                           0       // What additional items are available to the deputy in the shop (See above for possible values)
+ttt_veteran_shop_mode                          0       // What additional items are available to the veteran in the shop (See above for possible values)
 ttt_clown_shop_mode                            0       // What additional items are available to the clown in the shop (See above for possible values)
 ttt_veteran_shop_mode                          0       // What additional items are available to the veteran in the shop (See above for possible values)
 ttt_killer_shop_mode                           0       // What additional items are available to the killer in the shop (See above for possible values)
+ttt_madscientist_shop_mode                     0       // What additional items are available to the mad scientist in the shop (See above for possible values)
 ttt_hivemind_shop_mode                         0       // What additional items are available to the hive mind in the shop (See above for possible values)
 
 // Traitor Role Shop Sync (Server or round must be restarted for changes to take effect)
@@ -1069,6 +1088,7 @@ ttt_madscientist_starting_health               100     // The amount of health t
 ttt_shadow_starting_health                     100     // The amount of health the shadow starts with
 ttt_arsonist_starting_health                   100     // The amount of health the arsonist starts with
 ttt_hivemind_starting_health                   100     // The amount of health the hive mind starts with
+ttt_plaguemaster_starting_health               100     // The amount of health the plaguemaster starts with
 
 // Individual Role Max Health. Set to 0 or -1 to use the game's default maximum health.
 ttt_traitor_max_health                         100     // The maximum amount of health a traitor can have
@@ -1119,7 +1139,8 @@ ttt_zombie_max_health                          100     // The maximum amount of 
 ttt_madscientist_max_health                    100     // The maximum amount of health the mad scientist can have
 ttt_shadow_max_health                          100     // The maximum amount of health the shadow can have
 ttt_arsonist_max_health                        100     // The maximum amount of health the arsonist can have
-ttt_hivemind_max_health                        100     // The maximum amount of health the hive can have
+ttt_hivemind_max_health                        100     // The maximum amount of health the hive mind can have
+ttt_plaguemaster_max_health                    100     // The maximum amount of health the plaguemaster can have
 
 // Round Time
 ttt_roundtime_win_draw                         0       // Whether a round that ends because the round time limit has passed counts as a draw. If it is not a draw, the traitor team loses

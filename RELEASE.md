@@ -4,14 +4,26 @@
 **Released:**
 
 ### Additions
+- Added new independent role: plaguemaster
 - Added ability for scout to determine whether monster roles are revealed to them (enabled by default)
+- Added ability to control whether the doctor's cure is rebuyable (disabled by default)
+- Added ability to control whether the quack's fake cure is rebuyable (disabled by default)
 
 ### Changes
 - Renamed old man's shotgun model files to not conflict with the M9K addon
 - Changed role weapons that use the SLAM model to use one that is compatible with custom player models
+- Changed Parasite Cure weapon to be generic Cure which can also be used against plagued players
+  - *BREAKING CHANGE* - Renamed `ttt_parasite_cure_time` and `ttt_parasite_cure_mode` to `ttt_doctor_cure_time` and `ttt_doctor_cure_mode` to make it clearer that it's now for more than just the parasite
+  - *BREAKING CHANGE* - Renamed class from `weapon_par_cure` to `weapon_doc_cure`
+- Changed Fake Parasite Cure weapon to be generic Fake Cure which can also be used against plagued players
 
 ### Fixes
 - Fixed role names in info HUD not being translatable
+
+### Developer
+- Added new `SYNC` namespace with methods for synchronizing data between server and client generically and on demand rather than repeatedly on a schedule
+- Added `plymeta:SetProperty` and `plymeta:ClearProperty` as wrappers around new `SYNC` methods
+- Added new `TTTCanPlayerBeCured`, `TTTCurePlayer`, and `TTTFakeCurePlayer` hooks to allow external roles to use the cures as well
 
 ## 2.1.17 (Beta)
 **Released: June 1st, 2024**

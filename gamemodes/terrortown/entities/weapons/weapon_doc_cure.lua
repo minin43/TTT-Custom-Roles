@@ -1,18 +1,17 @@
 AddCSLuaFile()
 
+local hook = hook
 local IsValid = IsValid
-local player = player
 local string = string
 local timer = timer
 local util = util
 
-local PlayerIterator = player.Iterator
+local CallHook = hook.Call
 
 SWEP.HoldType               = "slam"
 
 if CLIENT then
-    local GetPTranslation = LANG.GetParamTranslation
-    SWEP.PrintName = "Parasite Cure"
+    SWEP.PrintName = "Cure"
     SWEP.Slot = 6
 
     SWEP.DrawCrosshair = false
@@ -20,11 +19,7 @@ if CLIENT then
 
     SWEP.EquipMenuData = {
         type =  "item_weapon",
-        desc = function()
-            return GetPTranslation("cure_desc", {
-                parasites = string.lower(ROLE_STRINGS_PLURAL[ROLE_PARASITE])
-            })
-        end
+        desc = "cure_desc"
     };
 
     SWEP.Icon = "vgui/ttt/icon_cure"
@@ -43,8 +38,8 @@ for role = 0, ROLE_MAX do
         if not istable(DefaultEquipment[role]) then
             DefaultEquipment[role] = {}
         end
-        if not table.HasValue(DefaultEquipment[role], "weapon_par_cure") then
-            table.insert(DefaultEquipment[role], "weapon_par_cure")
+        if not table.HasValue(DefaultEquipment[role], "weapon_doc_cure") then
+            table.insert(DefaultEquipment[role], "weapon_doc_cure")
         end
     end
 end
@@ -56,14 +51,14 @@ SWEP.BlockShopRandomization = true
 SWEP.DeadTarget             = false
 SWEP.HasSecondary           = true
 
-PARASITE_CURE_KILL_NONE = 0
-PARASITE_CURE_KILL_OWNER = 1
-PARASITE_CURE_KILL_TARGET = 2
+DOCTOR_CURE_KILL_NONE = 0
+DOCTOR_CURE_KILL_OWNER = 1
+DOCTOR_CURE_KILL_TARGET = 2
 
 local cured = Sound("items/smallmedkit1.wav")
 
 if SERVER then
-    SWEP.DeviceTimeConVar = CreateConVar("ttt_parasite_cure_time", "3", FCVAR_NONE, "The amount of time (in seconds) the parasite cure takes to use", 0, 30)
+    SWEP.DeviceTimeConVar = CreateConVar("ttt_doctor_cure_time", "3", FCVAR_NONE, "The amount of time (in seconds) the cure takes to use", 0, 30)
 end
 
 if CLIENT then
@@ -73,38 +68,21 @@ if CLIENT then
     end
 end
 
-local parasite_cure_mode = CreateConVar("ttt_parasite_cure_mode", "2", FCVAR_REPLICATED, "How to handle using a parasite cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on", 0, 2)
+local doctor_cure_mode = CreateConVar("ttt_doctor_cure_mode", "2", FCVAR_REPLICATED, "How to handle using a cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on", 0, 2)
 
 if SERVER then
     function SWEP:OnSuccess(ply, body)
         ply:EmitSound(cured)
 
-        if ply:GetNWBool("ParasiteInfected", false) then
-            for _, v in PlayerIterator() do
-                if v:GetNWString("ParasiteInfectingTarget", "") == ply:SteamID64() then
-                    ply:SetNWBool("ParasiteInfected", false)
-                    v:SetNWBool("ParasiteInfecting", false)
-                    v:SetNWString("ParasiteInfectingTarget", "")
-                    v:SetNWInt("ParasiteInfectionProgress", 0)
-                    timer.Remove(v:Nick() .. "ParasiteInfectionProgress")
-                    timer.Remove(v:Nick() .. "ParasiteInfectingSpectate")
-                    v:QueueMessage(MSG_PRINTCENTER, "Your host has been cured.")
-
-                    if GetConVar("ttt_parasite_infection_saves_lover"):GetBool() then
-                        local loverSID = v:GetNWString("TTTCupidLover", "")
-                        if #loverSID > 0 then
-                            local lover = player.GetBySteamID64(loverSID)
-                            lover:PrintMessage(HUD_PRINTTALK, "Your lover's host was cured!")
-                        end
-                    end
-                end
-            end
+        local can_be_cured = CallHook("TTTCanPlayerBeCured", nil, ply)
+        if can_be_cured then
+            CallHook("TTTCurePlayer", nil, ply)
         else
             local owner = self:GetOwner()
-            local cure_mode = parasite_cure_mode:GetInt()
-            if cure_mode == PARASITE_CURE_KILL_OWNER and IsValid(owner) then
+            local cure_mode = doctor_cure_mode:GetInt()
+            if cure_mode == DOCTOR_CURE_KILL_OWNER and IsValid(owner) then
                 owner:Kill()
-            elseif cure_mode == PARASITE_CURE_KILL_TARGET then
+            elseif cure_mode == DOCTOR_CURE_KILL_TARGET then
                 -- Negate the knockback from using a huge damage value
                 ply:AddEFlags(EFL_NO_DAMAGE_FORCES)
 
@@ -161,7 +139,7 @@ if SERVER then
 
     function SWEP:Equip(newowner)
         if newowner:IsTraitorTeam() then
-            newowner:PrintMessage(HUD_PRINTTALK, ROLE_STRINGS[ROLE_TRAITOR] .. ", the parasite cure you are holding is real.")
+            newowner:PrintMessage(HUD_PRINTTALK, ROLE_STRINGS[ROLE_TRAITOR] .. ", the cure you are holding is real.")
         end
     end
 end

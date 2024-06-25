@@ -1,18 +1,17 @@
 AddCSLuaFile()
 
+local hook = hook
 local IsValid = IsValid
-local player = player
 local string = string
 local util = util
 
-local PlayerIterator = player.Iterator
+local CallHook = hook.Call
 
 SWEP.HoldType               = "slam"
 
 if CLIENT then
-    local GetPTranslation = LANG.GetParamTranslation
-    SWEP.PrintName = "Parasite Cure"
-    SWEP.ShopName = "Fake Parasite Cure"
+    SWEP.PrintName = "Cure"
+    SWEP.ShopName = "Fake Cure"
     SWEP.Slot = 6
 
     SWEP.DrawCrosshair = false
@@ -20,11 +19,7 @@ if CLIENT then
 
     SWEP.EquipMenuData = {
         type =  "item_weapon",
-        desc = function()
-            return GetPTranslation("fake_cure_desc", {
-                parasite = string.lower(ROLE_STRINGS[ROLE_PARASITE])
-            })
-        end
+        desc = "fake_cure_desc"
     };
 
     SWEP.Icon = "vgui/ttt/icon_fakecure"
@@ -52,7 +47,7 @@ QUACK_FAKE_CURE_KILL_TARGET = 2
 local cured = Sound("items/smallmedkit1.wav")
 
 if SERVER then
-    SWEP.DeviceTimeConVar = CreateConVar("ttt_quack_fake_cure_time", "-1", FCVAR_NONE, "The amount of time (in seconds) the fake parasite cure takes to use. If set to -1, the ttt_parasite_cure_time value will be used instead", -1, 30)
+    SWEP.DeviceTimeConVar = CreateConVar("ttt_quack_fake_cure_time", "-1", FCVAR_NONE, "The amount of time (in seconds) the fake cure takes to use. If set to -1, the ttt_doctor_cure_time value will be used instead", -1, 30)
 end
 
 if CLIENT then
@@ -65,26 +60,21 @@ end
 function SWEP:SetupDataTables()
     self.BaseClass.SetupDataTables(self)
 
-    if SERVER then
-        -- Use the same setting as for the real parasite cure if the override isn't explicitly set
-        if self.DeviceTimeConVar:GetInt() < 0 then
-            self:SetChargeTime(GetConVar("ttt_parasite_cure_time"):GetInt())
-        end
+    -- Use the same setting as for the real cure if the override isn't explicitly set
+    if SERVER and self.DeviceTimeConVar:GetInt() < 0 then
+        self:SetChargeTime(GetConVar("ttt_doctor_cure_time"):GetInt())
     end
 end
 
-local quack_fake_cure_mode = CreateConVar("ttt_quack_fake_cure_mode", "0", FCVAR_REPLICATED, "How to handle using a fake parasite cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on", 0, 2)
+local quack_fake_cure_mode = CreateConVar("ttt_quack_fake_cure_mode", "0", FCVAR_REPLICATED, "How to handle using a fake cure on someone who is not infected. 0 - Kill nobody (But use up the cure), 1 - Kill the person who uses the cure, 2 - Kill the person the cure is used on", 0, 2)
 
 if SERVER then
     function SWEP:OnSuccess(ply, body)
         ply:EmitSound(cured)
 
-        if ply:GetNWBool("ParasiteInfected", false) then
-            for _, v in PlayerIterator() do
-                if v:GetNWString("ParasiteInfectingTarget", "") == ply:SteamID64() then
-                    v:QueueMessage(MSG_PRINTCENTER, "A fake cure has been used on your host.")
-                end
-            end
+        local can_be_cured = CallHook("TTTCanPlayerBeCured", nil, ply)
+        if can_be_cured then
+            CallHook("TTTFakeCurePlayer", nil, ply)
         else
             local owner = self:GetOwner()
             local cure_mode = quack_fake_cure_mode:GetInt()
@@ -147,7 +137,7 @@ if SERVER then
 
     function SWEP:Equip(newowner)
         if newowner:IsTraitorTeam() then
-            newowner:PrintMessage(HUD_PRINTTALK, ROLE_STRINGS[ROLE_TRAITOR] .. ", the parasite cure you are holding is a fake.")
+            newowner:PrintMessage(HUD_PRINTTALK, ROLE_STRINGS[ROLE_TRAITOR] .. ", the cure you are holding is a fake.")
         end
     end
 end

@@ -630,24 +630,6 @@
                             <td>The number of credits a Parasite should start with.</td>
                         </tr>
                         <tr>
-                            <td>ttt_parasite_cure_mode</td>
-                            <td>2</td>
-                            <td>Integer (0-2)</td>
-                            <td>How to handle using a parasite cure on someone who is not infected:
-                                <ol start="0">
-                                    <li>Kill nobody, but use up the cure.</li>
-                                    <li>Kill the person who uses the cure.</li>
-                                    <li>Kill the person the cure is used on.</li>
-                                </ol>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ttt_parasite_cure_time</td>
-                            <td>3</td>
-                            <td>Integer</td>
-                            <td>The amount of time in seconds the parasite cure takes to use.</td>
-                        </tr>
-                        <tr>
                             <td>ttt_parasite_infection_saves_lover</td>
                             <td>1</td>
                             <td>Boolean</td>
@@ -779,7 +761,7 @@
                             <td>ttt_quack_fake_cure_mode</td>
                             <td>0</td>
                             <td>Integer (0-2)</td>
-                            <td>How to handle using a fake parasite cure on someone who is not infected:
+                            <td>How to handle using a fake cure on someone who is not infected:
                                 <ol start="0">
                                     <li>Kill nobody, but use up the cure.</li>
                                     <li>Kill the person who uses the cure.</li>
@@ -791,7 +773,13 @@
                             <td>ttt_quack_fake_cure_time</td>
                             <td>-1</td>
                             <td>Integer</td>
-                            <td>The amount of time in seconds the fake parasite cure takes to use. <i>(Set to -1 to use the same time as <code>ttt_parasite_cure_time</code>.)</i></td>
+                            <td>The amount of time in seconds the fake parasite cure takes to use. <i>(Set to -1 to use the same time as <code>ttt_doctor_cure_time</code>.)</i></td>
+                        </tr>
+                        <tr>
+                            <td>ttt_quack_fake_cure_rebuyable <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether the fake cure can be bought multiple times.</td>
                         </tr>
                         <tr>
                             <td>ttt_quack_phantom_cure</td>

@@ -2,13 +2,14 @@ AddCSLuaFile()
 
 local hook = hook
 local table = table
+local util = util
 local weapons = weapons
 
 local function InitializeEquipment()
     if DefaultEquipment then
         DefaultEquipment[ROLE_QUACK] = {
             "weapon_ttt_health_station",
-            "weapon_par_cure",
+            "weapon_doc_cure",
             "weapon_pha_exorcism",
             "weapon_qua_bomb_station",
             "weapon_qua_station_bomb",
@@ -34,6 +35,7 @@ end)
 
 local quack_phantom_cure = CreateConVar("ttt_quack_phantom_cure", "0", FCVAR_REPLICATED)
 local quack_station_bomb = CreateConVar("ttt_quack_station_bomb", "0", FCVAR_REPLICATED)
+local quack_fake_cure_rebuyable = CreateConVar("ttt_quack_fake_cure_rebuyable", "0", FCVAR_REPLICATED, "Whether the fake cure can be bought multiple times", 0, 1)
 
 ROLE_CONVARS[ROLE_QUACK] = {}
 table.insert(ROLE_CONVARS[ROLE_QUACK], {
@@ -46,6 +48,10 @@ table.insert(ROLE_CONVARS[ROLE_QUACK], {
     cvar = "ttt_quack_fake_cure_time",
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 0
+})
+table.insert(ROLE_CONVARS[ROLE_QUACK], {
+    cvar = "ttt_quack_fake_cure_rebuyable",
+    type = ROLE_CONVAR_TYPE_BOOL
 })
 table.insert(ROLE_CONVARS[ROLE_QUACK], {
     cvar = "ttt_quack_phantom_cure",
@@ -83,4 +89,13 @@ hook.Add("TTTUpdateRoleState", "Quack_TTTUpdateRoleState", function()
     elseif table.HasValue(station_bomb.CanBuy, ROLE_QUACK) then
         table.RemoveByValue(station_bomb.CanBuy, ROLE_QUACK)
     end
+
+    local fake_cure = weapons.GetStored("weapon_qua_fake_cure")
+    if util.CanRoleSpawn(ROLE_PARASITE) or util.CanRoleSpawn(ROLE_PLAGUEMASTER) then
+        fake_cure.CanBuy = table.Copy(fake_cure.CanBuyDefault)
+    else
+        table.Empty(fake_cure.CanBuy)
+    end
+
+    fake_cure.LimitedStock = not quack_fake_cure_rebuyable:GetBool()
 end)

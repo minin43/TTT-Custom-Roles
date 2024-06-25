@@ -381,3 +381,33 @@ hook.Add("PostPlayerDeath", "Parasite_Lovers_PostPlayerDeath", function(ply)
         lover:QueueMessage(MSG_PRINTBOTH, "Your lover has died and so you will not survive if you respawn!")
     end
 end)
+
+----------
+-- CURE --
+----------
+
+hook.Add("TTTCanPlayerBeCured", "Parasite_TTTCanPlayerBeCured", function(ply)
+    if ply:GetNWBool("ParasiteInfected", false) then
+        return true
+    end
+end)
+
+hook.Add("TTTCurePlayer", "Parasite_TTTCurePlayer", function(ply)
+    if not ply:GetNWBool("ParasiteInfected", false) then return end
+
+    ply:SetNWBool("ParasiteInfected", false)
+    for _, v in PlayerIterator() do
+        if v:GetNWString("ParasiteInfectingTarget", "") == ply:SteamID64() then
+            ClearParasiteState(v)
+            v:QueueMessage(MSG_PRINTCENTER, "Your host has been cured.")
+
+            if GetConVar("ttt_parasite_infection_saves_lover"):GetBool() then
+                local loverSID = v:GetNWString("TTTCupidLover", "")
+                if #loverSID > 0 then
+                    local lover = player.GetBySteamID64(loverSID)
+                    lover:PrintMessage(HUD_PRINTTALK, "Your lover's host was cured!")
+                end
+            end
+        end
+    end
+end)
