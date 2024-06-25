@@ -2,7 +2,6 @@ AddCSLuaFile()
 
 local hook = hook
 local table = table
-local util = util
 local weapons = weapons
 
 -- Initialize role features
@@ -53,7 +52,7 @@ table.insert(ROLE_CONVARS[ROLE_DOCTOR], {
 
 hook.Add("TTTUpdateRoleState", "Doctor_TTTUpdateRoleState", function()
     local cure = weapons.GetStored("weapon_doc_cure")
-    if util.CanRoleSpawn(ROLE_PARASITE) or util.CanRoleSpawn(ROLE_PLAGUEMASTER) then
+    if hook.Call("TTTCanCureableRoleSpawn") then
         cure.CanBuy = table.Copy(cure.CanBuyDefault)
     else
         table.Empty(cure.CanBuy)

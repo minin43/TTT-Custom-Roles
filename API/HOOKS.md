@@ -82,6 +82,13 @@ Called when someone is attempting to use a cure on a player.\
 
 *Return:* Whether to allow using the cure on this player. (Defaults to `false`)
 
+### TTTCanCureableRoleSpawn()
+Called to determine if a role can spawn that causes a state that can be cured.\
+*Realm:* Client and Server\
+*Added in:* 2.1.18
+
+*Return:* `true` if a role can spawn that causes a state that can be cured. Otherwise do not return anything.
+
 ### TTTCanUseTraitorVoice(ply)
 Called when a player is attempting to use traitor chat, both speaking and listening. Used to change the default behavior.\
 *Realm:* Client and Server\

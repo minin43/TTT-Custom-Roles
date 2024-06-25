@@ -23,7 +23,7 @@
 ### Developer
 - Added new `SYNC` namespace with methods for synchronizing data between server and client generically and on demand rather than repeatedly on a schedule
 - Added `plymeta:SetProperty` and `plymeta:ClearProperty` as wrappers around new `SYNC` methods
-- Added new `TTTCanPlayerBeCured`, `TTTCurePlayer`, and `TTTFakeCurePlayer` hooks to allow external roles to use the cures as well
+- Added new `TTTCanPlayerBeCured`, `TTTCurePlayer`, `TTTFakeCurePlayer`, and `TTTCanCureableRoleSpawn` hooks to allow external roles to use the cures as well
 
 ## 2.1.17 (Beta)
 **Released: June 1st, 2024**

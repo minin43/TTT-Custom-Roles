@@ -2,7 +2,6 @@ AddCSLuaFile()
 
 local hook = hook
 local table = table
-local util = util
 local weapons = weapons
 
 local function InitializeEquipment()
@@ -91,7 +90,7 @@ hook.Add("TTTUpdateRoleState", "Quack_TTTUpdateRoleState", function()
     end
 
     local fake_cure = weapons.GetStored("weapon_qua_fake_cure")
-    if util.CanRoleSpawn(ROLE_PARASITE) or util.CanRoleSpawn(ROLE_PLAGUEMASTER) then
+    if hook.Call("TTTCanCureableRoleSpawn") then
         fake_cure.CanBuy = table.Copy(fake_cure.CanBuyDefault)
     else
         table.Empty(fake_cure.CanBuy)

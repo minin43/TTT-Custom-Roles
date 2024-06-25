@@ -2,6 +2,7 @@ AddCSLuaFile()
 
 local hook = hook
 local table = table
+local util = util
 
 -- Parasite respawn modes
 PARASITE_RESPAWN_HOST = 0
@@ -115,4 +116,10 @@ end
 hook.Add("TTTUpdateRoleState", "Parasite_Team_TTTUpdateRoleState", function()
     MONSTER_ROLES[ROLE_PARASITE] = parasite_is_monster:GetBool()
     TRAITOR_ROLES[ROLE_PARASITE] = not parasite_is_monster:GetBool()
+end)
+
+hook.Add("TTTCanCureableRoleSpawn", "Parasite_TTTCanCureableRoleSpawn", function()
+    if util.CanRoleSpawn(ROLE_PARASITE) then
+        return true
+    end
 end)

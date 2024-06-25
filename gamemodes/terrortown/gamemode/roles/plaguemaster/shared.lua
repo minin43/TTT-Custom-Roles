@@ -1,6 +1,8 @@
 AddCSLuaFile()
 
+local hook = hook
 local table = table
+local util = util
 
 ------------------
 -- ROLE CONVARS --
@@ -48,3 +50,9 @@ table.insert(ROLE_CONVARS[ROLE_PLAGUEMASTER], {
 -------------------
 
 ROLE_CAN_SEE_MIA[ROLE_HIVEMIND] = true
+
+hook.Add("TTTCanCureableRoleSpawn", "Plaguemaster_TTTCanCureableRoleSpawn", function()
+    if util.CanRoleSpawn(ROLE_PLAGUEMASTER) then
+        return true
+    end
+end)
