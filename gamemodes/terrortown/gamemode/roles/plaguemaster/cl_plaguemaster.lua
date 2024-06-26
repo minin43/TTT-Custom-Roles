@@ -38,11 +38,10 @@ AddHook("Initialize", "Plaguemaster_Translations_Initialize", function()
     LANG.AddToLanguage("english", "plaguemaster_plagued", "PLAGUED")
 
     -- Cheat Sheet
-    LANG.AddToLanguage("english", "cheatsheet_desc_plaguemaster", "Can spread their plague to players, killing them after a tiem. They win if they are the last player alive.")
+    LANG.AddToLanguage("english", "cheatsheet_desc_plaguemaster", "Can spread their plague to players, killing them after a time. They win if they are the last player alive.")
 
     -- Popup
-    LANG.AddToLanguage("english", "info_popup_plaguemaster", [[You are {role}! Get close to other players
-to spread your plague to them.
+    LANG.AddToLanguage("english", "info_popup_plaguemaster", [[You are {role}! Use your Dart Gun to give a player the plague.
 
 Players with your plague will automatically spread it to others
 and will die after a time!]])
