@@ -1605,7 +1605,6 @@ function SelectRoles()
         SetGlobalBool("ttt_zombie_round", false)
     end
 
-
     if multipleJesterIndependent then
         if jester_independent_count > 0 and #choices > 0 then
             for r, delayed in pairs(delayedCheckRoles) do
