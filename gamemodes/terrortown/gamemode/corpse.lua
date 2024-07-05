@@ -619,6 +619,7 @@ function CORPSE.Create(ply, attacker, dmginfo)
     rag.kills = table.Copy(ply.kills)
 
     rag.killer = attacker
+    rag.killer_sid64 = attacker:SteamID64()
     rag.killer_sample = GetKillerSample(ply, attacker, dmginfo)
 
     -- crime scene data
