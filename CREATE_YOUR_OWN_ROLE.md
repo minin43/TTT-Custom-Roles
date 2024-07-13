@@ -894,7 +894,8 @@ end
 
 When working with larger roles, having everything in the one file can easily become messy. In this situation you can ***optionally*** split your code across client, server, and shared files.
 
-To do this first create a folder inside of the 'lua/customroles' folder with the name of your role. *(e.g. lua/customroles/summoner)*
+To do this first create a folder inside of the 'lua/customroles' folder with the name of your role *(e.g. lua/customroles/summoner)*.\
+**NOTE:** All folder names ***must*** be lowercase to avoid load order issues.
 
 Inside this folder you can create three separate files:
 - '**%NAMERAW%.lua**' for any code you want to run server-side only. This should be any code you have inside an `if SERVER then` or similar block.

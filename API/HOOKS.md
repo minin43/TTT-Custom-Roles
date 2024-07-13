@@ -73,6 +73,22 @@ Changed `was_traitor` parameter to be `true` for any member of the traitor team,
 
 *Return:* Whether or not the given player should be able to identify the given corpse (Defaults to `false`).
 
+### TTTCanPlayerBeCured(ply)
+Called when someone is attempting to use a cure on a player.\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *ply* - The target player who is potentially being cured
+
+*Return:* Whether to allow using the cure on this player. (Defaults to `false`)
+
+### TTTCanCureableRoleSpawn()
+Called to determine if a role can spawn that causes a state that can be cured.\
+*Realm:* Client and Server\
+*Added in:* 2.1.18
+
+*Return:* `true` if a role can spawn that causes a state that can be cured. Otherwise do not return anything.
+
 ### TTTCanUseTraitorVoice(ply)
 Called when a player is attempting to use traitor chat, both speaking and listening. Used to change the default behavior.\
 *Realm:* Client and Server\
@@ -101,6 +117,13 @@ Called before a player is killed because their lover (as set by Cupid's arrows) 
 - *lover* - The player's lover who is already dead
 
 *Return:* If `ply` should not be killed, return `true`. Otherwise do not return anything.
+
+### TTTCurePlayer(ply)
+Called when someone uses a cure on a player.\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *ply* - The target player who is being cured
 
 ### TTTDeathNotifyOverride(victim, inflictor, attacker, reason, killerName, role)
 Called before the name and role of a player's killer is shown to the victim. Used to change the death message reason, killer name, and/or killer role.\
@@ -177,6 +200,13 @@ Allows creation of new tabs for the equipment (shop) menu.\
 - *dframe* - The [DFrame](https://wiki.facepunch.com/gmod/DFrame) representing the equipment window *(Added in 1.8.7)*
 
 *Return:* If `true`, the equipment window will show even if the player doesn't have any of the default tabs. *(Added in 1.7.3)*
+
+### TTTFakeCurePlayer(ply)
+Called when someone uses a fake cure on a player.\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *ply* - The target player who is being "cured"
 
 ### TTTHUDInfoPaint(client, labelX, labelY, activeLabels)
 Called after player information such as role, health, and ammo and equipment information such as radar cooldown and disguiser activation are drawn on the screen. Used to write additional persistent text on the screen for player reference.\

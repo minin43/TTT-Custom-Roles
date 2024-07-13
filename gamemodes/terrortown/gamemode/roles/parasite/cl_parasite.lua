@@ -21,13 +21,6 @@ local parasite_killer_footstep_time = GetConVar("ttt_parasite_killer_footstep_ti
 ------------------
 
 hook.Add("Initialize", "Parasite_Translations_Initialize", function()
-    -- Weapons
-    LANG.AddToLanguage("english", "cure_help_pri", "{primaryfire} to cure another player.")
-    LANG.AddToLanguage("english", "cure_help_sec", "{secondaryfire} to cure yourself.")
-    LANG.AddToLanguage("english", "cure_desc", [[Use on a player to cure them of {parasites}.
-
-Using this on a player who is not infected will kill them!]])
-
     -- Target ID
     LANG.AddToLanguage("english", "target_infected", "INFECTED WITH PARASITE")
 
@@ -219,13 +212,13 @@ hook.Add("TTTTutorialRoleText", "Parasite_TTTTutorialRoleText", function(role, t
             html = html .. "<span style='display: block; margin-top: 10px;'>Be careful! Infected players <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>are notified</span> when they are infected.</span>"
         end
 
-        local cure_mode = GetConVar("ttt_parasite_cure_mode"):GetInt()
-        html = html .. "<span style='display: block; margin-top: 10px;'>Some roles can buy " .. ROLE_STRINGS_EXT[ROLE_PARASITE] .. " Cure that can remove the infection from a player. If it is used on a player that isn't infected then <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>"
-        if cure_mode == PARASITE_CURE_KILL_NONE then
+        local cure_mode = GetConVar("ttt_doctor_cure_mode"):GetInt()
+        html = html .. "<span style='display: block; margin-top: 10px;'>Some roles can buy a cure that can remove the infection from a player. If it is used on a player that isn't infected then <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>"
+        if cure_mode == DOCTOR_CURE_KILL_NONE then
             html = html .. "nothing bad will happen</span>, but "
-        elseif cure_mode == PARASITE_CURE_KILL_OWNER then
+        elseif cure_mode == DOCTOR_CURE_KILL_OWNER then
             html = html .. "the player using it will be killed</span> and "
-        elseif cure_mode == PARASITE_CURE_KILL_TARGET then
+        elseif cure_mode == DOCTOR_CURE_KILL_TARGET then
             html = html .. "the target player will be killed</span> and "
         end
         html = html .. "it will get used up.</span>"

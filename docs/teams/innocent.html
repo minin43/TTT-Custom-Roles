@@ -208,6 +208,30 @@
                             <td>The number of credits a Doctor should start with.</td>
                         </tr>
                         <tr>
+                            <td>ttt_doctor_cure_mode <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>2</td>
+                            <td>Integer (0-2)</td>
+                            <td>How to handle using a cure on someone who is not infected:
+                                <ol start="0">
+                                    <li>Kill nobody, but use up the cure.</li>
+                                    <li>Kill the person who uses the cure.</li>
+                                    <li>Kill the person the cure is used on.</li>
+                                </ol>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ttt_doctor_cure_rebuyable <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether the cure can be bought multiple times.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_doctor_cure_time <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>3</td>
+                            <td>Integer</td>
+                            <td>The amount of time in seconds the cure takes to use.</td>
+                        </tr>
+                        <tr>
                             <td>ttt_single_doctor_quack</td>
                             <td>0</td>
                             <td>Boolean</td>
@@ -804,6 +828,12 @@
                             <td>0</td>
                             <td>Boolean</td>
                             <td>Whether jester roles should also be revealed to the Scout.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_scout_reveal_monsters <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether monster roles should also be revealed to the Scout.</td>
                         </tr>
                         </tbody>
                     </table>

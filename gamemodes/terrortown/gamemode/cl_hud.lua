@@ -493,7 +493,7 @@ local function InfoPaint(client)
         if hide_role:GetBool() then
             text = GetTranslation("hidden")
         else
-            text = client:GetRoleString()
+            text = LANG.GetRawTranslation(client:GetRoleStringRaw()) or client:GetRoleString()
         end
     else
         text = L[roundstate_string[round_state]]

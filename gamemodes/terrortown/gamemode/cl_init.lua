@@ -80,6 +80,7 @@ include("cl_hitmarkers.lua")
 include("cl_deathnotify.lua")
 include("cl_sprint.lua")
 include("cl_cheatsheet.lua")
+include("cl_sync.lua")
 
 local traitor_vision = false
 local jesters_visible_to_traitors = false
