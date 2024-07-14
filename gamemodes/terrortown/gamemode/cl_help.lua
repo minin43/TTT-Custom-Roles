@@ -538,6 +538,10 @@ local function ShowTutorialPage(pnl, page)
 end
 
 local function ShowRoleTutorial(role)
+    local client = LocalPlayer()
+    -- Always show the page for your role, even if it's not enabled
+    if IsValid(client) and client:GetDisplayedRole() == role then return true end
+
     -- If the role can spawn, show the page
     if util.CanRoleSpawn(role) then return true end
 
