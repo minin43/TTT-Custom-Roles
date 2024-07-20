@@ -16,6 +16,7 @@
   - *BREAKING CHANGE* - Renamed `ttt_parasite_cure_time` and `ttt_parasite_cure_mode` to `ttt_doctor_cure_time` and `ttt_doctor_cure_mode` to make it clearer that it's now for more than just the parasite
   - *BREAKING CHANGE* - Renamed class from `weapon_par_cure` to `weapon_doc_cure`
 - Changed Fake Parasite Cure weapon to be generic Fake Cure which can also be used against plagued players
+- Changed tutorial page to always show the page for your current role, even if it's not enabled
 
 ### Fixes
 - Fixed role names in info HUD not being translatable
