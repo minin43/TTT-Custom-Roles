@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.18 (Beta)
-**Released:**
+**Released: July 20th, 2024**
 
 ### Additions
 - Added new independent role: plaguemaster
