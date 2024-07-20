@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 local hook = hook
 local table = table
-local weapons = weapons
+local util = util
 
 -- Parasite respawn modes
 PARASITE_RESPAWN_HOST = 0
@@ -13,22 +13,6 @@ PARASITE_RESPAWN_RANDOM = 2
 PARASITE_SUICIDE_NONE = 0
 PARASITE_SUICIDE_RESPAWN_ALL = 1
 PARASITE_SUICIDE_RESPAWN_CONSOLE = 2
-
-------------------
--- ROLE WEAPONS --
-------------------
-
-hook.Add("TTTUpdateRoleState", "Parasite_TTTUpdateRoleState", function()
-    local parasite_cure = weapons.GetStored("weapon_par_cure")
-    local fake_cure = weapons.GetStored("weapon_qua_fake_cure")
-    if util.CanRoleSpawn(ROLE_PARASITE) then
-        parasite_cure.CanBuy = table.Copy(parasite_cure.CanBuyDefault)
-        fake_cure.CanBuy = table.Copy(fake_cure.CanBuyDefault)
-    else
-        table.Empty(parasite_cure.CanBuy)
-        table.Empty(fake_cure.CanBuy)
-    end
-end)
 
 ------------------
 -- ROLE CONVARS --
@@ -84,17 +68,6 @@ table.insert(ROLE_CONVARS[ROLE_PARASITE], {
     type = ROLE_CONVAR_TYPE_BOOL
 })
 table.insert(ROLE_CONVARS[ROLE_PARASITE], {
-    cvar = "ttt_parasite_cure_mode",
-    type = ROLE_CONVAR_TYPE_DROPDOWN,
-    choices = {"Kill nobody", "Kill owner", "Kill target"},
-    isNumeric = true
-})
-table.insert(ROLE_CONVARS[ROLE_PARASITE], {
-    cvar = "ttt_parasite_cure_time",
-    type = ROLE_CONVAR_TYPE_NUM,
-    decimal = 0
-})
-table.insert(ROLE_CONVARS[ROLE_PARASITE], {
     cvar = "ttt_parasite_infection_saves_lover",
     type = ROLE_CONVAR_TYPE_BOOL
 })
@@ -143,4 +116,10 @@ end
 hook.Add("TTTUpdateRoleState", "Parasite_Team_TTTUpdateRoleState", function()
     MONSTER_ROLES[ROLE_PARASITE] = parasite_is_monster:GetBool()
     TRAITOR_ROLES[ROLE_PARASITE] = not parasite_is_monster:GetBool()
+end)
+
+hook.Add("TTTCanCureableRoleSpawn", "Parasite_TTTCanCureableRoleSpawn", function()
+    if util.CanRoleSpawn(ROLE_PARASITE) then
+        return true
+    end
 end)

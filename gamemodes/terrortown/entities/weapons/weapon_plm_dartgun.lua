@@ -1,0 +1,88 @@
+AddCSLuaFile()
+
+SWEP.HoldType              = "pistol"
+
+if CLIENT then
+   SWEP.PrintName          = "Plague Dart Gun"
+   SWEP.Slot               = 8
+
+   SWEP.ViewModelFlip      = false
+   SWEP.ViewModelFOV       = 54
+end
+
+SWEP.Base                  = "weapon_tttbase"
+SWEP.Category              = WEAPON_CATEGORY_ROLE
+
+SWEP.Primary.Recoil        = 1.35
+SWEP.Primary.Damage        = 0
+SWEP.Primary.Delay         = 0.38
+SWEP.Primary.Cone          = 0.02
+SWEP.Primary.ClipSize      = 1
+SWEP.Primary.Automatic     = true
+SWEP.Primary.DefaultClip   = 1
+SWEP.Primary.ClipMax       = 1
+SWEP.Primary.Ammo          = "none"
+SWEP.Primary.Sound         = Sound("Weapon_USP.SilencedShot")
+SWEP.Primary.SoundLevel    = 50
+
+SWEP.Kind                  = WEAPON_ROLE
+SWEP.InLoadoutFor          = {ROLE_PLAGUEMASTER}
+
+SWEP.IsSilent              = true
+
+SWEP.UseHands              = true
+SWEP.ViewModel             = "models/weapons/cstrike/c_pist_usp.mdl"
+SWEP.WorldModel            = "models/weapons/w_pist_usp_silencer.mdl"
+
+SWEP.IronSightsPos         = Vector(-5.91, -4, 2.84)
+SWEP.IronSightsAng         = Vector(-0.5, 0, 0)
+
+SWEP.PrimaryAnim           = ACT_VM_PRIMARYATTACK_SILENCED
+SWEP.ReloadAnim            = ACT_VM_RELOAD_SILENCED
+
+function SWEP:Deploy()
+   self:SendWeaponAnim(ACT_VM_DRAW_SILENCED)
+   return self.BaseClass.Deploy(self)
+end
+
+function SWEP:PrimaryAttack()
+    self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+
+    if not self:CanPrimaryAttack() then return end
+
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
+
+    local cone = self.Primary.Cone
+    local bullet      = {}
+    bullet.Num        = 1
+    bullet.Src        = owner:GetShootPos()
+    bullet.Dir        = owner:GetAimVector()
+    bullet.Spread     = Vector(cone, cone, 0)
+    bullet.Force      = 2
+    bullet.Damage     = self.Primary.Damage
+    bullet.Callback   = function(attacker, tr, dmginfo)
+        if not IsValid(owner) then return end
+
+        if SERVER and tr.Hit and tr.HitNonWorld and IsPlayer(tr.Entity) then
+            local victim = tr.Entity
+            net.Start("TTT_PlaguemasterPlagued")
+                net.WriteString(victim:Nick())
+                net.WriteString(owner:Nick())
+            net.Broadcast()
+            victim:SetProperty("TTTPlaguemasterStartTime", CurTime())
+            self:Remove()
+        end
+    end
+
+    owner:FireBullets(bullet)
+
+    if not worldsnd then
+        self:EmitSound( self.Primary.Sound, self.Primary.SoundLevel )
+    elseif SERVER then
+        sound.Play(self.Primary.Sound, self:GetPos(), self.Primary.SoundLevel)
+    end
+
+    if owner:IsNPC() or (not owner.ViewPunch) then return end
+    owner:ViewPunch(Angle(util.SharedRandom(self:GetClass(), -0.2, -0.1, 0) * self.Primary.Recoil, util.SharedRandom(self:GetClass(), -0.1, 0.1, 1) * self.Primary.Recoil, 0))
+end

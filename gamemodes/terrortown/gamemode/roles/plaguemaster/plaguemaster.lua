@@ -1,0 +1,213 @@
+AddCSLuaFile()
+
+local hook = hook
+local player = player
+local util = util
+
+util.AddNetworkString("TTT_PlaguemasterPlagued")
+
+local AddHook = hook.Add
+local PlayerIterator = player.Iterator
+
+-------------
+-- CONVARS --
+-------------
+
+local plaguemaster_immune = GetConVar("ttt_plaguemaster_immune")
+local plaguemaster_plague_length = GetConVar("ttt_plaguemaster_plague_length")
+local plaguemaster_spread_distance = GetConVar("ttt_plaguemaster_spread_distance")
+local plaguemaster_spread_require_los = GetConVar("ttt_plaguemaster_spread_require_los")
+local plaguemaster_spread_time = GetConVar("ttt_plaguemaster_spread_time")
+local plaguemaster_warning_time = GetConVar("ttt_plaguemaster_warning_time")
+
+------------
+-- PLAGUE --
+------------
+
+local function SetSpreadStart(ply, sid64)
+    local time = CurTime()
+    ply.TTTPlaguemasterSpreadStartTimes[sid64] = time
+    if not ply.TTTPlaguemasterCurrentSource then
+        ply.TTTPlaguemasterCurrentSource = sid64
+        ply:SetProperty("TTTPlaguemasterSpreadStart", time, ply)
+    end
+end
+
+local function ClearSpreadStart(ply, sid64)
+    -- Track the spread start from different sources so if one person moves out of range it doesn't reset progress from everyone
+    if ply.TTTPlaguemasterSpreadStartTimes[sid64] then
+        ply.TTTPlaguemasterSpreadStartTimes[sid64] = nil
+    end
+    ply.TTTPlaguemasterWarned = false
+
+    -- If this player was the current source, find the next earliest source
+    if ply.TTTPlaguemasterCurrentSource == sid64 then
+        local earliest = nil
+        for src64, t in pairs(ply.TTTPlaguemasterSpreadStartTimes) do
+            if not earliest or earliest.time < t then
+                earliest = {
+                    source = src64,
+                    time = t
+                }
+            end
+        end
+
+        -- If there was one, save it
+        if earliest then
+            ply.TTTPlaguemasterCurrentSource = earliest.source
+            ply:SetProperty("TTTPlaguemasterSpreadStart", earliest.time, ply)
+        -- If not, clear it
+        else
+            ply.TTTPlaguemasterCurrentSource = nil
+            ply:ClearProperty("TTTPlaguemasterSpreadStart", ply)
+        end
+    end
+end
+
+AddHook("TTTPlayerAliveThink", "Plaguemaster_Plague_TTTPlayerAliveThink", function(ply)
+    local plague_start = ply.TTTPlaguemasterStartTime
+    if not plague_start then return end
+
+    local plague_length = plaguemaster_plague_length:GetInt()
+    local warning_time = plaguemaster_warning_time:GetInt()
+    local elapsed_time = CurTime() - plague_start
+    if elapsed_time >= plague_length then
+        ply:SetProperty("TTTPlaguemasterPlagueDeath", true)
+        ply:QueueMessage(MSG_PRINTBOTH, "You have succumbed to the plague!")
+        ply:Kill()
+        return
+    elseif not ply.TTTPlaguemasterWarned and warning_time > 0 and (plague_length - elapsed_time) <= warning_time then
+        ply.TTTPlaguemasterWarned = true
+        ply:QueueMessage(MSG_PRINTBOTH, "The plague is spreading throughout your body, it will kill you soon!")
+    end
+
+    -- Check for players within radius and (optionally LOS) to spread the plague
+    local spread_time = plaguemaster_spread_time:GetInt()
+    local spread_distance = plaguemaster_spread_distance:GetInt()
+    local spread_require_los = plaguemaster_spread_require_los:GetBool()
+    local sid64 = ply:SteamID64()
+    local immune = plaguemaster_immune:GetBool()
+    for _, v in PlayerIterator() do
+        if v == ply then continue end
+        if not v:Alive() or v:IsSpec() then continue end
+        -- Don't bother checking players that already have the plague
+        if v.TTTPlaguemasterStartTime then continue end
+        if v:IsPlaguemaster() and immune then continue end
+
+        if not v.TTTPlaguemasterSpreadStartTimes then
+            v.TTTPlaguemasterSpreadStartTimes = {}
+        end
+
+        local distance = v:GetPos():Distance(ply:GetPos())
+        if distance > spread_distance then
+            ClearSpreadStart(v, sid64)
+            continue
+        end
+
+        if spread_require_los and not ply:IsLineOfSightClear(v) then
+            ClearSpreadStart(v, sid64)
+            continue
+        end
+
+        -- If we haven't started spreading to this target, mark the start time
+        if not v.TTTPlaguemasterSpreadStartTimes[sid64] then
+            SetSpreadStart(v, sid64)
+
+            -- If this is a plaguemaster that hasn't been warned, warn them
+            if v:IsPlaguemaster() and not v.TTTPlaguemasterWarned then
+                v.TTTPlaguemasterWarned = true
+                v:QueueMessage(MSG_PRINTBOTH, "You are in range of someone with the plague!")
+            end
+        -- If we've been spreading the plague to this target for long enough, give them the plague
+        elseif (CurTime() - v.TTTPlaguemasterSpreadStartTimes[sid64]) >= spread_time then
+            v:SetProperty("TTTPlaguemasterStartTime", CurTime())
+            net.Start("TTT_PlaguemasterPlagued")
+                net.WriteString(v:Nick())
+                net.WriteString(ply:Nick())
+            net.Broadcast()
+            -- Also clear their spread list so other players with the plague don't reset their plague state
+            ClearSpreadStart(v, sid64)
+            v.TTTPlaguemasterSpreadStartTimes = {}
+        end
+    end
+end)
+
+-- Clear the plague from anyone this player is spreading to
+AddHook("PostPlayerDeath", "Plaguemaster_PostPlayerDeath", function(ply)
+    local plague_start = ply.TTTPlaguemasterStartTime
+    if not plague_start then return end
+
+    local sid64 = ply:SteamID64()
+    for _, v in PlayerIterator() do
+        if v == ply then continue end
+        if v.TTTPlaguemasterSpreadStartTimes[sid64] then
+            ClearSpreadStart(v, sid64)
+        end
+    end
+end)
+
+----------------
+-- WIN CHECKS --
+----------------
+
+AddHook("TTTCheckForWin", "Plaguemaster_TTTCheckForWin", function()
+    local plaguemaster_alive = false
+    local other_alive = false
+    for _, v in PlayerIterator() do
+        if v:IsActive() then
+            if v:IsPlaguemaster() then
+                plaguemaster_alive = true
+            elseif not v:ShouldActLikeJester() then
+                other_alive = true
+            end
+        end
+    end
+
+    if plaguemaster_alive and not other_alive then
+        return WIN_PLAGUEMASTER
+    elseif plaguemaster_alive then
+        return WIN_NONE
+    end
+end)
+
+AddHook("TTTPrintResultMessage", "Plaguemaster_TTTPrintResultMessage", function(type)
+    if type == WIN_PLAGUEMASTER then
+        LANG.Msg("win_plaguemaster", { role = ROLE_STRINGS[ROLE_PLAGUEMASTER] })
+        ServerLog("Result: " .. ROLE_STRINGS[ROLE_PLAGUEMASTER] .. " wins.\n")
+        return true
+    end
+end)
+
+-------------
+-- CLEANUP --
+-------------
+
+local function ClearPlaguemasterState(ply)
+    ply:ClearProperty("TTTPlaguemasterStartTime")
+    ply:ClearProperty("TTTPlaguemasterSpreadStart")
+    ply:ClearProperty("TTTPlaguemasterPlagueDeath")
+    ply.TTTPlaguemasterWarned = false
+    ply.TTTPlaguemasterSpreadStartTimes = {}
+    ply.TTTPlaguemasterCurrentSource = nil
+end
+
+AddHook("TTTPrepareRound", "Plaguemaster_PrepareRound", function()
+    for _, v in PlayerIterator() do
+        ClearPlaguemasterState(v)
+    end
+end)
+
+----------
+-- CURE --
+----------
+
+hook.Add("TTTCanPlayerBeCured", "Plaguemaster_TTTCanPlayerBeCured", function(ply)
+    if ply.TTTPlaguemasterStartTime then
+        return true
+    end
+end)
+
+hook.Add("TTTCurePlayer", "Plaguemaster_TTTCurePlayer", function(ply)
+    if not ply.TTTPlaguemasterStartTime then return end
+    ClearPlaguemasterState(ply)
+end)

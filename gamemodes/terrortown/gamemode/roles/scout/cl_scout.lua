@@ -1,3 +1,7 @@
+local string = string
+
+local StringLower = string.lower
+
 ------------------
 -- TRANSLATIONS --
 ------------------
@@ -19,14 +23,27 @@ hook.Add("TTTTutorialRoleText", "Scout_TTTTutorialRoleText", function(role, titl
 
         local revealJesters = GetConVar("ttt_scout_reveal_jesters"):GetBool()
         local revealIndependents = GetConVar("ttt_scout_reveal_independents"):GetBool()
-        if revealJesters and revealIndependents then
-            html = html .. ", jester, and independent"
-        elseif revealJesters then
-            html = html .. " and jester"
-        elseif revealIndependents then
-            html = html .. " and independent"
+        local revealMonsters = GetConVar("ttt_scout_reveal_monsters"):GetBool()
+
+        local roles = {}
+        if revealJesters then
+            table.insert(roles, StringLower(LANG.GetTranslation("jester")))
         end
-        html = html .. " roles are in play."
+        if revealIndependents then
+            table.insert(roles, StringLower(LANG.GetTranslation("independent")))
+        end
+        if revealMonsters then
+            table.insert(roles, StringLower(LANG.GetTranslation("monster")))
+        end
+
+        local rolesString = ""
+        if #roles > 1 then
+            rolesString = ", " .. table.concat(roles, ", ", 1, #roles - 1) .. ", and " .. roles[#roles]
+        elseif #roles == 1 then
+            rolesString = " and " .. roles[1]
+        end
+
+        html = html .. rolesString .. " roles are in play."
 
         local delayIntel = GetConVar("ttt_scout_delay_intel"):GetInt()
         if delayIntel > 0 then

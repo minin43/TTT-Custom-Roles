@@ -43,6 +43,14 @@ Clears the player's forced role if one was set with `plymeta:ForceRoleNextRound(
 *Realm:* Server\
 *Added in:* 2.0.7
 
+### plymeta:ClearProperty(name, targets)
+Clears the value of the property with the given `name` on this player then synchronizes the clear to all `targets`. Wrapper around [SYNC:ClearPlayerProperty](METHODS_SYNC.md#syncclearplayerpropertyply-propertyname-targets).\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *name* - The name of the property being cleared.
+- *targets* - The targets that should have this value cleared on their clients. *(Defaults to sending to all players)*
+
 ### plymeta:DrunkJoinLosingTeam()
 Attempts to find the losing team and calls `self:SoberDrunk(team)` using the losing team as the *team* parameter.\
 *Realm:* Server\
@@ -379,6 +387,15 @@ Sets the player's size by adjusting models, step sizes, hulls and view offsets.\
 *Added in:* 1.3.1\
 *Parameters:*
 - *scale* - The value with which to scale the players size, relative to their current size.
+
+### plymeta:SetProperty(name, value, targets)
+Sets the value of the property with the given `name` on this player to equal `value` and then synchronizes that value to all `targets`. Wrapper around [SYNC:SetPlayerProperty](METHODS_SYNC.md#syncsetplayerpropertyply-propertyname-propertyvalue-targets).\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *name* - The name of the property being set.
+- *value* - The value the property is being set to.
+- *targets* - The targets that should have this value available on their clients. *(Defaults to sending to all players)*
 
 ### plymeta:SetRoleAndBroadcast(role)
 Sets the player's role to the given one and (if called on the server) broadcasts the change to all clients for scoreboard tracking.\

@@ -24,13 +24,9 @@ local StringSub = string.sub
 include("player_class/player_ttt.lua")
 
 -- Version string for display and function for version checks
-CR_VERSION = "2.1.17"
+CR_VERSION = "2.1.18"
 CR_BETA = true
 CR_WORKSHOP_ID = CR_BETA and "2404251054" or "2421039084"
-
-if SERVER then
-    resource.AddWorkshop(CR_WORKSHOP_ID)
-end
 
 function CRVersion(version)
     local installedVersionRaw = StringSplit(CR_VERSION, ".")
@@ -86,6 +82,11 @@ CRDebug = CRDebug or {
         "InitPostEntity_CreateVoiceVGUI"
     }
 }
+
+-- Only add this as a workshop resource if we're not running in debug mode
+if SERVER and not CRDebug.Enabled then
+    resource.AddWorkshop(CR_WORKSHOP_ID)
+end
 
 -- Only run this when we're debugging and only do it once
 if CRDebug.Enabled and not CRDebug.HooksChecked then
@@ -180,8 +181,9 @@ ROLE_VINDICATOR = 45
 ROLE_SCOUT = 46
 ROLE_GOODTWIN = 47
 ROLE_EVILTWIN = 48
+ROLE_PLAGUEMASTER = 49
 
-ROLE_MAX = 48
+ROLE_MAX = 49
 ROLE_EXTERNAL_START = ROLE_MAX + 1
 
 local function AddRoleAssociations(tbl, roles)
@@ -218,7 +220,7 @@ JESTER_ROLES = {}
 AddRoleAssociations(JESTER_ROLES, {ROLE_JESTER, ROLE_SWAPPER, ROLE_CLOWN, ROLE_BEGGAR, ROLE_BODYSNATCHER, ROLE_LOOTGOBLIN, ROLE_CUPID, ROLE_SPONGE, ROLE_GUESSER})
 
 INDEPENDENT_ROLES = {}
-AddRoleAssociations(INDEPENDENT_ROLES, {ROLE_DRUNK, ROLE_OLDMAN, ROLE_KILLER, ROLE_ZOMBIE, ROLE_MADSCIENTIST, ROLE_SHADOW, ROLE_ARSONIST, ROLE_HIVEMIND})
+AddRoleAssociations(INDEPENDENT_ROLES, {ROLE_DRUNK, ROLE_OLDMAN, ROLE_KILLER, ROLE_ZOMBIE, ROLE_MADSCIENTIST, ROLE_SHADOW, ROLE_ARSONIST, ROLE_HIVEMIND, ROLE_PLAGUEMASTER})
 
 MONSTER_ROLES = {}
 AddRoleAssociations(MONSTER_ROLES, {})
@@ -586,7 +588,8 @@ ROLE_STRINGS_RAW = {
     [ROLE_VINDICATOR] = "vindicator",
     [ROLE_SCOUT] = "scout",
     [ROLE_GOODTWIN] = "goodtwin",
-    [ROLE_EVILTWIN] = "eviltwin"
+    [ROLE_EVILTWIN] = "eviltwin",
+    [ROLE_PLAGUEMASTER] = "plaguemaster"
 }
 
 ROLE_STRINGS = {
@@ -638,7 +641,8 @@ ROLE_STRINGS = {
     [ROLE_VINDICATOR] = "Vindicator",
     [ROLE_SCOUT] = "Scout",
     [ROLE_GOODTWIN] = "Good Twin",
-    [ROLE_EVILTWIN] = "Evil Twin"
+    [ROLE_EVILTWIN] = "Evil Twin",
+    [ROLE_PLAGUEMASTER] = "Plaguemaster"
 }
 
 ROLE_STRINGS_PLURAL = {
@@ -690,7 +694,8 @@ ROLE_STRINGS_PLURAL = {
     [ROLE_VINDICATOR] = "Vindicators",
     [ROLE_SCOUT] = "Scouts",
     [ROLE_GOODTWIN] = "Good Twins",
-    [ROLE_EVILTWIN] = "Evil Twins"
+    [ROLE_EVILTWIN] = "Evil Twins",
+    [ROLE_PLAGUEMASTER] = "Plaguemasters"
 }
 
 ROLE_STRINGS_EXT = {
@@ -743,7 +748,8 @@ ROLE_STRINGS_EXT = {
     [ROLE_VINDICATOR] = "a Vindicator",
     [ROLE_SCOUT] = "a Scout",
     [ROLE_GOODTWIN] = "a Good Twin",
-    [ROLE_EVILTWIN] = "an Evil Twin"
+    [ROLE_EVILTWIN] = "an Evil Twin",
+    [ROLE_PLAGUEMASTER] = "a Plaguemaster"
 }
 
 ROLE_STRINGS_SHORT = {
@@ -796,7 +802,8 @@ ROLE_STRINGS_SHORT = {
     [ROLE_VINDICATOR] = "vin",
     [ROLE_SCOUT] = "sco",
     [ROLE_GOODTWIN] = "gtw",
-    [ROLE_EVILTWIN] = "etw"
+    [ROLE_EVILTWIN] = "etw",
+    [ROLE_PLAGUEMASTER] = "plm"
 }
 
 function StartsWithVowel(word)
@@ -1306,8 +1313,9 @@ EVENT_GUESSERINCORRECT = 35
 EVENT_VINDICATORACTIVE = 36
 EVENT_VINDICATORSUCCESS = 37
 EVENT_VINDICATORFAIL = 38
+EVENT_PLAGUEMASTERPLAGUED = 39
 
-EVENT_MAX = EVENT_MAX or 38
+EVENT_MAX = EVENT_MAX or 39
 EVENTS_BY_ROLE = EVENTS_BY_ROLE or {}
 
 if SERVER then
@@ -1366,8 +1374,9 @@ WIN_ARSONIST = 16
 WIN_HIVEMIND = 17
 WIN_VINDICATOR = 18
 WIN_INFECTED = 19
+WIN_PLAGUEMASTER = 20
 
-WIN_MAX = WIN_MAX or 19
+WIN_MAX = WIN_MAX or 20
 WINS_BY_ROLE = WINS_BY_ROLE or {}
 
 if SERVER then
@@ -1802,7 +1811,10 @@ local function AddOldCVarWarning(oldName, newName)
 end
 
 -- Add entries to this table in the form of: { "old_convar_name", "new_convar_name" }
-local deprecatedConVars = {}
+local deprecatedConVars = {
+    { "ttt_parasite_cure_time", "ttt_doctor_cure_time" },
+    { "ttt_parasite_cure_mode", "ttt_doctor_cure_mode" }
+}
 
 for _, c in ipairs(deprecatedConVars) do
     -- Create the old convar with the same default value as the new one

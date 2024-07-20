@@ -47,6 +47,7 @@ AddCSLuaFile("cl_deathnotify.lua")
 AddCSLuaFile("cl_sprint.lua")
 AddCSLuaFile("sprint_shd.lua")
 AddCSLuaFile("cl_cheatsheet.lua")
+AddCSLuaFile("cl_sync.lua")
 
 include("shared.lua")
 include("init_shd.lua")
@@ -72,6 +73,7 @@ include("roleweapons.lua")
 include("sprint_shd.lua")
 include("rolepacks.lua")
 include("roleblocks.lua")
+include("sync.lua")
 
 -- Localise stuff we use often. It's like Lua go-faster stripes.
 local concommand = concommand
@@ -1602,7 +1604,6 @@ function SelectRoles()
 
         SetGlobalBool("ttt_zombie_round", false)
     end
-
 
     if multipleJesterIndependent then
         if jester_independent_count > 0 and #choices > 0 then
