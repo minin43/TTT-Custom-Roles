@@ -915,6 +915,7 @@ ttt_plaguemaster_spread_time                   30      // How long (in seconds) 
 ttt_plaguemaster_spread_distance               500     // The maximum distance away a player can be and still be infected
 ttt_plaguemaster_spread_require_los            1       // Whether players need to be in line-of-sight of a target to spread the plague
 ttt_plaguemaster_immune                        1       // Whether the plaguemaster is immune to the plague
+ttt_plaguemaster_body_search_mode              1       // Whether dead bodies reveal if they had the plague when searched. 0 - Don't show. 1 - Show if died from plague. 2 - Show if infected with plague.
 ttt_plaguemaster_can_see_jesters               0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the plaguemaster
 ttt_plaguemaster_update_scoreboard             1       // Whether the plaguemaster shows dead players as missing in action
 

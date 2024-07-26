@@ -4,6 +4,7 @@ local util = util
 
 local AddHook = hook.Add
 local MathMax = math.max
+local MathSin = math.sin
 
 -------------
 -- CONVARS --
@@ -15,7 +16,7 @@ local plaguemaster_spread_distance = GetConVar("ttt_plaguemaster_spread_distance
 local plaguemaster_spread_require_los = GetConVar("ttt_plaguemaster_spread_require_los")
 local plaguemaster_spread_time = GetConVar("ttt_plaguemaster_spread_time")
 local plaguemaster_warning_time = GetConVar("ttt_plaguemaster_warning_time")
-local hide_role = GetConVar("ttt_hide_role")
+local plaguemaster_body_search_mode = GetConVar("ttt_plaguemaster_body_search_mode")
 
 ------------------
 -- TRANSLATIONS --
@@ -33,8 +34,8 @@ AddHook("Initialize", "Plaguemaster_Translations_Initialize", function()
     LANG.AddToLanguage("english", "ev_win_plaguemaster", "The infectious {role} has won the round!")
 
     -- HUD
-    LANG.AddToLanguage("english", "plaguemaster_hud_death", "Dying from plague in: {time}")
-    LANG.AddToLanguage("english", "plaguemaster_hud_spread", "Catching plague in: {time}")
+    LANG.AddToLanguage("english", "plaguemaster_hud_death", "DYING FROM PLAGUE IN {time}")
+    LANG.AddToLanguage("english", "plaguemaster_hud_spread", "CATCHING PLAGUE IN {time}")
     LANG.AddToLanguage("english", "plaguemaster_plagued", "PLAGUED")
 
     -- Cheat Sheet
@@ -80,8 +81,11 @@ AddHook("TTTBodySearchPopulate", "Plaguemaster_TTTBodySearchPopulate", function(
     local ply = CORPSE.GetPlayer(rag)
     if not IsPlayer(ply) then return end
 
+    local search_mode = plaguemaster_body_search_mode:GetInt()
+    if search_mode == PLAGUEMASTER_SEARCH_DONT_SHOW then return end
+
     local plague_death = ply.TTTPlaguemasterPlagueDeath
-    if not plague_death then return end
+    if search_mode == PLAGUEMASTER_SEARCH_SHOW_KILLED and not plague_death then return end
 
     local plague_start = ply.TTTPlaguemasterStartTime
     if not plague_start then return end
@@ -155,46 +159,39 @@ end)
 ---------
 -- HUD --
 ---------
+local client = nil
 
-AddHook("TTTHUDInfoPaint", "Plaguemaster_TTTHUDInfoPaint", function(cli, label_left, label_top, active_labels)
-    if hide_role:GetBool() then return end
-    if not cli:IsPlaguemaster() then return end
-
-    if cli.TTTPlaguemasterSpreadStart then
-        surface.SetFont("TabLarge")
-        surface.SetTextColor(255, 255, 255, 230)
-
-        local spread_time = plaguemaster_spread_time:GetInt()
-        local remaining = MathMax(0, (cli.TTTPlaguemasterSpreadStart + spread_time) - CurTime())
-        local text = LANG.GetParamTranslation("plaguemaster_hud_spread", { time = util.SimpleTime(remaining, "%02i:%02i") })
-        local _, h = surface.GetTextSize(text)
-
-        -- Move this up based on how many other labels here are
-        label_top = label_top + (20 * #active_labels)
-
-        surface.SetTextPos(label_left, ScrH() - label_top - h)
-        surface.DrawText(text)
-
-        -- Track that the label was added so others can position accurately
-        table.insert(active_labels, "plaguemaster")
-    elseif cli.TTTPlaguemasterStartTime then
-        surface.SetFont("TabLarge")
-        surface.SetTextColor(255, 255, 255, 230)
-
-        local plague_length = plaguemaster_plague_length:GetInt()
-        local remaining = MathMax(0, (cli.TTTPlaguemasterStartTime + plague_length) - CurTime())
-        local text = LANG.GetParamTranslation("plaguemaster_hud_death", { time = util.SimpleTime(remaining, "%02i:%02i") })
-        local _, h = surface.GetTextSize(text)
-
-        -- Move this up based on how many other labels here are
-        label_top = label_top + (20 * #active_labels)
-
-        surface.SetTextPos(label_left, ScrH() - label_top - h)
-        surface.DrawText(text)
-
-        -- Track that the label was added so others can position accurately
-        table.insert(active_labels, "plaguemaster")
+AddHook("HUDPaint", "Plaguemaster_HUDPaint", function()
+    if not IsPlayer(client) then
+        client = LocalPlayer()
     end
+
+    if not IsValid(client) or client:IsSpec() or GetRoundState() ~= ROUND_ACTIVE then return end
+    if not client:IsPlaguemaster() then return end
+
+    local progress = 0
+    local message = ""
+
+    if client.TTTPlaguemasterSpreadStart then
+        local spread_time = plaguemaster_spread_time:GetInt()
+        local remaining = MathMax(0, (client.TTTPlaguemasterSpreadStart + spread_time) - CurTime())
+        progress = 1 - (remaining / spread_time)
+        message = LANG.GetParamTranslation("plaguemaster_hud_spread", { time = util.SimpleTime(remaining, "%02i:%02i") })
+    elseif client.TTTPlaguemasterStartTime then
+        local plague_length = plaguemaster_plague_length:GetInt()
+        local remaining = MathMax(0, (client.TTTPlaguemasterStartTime + plague_length) - CurTime())
+        progress = 1 - (remaining / plague_length)
+        message = LANG.GetParamTranslation("plaguemaster_hud_death", { time = util.SimpleTime(remaining, "%02i:%02i") })
+    end
+
+    if progress == 0 then return end
+
+    local x = ScrW() / 2.0
+    local y = ScrH() / 1.5
+    local w = 300
+    local color = Color(200 + MathSin(CurTime() * 32) * 50, 0, 0, 155)
+
+    CRHUD:PaintProgressBar(x, y, w, color, message, progress)
 end)
 
 --------------
