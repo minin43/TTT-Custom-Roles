@@ -11,6 +11,7 @@ local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_BeggarConverted")
 util.AddNetworkString("TTT_BeggarKilled")
+util.AddNetworkString("TTT_BeggarTeamSync")
 
 -------------
 -- CONVARS --
@@ -62,11 +63,17 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
         if beggar_keep_begging:GetBool() then
             JESTER_ROLES[ROLE_BEGGAR] = false
             INDEPENDENT_ROLES[ROLE_BEGGAR] = false
+            net.Start("TTT_BeggarConverted")
             if role == ROLE_INNOCENT then
                 INNOCENT_ROLES[ROLE_BEGGAR] = true
+                TRAITOR_ROLES[ROLE_BEGGAR] = false
+                net.WriteBool(true)
             elseif role == ROLE_TRAITOR then
+                INNOCENT_ROLES[ROLE_BEGGAR] = false
                 TRAITOR_ROLES[ROLE_BEGGAR] = true
+                net.WriteBool(false)
             end
+            net.Broadcast()
         else
             ply:SetRole(role)
         end
@@ -171,11 +178,17 @@ hook.Add("PlayerDeath", "Beggar_KillCheck_PlayerDeath", function(victim, infl, a
                 if beggar_keep_begging:GetBool() then
                     JESTER_ROLES[ROLE_BEGGAR] = false
                     INDEPENDENT_ROLES[ROLE_BEGGAR] = false
+                    net.Start("TTT_BeggarConverted")
                     if role == ROLE_INNOCENT then
                         INNOCENT_ROLES[ROLE_BEGGAR] = true
+                        TRAITOR_ROLES[ROLE_BEGGAR] = false
+                        net.WriteBool(true)
                     elseif role == ROLE_TRAITOR then
+                        INNOCENT_ROLES[ROLE_BEGGAR] = false
                         TRAITOR_ROLES[ROLE_BEGGAR] = true
+                        net.WriteBool(false)
                     end
+                    net.Broadcast()
                 else
                     victim:SetRoleAndBroadcast(role)
                 end

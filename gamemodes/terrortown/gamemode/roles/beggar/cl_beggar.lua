@@ -406,6 +406,24 @@ hook.Add("HUDPaint", "Beggar_HUDPaint", function()
     end
 end)
 
+---------------
+-- TEAM SYNC --
+---------------
+
+net.Receive("TTT_BeggarTeamSync", function(len)
+    local isInnocent = net.ReadBool()
+    JESTER_ROLES[ROLE_BEGGAR] = false
+    INDEPENDENT_ROLES[ROLE_BEGGAR] = false
+    if isInnocent then
+        INNOCENT_ROLES[ROLE_BEGGAR] = true
+        TRAITOR_ROLES[ROLE_BEGGAR] = false
+    else
+        INNOCENT_ROLES[ROLE_BEGGAR] = false
+        TRAITOR_ROLES[ROLE_BEGGAR] = true
+    end
+    UpdateRoleColours()
+end)
+
 --------------
 -- TUTORIAL --
 --------------
@@ -439,7 +457,7 @@ hook.Add("TTTTutorialRoleText", "Beggar_TTTTutorialRoleText", function(role, tit
         html = html .. "<span style='display: block; margin-top: 10px;'>The " .. ROLE_STRINGS[ROLE_BEGGAR] .. " then <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>joins the team</span> of whichever player <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>bought the item</span> they are given."
 
         if beggar_keep_begging:GetBool() then
-            html = html .. "However, they are still able to swap teams if they are given another shop item.</span>"
+            html = html .. " However, they are still able to swap teams if they are given another shop item.</span>"
         else
             html = html .. "</span>"
         end
