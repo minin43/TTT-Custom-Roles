@@ -21,6 +21,7 @@ local beggar_reveal_innocent = GetConVar("ttt_beggar_reveal_innocent")
 local beggar_scan = GetConVar("ttt_beggar_scan")
 local beggar_scan_time = GetConVar("ttt_beggar_scan_time")
 local beggar_announce_delay = GetConVar("ttt_beggar_announce_delay")
+local beggar_keep_begging = GetConVar("ttt_beggar_keep_begging")
 local hide_role = GetConVar("ttt_hide_role")
 
 ------------------
@@ -435,7 +436,13 @@ hook.Add("TTTTutorialRoleText", "Beggar_TTTTutorialRoleText", function(role, tit
         local roleTeamName, roleColor = GetRoleTeamInfo(roleTeam)
         local html = "The " .. ROLE_STRINGS[ROLE_BEGGAR] .. " is a member of the <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>" .. roleTeamName .. "</span> team whose goal is to convince another players to give them a shop item."
 
-        html = html .. "<span style='display: block; margin-top: 10px;'>The " .. ROLE_STRINGS[ROLE_BEGGAR] .. " then <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>joins the team</span> of whichever player <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>bought the item</span> they are given.</span>"
+        html = html .. "<span style='display: block; margin-top: 10px;'>The " .. ROLE_STRINGS[ROLE_BEGGAR] .. " then <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>joins the team</span> of whichever player <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>bought the item</span> they are given."
+
+        if beggar_keep_begging:GetBool() then
+            html = html .. "However, they are still able to swap teams if they are given another shop item.</span>"
+        else
+            html = html .. "</span>"
+        end
 
         -- Respawn
         if beggar_respawn:GetBool() then

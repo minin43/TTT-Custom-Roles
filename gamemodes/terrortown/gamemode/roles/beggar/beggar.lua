@@ -33,6 +33,7 @@ local beggar_respawn_change_role = GetConVar("ttt_beggar_respawn_change_role")
 local beggar_scan = GetConVar("ttt_beggar_scan")
 local beggar_scan_time = GetConVar("ttt_beggar_scan_time")
 local beggar_announce_delay = GetConVar("ttt_beggar_announce_delay")
+local beggar_keep_begging = GetConVar("ttt_beggar_keep_begging")
 
 -------------------
 -- ROLE TRACKING --
@@ -58,7 +59,17 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
             role = ROLE_INNOCENT
         end
 
-        ply:SetRole(role)
+        if beggar_keep_begging:GetBool() then
+            JESTER_ROLES[ROLE_BEGGAR] = false
+            INDEPENDENT_ROLES[ROLE_BEGGAR] = false
+            if role == ROLE_INNOCENT then
+                INNOCENT_ROLES[ROLE_BEGGAR] = true
+            elseif role == ROLE_TRAITOR then
+                TRAITOR_ROLES[ROLE_BEGGAR] = true
+            end
+        else
+            ply:SetRole(role)
+        end
         ply:SetNWBool("WasBeggar", true)
         ply:QueueMessage(MSG_PRINTBOTH, "You have joined the " .. ROLE_STRINGS[role] .. " team")
         timer.Simple(0.5, function() SendFullStateUpdate() end) -- Slight delay to avoid flickering from beggar to the new role and back to beggar
@@ -79,7 +90,7 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
         net.WriteString(ROLE_STRINGS_EXT[role])
         net.WriteString(ply:SteamID64())
         net.Broadcast()
-    elseif not wep.BoughtBy or beggar_transfer_ownership:GetBool() then
+    elseif not wep.BoughtBy or not IsPlayer(wep.BoughtBy) or (beggar_transfer_ownership:GetBool() and not wep.BoughtBy:IsBeggar()) then
         wep.BoughtBy = ply
     end
 end)
@@ -126,6 +137,8 @@ hook.Add("PlayerDeath", "Beggar_KillCheck_PlayerDeath", function(victim, infl, a
 
     local respawnLimit = beggar_respawn_limit:GetInt()
     if beggar_respawn:GetBool() and (respawnLimit == 0 or victim.BeggarRespawn < respawnLimit) then
+        if not JESTER_ROLES[ROLE_BEGGAR] and not INDEPENDENT_ROLES[ROLE_BEGGAR] then return end
+
         victim.BeggarRespawn = victim.BeggarRespawn + 1
 
         local change_role = beggar_respawn_change_role:GetBool()
@@ -155,7 +168,17 @@ hook.Add("PlayerDeath", "Beggar_KillCheck_PlayerDeath", function(victim, infl, a
                     role = ROLE_TRAITOR
                 end
 
-                victim:SetRoleAndBroadcast(role)
+                if beggar_keep_begging:GetBool() then
+                    JESTER_ROLES[ROLE_BEGGAR] = false
+                    INDEPENDENT_ROLES[ROLE_BEGGAR] = false
+                    if role == ROLE_INNOCENT then
+                        INNOCENT_ROLES[ROLE_BEGGAR] = true
+                    elseif role == ROLE_TRAITOR then
+                        TRAITOR_ROLES[ROLE_BEGGAR] = true
+                    end
+                else
+                    victim:SetRoleAndBroadcast(role)
+                end
                 SendFullStateUpdate()
                 SetRoleHealth(victim)
                 timer.Simple(0.25, function()
