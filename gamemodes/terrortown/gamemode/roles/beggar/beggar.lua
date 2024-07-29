@@ -11,7 +11,8 @@ local PlayerIterator = player.Iterator
 
 util.AddNetworkString("TTT_BeggarConverted")
 util.AddNetworkString("TTT_BeggarKilled")
-util.AddNetworkString("TTT_BeggarTeamSync")
+util.AddNetworkString("TTT_BeggarChangeTeam")
+util.AddNetworkString("TTT_BeggarResetTeam")
 
 -------------
 -- CONVARS --
@@ -35,6 +36,7 @@ local beggar_scan = GetConVar("ttt_beggar_scan")
 local beggar_scan_time = GetConVar("ttt_beggar_scan_time")
 local beggar_announce_delay = GetConVar("ttt_beggar_announce_delay")
 local beggar_keep_begging = GetConVar("ttt_beggar_keep_begging")
+local beggar_is_independent = GetConVar("ttt_beggar_is_independent")
 
 -------------------
 -- ROLE TRACKING --
@@ -63,7 +65,7 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
         if beggar_keep_begging:GetBool() then
             JESTER_ROLES[ROLE_BEGGAR] = false
             INDEPENDENT_ROLES[ROLE_BEGGAR] = false
-            net.Start("TTT_BeggarConverted")
+            net.Start("TTT_BeggarChangeTeam")
             if role == ROLE_INNOCENT then
                 INNOCENT_ROLES[ROLE_BEGGAR] = true
                 TRAITOR_ROLES[ROLE_BEGGAR] = false
@@ -110,6 +112,15 @@ hook.Add("TTTPrepareRound", "Beggar_PrepareRound", function()
         timer.Remove(v:Nick() .. "BeggarRespawn")
         timer.Remove(v:Nick() .. "BeggarAnnounce")
     end
+    INNOCENT_ROLES[ROLE_BEGGAR] = false
+    TRAITOR_ROLES[ROLE_BEGGAR] = false
+    if beggar_is_independent:GetBool() then
+        INDEPENDENT_ROLES[ROLE_BEGGAR] = true
+    else
+        JESTER_ROLES[ROLE_BEGGAR] = true
+    end
+    net.Start("TTT_BeggarResetTeam")
+    net.Broadcast()
 end)
 
 hook.Add("TTTPlayerRoleChanged", "Beggar_TTTPlayerRoleChanged", function(ply, oldRole, newRole)
@@ -178,7 +189,7 @@ hook.Add("PlayerDeath", "Beggar_KillCheck_PlayerDeath", function(victim, infl, a
                 if beggar_keep_begging:GetBool() then
                     JESTER_ROLES[ROLE_BEGGAR] = false
                     INDEPENDENT_ROLES[ROLE_BEGGAR] = false
-                    net.Start("TTT_BeggarConverted")
+                    net.Start("TTT_BeggarChangeTeam")
                     if role == ROLE_INNOCENT then
                         INNOCENT_ROLES[ROLE_BEGGAR] = true
                         TRAITOR_ROLES[ROLE_BEGGAR] = false

@@ -410,7 +410,7 @@ end)
 -- TEAM SYNC --
 ---------------
 
-net.Receive("TTT_BeggarTeamSync", function(len)
+net.Receive("TTT_BeggarChangeTeam", function(len)
     local isInnocent = net.ReadBool()
     JESTER_ROLES[ROLE_BEGGAR] = false
     INDEPENDENT_ROLES[ROLE_BEGGAR] = false
@@ -420,6 +420,17 @@ net.Receive("TTT_BeggarTeamSync", function(len)
     else
         INNOCENT_ROLES[ROLE_BEGGAR] = false
         TRAITOR_ROLES[ROLE_BEGGAR] = true
+    end
+    UpdateRoleColours()
+end)
+
+net.Receive("TTT_BeggarResetTeam", function(len)
+    INNOCENT_ROLES[ROLE_BEGGAR] = false
+    TRAITOR_ROLES[ROLE_BEGGAR] = false
+    if beggar_is_independent:GetBool() then
+        INDEPENDENT_ROLES[ROLE_BEGGAR] = true
+    else
+        JESTER_ROLES[ROLE_BEGGAR] = true
     end
     UpdateRoleColours()
 end)
