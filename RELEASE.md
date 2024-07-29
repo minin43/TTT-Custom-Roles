@@ -1,5 +1,17 @@
 # Release Notes
 
+## 2.1.19 (Beta)
+**Released: **
+
+### Additions
+- Added option to control whether bodies that were infected with or died from the plague should show this information when searched.
+
+### Changes
+- Changed Plaguemaster HUD to use a progress bar instead of text when they are warned about infection
+
+### Fixes
+- Fixed players who were revived after dying to the plague dying again instantly
+
 ## 2.1.18 (Beta)
 **Released: July 20th, 2024**
 
