@@ -610,6 +610,7 @@ ttt_beggar_transfer_ownership                  0       // Whether the ownership 
 ttt_beggar_can_see_jesters                     0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the beggar (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_update_scoreboard                   0       // Whether the beggar shows dead players as missing in action (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_announce_delay                      0       // How long the delay between role change and announcement should be
+ttt_beggar_keep_begging                        0       // Whether the beggar should be able to keep begging after joining a team and switch teams multiple times
 
 // Bodysnatcher
 ttt_bodysnatcher_is_independent                0       // Whether bodysnatchers should be treated as members of the independent team (rather than the jester team)
