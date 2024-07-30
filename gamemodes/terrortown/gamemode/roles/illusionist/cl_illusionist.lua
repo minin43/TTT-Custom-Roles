@@ -95,7 +95,6 @@ hook.Add("TTTTutorialRoleText", "Illusionist_TTTTutorialRoleText", function(role
 
         html = html .. "<span style='display: block; margin-top: 10px;'>As long as " .. ROLE_STRINGS_EXT[ROLE_ILLUSIONIST] .. " is alive, their enemies will not know who their allies are. However the moment the " .. ROLE_STRINGS[ROLE_ILLUSIONIST] .. " is killed, traitors</span>"
 
-        local hides_monsters = illusionist_hides_monsters:GetBool()
         if hides_monsters then
             html = html .. " and monsters"
         end
