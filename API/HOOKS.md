@@ -585,8 +585,8 @@ Called before a player's row in the scoreboard (tab menu) is shown, allowing the
 - *roleFileName* - The portion of the scoring icon path that indicates which role it belongs to. Used in one of the following icon path patterns: "vgui/ttt/tab_{roleFileName}.png" (1.1.9+), "vgui/ttt/roles/{roleFileName}/tab_{roleFileName}.png"  (1.3.4+)
 
 *Return:*
-- *color* - The new color value to use or the original passed into the hook
-- *roleFileName* - The new roleFileName value to use or the original passed into the hook
+- *color* - The new color value to use or the original passed into the hook.  Return `false` to not show color at all
+- *roleFileName* - The new roleFileName value to use or the original passed into the hook.  Return `false` to not show an icon at all
 - *flashRole* - If a valid role is provided, this will cause the target player's scoreboard role to have a flashing border in the given role's color (see ROLE_* global enumeration)
 
 ### TTTScoringSecondaryWins(wintype, secondaryWins)
