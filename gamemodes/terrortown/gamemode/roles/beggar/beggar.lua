@@ -53,16 +53,20 @@ end
 hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
     if not IsValid(wep) or not IsPlayer(ply) then return end
     if not wep.CanBuy or wep.AutoSpawnable then return end
+    if wep.BoughtBy and wep.BoughtBy:IsBeggar() then return end -- If a beggar is the owner of this weapon then it should no longer change ownership or convert beggars as it has already been 'used'
 
-    if ply:IsBeggar() and wep.BoughtBy and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
+    if ply:IsBeggar() and wep.BoughtBy and IsPlayer(wep.BoughtBy) and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
         local role
-        if wep.BoughtBy:IsTraitorTeam() then
+        if wep.BoughtBy:IsTraitorTeam() and not TRAITOR_ROLES[ROLE_BEGGAR] then
             role = ROLE_TRAITOR
-        else
+        elseif wep.BoughtBy:IsInnocentTeam() and not INNOCENT_ROLES[ROLE_BEGGAR] then
             role = ROLE_INNOCENT
         end
 
         if beggar_keep_begging:GetBool() then
+            wep.BoughtBy = ply -- Make the beggar the owner of this weapon, thus preventing it from converting any beggars again
+            if not role then return end -- If the beggar has been given an item from the team they are already part of then we don't need to change anything else
+
             JESTER_ROLES[ROLE_BEGGAR] = false
             INDEPENDENT_ROLES[ROLE_BEGGAR] = false
             net.Start("TTT_BeggarChangeTeam")
@@ -99,7 +103,7 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
         net.WriteString(ROLE_STRINGS_EXT[role])
         net.WriteString(ply:SteamID64())
         net.Broadcast()
-    elseif not wep.BoughtBy or not IsPlayer(wep.BoughtBy) or (beggar_transfer_ownership:GetBool() and not wep.BoughtBy:IsBeggar()) then
+    elseif not ply:IsBeggar() and (not wep.BoughtBy or not IsPlayer(wep.BoughtBy) or beggar_transfer_ownership:GetBool()) then -- Only non-beggars should receive ownership of weapons under normal circumstances
         wep.BoughtBy = ply
     end
 end)
