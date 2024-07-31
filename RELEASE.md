@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.19 (Beta)
-**Released: **
+**Released: July 31st, 2024**
 
 ### Additions
 - Added new detective role: illusionist
