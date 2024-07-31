@@ -53,7 +53,21 @@ hook.Add("PlayerDeath", "Illusionist_PlayerDeath", function(victim, infl, attack
 end)
 
 hook.Add("TTTPlayerSpawnForRound", "Illusionist_TTTPlayerSpawnForRound", function(ply, dead_only)
-    if ply:IsIllusionist() then
+    if ply:IsIllusionist() and not GetGlobalBool("ttt_illusionist_alive", false) then
+        SetGlobalBool("ttt_illusionist_alive", true)
+        if GetRoundState() == ROUND_ACTIVE then
+            for _, v in PlayerIterator() do
+                if v:IsActiveTraitorTeam() or (v:IsActiveMonsterTeam() and illusionist_hides_monsters:GetBool()) then
+                    v:QueueMessage(MSG_PRINTBOTH, string.Capitalize(ROLE_STRINGS_EXT[ROLE_ILLUSIONIST]) .. " has appeared!")
+                end
+            end
+        end
+    end
+end)
+
+hook.Add("TTTPlayerRoleChanged", "Illusionist_TTTPlayerRoleChanged", function(ply, oldRole, newRole)
+    if not ply:Alive() or ply:IsSpec() then return end
+    if newRole ~= oldRole and newRole == ROLE_ILLUSIONIST and not GetGlobalBool("ttt_illusionist_alive", false) then
         SetGlobalBool("ttt_illusionist_alive", true)
         if GetRoundState() == ROUND_ACTIVE then
             for _, v in PlayerIterator() do
@@ -71,6 +85,7 @@ end)
 
 hook.Add("TTTTeamChatTargets", "Illusionist_TTTTeamChatTargets", function(sender, msg, targets, from_chat)
     if GetGlobalBool("ttt_illusionist_alive", false) and (sender:IsTraitorTeam() or (sender:IsMonsterTeam() and illusionist_hides_monsters:GetBool())) then
+        sender:PrintMessage(HUD_PRINTTALK, "The " .. ROLE_STRINGS[ROLE_ILLUSIONIST] .. " is preventing you from communicating with your allies.")
         return false
     end
 end)
