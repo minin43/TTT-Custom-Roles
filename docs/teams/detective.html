@@ -293,6 +293,37 @@
                 </div>
             </div>
         </div>
+        <div id="illusionist" class="collapsible">
+            <button class="header" style="background-color:var(--special-detective);"><i class="icon-illusionist"></i>Illusionist <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></button>
+            <div class="content">
+                <div class="moreless">[more]</div>
+                <p>The <span class="inline-icon" style="color:var(--special-detective);"><i class="icon-illusionist"></i><a href="#illusionist">Illusionist</a></span> prevents members of the <span style="color:var(--traitor);"><a href="../teams/traitor.html">traitor team</a></span> from learning who their allies are.</p>
+                <div class="expansion">
+                    <p>As long as an Illusionist is alive, members of the traitor team will not be able see icons and roles of fellow traitors', use team chat, or transfer credits. When the Illusionist dies, members of the traitor team will be notified and will regain these abilities.</p>
+                    <p>If <code>ttt_illusionist_hides_monsters</code> is enabled, the above effects will also apply to members of the <span style="color:var(--monster);"><a href="../teams/monster.html">monster team</a></span>.</p>
+                    <h3 style="margin: 10px 0; padding: 0;">Role Configuration:</h3>
+                    <table style="width:100%; margin-bottom: 10px;">
+                        <thead>
+                        <tr>
+                            <th>ConVar</th>
+                            <th>Default</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>ttt_illusionist_hides_monsters</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether the Illusionist should prevent monsters from knowing who their team mates are.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p>A list of ConVars shared by every role and instructions for using ConVars can be found on the <a href="../tutorials/configuring_convars.html">Configuring ConVars</a> tutorial page.</p>
+                </div>
+            </div>
+        </div>
         <div id="marshal" class="collapsible">
             <button class="header" style="background-color:var(--special-detective);"><i class="icon-marshal"></i>Marshal</button>
             <div class="content">
