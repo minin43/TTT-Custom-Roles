@@ -13,6 +13,8 @@ local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 
+local illusionist_hides_monsters = GetConVar("ttt_illusionist_hides_monsters")
+
 ---- Round start
 
 local function GetTextForLocalPlayer()
@@ -67,14 +69,19 @@ local function GetTextForLocalPlayer()
 
     if client:IsMonsterTeam() then
         local allies = {}
+        local hasIllusionist = false
         for _, ply in PlayerIterator() do
             if ply:IsMonsterTeam() then
                 table.insert(allies, ply)
+            elseif ply:IsIllusionist() then
+                hasIllusionist = true
             end
         end
 
         local comrades
-        if #allies > 1 then
+        if hasIllusionist and illusionist_hides_monsters:GetBool() then
+            comrades = GetPTranslation("info_popup_monster_illusionist", params)
+        elseif #allies > 1 then
             local allylist = ""
 
             for _, ply in ipairs(allies) do
