@@ -1,5 +1,23 @@
 # Release Notes
 
+## 2.1.19 (Beta)
+**Released: July 31st, 2024**
+
+### Additions
+- Added new detective role: illusionist
+- Added option to control whether bodies that were infected with or died from the plague should show this information when searched
+- Added option for the Beggar to be able to keep begging after joining a team, allowing them to switch teams multiple times (Disabled by default)
+
+### Changes
+- Changed Plaguemaster HUD to use a progress bar instead of text when they are warned about infection
+
+### Fixes
+- Fixed players who were revived after dying to the plague dying again instantly
+- Added missing role list descriptions for the Twins and the Scout
+
+### Developer
+- Changed `TTTScoreboardPlayerRole` hook to allow ability to prevent a scoreboard rows color or icon from being drawn
+
 ## 2.1.18 (Beta)
 **Released: July 20th, 2024**
 

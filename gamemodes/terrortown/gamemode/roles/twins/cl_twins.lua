@@ -12,6 +12,10 @@ hook.Add("Initialize", "Twins_Translations_Initialize", function()
     -- HUD
     LANG.AddToLanguage("english", "twins_hud", "Invulnerability ends in: {time}")
 
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_goodtwin", "Has an Evil Twin on the traitor team that knows who the Good Twin is.")
+    LANG.AddToLanguage("english", "cheatsheet_desc_eviltwin", "Has a Good Twin on the traitor team that knows who the Evil Twin is.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_goodtwin", [[You are {role}!
 You have a twin on the traitor team that knows who you are.

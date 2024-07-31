@@ -7,6 +7,9 @@ local StringLower = string.lower
 ------------------
 
 hook.Add("Initialize", "Scout_Translations_Initialize", function()
+    -- Cheat Sheet
+    LANG.AddToLanguage("english", "cheatsheet_desc_scout", "Learns which traitor roles are in play.")
+
     -- Popup
     LANG.AddToLanguage("english", "info_popup_scout", [[You are {role}! You know which {traitor}
 roles are in play. Use your intel to help your fellow {innocents}!]])

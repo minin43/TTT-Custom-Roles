@@ -64,6 +64,7 @@ CreateConVar("ttt_beggar_reveal_innocent", "2", FCVAR_REPLICATED, "Who the begga
 CreateConVar("ttt_beggar_announce_delay", "0", FCVAR_REPLICATED, "How long the delay between role change and announcement should be")
 CreateConVar("ttt_beggar_scan", "0", FCVAR_REPLICATED, "Whether the beggar can scan players to see if they are traitors. 0 - Disabled. 1 - Can only scan traitors. 2 - Can scan any role that has a shop.", 0, 2)
 CreateConVar("ttt_beggar_scan_time", "15", FCVAR_REPLICATED, "The amount of time (in seconds) the beggar's scanner takes to use", 0, 60)
+CreateConVar("ttt_beggar_keep_begging", "0", FCVAR_REPLICATED, "Whether the beggar should be able to keep begging after joining a team and switch teams multiple times", 0, 1)
 CreateConVar("ttt_beggar_can_see_jesters", "0", FCVAR_REPLICATED)
 CreateConVar("ttt_beggar_update_scoreboard", "0", FCVAR_REPLICATED)
 
@@ -163,12 +164,18 @@ table.insert(ROLE_CONVARS[ROLE_BEGGAR], {
     type = ROLE_CONVAR_TYPE_NUM,
     decimal = 0
 })
+table.insert(ROLE_CONVARS[ROLE_BEGGAR], {
+    cvar = "ttt_beggar_keep_begging",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
 
 -------------------
 -- ROLE FEATURES --
 -------------------
 
 hook.Add("TTTUpdateRoleState", "Beggar_TTTUpdateRoleState", function()
+    if INNOCENT_ROLES[ROLE_BEGGAR] or TRAITOR_ROLES[ROLE_BEGGAR] then return end
+
     local is_independent = beggar_is_independent:GetBool()
     INDEPENDENT_ROLES[ROLE_BEGGAR] = is_independent
     JESTER_ROLES[ROLE_BEGGAR] = not is_independent
