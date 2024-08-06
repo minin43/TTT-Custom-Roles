@@ -686,6 +686,10 @@ function PrepareRound()
 
     -- Tell hooks and map we started prep
     RunHook("TTTPrepareRound")
+    for role = 0, ROLE_MAX do
+        ROLE_STARTING_TEAM[role] = player.GetRoleTeam(role, false)
+    end
+    SyncStartingTeams()
     ClearAllFootsteps()
     ents.TTT.TriggerRoundStateOutputs(ROUND_PREP)
 end

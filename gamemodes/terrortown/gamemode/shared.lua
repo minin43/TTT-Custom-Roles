@@ -866,6 +866,32 @@ ROLE_TEAM_DETECTIVE = 5
 ROLE_TEAMS_WITH_SHOP = {}
 AddRoleAssociations(ROLE_TEAMS_WITH_SHOP, {ROLE_TEAM_TRAITOR, ROLE_TEAM_INDEPENDENT, ROLE_TEAM_MONSTER, ROLE_TEAM_DETECTIVE})
 
+ROLE_STARTING_TEAM = {}
+if SERVER then
+    util.AddNetworkString("TTT_SyncStartingTeams")
+
+    function SyncStartingTeams(ply)
+        if table.IsEmpty(ROLE_STARTING_TEAM) then return end
+
+        net.Start("TTT_SyncStartingTeams")
+        for role = 0, ROLE_MAX do
+            net.WriteUInt(ROLE_STARTING_TEAM[role], 3)
+        end
+        if ply then
+            net.Send(ply)
+        else
+            net.Broadcast()
+        end
+    end
+end
+if CLIENT then
+    net.Receive("TTT_SyncStartingTeams", function()
+        for role = 0, ROLE_MAX do
+            ROLE_STARTING_TEAM[role] = net.ReadUInt(3)
+        end
+    end)
+end
+
 -- Role icon caching
 local function CacheRoleIcon(tbl, role_str, typ, ext, cache_key)
     -- Use the role string as the cache key and file name if a specific cache key is not provided

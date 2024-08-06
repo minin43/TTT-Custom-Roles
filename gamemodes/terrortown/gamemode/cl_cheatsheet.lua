@@ -22,11 +22,10 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
 
     UpdateRoleColours()
 
-    local function AddRolesFromTeam(tbl, team, exclude)
+    local function AddRolesFromTeam(tbl, team)
         local roles = {}
-        for role, v in pairs(team) do
-            if not v or DEFAULT_ROLES[role] or (exclude and exclude[role]) then continue end
-            if util.CanRoleSpawn(role) then
+        for role = 3, ROLE_MAX do -- Skip over the three default roles as they will be added later to avoid sorting
+            if (ROLE_STARTING_TEAM[role] == team or (not ROLE_STARTING_TEAM[role] and player.GetRoleTeam(role, false) == team)) and util.CanRoleSpawn(role) then
                 TableInsert(roles, role)
             end
         end
@@ -40,23 +39,23 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
     if ROLE_PACK_ROLES[ROLE_DETECTIVE] or GetConVar("ttt_special_detective_pct"):GetFloat() < 1 or GetConVar("ttt_special_detective_chance"):GetFloat() < 1 then
         TableInsert(detectives, ROLE_DETECTIVE)
     end
-    AddRolesFromTeam(detectives, DETECTIVE_ROLES)
+    AddRolesFromTeam(detectives, ROLE_TEAM_DETECTIVE)
     local innocents = {}
     if ROLE_PACK_ROLES[ROLE_INNOCENT] or GetConVar("ttt_special_innocent_pct"):GetFloat() < 1 or GetConVar("ttt_special_innocent_chance"):GetFloat() < 1 then
         TableInsert(innocents, ROLE_INNOCENT)
     end
-    AddRolesFromTeam(innocents, INNOCENT_ROLES, DETECTIVE_ROLES)
+    AddRolesFromTeam(innocents, ROLE_TEAM_INNOCENT)
     local traitors = {}
     if ROLE_PACK_ROLES[ROLE_TRAITOR] or GetConVar("ttt_special_traitor_pct"):GetFloat() < 1 or GetConVar("ttt_special_traitor_chance"):GetFloat() < 1 then
         TableInsert(traitors, ROLE_TRAITOR)
     end
-    AddRolesFromTeam(traitors, TRAITOR_ROLES)
+    AddRolesFromTeam(traitors, ROLE_TEAM_TRAITOR)
     local jesters = {}
-    AddRolesFromTeam(jesters, JESTER_ROLES)
+    AddRolesFromTeam(jesters, ROLE_TEAM_JESTER)
     local independents = {}
-    AddRolesFromTeam(independents, INDEPENDENT_ROLES)
+    AddRolesFromTeam(independents, ROLE_TEAM_INDEPENDENT)
     local monsters = {}
-    AddRolesFromTeam(monsters, MONSTER_ROLES)
+    AddRolesFromTeam(monsters, ROLE_TEAM_MONSTER)
 
     local iconSize          = 64
     local titleHeight       = 14
@@ -154,9 +153,16 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
             local roleStringShort = ROLE_STRINGS_SHORT[role]
             local material = util.GetRoleIconPath(roleStringShort, "icon", "vtf")
 
+            local color = ROLE_COLORS[role]
+            local dark_color = ROLE_COLORS_DARK[role]
+            if not DEFAULT_ROLES[role] and ROLE_STARTING_TEAM[role] then
+                color = GetRoleTeamColor(ROLE_STARTING_TEAM[role])
+                dark_color = GetRoleTeamColor(ROLE_STARTING_TEAM[role], "dark")
+            end
+
             icon:SetIconSize(iconSize)
             icon:SetIcon(material)
-            icon:SetBackgroundColor(ROLE_COLORS[role] or Color(0, 0, 0, 0))
+            icon:SetBackgroundColor(color or Color(0, 0, 0, 0))
             icon:SetTooltip(ROLE_STRINGS[role])
             icon:SetPos(currentColumn * (iconSize + descriptionWidth + (m * 2)), currentRow * (iconSize + m))
             icon.DoClick = function()
@@ -165,8 +171,8 @@ hook.Add("PlayerButtonDown", "CheatSheet_PlayerButtonDown", function(ply, button
             end
 
             if role == ply:GetRole() and ply:IsActive() then
-                local r1, g1, b1, _ = ROLE_COLORS[role]:Unpack()
-                local r2, g2, b2, _ = ROLE_COLORS_DARK[role]:Unpack()
+                local r1, g1, b1, _ = color:Unpack()
+                local r2, g2, b2, _ = dark_color:Unpack()
                 local rd = r2 - r1
                 local gd = g2 - g1
                 local bd = b2 - b1
