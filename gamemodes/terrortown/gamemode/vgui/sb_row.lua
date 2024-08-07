@@ -311,7 +311,8 @@ function PANEL:Paint(width, height)
         -- Allow external addons (like new roles) to manipulate how a player appears on the scoreboard
         local new_color, new_role_str, new_flash_role = CallHook("TTTScoreboardPlayerRole", nil, ply, client, c, roleStr)
         if new_color then c = new_color end
-        if new_role_str then roleStr = new_role_str end
+        if type(new_color) == "boolean" and not new_color then c = defaultcolor end
+        if new_role_str or (type(new_role_str) == "boolean" and not new_role_str) then roleStr = new_role_str end
         if new_flash_role then flash_role = new_flash_role end
     end
 

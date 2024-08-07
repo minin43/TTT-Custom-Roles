@@ -96,6 +96,7 @@ ttt_medium_enabled                             0       // Whether or not the med
 ttt_sapper_enabled                             0       // Whether or not the sapper should spawn
 ttt_marshal_enabled                            0       // Whether or not the marshal should spawn
 ttt_quartermaster_enabled                      0       // Whether or not the quartermaster should spawn
+ttt_illusionist_enabled                        0       // Whether or not the illusionist should spawn
 ttt_jester_enabled                             0       // Whether or not the jester should spawn
 ttt_swapper_enabled                            0       // Whether or not the swapper should spawn
 ttt_clown_enabled                              0       // Whether or not the clown should spawn
@@ -143,6 +144,7 @@ ttt_medium_spawn_weight                        1       // The weight assigned to
 ttt_sapper_spawn_weight                        1       // The weight assigned to spawning the sapper
 ttt_marshal_spawn_weight                       1       // The weight assigned to spawning the marshal
 ttt_quartermaster_spawn_weight                 1       // The weight assigned to spawning the quartermaster
+ttt_illusionist_spawn_weight                   1       // The weight assigned to spawning the illusionist
 ttt_jester_spawn_weight                        1       // The weight assigned to spawning the jester
 ttt_swapper_spawn_weight                       1       // The weight assigned to spawning the swapper
 ttt_clown_spawn_weight                         1       // The weight assigned to spawning the clown
@@ -192,6 +194,7 @@ ttt_medium_min_players                         0       // The minimum number of 
 ttt_sapper_min_players                         0       // The minimum number of players required to spawn the sapper
 ttt_marshal_min_players                        0       // The minimum number of players required to spawn the marshal
 ttt_quartermaster_min_players                  0       // The minimum number of players required to spawn the quartermaster
+ttt_illusionist_min_players                    0       // The minimum number of players required to spawn the illusionist
 ttt_jester_min_players                         0       // The minimum number of players required to spawn the jester
 ttt_swapper_min_players                        0       // The minimum number of players required to spawn the swapper
 ttt_clown_min_players                          0       // The minimum number of players required to spawn the clown
@@ -537,6 +540,9 @@ ttt_quartermaster_limited_loot                 0       // Whether players should
 ttt_quartermaster_set_crate_owner              0       // Whether crates given by the quartermaster should be owned by them for the purposes of roles that react to the original weapon buyer (e.g the beggar)
 ttt_quartermaster_credits_starting             3       // The number of credits a quartermaster should start with
 
+// Illusionist
+ttt_illusionist_hides_monsters                 0       // Whether the illusionist should prevent monsters from knowing who their team mates are
+
 // ----------------------------------------
 
 // JESTER TEAM SETTINGS
@@ -610,6 +616,7 @@ ttt_beggar_transfer_ownership                  0       // Whether the ownership 
 ttt_beggar_can_see_jesters                     0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the beggar (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_update_scoreboard                   0       // Whether the beggar shows dead players as missing in action (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_announce_delay                      0       // How long the delay between role change and announcement should be
+ttt_beggar_keep_begging                        0       // Whether the beggar should be able to keep begging after joining a team and switch teams multiple times
 
 // Bodysnatcher
 ttt_bodysnatcher_is_independent                0       // Whether bodysnatchers should be treated as members of the independent team (rather than the jester team)
@@ -760,6 +767,7 @@ ttt_drunk_can_be_medium                        1       // Whether the drunk can 
 ttt_drunk_can_be_sapper                        1       // Whether the drunk can become a sapper
 ttt_drunk_can_be_marshal                       1       // Whether the drunk can become a marshal
 ttt_drunk_can_be_quartermaster                 1       // Whether the drunk can become a quartermaster
+ttt_drunk_can_be_illusionist                   1       // Whether the drunk can become an illusionist
 ttt_drunk_can_be_jester                        1       // Whether the drunk can become a jester
 ttt_drunk_can_be_swapper                       1       // Whether the drunk can become a swapper
 ttt_drunk_can_be_clown                         1       // Whether the drunk can become a clown
@@ -915,6 +923,7 @@ ttt_plaguemaster_spread_time                   30      // How long (in seconds) 
 ttt_plaguemaster_spread_distance               500     // The maximum distance away a player can be and still be infected
 ttt_plaguemaster_spread_require_los            1       // Whether players need to be in line-of-sight of a target to spread the plague
 ttt_plaguemaster_immune                        1       // Whether the plaguemaster is immune to the plague
+ttt_plaguemaster_body_search_mode              1       // Whether dead bodies reveal if they had the plague when searched. 0 - Don't show. 1 - Show if died from plague. 2 - Show if infected with plague.
 ttt_plaguemaster_can_see_jesters               0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the plaguemaster
 ttt_plaguemaster_update_scoreboard             1       // Whether the plaguemaster shows dead players as missing in action
 
@@ -953,13 +962,14 @@ ttt_tracker_shop_random_percent                0       // The percent chance tha
 ttt_medium_shop_random_percent                 0       // The percent chance that a weapon in the shop will be not be shown for mediums
 ttt_sapper_shop_random_percent                 0       // The percent chance that a weapon in the shop will be not be shown for sappers
 ttt_marshal_shop_random_percent                0       // The percent chance that a weapon in the shop will be not be shown for marshals
+ttt_quartermaster_shop_random_percent          0       // The percent chance that a weapon in the shop will be not be shown for quartermasters
+ttt_illusionist_shop_random_percent            0       // The percent chance that a weapon in the shop will be not be shown for illusionists
 ttt_jester_shop_random_percent                 0       // The percent chance that a weapon in the shop will be not be shown for jesters
 ttt_swapper_shop_random_percent                0       // The percent chance that a weapon in the shop will be not be shown for swappers
 ttt_clown_shop_random_percent                  0       // The percent chance that a weapon in the shop will be not be shown for clowns
 ttt_killer_shop_random_percent                 0       // The percent chance that a weapon in the shop will be not be shown for killers
 ttt_zombie_shop_random_percent                 0       // The percent chance that a weapon in the shop will be not be shown for zombies
 ttt_hivemind_shop_random_percent               0       // The percent chance that a weapon in the shop will be not be shown for the hive mind
-ttt_quartermaster_shop_random_percent          0       // The percent chance that a weapon in the shop will be not be shown for the quartermaster
 
 // Enable/Disable Individual Role Random Shop Restrictions
 ttt_traitor_shop_random_enabled                0       // Whether role shop randomization is enabled for traitors
@@ -982,13 +992,14 @@ ttt_tracker_shop_random_enabled                0       // Whether role shop rand
 ttt_medium_shop_random_enabled                 0       // Whether role shop randomization is enabled for mediums
 ttt_sapper_shop_random_enabled                 0       // Whether role shop randomization is enabled for sappers
 ttt_marshal_shop_random_enabled                0       // Whether role shop randomization is enabled for marshals
+ttt_quartermaster_shop_random_enabled          0       // Whether role shop randomization is enabled for quartermasters
+ttt_illusionist_shop_random_enabled            0       // Whether role shop randomization is enabled for illusionists
 ttt_jester_shop_random_enabled                 0       // Whether role shop randomization is enabled for jesters
 ttt_swapper_shop_random_enabled                0       // Whether role shop randomization is enabled for swappers
 ttt_clown_shop_random_enabled                  0       // Whether role shop randomization is enabled for clowns
 ttt_killer_shop_random_enabled                 0       // Whether role shop randomization is enabled for killers
 ttt_zombie_shop_random_enabled                 0       // Whether role shop randomization is enabled for zombies
 ttt_hivemind_shop_random_enabled               0       // Whether role shop randomization is enabled for the hive mind
-ttt_quartermaster_shop_random_enabled          0       // Whether role shop randomization is enabled for the quartermaster
 
 // Role Shop Mode (Server or round must be restarted for changes to take effect)
 // Mode explanation:
@@ -1034,6 +1045,7 @@ ttt_medium_shop_sync                           0       // Whether mediums should
 ttt_sapper_shop_sync                           0       // Whether sappers should have all weapons that vanilla detectives have in their weapon shop
 ttt_marshal_shop_sync                          0       // Whether marshals should have all weapons that vanilla detectives have in their weapon shop
 ttt_quartermaster_shop_sync                    0       // Whether quartermasters should have all weapons that vanilla detectives have in their weapon shop
+ttt_illusionist_shop_sync                      0       // Whether illusionists should have all weapons that vanilla detectives have in their weapon shop
 
 // ----------------------------------------
 
@@ -1071,6 +1083,7 @@ ttt_medium_starting_health                     100     // The amount of health t
 ttt_sapper_starting_health                     100     // The amount of health the sapper starts with
 ttt_marshal_starting_health                    100     // The amount of health the marshal starts with
 ttt_quartermaster_starting_health              100     // The amount of health the quartermaster starts with
+ttt_illusionist_starting_health                100     // The amount of health the illusionist starts with
 ttt_jester_starting_health                     100     // The amount of health the jester starts with
 ttt_swapper_starting_health                    100     // The amount of health the swapper starts with
 ttt_clown_starting_health                      100     // The amount of health the clown starts with
@@ -1123,6 +1136,7 @@ ttt_medium_max_health                          100     // The maximum amount of 
 ttt_sapper_max_health                          100     // The maximum amount of health the sapper can have
 ttt_marshal_max_health                         100     // The maximum amount of health the marshal can have
 ttt_quartermaster_max_health                   100     // The maximum amount of health the quartermaster can have
+ttt_illusionist_max_health                     100     // The maximum amount of health the illusionist can have
 ttt_jester_max_health                          100     // The maximum amount of health the jester can have
 ttt_swapper_max_health                         100     // The maximum amount of health the swapper can have
 ttt_clown_max_health                           100     // The maximum amount of health the clown can have

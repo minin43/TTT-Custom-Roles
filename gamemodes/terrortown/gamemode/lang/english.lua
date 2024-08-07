@@ -689,6 +689,9 @@ L.info_popup_monster_alone = [[You have no allies this round.
 
 Kill all others to win!]]
 
+L.info_popup_monster_illusionist = [[Work with your allies to kill all others.
+BUT BEWARE! There is {anillusionist} that is preventing you from knowing who your comrades are.]]
+
 L.info_popup_traitor_comrades = [[Work with fellow {traitors} to kill all others.
 But take care, or your treason may be discovered...
 
@@ -704,6 +707,9 @@ BUT BEWARE! There was {aglitch} in the system and one among you does not seek th
 
 These may or may not be your comrades:
 {traitorlist}]]
+
+L.info_popup_traitor_illusionist = [[Work with fellow {traitors} to kill all others.
+BUT BEWARE! There is {anillusionist} that is preventing you from knowing who your comrades are.]]
 
 --- Various other text
 L.name_kick = "A player was automatically kicked for changing their name during a round."

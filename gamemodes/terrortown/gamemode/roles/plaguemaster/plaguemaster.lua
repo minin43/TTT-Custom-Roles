@@ -197,6 +197,10 @@ AddHook("TTTPrepareRound", "Plaguemaster_PrepareRound", function()
     end
 end)
 
+hook.Add("TTTPlayerSpawnForRound", "Plaguemaster_TTTPlayerSpawnForRound", function(ply, dead_only)
+    ClearPlaguemasterState(ply)
+end)
+
 ----------
 -- CURE --
 ----------
