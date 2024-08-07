@@ -1163,7 +1163,6 @@ globals = {
     "ShouldPromoteDetectiveLike",
     "ShouldShowTraitorExtraInfo",
     "StartsWithVowel",
-    "SyncStartingTeams",
     "UpdateRoleColors",
     "UpdateRoleColours",
     "UpdateRoleState",

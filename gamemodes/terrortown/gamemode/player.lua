@@ -57,7 +57,6 @@ function GM:PlayerInitialSpawn(ply)
     ROLEPACKS.SendRolePackRoleList(ply)
     ROLEPACKS.SendRolePackWeapons(ply)
     WEPS.HandleRoleEquipment(ply)
-    SyncStartingTeams(ply)
 end
 
 function GM:NetworkIDValidated(name, steamid)
