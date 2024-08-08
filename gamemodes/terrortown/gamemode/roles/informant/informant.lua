@@ -190,9 +190,11 @@ local function Announce(ply, message)
     ply:PrintMessage(HUD_PRINTTALK, "You have " .. message)
     if not informant_share_scans:GetBool() then return end
 
-    for _, p in PlayerIterator() do
-        if p:IsActiveTraitorTeam() and p ~= ply then
-            p:PrintMessage(HUD_PRINTTALK, "The informant has " .. message)
+    if ShouldShowTraitorExtraInfo() then
+        for _, p in PlayerIterator() do
+            if p:IsActiveTraitorTeam() and p ~= ply then
+                p:PrintMessage(HUD_PRINTTALK, "The informant has " .. message)
+            end
         end
     end
 end
