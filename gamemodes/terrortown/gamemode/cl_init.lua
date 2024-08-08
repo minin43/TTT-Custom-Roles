@@ -190,6 +190,9 @@ local function RoundStateChange(o, n)
     if n == ROUND_PREP then
         -- can enter PREP from any phase due to ttt_roundrestart
         RunHook("TTTPrepareRound")
+        for role = 0, ROLE_MAX do
+            ROLE_STARTING_TEAM[role] = player.GetRoleTeam(role, false)
+        end
     elseif (o == ROUND_PREP) and (n == ROUND_ACTIVE) then
         RunHook("TTTBeginRound")
     elseif (o == ROUND_ACTIVE) and (n == ROUND_POST) then

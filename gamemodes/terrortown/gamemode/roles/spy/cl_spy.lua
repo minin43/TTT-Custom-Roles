@@ -39,7 +39,7 @@ hook.Add("TTTTargetIDPlayerName", "Spy_TTTTargetIDPlayerName", function(ply, cli
     if not disguiseName or #disguiseName == 0 then return end
 
     -- Show the overwritten name alongside their real name for allies
-    if ply == cli or cli:IsTraitorTeam() then
+    if ply == cli or (cli:IsTraitorTeam() and ShouldShowTraitorExtraInfo()) then
         return LANG.GetParamTranslation("player_name_disguised", { name=ply:Nick(), disguise=disguiseName }), clr
     end
 
@@ -62,7 +62,7 @@ hook.Add("TTTChatPlayerName", "Spy_TTTChatPlayerName", function(ply, team_chat)
     if team_chat then return end
 
     -- Show the overwritten name alongside their real name for allies
-    if ply == client or client:IsTraitorTeam() then
+    if ply == client or (client:IsTraitorTeam() and ShouldShowTraitorExtraInfo()) then
         return LANG.GetParamTranslation("player_name_disguised", { name=ply:Nick(), disguise=disguiseName })
     end
 

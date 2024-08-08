@@ -30,7 +30,7 @@ end)
 
 AddHook("TTTTargetIDPlayerRoleIcon", "Illusionist_TTTTargetIDPlayerRoleIcon", function(ply, cli, role, noz, color_role, hideBeggar, showJester, hideBodysnatcher)
     if GetGlobalBool("ttt_illusionist_alive", false) and ((cli:IsActiveTraitorTeam() and (ply:IsTraitorTeam() or ply:IsGlitch())) or (cli:IsActiveMonsterTeam() and ply:IsMonsterTeam() and illusionist_hides_monsters:GetBool())) then
-        local icon_overridden, _, _ = ply:IsTargetIDOverridden(cli)
+        local icon_overridden, _, _ = cli:IsTargetIDOverridden(ply)
         if icon_overridden then return end
 
         return false
@@ -42,7 +42,7 @@ AddHook("TTTTargetIDPlayerRing", "Illusionist_TTTTargetIDPlayerRing", function(e
     if not IsPlayer(ent) then return end
 
     if GetGlobalBool("ttt_illusionist_alive", false) and ((cli:IsActiveTraitorTeam() and (ent:IsTraitorTeam() or ent:IsGlitch())) or (cli:IsActiveMonsterTeam() and ent:IsMonsterTeam() and illusionist_hides_monsters:GetBool())) then
-        local _, ring_overridden, _ = ent:IsTargetIDOverridden(cli)
+        local _, ring_overridden, _ = cli:IsTargetIDOverridden(ent)
         if ring_overridden then return end
 
         return false
@@ -54,7 +54,7 @@ AddHook("TTTTargetIDPlayerText", "Illusionist_TTTTargetIDPlayerText", function(e
     if not IsPlayer(ent) then return end
 
     if GetGlobalBool("ttt_illusionist_alive", false) and ((cli:IsActiveTraitorTeam() and (ent:IsTraitorTeam() or ent:IsGlitch())) or (cli:IsActiveMonsterTeam() and ent:IsMonsterTeam() and illusionist_hides_monsters:GetBool())) then
-        local _, _, text_overridden = ent:IsTargetIDOverridden(cli)
+        local _, _, text_overridden = cli:IsTargetIDOverridden(ent)
         if text_overridden then return end
 
         return false
@@ -67,7 +67,7 @@ end)
 
 AddHook("TTTScoreboardPlayerRole", "Illusionist_TTTScoreboardPlayerRole", function(ply, cli, color, roleFileName)
     if GetGlobalBool("ttt_illusionist_alive", false) and ply ~= cli and ((cli:IsActiveTraitorTeam() and (ply:IsTraitorTeam() or ply:IsGlitch())) or (cli:IsActiveMonsterTeam() and ply:IsMonsterTeam() and illusionist_hides_monsters:GetBool())) then
-        local _, role_overridden = ply:IsScoreboardInfoOverridden(cli)
+        local _, role_overridden = cli:IsScoreboardInfoOverridden(ply)
         if role_overridden then return end
 
         return false, false
