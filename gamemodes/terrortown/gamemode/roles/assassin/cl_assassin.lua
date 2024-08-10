@@ -62,7 +62,7 @@ end)
 
 hook.Add("TTTTargetIDPlayerText", "Assassin_TTTTargetIDPlayerText", function(ent, cli, text, col, secondary_text)
     if cli:IsAssassin() and IsPlayer(ent) and ent:SteamID64() == cli:GetNWString("AssassinTarget", "") then
-        if ent:GetNWBool("ParasiteInfected", false) then
+        if ent:GetNWBool("ParasiteInfected", false) and ShouldShowTraitorExtraInfo() then
             secondary_text = LANG.GetTranslation("target_infected")
         end
         return LANG.GetTranslation("target_current_target"), ROLE_COLORS_RADAR[ROLE_ASSASSIN], secondary_text

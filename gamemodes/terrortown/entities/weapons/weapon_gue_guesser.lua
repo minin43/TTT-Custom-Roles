@@ -165,17 +165,17 @@ function SWEP:SecondaryAttack()
     if not IsFirstTimePredicted() then return end
     self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
     if CLIENT then
-        local function AddRolesFromTeam(tbl, team, exclude)
+        local function AddRolesFromTeam(tbl, team)
             local bannedRoles = {}
             local bannedRolesString = guesser_unguessable_roles:GetString()
             if #bannedRolesString > 0 then
                 bannedRoles = string.Explode(",", bannedRolesString)
             end
             local roles = {}
-            for role, v in pairs(team) do
-                if not v or role == ROLE_GUESSER or DEFAULT_ROLES[role] or (exclude and exclude[role])
-                    or TableHasValue(bannedRoles, ROLE_STRINGS_RAW[role]) then continue end
-                if util.CanRoleSpawn(role) then
+            for role = 3, ROLE_MAX do -- Skip over the three default roles as they will be added later to avoid sorting
+                if role == ROLE_GUESSER or TableHasValue(bannedRoles, ROLE_STRINGS_RAW[role]) then
+                    continue
+                elseif (ROLE_STARTING_TEAM[role] == team or (not ROLE_STARTING_TEAM[role] and player.GetRoleTeam(role, false) == team)) and util.CanRoleSpawn(role) then
                     TableInsert(roles, role)
                 end
             end
@@ -188,20 +188,20 @@ function SWEP:SecondaryAttack()
         local detectives = {}
         if GetConVar("ttt_guesser_can_guess_detectives"):GetBool() then
             TableInsert(detectives, ROLE_DETECTIVE)
-            AddRolesFromTeam(detectives, DETECTIVE_ROLES)
+            AddRolesFromTeam(detectives, ROLE_TEAM_DETECTIVE)
         end
         local innocents = {}
         TableInsert(innocents, ROLE_INNOCENT)
-        AddRolesFromTeam(innocents, INNOCENT_ROLES, DETECTIVE_ROLES)
+        AddRolesFromTeam(innocents, ROLE_TEAM_INNOCENT)
         local traitors = {}
         TableInsert(traitors, ROLE_TRAITOR)
-        AddRolesFromTeam(traitors, TRAITOR_ROLES)
+        AddRolesFromTeam(traitors, ROLE_TEAM_TRAITOR)
         local jesters = {}
-        AddRolesFromTeam(jesters, JESTER_ROLES)
+        AddRolesFromTeam(jesters, ROLE_TEAM_JESTER)
         local independents = {}
-        AddRolesFromTeam(independents, INDEPENDENT_ROLES)
+        AddRolesFromTeam(independents, ROLE_TEAM_INDEPENDENT)
         local monsters = {}
-        AddRolesFromTeam(monsters, MONSTER_ROLES)
+        AddRolesFromTeam(monsters, ROLE_TEAM_MONSTER)
 
         local largestTeam       = MathMax(#detectives, #innocents, #traitors, #jesters, #independents, #monsters)
         local columns           = MathClamp(largestTeam, 4, 8)
@@ -280,9 +280,14 @@ function SWEP:SecondaryAttack()
                 local roleStringShort = ROLE_STRINGS_SHORT[role]
                 local material = util.GetRoleIconPath(roleStringShort, "icon", "vtf")
 
+                local color = ROLE_COLORS[role]
+                if not DEFAULT_ROLES[role] and ROLE_STARTING_TEAM[role] then
+                    color = GetRoleTeamColor(ROLE_STARTING_TEAM[role])
+                end
+
                 ic:SetIconSize(itemSize)
                 ic:SetIcon(material)
-                ic:SetBackgroundColor(ROLE_COLORS[role] or Color(0, 0, 0, 0))
+                ic:SetBackgroundColor(color or Color(0, 0, 0, 0))
                 ic:SetTooltip(ROLE_STRINGS[role])
                 ic.role = role
                 ic.enabled = true

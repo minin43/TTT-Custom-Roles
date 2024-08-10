@@ -41,6 +41,7 @@ hook.Add("TTTEndRound", "Illusionist_TTTEndRound", function()
 end)
 
 hook.Add("PlayerDeath", "Illusionist_PlayerDeath", function(victim, infl, attacker)
+    if not victim:IsIllusionist() then return end
     local alive = player.IsRoleLiving(ROLE_ILLUSIONIST)
     if not alive then
         SetGlobalBool("ttt_illusionist_alive", false)

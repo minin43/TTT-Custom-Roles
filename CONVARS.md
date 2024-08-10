@@ -1037,6 +1037,7 @@ ttt_quack_shop_sync                            0       // Whether quacks should 
 ttt_parasite_shop_sync                         0       // Whether parasites should have all weapons that vanilla traitors have in their weapon shop
 ttt_informant_shop_sync                        0       // Whether informants should have all weapons that vanilla traitors have in their weapon shop
 ttt_spy_shop_sync                              0       // Whether spies should have all weapons that vanilla traitors have in their weapon shop
+ttt_eviltwin_shop_sync                         0       // Whether evil twins should have all weapons that vanilla traitors have in their weapon shop
 
 // Detective Role Shop Sync (Server or round must be restarted for changes to take effect)
 ttt_paladin_shop_sync                          0       // Whether paladins should have all weapons that vanilla detectives have in their weapon shop
