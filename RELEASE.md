@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.1.20 (Beta)
-**Released: **
+**Released: August 10th, 2024**
 
 ### Additions
 - The Illusionist now blocks information about the Assassin's target, Informant's scans, Parasite's host, and Spy's identity from being seen by other traitors
@@ -14,6 +14,7 @@
 - Fixed traitors sometimes being able to see fellow traitors while there was an active Illusionist
 - Fixed some information from the Informant, Parasite and Spy not being blocked by the Glitch which allowed traitors to easily uncover the Glitch
 - Fixed Beggar death notification appearing even after the Beggar had joined a team if `ttt_beggar_keep_begging` was enabled
+- Fixed typo in the Twins' tutorial pages
 
 ### Developer
 - Added global `ROLE_STARTING_TEAM` table to store the teams each role started the round as. (e.g. `ROLE_STARTING_TEAM[ROLE_CLOWN]` will be `ROLE_TEAM_JESTER` regardless of whether the Clown has activated and become an independent or not.)
