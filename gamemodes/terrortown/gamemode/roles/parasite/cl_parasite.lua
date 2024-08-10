@@ -89,14 +89,14 @@ hook.Add("TTTTargetIDPlayerText", "Parasite_TTTTargetIDPlayerText", function(ent
     if not IsPlayer(ent) then return end
 
     -- Skip this for Assassin so they can have their own Current Target logic (it also handles parasite infection there)
-    if ((ent:GetNWBool("ParasiteInfected", false) and cli:IsTraitorTeam()) or IsLoverInfecting(cli, ent)) and not cli:IsAssassin() then
+    if ((ent:GetNWBool("ParasiteInfected", false) and cli:IsTraitorTeam() and ShouldShowTraitorExtraInfo()) or IsLoverInfecting(cli, ent)) and not cli:IsAssassin() then
         return LANG.GetTranslation("target_infected"), ROLE_COLORS_RADAR[ROLE_PARASITE]
     end
 end)
 
 ROLE_IS_TARGETID_OVERRIDDEN[ROLE_PARASITE] = function(ply, target)
     if not IsPlayer(target) then return end
-    if not (ply:IsTraitorTeam() and not ply:IsAssassin()) and not IsLoverInfecting(ply, target) then return end
+    if not (ply:IsTraitorTeam() and ShouldShowTraitorExtraInfo() and not ply:IsAssassin()) and not IsLoverInfecting(ply, target) then return end
 
     ------ icon,  ring,  text
     return false, false, target:GetNWBool("ParasiteInfected", false)

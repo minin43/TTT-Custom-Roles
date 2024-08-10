@@ -188,7 +188,7 @@ local function Announce(ply, message)
     if not IsValid(ply) then return end
 
     ply:PrintMessage(HUD_PRINTTALK, "You have " .. message)
-    if not informant_share_scans:GetBool() then return end
+    if not informant_share_scans:GetBool() or not ShouldShowTraitorExtraInfo() then return end
 
     for _, p in PlayerIterator() do
         if p:IsActiveTraitorTeam() and p ~= ply then

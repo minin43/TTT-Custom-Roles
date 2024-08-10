@@ -153,14 +153,12 @@ end
 hook.Add("PlayerDeath", "Beggar_KillCheck_PlayerDeath", function(victim, infl, attacker)
     local valid_kill = IsPlayer(attacker) and attacker ~= victim and GetRoundState() == ROUND_ACTIVE
     if not valid_kill then return end
-    if not victim:IsBeggar() then return end
+    if not victim:IsBeggar() or INNOCENT_ROLES[ROLE_BEGGAR] or TRAITOR_ROLES[ROLE_BEGGAR] then return end
 
     BeggarKilledNotification(attacker, victim)
 
     local respawnLimit = beggar_respawn_limit:GetInt()
     if beggar_respawn:GetBool() and (respawnLimit == 0 or victim.BeggarRespawn < respawnLimit) then
-        if not JESTER_ROLES[ROLE_BEGGAR] and not INDEPENDENT_ROLES[ROLE_BEGGAR] then return end
-
         victim.BeggarRespawn = victim.BeggarRespawn + 1
 
         local change_role = beggar_respawn_change_role:GetBool()

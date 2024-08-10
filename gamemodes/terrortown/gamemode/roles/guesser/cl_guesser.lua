@@ -311,7 +311,11 @@ AddHook("TTTHUDInfoPaint", "Guesser_TTTHUDInfoPaint", function(client, label_lef
             text = "None"
         else
             text = ROLE_STRINGS[role]
-            surface.SetTextColor(ROLE_COLORS_RADAR[role])
+            local color = ROLE_COLORS_RADAR[role]
+            if not DEFAULT_ROLES[role] and ROLE_STARTING_TEAM[role] then
+                color = GetRoleTeamColor(ROLE_STARTING_TEAM[role], "radar")
+            end
+            surface.SetTextColor(color)
         end
         surface.SetTextPos(label_left + w, ScrH() - label_top - h)
         surface.DrawText(text)

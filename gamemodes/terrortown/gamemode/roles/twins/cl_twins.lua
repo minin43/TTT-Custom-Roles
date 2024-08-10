@@ -149,7 +149,7 @@ hook.Add("TTTTutorialRoleText", "Twins_TTTTutorialRoleText", function(role, titl
 
         local html = "The " .. ROLE_STRINGS[ROLE_GOODTWIN] .. " is a member of the <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>innocent team</span> who has an evil counterpart on the <span style='color: rgb(" .. traitorColor.r .. ", " .. traitorColor.g .. ", " .. traitorColor.b .. ")'>traitor team</span>."
 
-        html = html .. "<span style='display: block; margin-top: 10px;'>The twins rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>cannot damage each other</span> unless they are the last non-jester players alive."
+        html = html .. "<span style='display: block; margin-top: 10px;'>The twins <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>cannot damage each other</span> unless they are the last non-jester players alive."
 
         local invulnerability_timer = GetConVar("ttt_twins_invulnerability_timer"):GetInt()
         if invulnerability_timer > 0 then
@@ -163,7 +163,7 @@ hook.Add("TTTTutorialRoleText", "Twins_TTTTutorialRoleText", function(role, titl
 
         local html = "The " .. ROLE_STRINGS[ROLE_EVILTWIN] .. " is a member of the <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>traitor team</span> who has a good counterpart on the <span style='color: rgb(" .. innocentColor.r .. ", " .. innocentColor.g .. ", " .. innocentColor.b .. ")'>innocent team</span>."
 
-        html = html .. "<span style='display: block; margin-top: 10px;'>The twins rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>cannot damage each other</span> unless they are the last non-jester players alive."
+        html = html .. "<span style='display: block; margin-top: 10px;'>The twins <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>cannot damage each other</span> unless they are the last non-jester players alive."
 
         local invulnerability_timer = GetConVar("ttt_twins_invulnerability_timer"):GetInt()
         if invulnerability_timer > 0 then

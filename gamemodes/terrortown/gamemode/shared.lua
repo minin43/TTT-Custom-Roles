@@ -24,7 +24,7 @@ local StringSub = string.sub
 include("player_class/player_ttt.lua")
 
 -- Version string for display and function for version checks
-CR_VERSION = "2.1.18"
+CR_VERSION = "2.1.20"
 CR_BETA = true
 CR_WORKSHOP_ID = CR_BETA and "2404251054" or "2421039084"
 
@@ -866,6 +866,8 @@ ROLE_TEAM_DETECTIVE = 5
 ROLE_TEAMS_WITH_SHOP = {}
 AddRoleAssociations(ROLE_TEAMS_WITH_SHOP, {ROLE_TEAM_TRAITOR, ROLE_TEAM_INDEPENDENT, ROLE_TEAM_MONSTER, ROLE_TEAM_DETECTIVE})
 
+ROLE_STARTING_TEAM = {}
+
 -- Role icon caching
 local function CacheRoleIcon(tbl, role_str, typ, ext, cache_key)
     -- Use the role string as the cache key and file name if a specific cache key is not provided
@@ -1684,7 +1686,9 @@ function GetWinningMonsterRole()
 end
 
 function ShouldShowTraitorExtraInfo()
-    -- Don't display Parasite and Assassin information if there is a glitch that is distorting the role information
+    -- Don't display Parasite, Assassin, Informant or Spy information if there is a Glitch or an Illusionist that is distorting the role information
+    -- If the Illusionist is alive then dont reveal anything
+    if GetGlobalBool("ttt_illusionist_alive", false) then return false end
     -- If the glitch mode is "Show as Special Traitor" then we don't want to show this because it reveals which of the traitors is real (because this doesn't show for glitches)
     -- If the glitch mode is "Hide Special Traitor Roles" then we don't want to show anything that reveals what role a traitor really is
     local glitchMode = GetConVar("ttt_glitch_mode"):GetInt()
