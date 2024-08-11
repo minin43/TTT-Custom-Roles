@@ -15,6 +15,7 @@
 - Fixed some information from the Informant, Parasite and Spy not being blocked by the Glitch which allowed traitors to easily uncover the Glitch
 - Fixed Beggar death notification appearing even after the Beggar had joined a team if `ttt_beggar_keep_begging` was enabled
 - Fixed typo in the Twins' tutorial pages
+- Fixed external roles that belong to teams with default shop items (traitors, detectives) not having those default items in their shop if they set up their equipment items table manually
 
 ### Developer
 - Added global `ROLE_STARTING_TEAM` table to store the teams each role started the round as. (e.g. `ROLE_STARTING_TEAM[ROLE_CLOWN]` will be `ROLE_TEAM_JESTER` regardless of whether the Clown has activated and become an independent or not.)

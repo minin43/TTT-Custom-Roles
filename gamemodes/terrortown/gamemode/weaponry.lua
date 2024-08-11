@@ -893,18 +893,17 @@ function WEPS.HandleRoleEquipment(ply)
             end
         end
 
+        if id >= ROLE_EXTERNAL_START and ROLE_SHOP_ITEMS[id] then
+            for _, v in pairs(ROLE_SHOP_ITEMS[id]) do
+                table.insert(roleBuyables, v)
+            end
+        end
+
         -- Copy the loaded table into the global table for this role
         WEPS.BuyableWeapons[id] = roleBuyables
         WEPS.ExcludeWeapons[id] = roleExcludes
         WEPS.BypassRandomWeapons[id] = roleNoRandoms
         WEPS.LoadoutWeapons[id] = roleLoadouts
-
-        if id >= ROLE_EXTERNAL_START and ROLE_SHOP_ITEMS[id] then
-            for _, v in pairs(ROLE_SHOP_ITEMS[id]) do
-                table.insert(WEPS.BuyableWeapons[id], v)
-                table.insert(roleBuyables, v)
-            end
-        end
 
         if #roleBuyables > 0 or #roleExcludes > 0 or #roleNoRandoms > 0 or #roleLoadouts > 0 then
             net.Start("TTT_BuyableWeapons")
