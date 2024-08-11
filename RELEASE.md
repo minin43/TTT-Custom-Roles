@@ -4,21 +4,23 @@
 **Released: August 10th, 2024**
 
 ### Additions
-- The Illusionist now blocks information about the Assassin's target, Informant's scans, Parasite's host, and Spy's identity from being seen by other traitors
+- The illusionist now blocks information about the assassin's target, informant's scans, parasite's host, and spy's identity from being seen by other traitors
 
 ### Changes
 - Changed role cheat sheet and the Guesser's guessing device to sort and show roles based on what team they began as instead of what team they are currently on
+- Changed the plaguemaster's default convar values for their spread distance to be higher and spread time to be lower
+  - This should make it easier for the plague to naturally spread between infected players
 
 ### Fixes
-- Fixed traitors seeing a message that the Illusionist died every time a player dies while there are no living Illusionists
-- Fixed traitors sometimes being able to see fellow traitors while there was an active Illusionist
-- Fixed some information from the Informant, Parasite and Spy not being blocked by the Glitch which allowed traitors to easily uncover the Glitch
-- Fixed Beggar death notification appearing even after the Beggar had joined a team if `ttt_beggar_keep_begging` was enabled
-- Fixed typo in the Twins' tutorial pages
+- Fixed traitors seeing a message that the illusionist died every time a player dies while there are no living illusionists
+- Fixed traitors sometimes being able to see fellow traitors while there was an active illusionist
+- Fixed some information from the informant, parasite and spy not being blocked by the glitch which allowed traitors to easily uncover the glitch
+- Fixed beggar death notification appearing even after the beggar had joined a team if `ttt_beggar_keep_begging` was enabled
+- Fixed typo in the twins' tutorial pages
 - Fixed external roles that belong to teams with default shop items (traitors, detectives) not having those default items in their shop if they set up their equipment items table manually
 
 ### Developer
-- Added global `ROLE_STARTING_TEAM` table to store the teams each role started the round as. (e.g. `ROLE_STARTING_TEAM[ROLE_CLOWN]` will be `ROLE_TEAM_JESTER` regardless of whether the Clown has activated and become an independent or not.)
+- Added global `ROLE_STARTING_TEAM` table to store the teams each role started the round as. (e.g. `ROLE_STARTING_TEAM[ROLE_CLOWN]` will be `ROLE_TEAM_JESTER` regardless of whether the clown has activated and become an independent or not.)
 
 ## 2.1.19 (Beta)
 **Released: July 31st, 2024**
@@ -29,7 +31,7 @@
 - Added option for the Beggar to be able to keep begging after joining a team, allowing them to switch teams multiple times (Disabled by default)
 
 ### Changes
-- Changed Plaguemaster HUD to use a progress bar instead of text when they are warned about infection
+- Changed plaguemaster HUD to use a progress bar instead of text when they are warned about infection
 
 ### Fixes
 - Fixed players who were revived after dying to the plague dying again instantly
