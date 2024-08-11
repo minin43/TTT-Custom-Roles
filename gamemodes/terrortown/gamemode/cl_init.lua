@@ -629,7 +629,7 @@ end
 function HandleRoleHighlights(client)
     if not IsValid(client) then return end
 
-    if traitor_vision and client:IsTraitorTeam() then
+    if traitor_vision and client:IsTraitorTeam() and not GetGlobalBool("ttt_illusionist_alive", false) then
         if not vision_enabled then
             EnableTraitorHighlights(client)
             vision_enabled = true
