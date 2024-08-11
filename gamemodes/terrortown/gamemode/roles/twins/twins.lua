@@ -17,12 +17,10 @@ hook.Add("TTTSelectRoles", "Twins_TTTSelectRoles", function()
     local choices = {}
 
     for _, p in player.Iterator() do
-        if IsValid(p) then
-            if not p:IsSpec() then
-                table.insert(players, p)
-                if p:GetRole() == ROLE_NONE then
-                    table.insert(choices, p)
-                end
+        if IsValid(p) and not p:IsSpec() then
+            table.insert(players, p)
+            if p:GetRole() == ROLE_NONE then
+                table.insert(choices, p)
             end
         end
     end
