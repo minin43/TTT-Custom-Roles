@@ -15,14 +15,24 @@ local twins_invulnerability_timer = GetConVar("ttt_twins_invulnerability_timer")
 hook.Add("TTTSelectRoles", "Twins_TTTSelectRoles", function()
     local players = {}
     local choices = {}
+    local innocents = {}
+    local traitors = {}
+    local specialInnocents = {}
+    local specialTraitors = {}
 
     for _, p in player.Iterator() do
-        if IsValid(p) then
-            if not p:IsSpec() then
-                table.insert(players, p)
-                if p:GetRole() == ROLE_NONE then
-                    table.insert(choices, p)
-                end
+        if IsValid(p) and not p:IsSpec() then
+            table.insert(players, p)
+            if p:GetRole() == ROLE_NONE then
+                table.insert(choices, p)
+            elseif p:IsInnocent() then
+                table.insert(innocents, p)
+            elseif p:IsTraitor() then
+                table.insert(traitors, p)
+            elseif p:IsInnocentTeam() and not p:IsDetectiveTeam() then
+                table.insert(specialInnocents, p)
+            elseif p:IsTraitorTeam() then
+                table.insert(specialTraitors, p)
             end
         end
     end
@@ -31,16 +41,15 @@ hook.Add("TTTSelectRoles", "Twins_TTTSelectRoles", function()
     local forcedEvilTwin = false
 
     for _, p in player.Iterator() do
-        local role = p:GetForcedRole()
-        if role then
-            if table.HasValue(choices, p) then
-                table.RemoveByValue(choices, p)
-            end
-            if role == ROLE_GOODTWIN then
-                forcedGoodTwin = true
-            elseif role == ROLE_EVILTWIN then
-                forcedEvilTwin = true
-            end
+        local forcedRole = p:GetForcedRole()
+        if forcedRole and table.HasValue(choices, p) then
+            table.RemoveByValue(choices, p)
+        end
+
+        if forcedRole == ROLE_GOODTWIN or p:IsGoodTwin() then
+            forcedGoodTwin = true
+        elseif forcedRole == ROLE_EVILTWIN or p:IsEvilTwin() then
+            forcedEvilTwin = true
         end
     end
 
@@ -56,15 +65,30 @@ hook.Add("TTTSelectRoles", "Twins_TTTSelectRoles", function()
         table.Shuffle(choices)
         choices[1]:SetRole(ROLE_GOODTWIN)
         choices[2]:SetRole(ROLE_EVILTWIN)
-    -- If only one twin has been forced then we should try to spawn the other, regardless of config
+    -- If only one twin has been forced then we should try to spawn the other prioritizing unassigned players, then vanilla roles, then special roles
     else
-        if #choices < 1 then return end
-        table.Shuffle(choices)
-
         if forcedGoodTwin then
-            choices[1]:SetRole(ROLE_EVILTWIN)
+            if #choices > 0 then
+                table.Shuffle(choices)
+                choices[1]:SetRole(ROLE_EVILTWIN)
+            elseif #traitors > 0 then
+                table.Shuffle(traitors)
+                traitors[1]:SetRole(ROLE_EVILTWIN)
+            elseif #specialTraitors > 0 then
+                table.Shuffle(specialTraitors)
+                specialTraitors[1]:SetRole(ROLE_EVILTWIN)
+            end
         else
-            choices[1]:SetRole(ROLE_GOODTWIN)
+            if #choices > 0 then
+                table.Shuffle(choices)
+                choices[1]:SetRole(ROLE_GOODTWIN)
+            elseif #innocents > 0 then
+                table.Shuffle(innocents)
+                innocents[1]:SetRole(ROLE_GOODTWIN)
+            elseif #specialInnocents > 0 then
+                table.Shuffle(specialInnocents)
+                specialInnocents[1]:SetRole(ROLE_GOODTWIN)
+            end
         end
     end
 end)
