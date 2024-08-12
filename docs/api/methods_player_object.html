@@ -79,6 +79,18 @@
             <em>Added in:</em> 2.0.7
         </p>
 
+        <h3><a id="plymetaclearpropertyname-targets" href="#plymetaclearpropertyname-targets">plymeta:ClearProperty(name, targets)</a></h3>
+        <p>
+            Clears the value of the property with the given <code>name</code> on this player and then synchronizes that value to all <code>targets</code>. Wrapper around <a href="methods_sync.html#syncclearplayerpropertyply-propertyname-targets">SYNC:ClearPlayerProperty</a>.<br>
+            <em>Realm:</em> Server<br>
+            <em>Added in:</em> 2.1.18<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>name</em> - The name of the property being cleared.</li>
+            <li><em>targets</em> - The targets that should have this value cleared on their clients. <em>(Defaults to sending to all players)</em></li>
+        </ul>
+
         <h3><a id="plymetadrunkjoinlosingteam" href="#plymetadrunkjoinlosingteam">plymeta:DrunkJoinLosingTeam()</a></h3>
         <p>
             Attempts to find the losing team and calls <code>self:SoberDrunk(team)</code> using the losing team as the <em>team</em> parameter.<br>
@@ -299,6 +311,13 @@
             Whether the player is on the innocent team.<br>
             <em>Realm:</em> Client and Server<br>
             <em>Added in:</em> 1.0.0
+        </p>
+
+        <h3><a id="plymetaisinvulnerable" href="#plymetaisinvulnerable">plymeta:IsInvulnerable()</a></h3>
+        <p>
+            Whether the player is invulnerable.\<br>
+            <em>Realm:</em> Client and Server<br>
+            <em>Added in:</em> 2.1.17<br>
         </p>
 
         <h3><a id="plymetaisjesterteam" href="#plymetaisjesterteam">plymeta:IsJesterTeam()</a></h3>
@@ -541,6 +560,18 @@
             <li><em>keep_existing</em> - Whether to keep the player's existing credits (Defaults to <code>false</code>) <em>(Added in 1.6.2)</em></li>
         </ul>
 
+        <h3><a id="plymetasetinvulnerableinvulnerableplay_sound" href="#plymetasetinvulnerableinvulnerableplay_sound">plymeta:SetInvulnerable(invulnerable, play_sound)</a></h3>
+        <p>
+            Controls if the player should be invulnerable or not.\<br>
+            <em>Realm:</em> Server<br>
+            <em>Added in:</em> 2.1.17<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>invulnerable</em> - <code>true</code> to enable invulnerability, <code>false</code> to disable</li>
+            <li><em>play_sound</em> - Whether to play sound effects or not</li>
+        </ul>
+
         <h3><a id="plymetasetplayerscalescale" href="#plymetasetplayerscalescale">plymeta:SetPlayerScale(scale)</a></h3>
         <p>
             Sets the player's size by adjusting models, step sizes, hulls and view offsets.<br>
@@ -550,6 +581,19 @@
         </p>
         <ul>
             <li><em>scale</em> - The value with which to scale the players size, relative to their current size.</li>
+        </ul>
+
+        <h3><a id="plymetasetpropertyname-value-targets" href="#plymetasetpropertyname-value-targets">plymeta:SetProperty(name, value, targets)</a></h3>
+        <p>
+            Sets the value of the property with the given <code>name</code> on this player to equal <code>value</code> and then synchronizes that value to all <code>targets</code>. Wrapper around <a href="methods_sync.html#syncsetplayerpropertyply-propertyname-propertyvalue-targets">SYNC:SetPlayerProperty</a>.<br>
+            <em>Realm:</em> Server<br>
+            <em>Added in:</em> 2.1.18<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>name</em> - The name of the property being set.</li>
+            <li><em>value</em> - The value the property is being set to.</li>
+            <li><em>targets</em> - The targets that should have this value available on their clients. <em>(Defaults to sending to all players)</em></li>
         </ul>
 
         <h3><a id="plymetasetroleandbroadcastrole" href="#plymetasetroleandbroadcastrole">plymeta:SetRoleAndBroadcast(role)</a></h3>

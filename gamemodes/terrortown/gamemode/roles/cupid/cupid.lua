@@ -135,16 +135,27 @@ hook.Add("PlayerDisconnected", "Cupid_PlayerDisconnected", function(ply)
             p:SetNWString("TTTCupidLover", "")
         elseif p:GetNWString("TTTCupidTarget1", "") == sid64 then
             p:QueueMessage(MSG_PRINTBOTH, "A player hit by your arrow has disconnected")
-            local target2 = p:GetNWString("TTTCupidTarget2", "")
-            if #target2 == 0 then
+
+            local target2Sid64 = p:GetNWString("TTTCupidTarget2", "")
+            local target2 = player.GetBySteamID64(target2Sid64)
+            -- Make sure the other lover is still alive
+            if not target2 or not target2:Alive() or target2:IsSpec() then continue end
+
+            if #target2Sid64 == 0 then
                 p:SetNWString("TTTCupidTarget1", "")
             else
-                p:SetNWString("TTTCupidTarget1", target2)
+                p:SetNWString("TTTCupidTarget1", target2Sid64)
                 p:SetNWString("TTTCupidTarget2", "")
                 p:Give("weapon_cup_bow")
             end
         elseif p:GetNWString("TTTCupidTarget2", "") == sid64 then
             p:QueueMessage(MSG_PRINTBOTH, "A player hit by your arrow has disconnected")
+
+            local target1Sid64 = p:GetNWString("TTTCupidTarget1", "")
+            local target1 = player.GetBySteamID64(target1Sid64)
+            -- Make sure the other lover is still alive
+            if not target1 or not target1:Alive() or target1:IsSpec() then continue end
+
             p:SetNWString("TTTCupidTarget2", "")
             p:Give("weapon_cup_bow")
         end

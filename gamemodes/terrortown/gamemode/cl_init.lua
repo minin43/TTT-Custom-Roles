@@ -80,6 +80,7 @@ include("cl_hitmarkers.lua")
 include("cl_deathnotify.lua")
 include("cl_sprint.lua")
 include("cl_cheatsheet.lua")
+include("cl_sync.lua")
 
 local traitor_vision = false
 local jesters_visible_to_traitors = false
@@ -189,6 +190,9 @@ local function RoundStateChange(o, n)
     if n == ROUND_PREP then
         -- can enter PREP from any phase due to ttt_roundrestart
         RunHook("TTTPrepareRound")
+        for role = 0, ROLE_MAX do
+            ROLE_STARTING_TEAM[role] = player.GetRoleTeam(role, false)
+        end
     elseif (o == ROUND_PREP) and (n == ROUND_ACTIVE) then
         RunHook("TTTBeginRound")
     elseif (o == ROUND_ACTIVE) and (n == ROUND_POST) then
@@ -442,6 +446,31 @@ function GM:Think()
                 v.SmokeEmitter:Finish()
                 v.SmokeEmitter = nil
             end
+
+            if v ~= client and v:IsInvulnerable() then
+                if not v.InvulnerableEmitter then v.InvulnerableEmitter = ParticleEmitter(v:GetPos()) end
+                if not v.InvulnerableNextPart then v.InvulnerableNextPart = CurTime() end
+                local pos = v:GetPos()
+                if v.InvulnerableNextPart < CurTime() and client:GetPos():Distance(pos) <= 3000 then
+                    v.InvulnerableEmitter:SetPos(pos)
+                    v.InvulnerableNextPart = CurTime() + MathRand(0.0005, 0.02)
+                    local vec = Vector(MathRand(-8, 8), MathRand(-8, 8), MathRand(-25, 25))
+                    local particle = v.InvulnerableEmitter:Add("particle/wisp.vmt", v:LocalToWorld(vec + Vector(0, 0, 35)))
+                    particle:SetVelocity(vec:GetNormalized() * 50)
+                    particle:SetDieTime(MathRand(0.2, 0.5))
+                    particle:SetStartAlpha(MathRandom(150, 220))
+                    particle:SetEndAlpha(0)
+                    local size = MathRandom(2, 5)
+                    particle:SetStartSize(size)
+                    particle:SetEndSize(size + 1)
+                    particle:SetRoll(MathRand(0, math.pi))
+                    particle:SetRollDelta(0)
+                    particle:SetColor(0, 255, 255)
+                end
+            elseif v.InvulnerableEmitter then
+                v.InvulnerableEmitter:Finish()
+                v.InvulnerableEmitter = nil
+            end
         end
     end
 end
@@ -600,7 +629,7 @@ end
 function HandleRoleHighlights(client)
     if not IsValid(client) then return end
 
-    if traitor_vision and client:IsTraitorTeam() then
+    if traitor_vision and client:IsTraitorTeam() and not GetGlobalBool("ttt_illusionist_alive", false) then
         if not vision_enabled then
             EnableTraitorHighlights(client)
             vision_enabled = true

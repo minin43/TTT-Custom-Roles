@@ -1,5 +1,96 @@
 # Release Notes
 
+## 2.2.0
+**Released: August 12th, 2024**\
+Includes beta updates [2.1.17](#2117-beta) and [2.1.20](#2120-beta).
+
+### Changes
+- Changed the plaguemaster's default convar value to make the spread time lower
+  - This should make it easier for the plague to naturally spread between infected players
+
+### Fixes
+- Fixed external roles that belong to teams with default shop items (traitors, detectives) not having those default items in their shop if they set up their equipment items table manually
+- Fixed illusionist not blocking traitor team highlighting when that is enabled
+- Fixed the twins not spawning/despawning correctly when only one twin was assigned through a rolepack
+
+## 2.1.20 (Beta)
+**Released: August 10th, 2024**
+
+### Additions
+- The illusionist now blocks information about the assassin's target, informant's scans, parasite's host, and spy's identity from being seen by other traitors
+
+### Changes
+- Changed role cheat sheet and the Guesser's guessing device to sort and show roles based on what team they began as instead of what team they are currently on
+
+### Fixes
+- Fixed traitors seeing a message that the illusionist died every time a player dies while there are no living illusionists
+- Fixed traitors sometimes being able to see fellow traitors while there was an active illusionist
+- Fixed some information from the informant, parasite and spy not being blocked by the glitch which allowed traitors to easily uncover the glitch
+- Fixed beggar death notification appearing even after the beggar had joined a team if `ttt_beggar_keep_begging` was enabled
+- Fixed typo in the twins' tutorial pages
+
+### Developer
+- Added global `ROLE_STARTING_TEAM` table to store the teams each role started the round as. (e.g. `ROLE_STARTING_TEAM[ROLE_CLOWN]` will be `ROLE_TEAM_JESTER` regardless of whether the clown has activated and become an independent or not.)
+
+## 2.1.19 (Beta)
+**Released: July 31st, 2024**
+
+### Additions
+- Added new detective role: illusionist
+- Added option to control whether bodies that were infected with or died from the plague should show this information when searched
+- Added option for the Beggar to be able to keep begging after joining a team, allowing them to switch teams multiple times (Disabled by default)
+
+### Changes
+- Changed plaguemaster HUD to use a progress bar instead of text when they are warned about infection
+
+### Fixes
+- Fixed players who were revived after dying to the plague dying again instantly
+- Added missing role list descriptions for the Twins and the Scout
+
+### Developer
+- Changed `TTTScoreboardPlayerRole` hook to allow ability to prevent a scoreboard rows color or icon from being drawn
+
+## 2.1.18 (Beta)
+**Released: July 20th, 2024**
+
+### Additions
+- Added new independent role: plaguemaster
+- Added ability for scout to determine whether monster roles are revealed to them (enabled by default)
+- Added ability to control whether the doctor's cure is rebuyable (disabled by default)
+- Added ability to control whether the quack's fake cure is rebuyable (disabled by default)
+
+### Changes
+- Renamed old man's shotgun model files to not conflict with the M9K addon
+- Changed role weapons that use the SLAM model to use one that is compatible with custom player models
+- Changed Parasite Cure weapon to be generic Cure which can also be used against plagued players
+  - *BREAKING CHANGE* - Renamed `ttt_parasite_cure_time` and `ttt_parasite_cure_mode` to `ttt_doctor_cure_time` and `ttt_doctor_cure_mode` to make it clearer that it's now for more than just the parasite
+  - *BREAKING CHANGE* - Renamed class from `weapon_par_cure` to `weapon_doc_cure`
+- Changed Fake Parasite Cure weapon to be generic Fake Cure which can also be used against plagued players
+- Changed tutorial page to always show the page for your current role, even if it's not enabled
+
+### Fixes
+- Fixed role names in info HUD not being translatable
+
+### Developer
+- Added new `SYNC` namespace with methods for synchronizing data between server and client generically and on demand rather than repeatedly on a schedule
+- Added `plymeta:SetProperty` and `plymeta:ClearProperty` as wrappers around new `SYNC` methods
+- Added new `TTTCanPlayerBeCured`, `TTTCurePlayer`, `TTTFakeCurePlayer`, and `TTTCanCureableRoleSpawn` hooks to allow external roles to use the cures as well
+
+## 2.1.17 (Beta)
+**Released: June 1st, 2024**
+
+### Additions
+- Added new innocent role: scout
+- Added new innocent role: good twin
+- Added new traitor role: evil twin
+
+### Fixes
+- Fixed cupid getting their bow back if a lover left the game and the other lover was already dead
+
+### Developer
+- Added `util.FormattedList` method to allow for easy conversion from tables to a formatted string
+- Added `plymeta:SetInvulnerable` and `plymeta:IsInvulnerable` methods to control invulnerability for a player
+
 ## 2.1.16
 **Released: June 3rd, 2024**\
 Includes beta updates [2.1.14](#2114-beta) and [2.1.15](#2115-beta).

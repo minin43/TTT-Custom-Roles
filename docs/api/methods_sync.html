@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <title>Custom Roles for TTT - API - SYNC Methods</title>
+    <link rel="stylesheet" href="../css/style.css"/>
+    <script type="text/javascript" src="../js/shared.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+</head>
+<body>
+    <button onclick="backToTop()" id="totop">Back to Top</button>
+    <div class="navigation panel">
+        <iframe id="nav" src="../nav.html#api" scrolling="no" onload="resizeIframe(this)" width="100%" style="overflow:hidden; border-style: none; float: left;"></iframe>
+    </div>
+    <div class="contentheader panel">
+        <h1>SYNC Methods <span id="betaswitch"></span></h1>
+        <p>Methods used for synchronizing data between the server and specific clients without relying on built-in systems that continuously send traffic even when there are no changes (NWVars) or only send data to players within the target's PVS (NW2Vars).</p>
+        <p><em>NOTE</em>: These values are synchronized at the exact moment the method is called and that is it. They are *not* sent to new players upon joining the game.</p>
+    </div>
+    <div class="contentbody panel">
+        <h3><a id="syncsetplayerpropertyply-propertyName-propertyValue-targets" href="#syncsetplayerpropertyply-propertyName-propertyValue-targets">SYNC:SetPlayerProperty(ply, propertyName, propertyValue, targets)</a></h3>
+        <p>
+            Sets the value of the property with the given <code>propertyName</code> on <code>ply</code> to equal <code>propertyValue</code> and then synchronizes that value to all <code>targets</code>.<br>
+            <em>Realm:</em> Server<br>
+            <em>Added in:</em> 2.1.18<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>ply</em> - The player whose property value is being set</li>
+            <li><em>propertyName</em> - The name of the property being set</li>
+            <li><em>propertyValue</em> - The value the property is being set to</li>
+            <li><em>targets</em> - The targets that should have this value available on their clients. <em>(Defaults to sending to all players)</em></li>
+        </ul>
+
+        <h3><a id="syncclearplayerpropertyply-propertyName-targets" href="#syncclearplayerpropertyply-propertyName-targets">SYNC:ClearPlayerProperty(ply, propertyName, targets)</a></h3>
+        <p>
+            Clears the value of the property with the given <code>propertyName</code> on <code>ply</code> and then synchronizes that value to all <code>targets</code>.<br>
+            <em>Realm:</em> Server<br>
+            <em>Added in:</em> 2.1.18<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>ply</em> - The player whose property value is being cleared</li>
+            <li><em>propertyName</em> - The name of the property being cleared</li>
+            <li><em>targets</em> - The targets that should have this value cleared on their clients. <em>(Defaults to sending to all players)</em></li>
+        </ul>
+    </div>
+    <div class="footerpadding panel"></div>
+</body>
+<html>

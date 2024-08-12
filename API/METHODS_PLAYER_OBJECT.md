@@ -43,6 +43,14 @@ Clears the player's forced role if one was set with `plymeta:ForceRoleNextRound(
 *Realm:* Server\
 *Added in:* 2.0.7
 
+### plymeta:ClearProperty(name, targets)
+Clears the value of the property with the given `name` on this player then synchronizes the clear to all `targets`. Wrapper around [SYNC:ClearPlayerProperty](METHODS_SYNC.md#syncclearplayerpropertyply-propertyname-targets).\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *name* - The name of the property being cleared.
+- *targets* - The targets that should have this value cleared on their clients. *(Defaults to sending to all players)*
+
 ### plymeta:DrunkJoinLosingTeam()
 Attempts to find the losing team and calls `self:SoberDrunk(team)` using the losing team as the *team* parameter.\
 *Realm:* Server\
@@ -81,7 +89,7 @@ Gets the role that should be displayed for the player.\
 - *display_role* - The role that should be displayed for the player.
 - *changed* - Whether the return value was changed and should be hidden
 
-### plymeta:GetForcedRole(role)
+### plymeta:GetForcedRole()
 Gets the player's forced role if one was set with `plymeta:ForceRoleNextRound(role)`. Returns `false` otherwise.\
 *Realm:* Server\
 *Added in:* 2.0.7
@@ -197,6 +205,11 @@ Whether the player is on the independent team.\
 Whether the player is on the innocent team.\
 *Realm:* Client and Server\
 *Added in:* 1.0.0
+
+### plymeta:IsInvulnerable()
+Whether the player is invulnerable.\
+*Realm:* Client and Server\
+*Added in:* 2.1.17
 
 ### plymeta:IsJesterTeam()
 Whether the player is on the jester team.\
@@ -360,12 +373,29 @@ Sets the credits on the player based on their role's starting credits convars.\
 *Parameters:*
 - *keep_existing* - Whether to keep the player's existing credits (Defaults to `false`) *(Added in 1.6.2)*
 
+### plymeta:SetInvulnerable(invulnerable, play_sound)
+Controls if the player should be invulnerable or not.\
+*Realm:* Server\
+*Added in:* 2.1.17\
+*Parameters:*
+- *invulnerable* - `true` to enable invulnerability, `false` to disable
+- *play_sound* - Whether to play sound effects or not
+
 ### plymeta:SetPlayerScale(scale)
 Sets the player's size by adjusting models, step sizes, hulls and view offsets.\
 *Realm:* Server\
 *Added in:* 1.3.1\
 *Parameters:*
 - *scale* - The value with which to scale the players size, relative to their current size.
+
+### plymeta:SetProperty(name, value, targets)
+Sets the value of the property with the given `name` on this player to equal `value` and then synchronizes that value to all `targets`. Wrapper around [SYNC:SetPlayerProperty](METHODS_SYNC.md#syncsetplayerpropertyply-propertyname-propertyvalue-targets).\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *name* - The name of the property being set.
+- *value* - The value the property is being set to.
+- *targets* - The targets that should have this value available on their clients. *(Defaults to sending to all players)*
 
 ### plymeta:SetRoleAndBroadcast(role)
 Sets the player's role to the given one and (if called on the server) broadcasts the change to all clients for scoreboard tracking.\

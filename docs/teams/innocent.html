@@ -208,6 +208,30 @@
                             <td>The number of credits a Doctor should start with.</td>
                         </tr>
                         <tr>
+                            <td>ttt_doctor_cure_mode</td>
+                            <td>2</td>
+                            <td>Integer (0-2)</td>
+                            <td>How to handle using a cure on someone who is not infected:
+                                <ol start="0">
+                                    <li>Kill nobody, but use up the cure.</li>
+                                    <li>Kill the person who uses the cure.</li>
+                                    <li>Kill the person the cure is used on.</li>
+                                </ol>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ttt_doctor_cure_rebuyable</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether the cure can be bought multiple times.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_doctor_cure_time</td>
+                            <td>3</td>
+                            <td>Integer</td>
+                            <td>The amount of time in seconds the cure takes to use.</td>
+                        </tr>
+                        <tr>
                             <td>ttt_single_doctor_quack</td>
                             <td>0</td>
                             <td>Boolean</td>
@@ -276,6 +300,37 @@
                             <td>0</td>
                             <td>Boolean</td>
                             <td>Whether Glitches can see and use traitor traps. This also allows them to loot credits for traps that require them.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p>A list of ConVars shared by every role and instructions for using ConVars can be found on the <a href="../tutorials/configuring_convars.html">Configuring ConVars</a> tutorial page.</p>
+                </div>
+            </div>
+        </div>
+        <div id="good-twin" class="collapsible">
+            <button class="header" style="background-color:var(--special-innocent);"><i class="icon-good-twin"></i>Good Twin<span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></button>
+            <div class="content">
+                <div class="moreless">[more]</div>
+                <p>The <span class="inline-icon" style="color:var(--special-innocent);"><i class="icon-good-twin"></i><a href="#good-twin">Good Twin</a></span> spawns with an <span class="inline-icon" style="color:var(--special-traitor);"><i class="icon-evil-twin"></i><a href="../teams/traitor.html#evil-twin">Evil Twin</a></span> and they must convince everyone else who the real Good Twin is.</p>
+                <div class="expansion">
+                    <p>Twins are unable to damage each other unless there are no other non-<span style="color:var(--jester)"><a href="../teams/jester.html">jester</a></span> players alive.</p>
+                    <p>If all Evil Twins die then Good Twins are temporarily invulnerable unless <code>ttt_twins_invulnerability_timer</code> is set to 0, but the reverse is also true. If all Good Twins die then Evil Twins will become invulnerable.</p>
+                    <h3 style="margin: 10px 0; padding: 0;">Role Configuration:</h3>
+                    <table style="width:100%; margin-bottom: 10px;">
+                        <thead>
+                        <tr>
+                            <th>ConVar</th>
+                            <th>Default</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>ttt_twins_invulnerability_timer</td>
+                            <td>20</td>
+                            <td>Integer</td>
+                            <td>How long (in seconds) the twins should be made invulnerable for if only one type of twin is alive. <i>(Set to 0 to disable. ConVar shared with the Evil Twin.)</i></td>
                         </tr>
                         </tbody>
                     </table>
@@ -720,6 +775,65 @@
                             <td>15</td>
                             <td>Integer</td>
                             <td>The amount of time in seconds between radar pings for the Revenger's lover's killer.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p>A list of ConVars shared by every role and instructions for using ConVars can be found on the <a href="../tutorials/configuring_convars.html">Configuring ConVars</a> tutorial page.</p>
+                </div>
+            </div>
+        </div>
+        <div id="scout" class="collapsible">
+            <button class="header" style="background-color:var(--special-innocent);"><i class="icon-scout"></i>Scout<span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></button>
+            <div class="content">
+                <div class="moreless">[more]</div>
+                <p>The <span class="inline-icon" style="color:var(--special-innocent);"><i class="icon-scout"></i><a href="#scout">Scout</a></span> learns which <span style="color:var(--special-traitor);"><a href="../teams/traitor.html">special traitor</a></span> roles are in play.</p>
+                <div class="expansion">
+                    <h3 style="margin: 10px 0; padding: 0;">Role Configuration:</h3>
+                    <table style="width:100%; margin-bottom: 10px;">
+                        <thead>
+                        <tr>
+                            <th>ConVar</th>
+                            <th>Default</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>ttt_scout_alert_targets</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether players whose roles are revealed by the Scout should be notified..</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_scout_delay_intel</td>
+                            <td>0</td>
+                            <td>Integer</td>
+                            <td>How long (in seconds) to delay the information that is given to the Scout.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_scout_hidden_roles</td>
+                            <td>"" <i>Empty string</i></td>
+                            <td>String</td>
+                            <td>Names of roles that cannot be revealed by the Scout, separated with commas. Do not include spaces or capital letters.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_scout_reveal_independents</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether independent roles should also be revealed to the Scout.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_scout_reveal_jesters</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether jester roles should also be revealed to the Scout.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_scout_reveal_monsters</td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether monster roles should also be revealed to the Scout.</td>
                         </tr>
                         </tbody>
                     </table>

@@ -39,6 +39,14 @@ Executes a file at the given path, relative to the root game location.\
 - *filePath* - The path to the file to be executed, relative to the root game location
 - *errorIfMissing* - Whether to throw an error if the file is missing (Defaults to `false`)
 
+### util.FormattedList(tbl, formatting)
+Turns a table of items into a string with commas and grammar.
+*Realm:* Client and Server\
+*Added in: 2.1.17\
+*Parameters:*
+- *tbl* - The table of items in question
+- *formatting* - A function to apply formatting to each item in the provided table. (Optional, if not provided will just attempt to use table items as given)
+
 ### util.GetRoleIconPath(role_str, typ, ext, file_name_override)
 Gets the path to a role's icon of the given type.\
 *Realm:* Client and Server\

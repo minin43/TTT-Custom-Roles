@@ -493,7 +493,7 @@ local function InfoPaint(client)
         if hide_role:GetBool() then
             text = GetTranslation("hidden")
         else
-            text = client:GetRoleString()
+            text = LANG.GetRawTranslation(client:GetRoleStringRaw()) or client:GetRoleString()
         end
     else
         text = L[roundstate_string[round_state]]
@@ -614,6 +614,18 @@ function GM:HUDPaint()
     if RunHook("HUDShouldDraw", "TTTInfoPanel") then
         InfoPaint(client)
     end
+end
+
+-- Draw the invulnerability status effect
+local wisp = Material("particle/wisp.vmt")
+
+function GM:HUDPaintBackground()
+    local client = LocalPlayer()
+
+    if not IsPlayer(client) then return end
+    if not client:Alive() or client:IsSpec() then return end
+
+    CRHUD:PaintStatusEffect(client:IsInvulnerable(), COLOR_CYAN, wisp, "Invulnerability")
 end
 
 -- Hide the standard HUD stuff

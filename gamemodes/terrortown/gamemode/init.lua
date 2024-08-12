@@ -47,6 +47,7 @@ AddCSLuaFile("cl_deathnotify.lua")
 AddCSLuaFile("cl_sprint.lua")
 AddCSLuaFile("sprint_shd.lua")
 AddCSLuaFile("cl_cheatsheet.lua")
+AddCSLuaFile("cl_sync.lua")
 
 include("shared.lua")
 include("init_shd.lua")
@@ -72,6 +73,7 @@ include("roleweapons.lua")
 include("sprint_shd.lua")
 include("rolepacks.lua")
 include("roleblocks.lua")
+include("sync.lua")
 
 -- Localise stuff we use often. It's like Lua go-faster stripes.
 local concommand = concommand
@@ -598,6 +600,7 @@ end
 
 function PrepareRound()
     for _, v in PlayerIterator() do
+        v:SetInvulnerable(false, false)
         v:SetNWVector("PlayerColor", Vector(1, 1, 1))
         -- Workaround to prevent GMod sprint from working
         v:SetRunSpeed(v:GetWalkSpeed())
@@ -683,6 +686,9 @@ function PrepareRound()
 
     -- Tell hooks and map we started prep
     RunHook("TTTPrepareRound")
+    for role = 0, ROLE_MAX do
+        ROLE_STARTING_TEAM[role] = player.GetRoleTeam(role, false)
+    end
     ClearAllFootsteps()
     ents.TTT.TriggerRoundStateOutputs(ROUND_PREP)
 end
@@ -847,6 +853,7 @@ function BeginRound()
     SCORE:HandleSelection() -- log traitors and detectives
 
     for _, v in PlayerIterator() do
+        v:SetInvulnerable(false, false)
         -- Player color
         -- Generate a new color, but make sure it's not too bright or too dark
         local col = HSLToColor(colorGenerationHue, MathRand(0.5, 1), MathRand(0.25, 0.75))
@@ -1224,12 +1231,12 @@ function SelectRoles()
 
     if choice_count == 0 then return end
 
+    ROLEPACKS.AssignRoles(choices)
+
     local choices_copy = table.Copy(choices)
     local prev_roles_copy = table.Copy(prev_roles)
 
     CallHook("TTTSelectRoles", nil, choices_copy, prev_roles_copy)
-
-    ROLEPACKS.AssignRoles(choices)
 
     for _, v in ipairs(choices) do
         if v.forcedRole and v.forcedRole ~= ROLE_NONE then
@@ -1600,7 +1607,6 @@ function SelectRoles()
 
         SetGlobalBool("ttt_zombie_round", false)
     end
-
 
     if multipleJesterIndependent then
         if jester_independent_count > 0 and #choices > 0 then

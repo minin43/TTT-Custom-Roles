@@ -18,6 +18,7 @@ These documents aim to explain the things that we have added to Custom Roles for
    1. [Global](API/METHODS_GLOBAL.md)
    1. [Player Object](API/METHODS_PLAYER_OBJECT.md)
    1. [Player Static](API/METHODS_PLAYER_STATIC.md)
+   1. [SYNC](API/METHODS_SYNC.md)
    1. [Table](API/METHODS_TABLE.md)
    1. [Util](API/METHODS_UTIL.md)
    1. [WEPS](API/METHODS_WEPS.md)

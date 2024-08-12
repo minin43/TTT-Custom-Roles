@@ -24,13 +24,9 @@ local StringSub = string.sub
 include("player_class/player_ttt.lua")
 
 -- Version string for display and function for version checks
-CR_VERSION = "2.1.16"
-CR_BETA = false
+CR_VERSION = "2.2.0"
+CR_BETA = true
 CR_WORKSHOP_ID = CR_BETA and "2404251054" or "2421039084"
-
-if SERVER then
-    resource.AddWorkshop(CR_WORKSHOP_ID)
-end
 
 function CRVersion(version)
     local installedVersionRaw = StringSplit(CR_VERSION, ".")
@@ -86,6 +82,11 @@ CRDebug = CRDebug or {
         "InitPostEntity_CreateVoiceVGUI"
     }
 }
+
+-- Only add this as a workshop resource if we're not running in debug mode
+if SERVER and not CRDebug.Enabled then
+    resource.AddWorkshop(CR_WORKSHOP_ID)
+end
 
 -- Only run this when we're debugging and only do it once
 if CRDebug.Enabled and not CRDebug.HooksChecked then
@@ -177,8 +178,13 @@ ROLE_HIVEMIND = 42
 ROLE_GUESSER = 43
 ROLE_QUARTERMASTER = 44
 ROLE_VINDICATOR = 45
+ROLE_SCOUT = 46
+ROLE_GOODTWIN = 47
+ROLE_EVILTWIN = 48
+ROLE_PLAGUEMASTER = 49
+ROLE_ILLUSIONIST = 50
 
-ROLE_MAX = 45
+ROLE_MAX = 50
 ROLE_EXTERNAL_START = ROLE_MAX + 1
 
 local function AddRoleAssociations(tbl, roles)
@@ -200,28 +206,28 @@ function GetTeamRoles(tbl, excludes)
 end
 
 SHOP_ROLES = {}
-AddRoleAssociations(SHOP_ROLES, {ROLE_TRAITOR, ROLE_DETECTIVE, ROLE_HYPNOTIST, ROLE_DEPUTY, ROLE_IMPERSONATOR, ROLE_JESTER, ROLE_SWAPPER, ROLE_CLOWN, ROLE_MERCENARY, ROLE_ASSASSIN, ROLE_KILLER, ROLE_ZOMBIE, ROLE_VAMPIRE, ROLE_VETERAN, ROLE_DOCTOR, ROLE_QUACK, ROLE_PARASITE, ROLE_PALADIN, ROLE_TRACKER, ROLE_MEDIUM, ROLE_SAPPER, ROLE_INFORMANT, ROLE_MARSHAL, ROLE_MADSCIENTIST, ROLE_SPY, ROLE_HIVEMIND, ROLE_QUARTERMASTER})
+AddRoleAssociations(SHOP_ROLES, {ROLE_TRAITOR, ROLE_DETECTIVE, ROLE_HYPNOTIST, ROLE_DEPUTY, ROLE_IMPERSONATOR, ROLE_JESTER, ROLE_SWAPPER, ROLE_CLOWN, ROLE_MERCENARY, ROLE_ASSASSIN, ROLE_KILLER, ROLE_ZOMBIE, ROLE_VAMPIRE, ROLE_VETERAN, ROLE_DOCTOR, ROLE_QUACK, ROLE_PARASITE, ROLE_PALADIN, ROLE_TRACKER, ROLE_MEDIUM, ROLE_SAPPER, ROLE_INFORMANT, ROLE_MARSHAL, ROLE_MADSCIENTIST, ROLE_SPY, ROLE_HIVEMIND, ROLE_QUARTERMASTER, ROLE_EVILTWIN, ROLE_ILLUSIONIST})
 
 DELAYED_SHOP_ROLES = {}
 AddRoleAssociations(DELAYED_SHOP_ROLES, {ROLE_CLOWN, ROLE_VETERAN, ROLE_DEPUTY})
 
 TRAITOR_ROLES = {}
-AddRoleAssociations(TRAITOR_ROLES, {ROLE_TRAITOR, ROLE_HYPNOTIST, ROLE_IMPERSONATOR, ROLE_ASSASSIN, ROLE_VAMPIRE, ROLE_QUACK, ROLE_PARASITE, ROLE_INFORMANT, ROLE_SPY})
+AddRoleAssociations(TRAITOR_ROLES, {ROLE_TRAITOR, ROLE_HYPNOTIST, ROLE_IMPERSONATOR, ROLE_ASSASSIN, ROLE_VAMPIRE, ROLE_QUACK, ROLE_PARASITE, ROLE_INFORMANT, ROLE_SPY, ROLE_EVILTWIN})
 
 INNOCENT_ROLES = {}
-AddRoleAssociations(INNOCENT_ROLES, {ROLE_INNOCENT, ROLE_DETECTIVE, ROLE_GLITCH, ROLE_PHANTOM, ROLE_REVENGER, ROLE_DEPUTY, ROLE_MERCENARY, ROLE_VETERAN, ROLE_DOCTOR, ROLE_TRICKSTER, ROLE_PARAMEDIC, ROLE_PALADIN, ROLE_TRACKER, ROLE_MEDIUM, ROLE_TURNCOAT, ROLE_SAPPER, ROLE_MARSHAL, ROLE_INFECTED, ROLE_QUARTERMASTER, ROLE_VINDICATOR})
+AddRoleAssociations(INNOCENT_ROLES, {ROLE_INNOCENT, ROLE_DETECTIVE, ROLE_GLITCH, ROLE_PHANTOM, ROLE_REVENGER, ROLE_DEPUTY, ROLE_MERCENARY, ROLE_VETERAN, ROLE_DOCTOR, ROLE_TRICKSTER, ROLE_PARAMEDIC, ROLE_PALADIN, ROLE_TRACKER, ROLE_MEDIUM, ROLE_TURNCOAT, ROLE_SAPPER, ROLE_MARSHAL, ROLE_INFECTED, ROLE_QUARTERMASTER, ROLE_VINDICATOR, ROLE_SCOUT, ROLE_GOODTWIN, ROLE_ILLUSIONIST})
 
 JESTER_ROLES = {}
 AddRoleAssociations(JESTER_ROLES, {ROLE_JESTER, ROLE_SWAPPER, ROLE_CLOWN, ROLE_BEGGAR, ROLE_BODYSNATCHER, ROLE_LOOTGOBLIN, ROLE_CUPID, ROLE_SPONGE, ROLE_GUESSER})
 
 INDEPENDENT_ROLES = {}
-AddRoleAssociations(INDEPENDENT_ROLES, {ROLE_DRUNK, ROLE_OLDMAN, ROLE_KILLER, ROLE_ZOMBIE, ROLE_MADSCIENTIST, ROLE_SHADOW, ROLE_ARSONIST, ROLE_HIVEMIND})
+AddRoleAssociations(INDEPENDENT_ROLES, {ROLE_DRUNK, ROLE_OLDMAN, ROLE_KILLER, ROLE_ZOMBIE, ROLE_MADSCIENTIST, ROLE_SHADOW, ROLE_ARSONIST, ROLE_HIVEMIND, ROLE_PLAGUEMASTER})
 
 MONSTER_ROLES = {}
 AddRoleAssociations(MONSTER_ROLES, {})
 
 DETECTIVE_ROLES = {}
-AddRoleAssociations(DETECTIVE_ROLES, {ROLE_DETECTIVE, ROLE_PALADIN, ROLE_TRACKER, ROLE_MEDIUM, ROLE_SAPPER, ROLE_MARSHAL, ROLE_QUARTERMASTER})
+AddRoleAssociations(DETECTIVE_ROLES, {ROLE_DETECTIVE, ROLE_PALADIN, ROLE_TRACKER, ROLE_MEDIUM, ROLE_SAPPER, ROLE_MARSHAL, ROLE_QUARTERMASTER, ROLE_ILLUSIONIST})
 
 DETECTIVE_LIKE_ROLES = {}
 AddRoleAssociations(DETECTIVE_LIKE_ROLES, {ROLE_DEPUTY, ROLE_IMPERSONATOR})
@@ -580,7 +586,12 @@ ROLE_STRINGS_RAW = {
     [ROLE_HIVEMIND] = "hivemind",
     [ROLE_GUESSER] = "guesser",
     [ROLE_QUARTERMASTER] = "quartermaster",
-    [ROLE_VINDICATOR] = "vindicator"
+    [ROLE_VINDICATOR] = "vindicator",
+    [ROLE_SCOUT] = "scout",
+    [ROLE_GOODTWIN] = "goodtwin",
+    [ROLE_EVILTWIN] = "eviltwin",
+    [ROLE_PLAGUEMASTER] = "plaguemaster",
+    [ROLE_ILLUSIONIST] = "illusionist"
 }
 
 ROLE_STRINGS = {
@@ -629,7 +640,12 @@ ROLE_STRINGS = {
     [ROLE_HIVEMIND] = "Hive Mind",
     [ROLE_GUESSER] = "Guesser",
     [ROLE_QUARTERMASTER] = "Quartermaster",
-    [ROLE_VINDICATOR] = "Vindicator"
+    [ROLE_VINDICATOR] = "Vindicator",
+    [ROLE_SCOUT] = "Scout",
+    [ROLE_GOODTWIN] = "Good Twin",
+    [ROLE_EVILTWIN] = "Evil Twin",
+    [ROLE_PLAGUEMASTER] = "Plaguemaster",
+    [ROLE_ILLUSIONIST] = "Illusionist"
 }
 
 ROLE_STRINGS_PLURAL = {
@@ -678,7 +694,12 @@ ROLE_STRINGS_PLURAL = {
     [ROLE_HIVEMIND] = "Hive Mind",
     [ROLE_GUESSER] = "Guessers",
     [ROLE_QUARTERMASTER] = "Quartermasters",
-    [ROLE_VINDICATOR] = "Vindicators"
+    [ROLE_VINDICATOR] = "Vindicators",
+    [ROLE_SCOUT] = "Scouts",
+    [ROLE_GOODTWIN] = "Good Twins",
+    [ROLE_EVILTWIN] = "Evil Twins",
+    [ROLE_PLAGUEMASTER] = "Plaguemasters",
+    [ROLE_ILLUSIONIST] = "Illusionists"
 }
 
 ROLE_STRINGS_EXT = {
@@ -728,7 +749,12 @@ ROLE_STRINGS_EXT = {
     [ROLE_HIVEMIND] = "the Hive Mind",
     [ROLE_GUESSER] = "a Guesser",
     [ROLE_QUARTERMASTER] = "a Quartermaster",
-    [ROLE_VINDICATOR] = "a Vindicator"
+    [ROLE_VINDICATOR] = "a Vindicator",
+    [ROLE_SCOUT] = "a Scout",
+    [ROLE_GOODTWIN] = "a Good Twin",
+    [ROLE_EVILTWIN] = "an Evil Twin",
+    [ROLE_PLAGUEMASTER] = "a Plaguemaster",
+    [ROLE_ILLUSIONIST] = "an Illusionist"
 }
 
 ROLE_STRINGS_SHORT = {
@@ -778,7 +804,12 @@ ROLE_STRINGS_SHORT = {
     [ROLE_HIVEMIND] = "hmd",
     [ROLE_GUESSER] = "gue",
     [ROLE_QUARTERMASTER] = "qmr",
-    [ROLE_VINDICATOR] = "vin"
+    [ROLE_VINDICATOR] = "vin",
+    [ROLE_SCOUT] = "sco",
+    [ROLE_GOODTWIN] = "gtw",
+    [ROLE_EVILTWIN] = "etw",
+    [ROLE_PLAGUEMASTER] = "plm",
+    [ROLE_ILLUSIONIST] = "ill"
 }
 
 function StartsWithVowel(word)
@@ -834,6 +865,8 @@ ROLE_TEAM_DETECTIVE = 5
 
 ROLE_TEAMS_WITH_SHOP = {}
 AddRoleAssociations(ROLE_TEAMS_WITH_SHOP, {ROLE_TEAM_TRAITOR, ROLE_TEAM_INDEPENDENT, ROLE_TEAM_MONSTER, ROLE_TEAM_DETECTIVE})
+
+ROLE_STARTING_TEAM = {}
 
 -- Role icon caching
 local function CacheRoleIcon(tbl, role_str, typ, ext, cache_key)
@@ -1288,8 +1321,9 @@ EVENT_GUESSERINCORRECT = 35
 EVENT_VINDICATORACTIVE = 36
 EVENT_VINDICATORSUCCESS = 37
 EVENT_VINDICATORFAIL = 38
+EVENT_PLAGUEMASTERPLAGUED = 39
 
-EVENT_MAX = EVENT_MAX or 38
+EVENT_MAX = EVENT_MAX or 39
 EVENTS_BY_ROLE = EVENTS_BY_ROLE or {}
 
 if SERVER then
@@ -1348,8 +1382,9 @@ WIN_ARSONIST = 16
 WIN_HIVEMIND = 17
 WIN_VINDICATOR = 18
 WIN_INFECTED = 19
+WIN_PLAGUEMASTER = 20
 
-WIN_MAX = WIN_MAX or 19
+WIN_MAX = WIN_MAX or 20
 WINS_BY_ROLE = WINS_BY_ROLE or {}
 
 if SERVER then
@@ -1486,6 +1521,7 @@ COLOR_NAVY = Color(0, 0, 100, 255)
 COLOR_PINK = Color(255, 0, 255, 255)
 COLOR_ORANGE = Color(250, 100, 0, 255)
 COLOR_OLIVE = Color(100, 100, 0, 255)
+COLOR_CYAN = Color(0, 255, 255, 255)
 
 include("lang_shd.lua") -- uses some of util
 include("equip_items_shd.lua")
@@ -1650,7 +1686,9 @@ function GetWinningMonsterRole()
 end
 
 function ShouldShowTraitorExtraInfo()
-    -- Don't display Parasite and Assassin information if there is a glitch that is distorting the role information
+    -- Don't display Parasite, Assassin, Informant or Spy information if there is a Glitch or an Illusionist that is distorting the role information
+    -- If the Illusionist is alive then dont reveal anything
+    if GetGlobalBool("ttt_illusionist_alive", false) then return false end
     -- If the glitch mode is "Show as Special Traitor" then we don't want to show this because it reveals which of the traitors is real (because this doesn't show for glitches)
     -- If the glitch mode is "Hide Special Traitor Roles" then we don't want to show anything that reveals what role a traitor really is
     local glitchMode = GetConVar("ttt_glitch_mode"):GetInt()
@@ -1783,7 +1821,10 @@ local function AddOldCVarWarning(oldName, newName)
 end
 
 -- Add entries to this table in the form of: { "old_convar_name", "new_convar_name" }
-local deprecatedConVars = {}
+local deprecatedConVars = {
+    { "ttt_parasite_cure_time", "ttt_doctor_cure_time" },
+    { "ttt_parasite_cure_mode", "ttt_doctor_cure_mode" }
+}
 
 for _, c in ipairs(deprecatedConVars) do
     -- Create the old convar with the same default value as the new one

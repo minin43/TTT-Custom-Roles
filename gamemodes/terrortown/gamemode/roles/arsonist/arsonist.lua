@@ -35,7 +35,7 @@ local function FindArsonistTarget(arsonist, douse_distance)
     local closest_ply_dist = -1
     local doused_count = 0
     local alive_count = 0
-    local douse_require_lost = arsonist_douse_require_los:GetBool()
+    local douse_require_los = arsonist_douse_require_los:GetBool()
     for _, p in PlayerIterator() do
         if p == arsonist then continue end
         if not p:Alive() or p:IsSpec() then continue end
@@ -49,7 +49,7 @@ local function FindArsonistTarget(arsonist, douse_distance)
 
         local distance = p:GetPos():Distance(arsonist:GetPos())
         if distance < douse_distance and (closest_ply_dist == -1 or distance < closest_ply_dist) then
-            if douse_require_lost and not arsonist:IsLineOfSightClear(p) then continue end
+            if douse_require_los and not arsonist:IsLineOfSightClear(p) then continue end
             closest_ply_dist = distance
             closest_ply = p
         end
@@ -69,7 +69,7 @@ local function FindArsonistTarget(arsonist, douse_distance)
 
             local distance = rag:GetPos():Distance(arsonist:GetPos())
             if distance < douse_distance and (closest_ply_dist == -1 or distance < closest_ply_dist) then
-                if douse_require_lost and not arsonist:IsLineOfSightClear(rag) then continue end
+                if douse_require_los and not arsonist:IsLineOfSightClear(rag) then continue end
                 closest_ply_dist = distance
                 closest_ply = p
             end

@@ -993,7 +993,10 @@ end</pre></code></div>
 
         <h3><a id="file-separation" href="#file-separation">File Separation</a></h3>
         <p>When working with larger roles, having everything in the one file can easily become messy. In this situation you can <em><strong>optionally</strong></em> split your code across client, server, and shared files.</p>
-        <p>To do this first create a folder inside of the 'lua/customroles' folder with the name of your role. <em>(e.g. lua/customroles/summoner)</em></p>
+        <p>
+            To do this first create a folder inside of the 'lua/customroles' folder with the name of your role <em>(e.g. lua/customroles/summoner)</em>.<br/>
+            <strong>NOTE:</strong> All folder names <em><strong>must</strong></em> be lowercase to avoid load order issues.
+        </p>
         <p>Inside this folder you can create three separate files:</p>
         <ul>
         <li>'<strong>%NAMERAW%.lua</strong>' for any code you want to run server-side only. This should be any code you have inside an <code>if SERVER then</code> or similar block.</li>
@@ -1037,7 +1040,7 @@ end</pre></code></div>
 
         <h3><a id="sprite-file" href="#sprite-file">Sprite File</a></h3>
         <p>The sprite file is what shows up above players heads when you know their role. Open up 'Sprite Template.psd' and once again you should see a white dashed outline. Repeat the same process as you did for the score icon. Click on the 'Icon' layer, paste in your role icon, resize to fit the outline and hide the outline guide layer. Save this image as 'sprite_%NAMESHORT%.png'.</p>
-        <p>Finally we can turn our .tga into the .vtf file we need. Open VTFEdit Reloaded, click 'File' &gt; 'Import' and select your .png file. You should see your icon inside of VTFEdit Reloaded except the shadows should have turned solid black and any transparency is now white. While this may look incredibly strange, this is actually exactly what we want! Save this file as 'sprite_%NAMESHORT%.vtf' in 'Role Addon Template' &gt; 'materials' &gt; 'vgui' &gt; 'ttt' &gt; 'roles' &gt; '%NAMESHORT%'.</p>
+        <p>Finally we can turn our .png into the .vtf file we need. Open VTFEdit Reloaded, click 'File' &gt; 'Import' and select your .png file. You should see your icon inside of VTFEdit Reloaded except the shadows should have turned solid black and any transparency is now white. While this may look incredibly strange, this is actually exactly what we want! Save this file as 'sprite_%NAMESHORT%.vtf' in 'Role Addon Template' &gt; 'materials' &gt; 'vgui' &gt; 'ttt' &gt; 'roles' &gt; '%NAMESHORT%'.</p>
         <p>Here is the final version of 'sprite_sum.vtf':</p>
         <p><img src="https://i.imgur.com/IhFJfmp.png" style="max-width: 100%;"/></p>
 
