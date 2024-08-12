@@ -19,6 +19,7 @@
 - Fixed typo in the twins' tutorial pages
 - Fixed external roles that belong to teams with default shop items (traitors, detectives) not having those default items in their shop if they set up their equipment items table manually
 - Fixed illusionist not blocking traitor team highlighting when that is enabled
+- Fixed the twins not spawning/despawning correctly when only one twin was assigned through a rolepack
 
 ### Developer
 - Added global `ROLE_STARTING_TEAM` table to store the teams each role started the round as. (e.g. `ROLE_STARTING_TEAM[ROLE_CLOWN]` will be `ROLE_TEAM_JESTER` regardless of whether the clown has activated and become an independent or not.)
