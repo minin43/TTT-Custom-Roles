@@ -1457,7 +1457,7 @@ concommand.Add("ttt_kill_from_random", function(ply, cmd, args)
     local allow_dead = #args > 1 and tobool(args[2])
     local killer = GetRandomTargetPlayer(ply, allow_dead)
     KillFromPlayer(ply, killer, remove_body)
-end, PlayerAutoComplete, "Kills the local player from a random target", FCVAR_CHEAT)
+end, nil, "Kills the local player from a random target", FCVAR_CHEAT)
 
 concommand.Add("ttt_kill_from_player", function(ply, cmd, args)
     if not IsValid(ply) or not ply:Alive() then return end
@@ -1544,7 +1544,7 @@ concommand.Add("ttt_damage_from_random", function(ply, cmd, args)
     local attacker = GetRandomTargetPlayer(ply, allow_dead)
     local damage = #args > 0 and tonumber(args[1])
     DamageFromPlayer(ply, attacker, damage)
-end, PlayerAutoComplete, "Damages the local player from a random target", FCVAR_CHEAT)
+end, nil, "Damages the local player from a random target", FCVAR_CHEAT)
 
 concommand.Add("ttt_damage_from_player", function(ply, cmd, args)
     if not IsValid(ply) or not ply:Alive() then return end

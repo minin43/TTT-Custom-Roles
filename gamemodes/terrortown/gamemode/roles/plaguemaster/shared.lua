@@ -15,9 +15,9 @@ PLAGUEMASTER_SEARCH_SHOW_INFECTED = 2
 
 CreateConVar("ttt_plaguemaster_immune", 1, FCVAR_REPLICATED, "Whether the plaguemaster is immune to the plague", 0, 1)
 CreateConVar("ttt_plaguemaster_plague_length", 180, FCVAR_REPLICATED, "How long (in seconds) before a player with the plague dies", 1, 300)
-CreateConVar("ttt_plaguemaster_spread_distance", 500, FCVAR_REPLICATED, "The maximum distance away a player can be and still be infected", 50, 1000)
+CreateConVar("ttt_plaguemaster_spread_distance", 500, FCVAR_REPLICATED, "The maximum distance away a player can be and still be infected", 50, 2000)
 CreateConVar("ttt_plaguemaster_spread_require_los", 1, FCVAR_REPLICATED, "Whether players need to be in line-of-sight of a target to spread the plague", 0, 1)
-CreateConVar("ttt_plaguemaster_spread_time", 30, FCVAR_REPLICATED, "How long (in seconds) someone with the plague needs to be near someone else before it spreads", 0, 180)
+CreateConVar("ttt_plaguemaster_spread_time", 10, FCVAR_REPLICATED, "How long (in seconds) someone with the plague needs to be near someone else before it spreads", 0, 180)
 CreateConVar("ttt_plaguemaster_warning_time", 30, FCVAR_REPLICATED, "How long (in seconds) before dying to the plague that the target should be warned. Set to 0 to disable", 0, 180)
 CreateConVar("ttt_plaguemaster_body_search_mode", 1, FCVAR_REPLICATED, "Whether dead bodies reveal if they had the plague when searched", 0, 2)
 

@@ -1231,12 +1231,12 @@ function SelectRoles()
 
     if choice_count == 0 then return end
 
+    ROLEPACKS.AssignRoles(choices)
+
     local choices_copy = table.Copy(choices)
     local prev_roles_copy = table.Copy(prev_roles)
 
     CallHook("TTTSelectRoles", nil, choices_copy, prev_roles_copy)
-
-    ROLEPACKS.AssignRoles(choices)
 
     for _, v in ipairs(choices) do
         if v.forcedRole and v.forcedRole ~= ROLE_NONE then

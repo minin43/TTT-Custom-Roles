@@ -71,13 +71,21 @@ local defaultTraitorItems = {
 -- Populate any role that doesn't already have an equipment list set
 local function PrepareRoleEquipment()
     for r = 0, ROLE_MAX do
+        local defaultItems = {}
+        if DETECTIVE_ROLES[r] then
+            defaultItems = table.Copy(defaultDetectiveItems)
+        elseif TRAITOR_ROLES[r] then
+            defaultItems = table.Copy(defaultTraitorItems)
+        end
+
         if not EquipmentItems[r] then
-            if DETECTIVE_ROLES[r] then
-                EquipmentItems[r] = table.Copy(defaultDetectiveItems)
-            elseif TRAITOR_ROLES[r] then
-                EquipmentItems[r] = table.Copy(defaultTraitorItems)
-            else
-                EquipmentItems[r] = {}
+            EquipmentItems[r] = defaultItems
+        else
+            -- If we already have an equipment table for this role, copy all the default items over to it
+            for _, item in ipairs(defaultItems) do
+                if not table.HasItemWithPropertyValue(EquipmentItems[r], "id", item.id) then
+                    table.insert(EquipmentItems[r], item)
+                end
             end
         end
     end
