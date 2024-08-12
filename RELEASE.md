@@ -1,5 +1,18 @@
 # Release Notes
 
+## 2.2.0
+**Released: August 12th, 2024**\
+Includes beta updates [2.1.17](#2117-beta) and [2.1.20](#2120-beta).
+
+### Changes
+- Changed the plaguemaster's default convar value to make the spread time lower
+  - This should make it easier for the plague to naturally spread between infected players
+
+### Fixes
+- Fixed external roles that belong to teams with default shop items (traitors, detectives) not having those default items in their shop if they set up their equipment items table manually
+- Fixed illusionist not blocking traitor team highlighting when that is enabled
+- Fixed the twins not spawning/despawning correctly when only one twin was assigned through a rolepack
+
 ## 2.1.20 (Beta)
 **Released: August 10th, 2024**
 
@@ -8,8 +21,6 @@
 
 ### Changes
 - Changed role cheat sheet and the Guesser's guessing device to sort and show roles based on what team they began as instead of what team they are currently on
-- Changed the plaguemaster's default convar values for their spread distance to be higher and spread time to be lower
-  - This should make it easier for the plague to naturally spread between infected players
 
 ### Fixes
 - Fixed traitors seeing a message that the illusionist died every time a player dies while there are no living illusionists
@@ -17,9 +28,6 @@
 - Fixed some information from the informant, parasite and spy not being blocked by the glitch which allowed traitors to easily uncover the glitch
 - Fixed beggar death notification appearing even after the beggar had joined a team if `ttt_beggar_keep_begging` was enabled
 - Fixed typo in the twins' tutorial pages
-- Fixed external roles that belong to teams with default shop items (traitors, detectives) not having those default items in their shop if they set up their equipment items table manually
-- Fixed illusionist not blocking traitor team highlighting when that is enabled
-- Fixed the twins not spawning/despawning correctly when only one twin was assigned through a rolepack
 
 ### Developer
 - Added global `ROLE_STARTING_TEAM` table to store the teams each role started the round as. (e.g. `ROLE_STARTING_TEAM[ROLE_CLOWN]` will be `ROLE_TEAM_JESTER` regardless of whether the clown has activated and become an independent or not.)
