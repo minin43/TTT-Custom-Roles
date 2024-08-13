@@ -5,6 +5,7 @@
 
 ### Changes
 - Changed plaguemaster's dart gun to be silent
+- Changed plaguemaster's plague to spread faster by default
 
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable

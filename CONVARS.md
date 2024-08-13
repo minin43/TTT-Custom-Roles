@@ -919,7 +919,7 @@ ttt_hivemind_update_scoreboard                 1       // Whether the hive mind 
 // Plaguemaster
 ttt_plaguemaster_plague_length                 180     // How long (in seconds) before a player with the plague dies
 ttt_plaguemaster_warning_time                  30      // How long (in seconds) before dying to the plague that the target should be warned. Set to 0 to disable
-ttt_plaguemaster_spread_time                   10      // How long (in seconds) someone with the plague needs to be near someone else before it spreads
+ttt_plaguemaster_spread_time                   5       // How long (in seconds) someone with the plague needs to be near someone else before it spreads
 ttt_plaguemaster_spread_distance               500     // The maximum distance away a player can be and still be infected
 ttt_plaguemaster_spread_require_los            1       // Whether players need to be in line-of-sight of a target to spread the plague
 ttt_plaguemaster_immune                        1       // Whether the plaguemaster is immune to the plague
