@@ -22,8 +22,6 @@ SWEP.Primary.Automatic     = true
 SWEP.Primary.DefaultClip   = 1
 SWEP.Primary.ClipMax       = 1
 SWEP.Primary.Ammo          = "none"
-SWEP.Primary.Sound         = Sound("Weapon_USP.SilencedShot")
-SWEP.Primary.SoundLevel    = 50
 
 SWEP.Kind                  = WEAPON_ROLE
 SWEP.InLoadoutFor          = {ROLE_PLAGUEMASTER}
@@ -77,12 +75,6 @@ function SWEP:PrimaryAttack()
     end
 
     owner:FireBullets(bullet)
-
-    if not worldsnd then
-        self:EmitSound( self.Primary.Sound, self.Primary.SoundLevel )
-    elseif SERVER then
-        sound.Play(self.Primary.Sound, self:GetPos(), self.Primary.SoundLevel)
-    end
 
     if owner:IsNPC() or (not owner.ViewPunch) then return end
     owner:ViewPunch(Angle(util.SharedRandom(self:GetClass(), -0.2, -0.1, 0) * self.Primary.Recoil, util.SharedRandom(self:GetClass(), -0.1, 0.1, 1) * self.Primary.Recoil, 0))

@@ -3,6 +3,9 @@
 ## 2.2.1 (Beta)
 **Released:**
 
+### Changes
+- Changed plaguemaster's dart gun to be silent
+
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable
 
