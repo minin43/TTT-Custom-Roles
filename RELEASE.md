@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.2.1 (Beta)
+**Released:**
+
+### Fixes
+- Fixed plaguemaster's dart gun being droppable
+
 ## 2.2.0
 **Released: August 12th, 2024**\
 Includes beta updates [2.1.17](#2117-beta) and [2.1.20](#2120-beta).

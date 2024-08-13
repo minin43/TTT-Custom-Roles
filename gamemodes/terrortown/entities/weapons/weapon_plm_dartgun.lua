@@ -28,6 +28,7 @@ SWEP.Primary.SoundLevel    = 50
 SWEP.Kind                  = WEAPON_ROLE
 SWEP.InLoadoutFor          = {ROLE_PLAGUEMASTER}
 
+SWEP.AllowDrop             = false
 SWEP.IsSilent              = true
 
 SWEP.UseHands              = true
