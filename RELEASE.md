@@ -9,6 +9,7 @@
 ### Changes
 - Changed plaguemaster's dart gun to be silent
 - Changed plaguemaster's plague to spread faster by default
+- Changed the plaguemaster's dart gun to not have any impact effects (blood splatter) from the victim's perspective so it's not immediately obvious
 
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable
