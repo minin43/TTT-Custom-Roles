@@ -65,11 +65,18 @@ function SWEP:PrimaryAttack()
 
         if SERVER and tr.Hit and tr.HitNonWorld and IsPlayer(tr.Entity) then
             local victim = tr.Entity
+            -- If the target already has the plague, don't try to give it to them again
+            if victim.TTTPlaguemasterStartTime then
+                owner:QueueMessage(MSG_PRINTBOTH, victim:Nick() .. " already has the plague, find someone new!")
+                return
+            end
+
             net.Start("TTT_PlaguemasterPlagued")
                 net.WriteString(victim:Nick())
                 net.WriteString(owner:Nick())
             net.Broadcast()
             victim:SetProperty("TTTPlaguemasterStartTime", CurTime())
+            victim.TTTPlaguemasterOriginalSource = owner:SteamID64()
             self:Remove()
         end
     end

@@ -3,6 +3,9 @@
 ## 2.2.1 (Beta)
 **Released:**
 
+### Additions
+- Added ability for plaguemaster to get a new dart gun after their last plague victim dies (disabled by default)
+
 ### Changes
 - Changed plaguemaster's dart gun to be silent
 - Changed plaguemaster's plague to spread faster by default
