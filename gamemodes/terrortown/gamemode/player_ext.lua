@@ -593,22 +593,28 @@ local messageQueue = {}
 
 function plymeta:PrintMessageQueue()
     local sid = self:SteamID64()
+
+    if #messageQueue[sid] == 0 then
+        self:PrintMessage(HUD_PRINTCENTER, "")
+        return
+    end
+
     local message = messageQueue[sid][1]
     -- Send this message as long as there is no predicate or it says this player is valid
     if not message.predicate or message.predicate(self) then
         self:PrintMessage(HUD_PRINTCENTER, message.message)
+    else
+        table.remove(messageQueue[sid], 1)
+        self:PrintMessageQueue()
+        return
     end
     if message.time <= 5 then
-        timer.Create("MessageQueue" .. sid, message.time, 0, function()
+        timer.Create("MessageQueue" .. sid, message.time, 1, function()
             table.remove(messageQueue[sid], 1)
-            if #messageQueue[sid] >= 1 then
-                self:PrintMessageQueue()
-            else
-                self:PrintMessage(HUD_PRINTCENTER, "")
-            end
+            self:PrintMessageQueue()
         end)
     else
-        timer.Create("MessageQueue" .. sid, 5, 0, function()
+        timer.Create("MessageQueue" .. sid, 5, 1, function()
             messageQueue[sid][1].time = messageQueue[sid][1].time - 5
             self:PrintMessageQueue()
         end)
@@ -622,7 +628,7 @@ function plymeta:ResetMessageQueue()
     self:PrintMessage(HUD_PRINTCENTER, "")
 end
 
-function plymeta:QueueMessage(message_type, message, time, predicate)
+function plymeta:QueueMessage(message_type, message, time, predicate, id)
     time = time or 5
     local sid = self:SteamID64()
     if not messageQueue[sid] then
@@ -633,8 +639,8 @@ function plymeta:QueueMessage(message_type, message, time, predicate)
         self:PrintMessage(HUD_PRINTTALK, message)
     end
     if message_type == MSG_PRINTBOTH or message_type == MSG_PRINTCENTER then
-        table.insert(messageQueue[sid], {message=message, time=time, predicate=predicate})
-        if #messageQueue[sid] == 1 then
+        table.insert(messageQueue[sid], {message=message, time=time, predicate=predicate, id=id})
+        if #messageQueue[sid] == 1 and not timer.Exists("MessageQueue" .. sid) then
             self:PrintMessageQueue()
         end
     end
@@ -644,7 +650,39 @@ net.Receive("TTT_QueueMessage", function(len, ply)
     local message_type = net.ReadUInt(3)
     local message = net.ReadString()
     local time = net.ReadFloat()
-    ply:QueueMessage(message_type, message, time)
+    local id = net.ReadString()
+    if #id == 0 then
+        id = nil
+    end
+    ply:QueueMessage(message_type, message, time, id)
+end)
+
+function plymeta:ClearQueuedMessage(id)
+    local sid = self:SteamID64()
+
+    local skipCurrent = false
+    if messageQueue[sid] and messageQueue[sid][1] and messageQueue[sid][1].id == id then
+        skipCurrent = true
+    end
+
+    local i = 1
+    while i <= #messageQueue[sid] do
+        if messageQueue[sid][i].id == id then
+            table.remove(messageQueue[sid], i)
+        else
+            i = i + 1
+        end
+    end
+
+    if skipCurrent then
+        timer.Remove("MessageQueue" .. sid)
+        self:PrintMessageQueue()
+    end
+end
+
+net.Receive("TTT_ClearQueuedMessage", function(len, ply)
+    local id = net.ReadString()
+    ply:ClearQueuedMessage(id)
 end)
 
 function plymeta:ForceRoleNextRound(role)

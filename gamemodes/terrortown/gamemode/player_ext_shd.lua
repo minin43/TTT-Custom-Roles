@@ -605,7 +605,7 @@ if CLIENT then
         emitter:Finish()
     end
 
-    function plymeta:QueueMessage(message_type, message, time)
+    function plymeta:QueueMessage(message_type, message, time, id)
         if LocalPlayer() ~= self then
             ErrorNoHalt("`plymeta:QueueMessage` cannot be used to send messages to other players when called clientside.\n")
             return
@@ -615,6 +615,17 @@ if CLIENT then
         net.WriteUInt(message_type, 3)
         net.WriteString(message)
         net.WriteFloat(time)
+        net.WriteString(id or "")
+        net.SendToServer()
+    end
+
+    function plymeta:ClearQueuedMessage(id)
+        if LocalPlayer() ~= self then
+            ErrorNoHalt("`plymeta:QueueMessage` cannot be used to send messages to other players when called clientside.\n")
+            return
+        end
+        net.Start("TTT_ClearQueuedMessage")
+        net.WriteString(id)
         net.SendToServer()
     end
 else

@@ -293,6 +293,7 @@ util.AddNetworkString("TTT_LoadMonsterEquipment")
 util.AddNetworkString("TTT_UpdateRoleNames")
 util.AddNetworkString("TTT_ScoreboardUpdate")
 util.AddNetworkString("TTT_QueueMessage")
+util.AddNetworkString("TTT_ClearQueuedMessage")
 
 local function ClearAllFootsteps()
     net.Start("TTT_ClearPlayerFootsteps")
