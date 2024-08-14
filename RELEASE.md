@@ -13,6 +13,11 @@
 
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable
+- Fixed plaguemaster's infection warning message from being queued many times in a row if the plaguemaster repeatedly crosses the boundary of an infected player's spread radius
+
+### Developer
+- Added `plymeta:ClearQueuedMessage` method which can remove queued messages of a given ID from the message queue
+  - Added optional `id` parameter to `plymeta:QueueMessage` to provide queued messages with an ID
 
 ## 2.2.0
 **Released: August 12th, 2024**\
