@@ -628,8 +628,13 @@ function plymeta:ResetMessageQueue()
     self:PrintMessage(HUD_PRINTCENTER, "")
 end
 
-function plymeta:QueueMessage(message_type, message, time, predicate, id)
+function plymeta:QueueMessage(message_type, message, time, id, predicate)
     time = time or 5
+    if type(id) == "function" and predicate == nil then
+        predicate = id
+        id = nil
+    end
+
     local sid = self:SteamID64()
     if not messageQueue[sid] then
         messageQueue[sid] = {}

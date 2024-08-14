@@ -126,7 +126,7 @@ AddHook("TTTPlayerAliveThink", "Plaguemaster_Plague_TTTPlayerAliveThink", functi
             if v:IsPlaguemaster() and not v.TTTPlaguemasterWarned then
                 v.TTTPlaguemasterWarned = true
                 v:ClearQueuedMessage("plmInfectionWarning")
-                v:QueueMessage(MSG_PRINTBOTH, "You are in range of someone with the plague!", 5, nil, "plmInfectionWarning")
+                v:QueueMessage(MSG_PRINTBOTH, "You are in range of someone with the plague!", 5, "plmInfectionWarning")
             end
         -- If we've been spreading the plague to this target for long enough, give them the plague
         elseif (CurTime() - v.TTTPlaguemasterSpreadStartTimes[sid64]) >= spread_time then
