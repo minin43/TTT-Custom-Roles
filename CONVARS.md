@@ -919,10 +919,11 @@ ttt_hivemind_update_scoreboard                 1       // Whether the hive mind 
 // Plaguemaster
 ttt_plaguemaster_plague_length                 180     // How long (in seconds) before a player with the plague dies
 ttt_plaguemaster_warning_time                  30      // How long (in seconds) before dying to the plague that the target should be warned. Set to 0 to disable
-ttt_plaguemaster_spread_time                   10      // How long (in seconds) someone with the plague needs to be near someone else before it spreads
+ttt_plaguemaster_spread_time                   5       // How long (in seconds) someone with the plague needs to be near someone else before it spreads
 ttt_plaguemaster_spread_distance               500     // The maximum distance away a player can be and still be infected
 ttt_plaguemaster_spread_require_los            1       // Whether players need to be in line-of-sight of a target to spread the plague
 ttt_plaguemaster_immune                        1       // Whether the plaguemaster is immune to the plague
+ttt_plaguemaster_dart_replace_timer            0       // How long (in seconds) after the plaguemaster's infection dies out before they should receive another dart gun. Set to 0 to disable
 ttt_plaguemaster_body_search_mode              1       // Whether dead bodies reveal if they had the plague when searched. 0 - Don't show. 1 - Show if died from plague. 2 - Show if infected with plague.
 ttt_plaguemaster_can_see_jesters               0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the plaguemaster
 ttt_plaguemaster_update_scoreboard             1       // Whether the plaguemaster shows dead players as missing in action
