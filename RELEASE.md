@@ -14,6 +14,8 @@
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable
 - Fixed plaguemaster's infection warning message from being queued many times in a row if the plaguemaster repeatedly crosses the boundary of an infected player's spread radius
+- Fixed shadow's buff/punishment warning messages from being queued many times in a row if the shadow repeatedly crosses the boundary of their target's radius
+- Fixed assassin's new target messages from sometimes being outdated by the time they appear
 
 ### Developer
 - Added `plymeta:ClearQueuedMessage` method which can remove queued messages of a given ID from the message queue
