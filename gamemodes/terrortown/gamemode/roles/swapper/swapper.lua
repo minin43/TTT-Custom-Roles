@@ -204,6 +204,7 @@ hook.Add("PlayerDeath", "Swapper_KillCheck_PlayerDeath", function(victim, infl, 
                         StripPlayerWeaponAndAmmo(attacker, w)
                     end
                 end
+                attacker:SetFOV(0, 0)
 
                 -- Give the opposite player's weapons back
                 for _, w in ipairs(attacker_weapons) do
@@ -225,6 +226,7 @@ hook.Add("PlayerDeath", "Swapper_KillCheck_PlayerDeath", function(victim, infl, 
                             GivePlayerWeaponAndAmmo(victim, w)
                         end
                     end
+                    attacker:SetFOV(0, 0)
 
                     -- Give the attacker all of the victim's role weapons
                     for _, w in ipairs(victim_weapons) do

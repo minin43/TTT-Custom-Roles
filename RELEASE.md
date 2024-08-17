@@ -13,6 +13,7 @@
 
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable
+- Fixed player view being stuck zoomed in if their weapon was removed by swapper or zombie role logic while they were using the scope
 
 ## 2.2.0
 **Released: August 12th, 2024**\

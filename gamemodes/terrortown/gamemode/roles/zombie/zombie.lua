@@ -253,6 +253,7 @@ hook.Add("TTTPlayerAliveThink", "Zombie_TTTPlayerAliveThink", function(ply)
                     ply:StripWeapon(weapclass)
                 end
             end
+            ply:SetFOV(0, 0)
         end
 
         -- If this zombie doesn't have claws, give them claws
