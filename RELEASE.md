@@ -13,6 +13,7 @@
 
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable
+- Fixed player view being stuck zoomed in if their weapon was removed by swapper or zombie role logic while they were using the scope
 - Fixed plaguemaster's infection warning message from being queued many times in a row if the plaguemaster repeatedly crosses the boundary of an infected player's spread radius
 - Fixed shadow's buff/punishment warning messages from being queued many times in a row if the shadow repeatedly crosses the boundary of their target's radius
 - Fixed assassin's new target messages from sometimes being outdated by the time they appear
