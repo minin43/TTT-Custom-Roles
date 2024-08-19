@@ -220,7 +220,7 @@ end)
 
 local function ClearPlaguemasterState(ply)
     ply:ClearProperty("TTTPlaguemasterStartTime")
-    ply:ClearProperty("TTTPlaguemasterSpreadStart")
+    ply:ClearProperty("TTTPlaguemasterSpreadStart", ply)
     ply:ClearProperty("TTTPlaguemasterPlagueDeath")
     ply.TTTPlaguemasterWarned = false
     ply.TTTPlaguemasterSpreadStartTimes = {}
