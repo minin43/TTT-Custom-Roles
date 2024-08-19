@@ -5,6 +5,7 @@
 
 ### Additions
 - Added ability for plaguemaster to get a new dart gun after their last plague victim dies (disabled by default)
+- Added option for the illusionist to give traitors extra credits if they are in play (disabled by default)
 
 ### Changes
 - Changed plaguemaster's dart gun to be silent

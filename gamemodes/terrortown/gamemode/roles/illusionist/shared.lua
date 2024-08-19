@@ -4,12 +4,19 @@ AddCSLuaFile()
 -- ROLE CONVARS --
 ------------------
 
+CreateConVar("ttt_illusionist_traitor_credits", "0", FCVAR_REPLICATED, "How many extra credits traitors should receive at the start of the round if there is an illusionist", 0, 10)
+
 local illusionist_hides_monsters = CreateConVar("ttt_illusionist_hides_monsters", "0", FCVAR_REPLICATED, "Whether the illusionist should prevent monsters from knowing who their team mates are", 0, 1)
 
 ROLE_CONVARS[ROLE_ILLUSIONIST] = {}
 table.insert(ROLE_CONVARS[ROLE_ILLUSIONIST], {
     cvar = "ttt_illusionist_hides_monsters",
     type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_ILLUSIONIST], {
+    cvar = "ttt_illusionist_traitor_credits",
+    type = ROLE_CONVAR_TYPE_NUM,
+    decimal = 0
 })
 
 ---------------------
