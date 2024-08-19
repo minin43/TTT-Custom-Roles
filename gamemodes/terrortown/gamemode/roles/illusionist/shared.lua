@@ -4,7 +4,7 @@ AddCSLuaFile()
 -- ROLE CONVARS --
 ------------------
 
-CreateConVar("ttt_illusionist_traitor_credits", "0", FCVAR_REPLICATED, "How many extra credits traitors should receive at the start of the round if there is an illusionist", 0, 10)
+CreateConVar("ttt_illusionist_traitor_credits", "0", FCVAR_REPLICATED, "How many extra credits traitors (and monsters if `ttt_illusionist_hides_monsters` is enabled) should receive at the start of the round if there is an illusionist", 0, 10)
 
 local illusionist_hides_monsters = CreateConVar("ttt_illusionist_hides_monsters", "0", FCVAR_REPLICATED, "Whether the illusionist should prevent monsters from knowing who their team mates are", 0, 1)
 
