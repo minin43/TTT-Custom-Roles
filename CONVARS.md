@@ -542,6 +542,7 @@ ttt_quartermaster_credits_starting             3       // The number of credits 
 
 // Illusionist
 ttt_illusionist_hides_monsters                 0       // Whether the illusionist should prevent monsters from knowing who their team mates are
+ttt_illusionist_traitor_credits                0       // How many extra credits traitors (and monsters if `ttt_illusionist_hides_monsters` is enabled) should receive at the start of the round if there is an illusionist
 
 // ----------------------------------------
 
