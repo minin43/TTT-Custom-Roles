@@ -27,10 +27,6 @@ hook.Add("Initialize", "Phantom_Translations_Initialize", function()
 
     -- HUD
     LANG.AddToLanguage("english", "haunt_title", "WILLPOWER")
-    LANG.AddToLanguage("english", "haunt_move", "MOVE KEYS: Move (Cost: {num}%)")
-    LANG.AddToLanguage("english", "haunt_jump", "SPACE: Jump (Cost: {num}%)")
-    LANG.AddToLanguage("english", "haunt_drop", "RIGHT CLICK: Drop (Cost: {num}%)")
-    LANG.AddToLanguage("english", "haunt_attack", "LEFT CLICK: Attack (Cost: {num}%)")
 
     -- Event
     LANG.AddToLanguage("english", "ev_haunt", "{victim} started haunting {attacker}")
@@ -136,24 +132,34 @@ end
 --------------
 
 hook.Add("TTTSpectatorShowHUD", "Phantom_Haunting_TTTSpectatorShowHUD", function(cli, tgt)
-    if not cli:IsPhantom() then return end
+    if not cli:IsPhantom() or not IsPlayer(tgt) then return end
 
     local L = LANG.GetUnsafeLanguageTable()
+
     local willpower_colors = {
         border = COLOR_WHITE,
         background = Color(17, 115, 135, 222),
         fill = Color(82, 226, 255, 255)
     }
     local powers = {
-        [L.haunt_move] = phantom_killer_haunt_move_cost:GetInt(),
-        [L.haunt_jump] = phantom_killer_haunt_jump_cost:GetInt(),
-        [L.haunt_drop] = phantom_killer_haunt_drop_cost:GetInt(),
-        [L.haunt_attack] = phantom_killer_haunt_attack_cost:GetInt()
+        {name = "Move", key = "arrows", cost = phantom_killer_haunt_move_cost:GetInt(), desc = "Press movement keys to make " .. tgt:Nick() .. " move"},
+        {name = "Jump", key = "space", cost = phantom_killer_haunt_jump_cost:GetInt(), desc = "Press space to make " .. tgt:Nick() .. " jump"},
+        {name = "Drop Weapon", key = "rmb", cost = phantom_killer_haunt_drop_cost:GetInt(), desc = "Right click to make " .. tgt:Nick() .. " drop their weapon"},
+        {name = "Attack", key = "lmb", cost = phantom_killer_haunt_attack_cost:GetInt(), desc = "Left click to make " .. tgt:Nick() .. " attack"}
     }
-    local max_power = phantom_killer_haunt_power_max:GetInt()
-    local current_power = cli:GetNWInt("PhantomPossessingPower", 0)
 
-    CRHUD:PaintPowersHUD(powers, max_power, current_power, willpower_colors, L.haunt_title)
+    table.sort(powers, function(a, b)
+        if a.cost == b.cost then
+            return a.name < b.name
+        else
+            return a.cost < b.cost
+        end
+    end)
+
+    local current_power = cli:GetNWInt("PhantomPossessingPower", 0)
+    local max_power = phantom_killer_haunt_power_max:GetInt()
+
+    CRHUD:PaintPowersHUD(cli, powers, max_power, current_power, willpower_colors, L.haunt_title)
 end)
 
 hook.Add("TTTShouldPlayerSmoke", "Phantom_Haunting_TTTShouldPlayerSmoke", function(v, client, shouldSmoke, smokeColor, smokeParticle, smokeOffset)
