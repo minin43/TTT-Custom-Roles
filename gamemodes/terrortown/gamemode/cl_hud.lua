@@ -137,6 +137,9 @@ function CRHUD:PaintBar(r, x, y, w, h, colors, value)
     end
 end
 
+local abilityBackgroundColor = Color(20, 20, 20, 200)
+local disabledAbilityColor = Color(90, 90, 90, 255)
+
 function CRHUD:PaintPowersHUD(client, powers, max_power, current_power, colors, title)
     if not IsPlayer(client) then
         CRHUD:OldPaintPowersHUD(client, powers, max_power, current_power, colors, title)
@@ -152,11 +155,11 @@ function CRHUD:PaintPowersHUD(client, powers, max_power, current_power, colors, 
 
     for i = #powers, 1, -1 do
         y = y - height - margin - (padding * 5)
-        draw.RoundedBox(8, x, y, width, height + margin + (padding * 4), Color(20, 20, 20, 200))
+        draw.RoundedBox(8, x, y, width, height + margin + (padding * 4), abilityBackgroundColor)
         draw.SimpleText(powers[i].name .. " - " .. tostring(MathRound(100 * (powers[i].cost / max_power))) .. "%", "TimeLeft", x + height + (padding * 2), y + (height / 2), COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         local desc = "Not enough " .. StringLower(title)
-        local slotColor = Color(90, 90, 90, 255)
+        local slotColor = disabledAbilityColor
         if current_power >= powers[i].cost then
             desc = powers[i].desc
             slotColor = ROLE_COLORS[client:GetRole()]
@@ -178,20 +181,20 @@ function CRHUD:PaintPowersHUD(client, powers, max_power, current_power, colors, 
         end
     end
 
-    y = y - height - padding - 1 -- PaintBar adds a 1px border so we need to shift this up 1px to make things look consist
+    y = y - height - padding - 1 -- PaintBar adds a 1px border so we need to shift this up 1px to make things look consistent
     CRHUD:PaintBar(8, x , y, width, height, colors, current_power / max_power)
 
     local color = bg_colors.background_main
     draw.SimpleText(title, "HealthAmmo", x + (width / 2), y + 1, color, TEXT_ALIGN_CENTER)
 end
 
-function CRHUD:PaintSpectatorProgressBar(max_power, current_power, colors, title, subtitle)
+function CRHUD:PaintSpectatorProgressBar(max_value, current_value, colors, title, subtitle)
     local margin = 10
     local width, height = 200, 25
     local x = ScrW() / 2 - width / 2
     local y = margin / 2 + height
 
-    CRHUD:PaintBar(8, x, y, width, height, colors, current_power / max_power)
+    CRHUD:PaintBar(8, x, y, width, height, colors, current_value / max_value)
 
     local color = bg_colors.background_main
 

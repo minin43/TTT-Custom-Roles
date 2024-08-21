@@ -27,6 +27,14 @@ hook.Add("Initialize", "Phantom_Translations_Initialize", function()
 
     -- HUD
     LANG.AddToLanguage("english", "haunt_title", "WILLPOWER")
+    LANG.AddToLanguage("english", "haunt_move", "Move")
+    LANG.AddToLanguage("english", "haunt_move_desc", "Press movement keys to make {target} move")
+    LANG.AddToLanguage("english", "haunt_jump", "Jump")
+    LANG.AddToLanguage("english", "haunt_jump_desc", "Press space to make {target} jump")
+    LANG.AddToLanguage("english", "haunt_drop", "Drop Weapon")
+    LANG.AddToLanguage("english", "haunt_drop_desc", "Right click to make {target} drop their weapon")
+    LANG.AddToLanguage("english", "haunt_attack", "Attack")
+    LANG.AddToLanguage("english", "haunt_attack_desc", "Left click to make {target} attack")
 
     -- Event
     LANG.AddToLanguage("english", "ev_haunt", "{victim} started haunting {attacker}")
@@ -141,12 +149,26 @@ hook.Add("TTTSpectatorShowHUD", "Phantom_Haunting_TTTSpectatorShowHUD", function
         background = Color(17, 115, 135, 222),
         fill = Color(82, 226, 255, 255)
     }
-    local powers = {
-        {name = "Move", key = "arrows", cost = phantom_killer_haunt_move_cost:GetInt(), desc = "Press movement keys to make " .. tgt:Nick() .. " move"},
-        {name = "Jump", key = "space", cost = phantom_killer_haunt_jump_cost:GetInt(), desc = "Press space to make " .. tgt:Nick() .. " jump"},
-        {name = "Drop Weapon", key = "rmb", cost = phantom_killer_haunt_drop_cost:GetInt(), desc = "Right click to make " .. tgt:Nick() .. " drop their weapon"},
-        {name = "Attack", key = "lmb", cost = phantom_killer_haunt_attack_cost:GetInt(), desc = "Left click to make " .. tgt:Nick() .. " attack"}
-    }
+
+    local powers = {}
+    local killer_haunt_move_cost = phantom_killer_haunt_move_cost:GetInt()
+    if killer_haunt_move_cost > 0 then
+        table.insert(powers, {name = L.haunt_move, key = "arrows", cost = killer_haunt_move_cost, desc = string.Interp(L.haunt_move_desc, {target = tgt:Nick()})})
+    end
+    local killer_haunt_jump_cost = phantom_killer_haunt_jump_cost:GetInt()
+    if killer_haunt_jump_cost > 0 then
+        table.insert(powers, {name = L.haunt_jump, key = "space", cost = killer_haunt_jump_cost:GetInt(), desc = string.Interp(L.haunt_jump_desc, {target = tgt:Nick()})})
+    end
+    local killer_haunt_drop_cost = phantom_killer_haunt_drop_cost:GetInt()
+    if killer_haunt_drop_cost > 0 then
+        table.insert(powers, {name = L.haunt_drop, key = "rmb", cost = killer_haunt_drop_cost:GetInt(), desc = string.Interp(L.haunt_drop_desc, {target = tgt:Nick()})})
+    end
+    local killer_haunt_attack_cost = phantom_killer_haunt_attack_cost:GetInt()
+    if killer_haunt_attack_cost > 0 then
+        table.insert(powers, {name = L.haunt_attack, key = "lmb", cost = killer_haunt_attack_cost:GetInt(), desc = string.Interp(L.haunt_attack_desc, {target = tgt:Nick()})})
+    end
+
+    if #powers == 0 then return end
 
     table.sort(powers, function(a, b)
         if a.cost == b.cost then
