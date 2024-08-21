@@ -21,6 +21,7 @@
 - Fixed assassin's new target messages from sometimes being outdated by the time they appear
 
 ### Developer
+- Removed deprecated `ttt_single_role1_role2` ConVars
 - Added `plymeta:ClearQueuedMessage` method which can remove queued messages of a given ID from the message queue
   - Added optional `id` parameter to `plymeta:QueueMessage` to provide queued messages with an ID
 - *BREAKING CHANGE* - Changed `CRHUD:PaintPowersHUD` to draw powers in the new style that is used by the phantom
