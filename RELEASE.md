@@ -11,6 +11,7 @@
 - Changed plaguemaster's dart gun to be silent
 - Changed plaguemaster's plague to spread faster by default
 - Changed the plaguemaster's dart gun to not have any impact effects (blood splatter) from the victim's perspective so it's not immediately obvious
+- Changed the phantom's haunt powers UI
 
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable
@@ -22,6 +23,9 @@
 ### Developer
 - Added `plymeta:ClearQueuedMessage` method which can remove queued messages of a given ID from the message queue
   - Added optional `id` parameter to `plymeta:QueueMessage` to provide queued messages with an ID
+- *BREAKING CHANGE* - Changed `CRHUD:PaintPowersHUD` to draw powers in the new style that is used by the phantom
+  - The old style is still available but it has been deprecated and will be removed in a future update
+- Added `CRHUD:PaintSpectatorProgressBar` method to draw a progress bar without any associated powers for spectators
 
 ## 2.2.0
 **Released: August 12th, 2024**\
