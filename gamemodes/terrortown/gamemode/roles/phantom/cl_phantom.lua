@@ -157,15 +157,15 @@ hook.Add("TTTSpectatorShowHUD", "Phantom_Haunting_TTTSpectatorShowHUD", function
     end
     local killer_haunt_jump_cost = phantom_killer_haunt_jump_cost:GetInt()
     if killer_haunt_jump_cost > 0 then
-        table.insert(powers, {name = L.haunt_jump, key = "space", cost = killer_haunt_jump_cost:GetInt(), desc = string.Interp(L.haunt_jump_desc, {target = tgt:Nick()})})
+        table.insert(powers, {name = L.haunt_jump, key = "space", cost = killer_haunt_jump_cost, desc = string.Interp(L.haunt_jump_desc, {target = tgt:Nick()})})
     end
     local killer_haunt_drop_cost = phantom_killer_haunt_drop_cost:GetInt()
     if killer_haunt_drop_cost > 0 then
-        table.insert(powers, {name = L.haunt_drop, key = "rmb", cost = killer_haunt_drop_cost:GetInt(), desc = string.Interp(L.haunt_drop_desc, {target = tgt:Nick()})})
+        table.insert(powers, {name = L.haunt_drop, key = "rmb", cost = killer_haunt_drop_cost, desc = string.Interp(L.haunt_drop_desc, {target = tgt:Nick()})})
     end
     local killer_haunt_attack_cost = phantom_killer_haunt_attack_cost:GetInt()
     if killer_haunt_attack_cost > 0 then
-        table.insert(powers, {name = L.haunt_attack, key = "lmb", cost = killer_haunt_attack_cost:GetInt(), desc = string.Interp(L.haunt_attack_desc, {target = tgt:Nick()})})
+        table.insert(powers, {name = L.haunt_attack, key = "lmb", cost = killer_haunt_attack_cost, desc = string.Interp(L.haunt_attack_desc, {target = tgt:Nick()})})
     end
 
     if #powers == 0 then return end
