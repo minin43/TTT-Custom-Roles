@@ -7,7 +7,6 @@ local table = table
 local string = string
 
 local StringSub = string.sub
-local TableInsert = table.insert
 
 ROLEBLOCKS = {}
 
