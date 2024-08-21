@@ -143,6 +143,7 @@ local disabledAbilityColor = Color(90, 90, 90, 255)
 function CRHUD:PaintPowersHUD(client, powers, max_power, current_power, colors, title)
     if not IsPlayer(client) then
         CRHUD:OldPaintPowersHUD(client, powers, max_power, current_power, colors, title)
+        ErrorNoHalt("WARNING: Method 'PaintPowersHUD' has changed and the old method is deprecated. Please update your code to use the new version.")
         return
     end
 
