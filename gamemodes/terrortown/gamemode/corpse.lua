@@ -436,7 +436,6 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
 
     local round_state = GetRoundState()
     local sendName = AnnounceBodyName(ply, round_state, ownerEnt)
-    local sendRole = AnnounceBodyRole(ply, round_state, ownerEnt)
 
     -- Send a message with basic info
     net.Start("TTT_RagdollSearch")
@@ -449,7 +448,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     for _, v in ipairs(eq) do
         net.WriteUInt(v, eq_bits)
     end
-    net.WriteInt(sendRole and role or ROLE_NONE, 8) -- ( 8 bits )
+    net.WriteInt(role, 8) -- ( 8 bits )
     net.WriteUInt(c4, bitsRequired(C4_WIRE_COUNT)) -- 0 -> 2^bits ( default c4: 3 bits )
     net.WriteUInt(dmg, 30) -- DMG_BUCKSHOT is the highest. ( 30 bits )
     net.WriteString(wep)

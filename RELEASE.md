@@ -19,6 +19,7 @@
 - Fixed shadow's buff/punishment warning messages from being queued many times in a row if the shadow repeatedly crosses the boundary of their target's radius
 - Fixed assassin's new target messages from sometimes being outdated by the time they appear
 - Fixed independent roles having to kill players who have roles with passive wins (e.g. Old Man) in order to win themselves
+- Fixed search team icon not showing when `ttt_detectives_search_only_role` was enabled but `ttt_detectives_search_only_team` and `ttt_detectives_search_only` were disabled
 
 ### Developer
 - Added `plymeta:ClearQueuedMessage` method which can remove queued messages of a given ID from the message queue
