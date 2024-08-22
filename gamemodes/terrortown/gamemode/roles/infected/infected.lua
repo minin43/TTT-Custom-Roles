@@ -193,7 +193,7 @@ hook.Add("TTTCheckForWin", "Infected_TTTCheckForWin", function()
         if v:IsActive() then
             if v:IsInfected() then
                 infected_alive = true
-            elseif not v:ShouldActLikeJester() then
+            elseif not v:ShouldActLikeJester() and not ROLE_HAS_PASSIVE_WIN[v:GetRole()] then
                 other_alive = true
             end
         end
