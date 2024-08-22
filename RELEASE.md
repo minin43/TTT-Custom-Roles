@@ -5,6 +5,7 @@
 
 ### Additions
 - Added ability for plaguemaster to get a new dart gun after their last plague victim dies (disabled by default)
+- Added option for the illusionist to give traitors extra credits if they are in play (disabled by default)
 
 ### Changes
 - Changed plaguemaster's dart gun to be silent
@@ -14,7 +15,14 @@
 ### Fixes
 - Fixed plaguemaster's dart gun being droppable
 - Fixed player view being stuck zoomed in if their weapon was removed by swapper or zombie role logic while they were using the scope
+- Fixed plaguemaster's infection warning message from being queued many times in a row if the plaguemaster repeatedly crosses the boundary of an infected player's spread radius
+- Fixed shadow's buff/punishment warning messages from being queued many times in a row if the shadow repeatedly crosses the boundary of their target's radius
+- Fixed assassin's new target messages from sometimes being outdated by the time they appear
 - Fixed independent roles having to kill players who have roles with passive wins (e.g. Old Man) in order to win themselves
+
+### Developer
+- Added `plymeta:ClearQueuedMessage` method which can remove queued messages of a given ID from the message queue
+  - Added optional `id` parameter to `plymeta:QueueMessage` to provide queued messages with an ID
 
 ## 2.2.0
 **Released: August 12th, 2024**\

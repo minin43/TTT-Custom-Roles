@@ -173,7 +173,8 @@ local function ClearBuffTimer(shadow, target, sendMessage)
             else
                 message = message .. "stopped buffing them!"
             end
-            shadow:QueueMessage(MSG_PRINTBOTH, message)
+            shadow:ClearQueuedMessage("shaBuffInfo")
+            shadow:QueueMessage(MSG_PRINTBOTH, message, 5, "shaBuffInfo")
         end
 
         target:SetNWBool("ShadowBuffActive", false)
@@ -211,7 +212,8 @@ local function SendBuffInfoMessage(shadow, time)
     else
         message = message .. "give them a buff!"
     end
-    shadow:QueueMessage(MSG_PRINTBOTH, message)
+    shadow:ClearQueuedMessage("shaBuffInfo")
+    shadow:QueueMessage(MSG_PRINTBOTH, message, 5, "shaBuffInfo")
 end
 
 local function CreateBuffTimer(shadow, target)
@@ -256,6 +258,7 @@ local function CreateBuffTimer(shadow, target)
                 role = ROLE_TRAITOR
             end
 
+            shadow:ClearQueuedMessage("shaBuffInfo")
             shadow:QueueMessage(MSG_PRINTBOTH, "You've stayed with your target long enough to join their team! You are now " .. ROLE_STRINGS_EXT[role])
 
             if shadow_target_buff_notify:GetBool() then
@@ -274,6 +277,7 @@ local function CreateBuffTimer(shadow, target)
             return
         elseif buff == SHADOW_BUFF_STEAL_ROLE then
             local role = target:GetRole()
+            shadow:ClearQueuedMessage("shaBuffInfo")
             shadow:QueueMessage(MSG_PRINTBOTH, "You've stayed with your target long enough to steal their role! You are now " .. ROLE_STRINGS_EXT[role])
 
             if shadow_target_buff_notify:GetBool() then
@@ -306,7 +310,8 @@ local function CreateBuffTimer(shadow, target)
             return
         end
 
-        shadow:QueueMessage(MSG_PRINTBOTH, "A buff is now active on your target. Stay with them to keep it up!")
+        shadow:ClearQueuedMessage("shaBuffInfo")
+        shadow:QueueMessage(MSG_PRINTBOTH, "A buff is now active on your target. Stay with them to keep it up!", 5, "shaBuffInfo")
 
         if shadow_target_buff_notify:GetBool() then
             target:QueueMessage(MSG_PRINTBOTH, "Your " .. ROLE_STRINGS[ROLE_SHADOW] .. " is buffing you. Stay with them to keep it up!")
@@ -350,6 +355,7 @@ hook.Add("DoPlayerDeath", "Shadow_SoulLink_DoPlayerDeath", function(ply, attacke
                 local target = player.GetBySteamID64(p:GetNWString("ShadowTarget", ""))
                 if IsPlayer(target) and target == ply then
                     p:Kill()
+                    p:ClearQueuedMessage("shaBuffInfo")
                     p:QueueMessage(MSG_PRINTBOTH, "Your target died!")
                 end
             end
@@ -396,6 +402,7 @@ hook.Add("PostPlayerDeath", "Shadow_Buff_PostPlayerDeath", function(ply)
             SafeRemoveEntity(corpse)
 
             if IsValid(shadow) then
+                shadow:ClearQueuedMessage("shaBuffInfo")
                 shadow:QueueMessage(MSG_PRINTBOTH, "Your target has respawned!")
             end
         end)
@@ -532,7 +539,8 @@ hook.Add("TTTBeginRound", "Shadow_TTTBeginRound", function()
                     v:SetNWBool("ShadowActive", false)
                     v:SetNWFloat("ShadowTimer", -1)
                 end
-                v:QueueMessage(MSG_PRINTBOTH, message)
+                v:ClearQueuedMessage("shaBuffInfo")
+                v:QueueMessage(MSG_PRINTBOTH, message, 5, "shaBuffInfo")
                 v:SetNWFloat("ShadowBuffTimer", -1)
                 ClearBuffTimer(v, target)
             else
@@ -596,6 +604,7 @@ hook.Add("PlayerDeath", "Shadow_KillCheck_PlayerDeath", function(victim, infl, a
 
     if victim:SteamID64() == attacker:GetNWString("ShadowTarget", "") then
         attacker:Kill()
+        attacker:ClearQueuedMessage("shaBuffInfo")
         attacker:QueueMessage(MSG_PRINTBOTH, "You killed your target!")
         attacker.TTTShadowKilledTarget = true
         ClearBuffTimer(attacker, victim)

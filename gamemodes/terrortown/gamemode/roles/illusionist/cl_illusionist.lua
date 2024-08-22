@@ -7,6 +7,7 @@ local AddHook = hook.Add
 -------------
 
 local illusionist_hides_monsters = GetConVar("ttt_illusionist_hides_monsters")
+local illusionist_traitor_credits = GetConVar("ttt_illusionist_traitor_credits")
 
 ------------------
 -- TRANSLATIONS --
@@ -100,6 +101,25 @@ hook.Add("TTTTutorialRoleText", "Illusionist_TTTTutorialRoleText", function(role
         end
 
         html = html .. " will learn who is on their team.</span>"
+
+        local traitor_credits = illusionist_traitor_credits:GetInt()
+        if traitor_credits > 0 then
+            html = html .. "<span style='display: block; margin-top: 10px;'>Traitors"
+
+            if hides_monsters then
+                html = html .. " and monsters"
+            end
+
+            html = html .. " will be given "
+
+            if traitor_credits == 1 then
+                html = html .. "an extra credit"
+            else
+                html = html .. tostring(traitor_credits) .. " extra credits"
+            end
+
+            html = html .. " at the start of the round if there is " .. ROLE_STRINGS_EXT[ROLE_ILLUSIONIST] .. " in play.</span>"
+        end
 
         return html
     end
