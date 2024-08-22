@@ -160,7 +160,9 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
         return ply:GetRole()
     end
 
-    if ply.search_result and ply.search_result.role > ROLE_NONE then
+    -- If we have the role saved and it's not restricted to detectives only, show it
+    if ply.search_result and ply.search_result.role > ROLE_NONE and
+        (not cvars.Bool("ttt_detectives_search_only_role", false) or ply:GetNWBool("body_searched_det", false)) then
         return ply.search_result.role
     end
 
