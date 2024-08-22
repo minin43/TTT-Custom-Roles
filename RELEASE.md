@@ -21,6 +21,7 @@
 - Fixed independent roles having to kill players who have roles with passive wins (e.g. Old Man) in order to win themselves
 - Fixed search team icon not showing when `ttt_detectives_search_only_role` was enabled but `ttt_detectives_search_only_team` and `ttt_detectives_search_only` were disabled
 - Fixed player role showing on the scoreboard when a non-detective searched a body with `ttt_detectives_search_only_role` enabled and `ttt_detectives_search_only` disabled
+- Fixed beggars and bodysnatchers moved to the independent team showing as jesters for their new team members when the correct reveal convar was disabled
 
 ### Developer
 - Added `plymeta:ClearQueuedMessage` method which can remove queued messages of a given ID from the message queue
