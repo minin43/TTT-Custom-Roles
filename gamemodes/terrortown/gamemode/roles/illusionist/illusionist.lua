@@ -9,6 +9,7 @@ local PlayerIterator = player.Iterator
 -------------
 
 local illusionist_hides_monsters = GetConVar("ttt_illusionist_hides_monsters")
+local illusionist_traitor_credits = GetConVar("ttt_illusionist_traitor_credits")
 
 -----------------
 -- ALIVE CHECK --
@@ -26,10 +27,14 @@ hook.Add("TTTBeginRound", "Illusionist_TTTBeginRound", function()
     local alive = player.IsRoleLiving(ROLE_ILLUSIONIST)
     SetGlobalBool("ttt_illusionist_alive", alive)
     if alive then
+        local traitor_credits = illusionist_traitor_credits:GetInt()
         timer.Simple(1.5, function()
             for _, v in PlayerIterator() do
                 if v:IsTraitorTeam() or (v:IsMonsterTeam() and illusionist_hides_monsters:GetBool()) then
                     v:QueueMessage(MSG_PRINTBOTH, "There is " .. ROLE_STRINGS_EXT[ROLE_ILLUSIONIST] .. ".")
+                    if traitor_credits > 0 then
+                        v:AddCredits(traitor_credits)
+                    end
                 end
             end
         end)
