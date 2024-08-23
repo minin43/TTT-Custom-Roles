@@ -20,6 +20,10 @@
 - Fixed shadow's buff/punishment warning messages from being queued many times in a row if the shadow repeatedly crosses the boundary of their target's radius
 - Fixed assassin's new target messages from sometimes being outdated by the time they appear
 - Fixed phantom's abilities not being able to be disabled
+- Fixed independent roles having to kill players who have roles with passive wins (e.g. Old Man) in order to win themselves
+- Fixed search team icon not showing when `ttt_detectives_search_only_role` was enabled but `ttt_detectives_search_only_team` and `ttt_detectives_search_only` were disabled
+- Fixed player role showing on the scoreboard when a non-detective searched a body with `ttt_detectives_search_only_role` enabled and `ttt_detectives_search_only` disabled
+- Fixed beggars and bodysnatchers moved to the independent team showing as jesters for their new team members when the correct reveal convar was disabled
 
 ### Developer
 - Removed deprecated `ttt_single_role1_role2` ConVars
