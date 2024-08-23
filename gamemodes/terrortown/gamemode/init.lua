@@ -173,22 +173,6 @@ CreateConVar("ttt_deputy_impersonator_start_promoted", "0")
 CreateConVar("ttt_single_jester_independent", "1")
 CreateConVar("ttt_single_jester_independent_max_players", "0")
 
--- TODO: Deprecated - Remove after next major update
-local paired_role_blocks = {
-    {ROLE_DEPUTY, ROLE_IMPERSONATOR},
-    {ROLE_DOCTOR, ROLE_QUACK},
-    {ROLE_PARAMEDIC, ROLE_HYPNOTIST},
-    {ROLE_PHANTOM, ROLE_PARASITE},
-    {ROLE_DRUNK, ROLE_CLOWN},
-    {ROLE_JESTER, ROLE_SWAPPER}
-}
-
-for _, r in ipairs(paired_role_blocks) do
-    local cvar_name = "ttt_single_" .. ROLE_STRINGS_RAW[r[1]] .. "_" .. ROLE_STRINGS_RAW[r[2]]
-    CreateConVar(cvar_name, "0")
-    CreateConVar(cvar_name .. "_chance", "0.5")
-end
-
 -- Traitor credits
 CreateConVar("ttt_credits_starting", "2")
 CreateConVar("ttt_credits_award_pct", "0.35")
