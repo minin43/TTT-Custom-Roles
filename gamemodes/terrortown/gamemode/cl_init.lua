@@ -580,11 +580,16 @@ function OnPlayerHighlightEnabled(client, alliedRoles, showJesters, hideEnemies,
         if IsValid(v) and v:Alive() and not v:IsSpec() and v ~= client and not ShouldHideFromHighlight(v, client) then
             local hideBeggar = v:GetNWBool("WasBeggar", false) and not client:ShouldRevealBeggar(v)
             local hideBodysnatcher = v:GetNWBool("WasBodysnatcher", false) and not client:ShouldRevealBodysnatcher(v)
-            if showJesters and (v:ShouldActLikeJester() or hideBeggar or hideBodysnatcher) then
+            local showAsJester = showJesters and (v:ShouldActLikeJester() or
+                                ((v:IsTraitor() or v:IsInnocent()) and hideBeggar and JESTER_ROLES[ROLE_BEGGAR]) or
+                                (hideBodysnatcher and JESTER_ROLES[ROLE_BODYSNATCHER])) and
+                                    not client:ShouldHideJesters()
+            if showAsJester then
                 if not onlyShowEnemies then
                     TableInsert(jesters, v)
                 end
-            elseif TableHasValue(alliedRoles, v:GetRole()) then
+            -- Only show allied roles and hide the beggar/bodysnatcher if we're told to and they aren't jesters
+            elseif not hideBeggar and not hideBodysnatcher and TableHasValue(alliedRoles, v:GetRole()) then
                 if not onlyShowEnemies then
                     TableInsert(friends, v)
                 end

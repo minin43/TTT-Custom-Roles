@@ -199,7 +199,10 @@ function GM:PostDrawTranslucentRenderables()
 
             local hideBeggar = v:GetNWBool("WasBeggar", false) and not client:ShouldRevealBeggar(v)
             local hideBodysnatcher = v:GetNWBool("WasBodysnatcher", false) and not client:ShouldRevealBodysnatcher(v)
-            local showJester = (v:ShouldActLikeJester() or ((v:GetTraitor() or v:GetInnocent()) and hideBeggar) or hideBodysnatcher) and not client:ShouldHideJesters()
+            local showJester = (v:ShouldActLikeJester() or
+                                ((v:IsTraitor() or v:IsInnocent()) and hideBeggar and JESTER_ROLES[ROLE_BEGGAR]) or
+                                (hideBodysnatcher and JESTER_ROLES[ROLE_BODYSNATCHER])) and
+                                    not client:ShouldHideJesters()
 
             local role = nil
             local color_role = nil
@@ -228,6 +231,9 @@ function GM:PostDrawTranslucentRenderables()
                         if showJester then
                             role = ROLE_NONE
                             color_role = ROLE_JESTER
+                            noz = false
+                        -- Hide these if we're told to but they aren't jesters
+                        elseif hideBeggar or hideBodysnatcher then
                             noz = false
                         elseif v:IsTraitorTeam() then
                             if glitchRound then
@@ -469,13 +475,17 @@ function GM:HUDDrawTargetID()
             else
                 local hideBeggar = ent:GetNWBool("WasBeggar", false) and not client:ShouldRevealBeggar(ent)
                 local hideBodysnatcher = ent:GetNWBool("WasBodysnatcher", false) and not client:ShouldRevealBodysnatcher(ent)
-                local showJester = (ent:ShouldActLikeJester() or ((ent:GetTraitor() or ent:GetInnocent()) and hideBeggar) or hideBodysnatcher) and not client:ShouldHideJesters()
+                local showJester = (ent:ShouldActLikeJester() or
+                                    ((ent:IsTraitor() or ent:IsInnocent()) and hideBeggar and JESTER_ROLES[ROLE_BEGGAR]) or
+                                    (hideBodysnatcher and JESTER_ROLES[ROLE_BODYSNATCHER])) and
+                                        not client:ShouldHideJesters()
                 if ent:ShouldRevealRoleWhenActive() and ent:IsRoleActive() then
                     target_role = true
                 elseif client:IsTraitorTeam() then
                     if showJester then
                         target_jester = showJester
-                    else
+                    -- Hide these if we're told to but they aren't jesters
+                    elseif not hideBeggar and not hideBodysnatcher then
                         target_traitor = ent:IsTraitor()
                         target_special_traitor = ent:IsTraitorTeam() and not ent:IsTraitor()
                         target_glitch = ent:IsGlitch()

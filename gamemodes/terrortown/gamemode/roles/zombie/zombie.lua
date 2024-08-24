@@ -121,7 +121,7 @@ hook.Add("TTTCheckForWin", "Zombie_TTTCheckForWin", function()
         if v:IsActive() then
             if v:IsZombie() or v:IsMadScientist() then
                 zombie_alive = true
-            elseif not v:ShouldActLikeJester() then
+            elseif not v:ShouldActLikeJester() and not ROLE_HAS_PASSIVE_WIN[v:GetRole()] then
                 other_alive = true
             end
         end
@@ -253,6 +253,7 @@ hook.Add("TTTPlayerAliveThink", "Zombie_TTTPlayerAliveThink", function(ply)
                     ply:StripWeapon(weapclass)
                 end
             end
+            ply:SetFOV(0, 0)
         end
 
         -- If this zombie doesn't have claws, give them claws

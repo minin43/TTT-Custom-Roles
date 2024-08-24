@@ -1,5 +1,38 @@
 # Release Notes
 
+## 2.2.1 (Beta)
+**Released: August 24th, 2024**
+
+### Additions
+- Added ability for plaguemaster to get a new dart gun after their last plague victim dies (disabled by default)
+- Added option for the illusionist to give traitors extra credits if they are in play (disabled by default)
+
+### Changes
+- Changed plaguemaster's dart gun to be silent
+- Changed plaguemaster's plague to spread faster by default
+- Changed the plaguemaster's dart gun to not have any impact effects (blood splatter) from the victim's perspective so it's not immediately obvious
+- Changed the phantom's haunt powers UI
+
+### Fixes
+- Fixed plaguemaster's dart gun being droppable
+- Fixed player view being stuck zoomed in if their weapon was removed by swapper or zombie role logic while they were using the scope
+- Fixed plaguemaster's infection warning message from being queued many times in a row if the plaguemaster repeatedly crosses the boundary of an infected player's spread radius
+- Fixed shadow's buff/punishment warning messages from being queued many times in a row if the shadow repeatedly crosses the boundary of their target's radius
+- Fixed assassin's new target messages from sometimes being outdated by the time they appear
+- Fixed phantom's abilities not being able to be disabled
+- Fixed independent roles having to kill players who have roles with passive wins (e.g. Old Man) in order to win themselves
+- Fixed search team icon not showing when `ttt_detectives_search_only_role` was enabled but `ttt_detectives_search_only_team` and `ttt_detectives_search_only` were disabled
+- Fixed player role showing on the scoreboard when a non-detective searched a body with `ttt_detectives_search_only_role` enabled and `ttt_detectives_search_only` disabled
+- Fixed beggars and bodysnatchers moved to the independent team showing as jesters for their new team members when the correct reveal convar was disabled
+
+### Developer
+- Removed deprecated `ttt_single_role1_role2` ConVars
+- Added `plymeta:ClearQueuedMessage` method which can remove queued messages of a given ID from the message queue
+  - Added optional `id` parameter to `plymeta:QueueMessage` to provide queued messages with an ID
+- *BREAKING CHANGE* - Changed `CRHUD:PaintPowersHUD` to draw powers in the new style that is used by the phantom
+  - The old style is still available but it has been deprecated and will be removed in a future update
+- Added `CRHUD:PaintSpectatorProgressBar` method to draw a progress bar without any associated powers for spectators
+
 ## 2.2.0
 **Released: August 12th, 2024**\
 Includes beta updates [2.1.17](#2117-beta) and [2.1.20](#2120-beta).

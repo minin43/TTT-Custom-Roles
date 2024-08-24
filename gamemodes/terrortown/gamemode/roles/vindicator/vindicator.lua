@@ -285,7 +285,7 @@ hook.Add("TTTCheckForWin", "Vindicator_TTTCheckForWin", function()
             if ply:GetNWBool("VindicatorSuccess", false) then
                 vindicator_win = true
             end
-        elseif ply:IsActive() and not ply:ShouldActLikeJester()  then
+        elseif ply:IsActive() and not ply:ShouldActLikeJester() and not ROLE_HAS_PASSIVE_WIN[ply:GetRole()] then
             other_alive = true
         end
     end

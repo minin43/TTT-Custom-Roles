@@ -106,7 +106,8 @@ local function AssignAssassinTarget(ply, start, delay)
 
     if ply:Alive() and not ply:IsSpec() then
         if not delay and not start then targetMessage = "Target eliminated. " .. targetMessage end
-        ply:QueueMessage(MSG_PRINTBOTH, targetMessage)
+        ply:ClearQueuedMessage("asnTarget")
+        ply:QueueMessage(MSG_PRINTBOTH, targetMessage, 5, "asnTarget")
     end
 end
 
@@ -123,7 +124,8 @@ local function UpdateAssassinTargets(ply)
                 -- Delay giving the next target if we're configured to do so
                 if delay > 0 then
                     if v:IsActive() then
-                        v:QueueMessage(MSG_PRINTBOTH, "Target eliminated. You will receive your next assignment in " .. tostring(delay) .. " seconds.")
+                        v:ClearQueuedMessage("asnTarget")
+                        v:QueueMessage(MSG_PRINTBOTH, "Target eliminated. You will receive your next assignment in " .. tostring(delay) .. " seconds.", math.min(delay, 5))
                     end
                     timer.Create(v:Nick() .. "AssassinTarget", delay, 1, function()
                         AssignAssassinTarget(v, false, true)
@@ -132,6 +134,7 @@ local function UpdateAssassinTargets(ply)
                     AssignAssassinTarget(v, false, false)
                 end
             else
+                v:ClearQueuedMessage("asnTarget")
                 v:QueueMessage(MSG_PRINTBOTH, "Final target eliminated.")
             end
         end
@@ -208,6 +211,7 @@ hook.Add("DoPlayerDeath", "Assassin_DoPlayerDeath", function(ply, attacker, dmgi
         local skipPenalty = cvars.Bool(convar, false) and ply:IsRoleActive()
         if wasNotTarget and not skipPenalty then
             timer.Remove(attacker:Nick() .. "AssassinTarget")
+            attacker:ClearQueuedMessage("asnTarget")
             attacker:QueueMessage(MSG_PRINTBOTH, "Contract failed. You killed the wrong player.")
             attacker:SetNWBool("AssassinFailed", true)
             attacker:SetNWString("AssassinTarget", "")

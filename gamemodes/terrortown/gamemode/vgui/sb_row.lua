@@ -160,7 +160,9 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
         return ply:GetRole()
     end
 
-    if ply.search_result and ply.search_result.role > ROLE_NONE then
+    -- If we have the role saved and it's not restricted to detectives only, show it
+    if ply.search_result and ply.search_result.role > ROLE_NONE and
+        (not cvars.Bool("ttt_detectives_search_only_role", false) or ply:GetNWBool("body_searched_det", false)) then
         return ply.search_result.role
     end
 
@@ -177,11 +179,17 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
 
     local hideBeggar = ply:GetNWBool("WasBeggar", false) and not client:ShouldRevealBeggar(ply)
     local hideBodysnatcher = ply:GetNWBool("WasBodysnatcher", false) and not client:ShouldRevealBodysnatcher(ply)
-    local showJester = (ply:ShouldActLikeJester() or ((ply:IsTraitor() or ply:IsInnocent()) and hideBeggar) or hideBodysnatcher) and not client:ShouldHideJesters()
+    local showJester = (ply:ShouldActLikeJester() or
+                        ((ply:IsTraitor() or ply:IsInnocent()) and hideBeggar and JESTER_ROLES[ROLE_BEGGAR]) or
+                        (hideBodysnatcher and JESTER_ROLES[ROLE_BODYSNATCHER])) and
+                            not client:ShouldHideJesters()
 
     if client:IsTraitorTeam() then
         if showJester then
             return ROLE_JESTER
+        -- Hide these if we're told to but they aren't jesters
+        elseif hideBeggar or hideBodysnatcher then
+            return defaultcolor
         elseif ply:IsTraitorTeam() then
             return ply:GetRole()
         elseif ply:IsGlitch() then

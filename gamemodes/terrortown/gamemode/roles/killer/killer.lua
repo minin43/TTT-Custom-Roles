@@ -311,7 +311,7 @@ hook.Add("TTTCheckForWin", "Killer_TTTCheckForWin", function()
         if v:IsActive() then
             if v:IsKiller() then
                 killer_alive = true
-            elseif not v:ShouldActLikeJester() then
+            elseif not v:ShouldActLikeJester() and not ROLE_HAS_PASSIVE_WIN[v:GetRole()] then
                 other_alive = true
             end
         end
