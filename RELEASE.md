@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.2.1 (Beta)
-**Released:**
+**Released: August 24th, 2024**
 
 ### Additions
 - Added ability for plaguemaster to get a new dart gun after their last plague victim dies (disabled by default)
