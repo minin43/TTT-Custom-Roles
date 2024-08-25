@@ -5,6 +5,7 @@
 
 ### Fixes
 - Fixed assassin whose target is made their lover by a cupid not being assigned a new lover
+- Fixed illusionist not blocking the radar color for traitors revealing other traitors
 
 ### Developer
 - Added `TTTCupidLoverChosen` hook to allow detecting when a lover is hit by cupid's arrow

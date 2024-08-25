@@ -75,6 +75,21 @@ AddHook("TTTScoreboardPlayerRole", "Illusionist_TTTScoreboardPlayerRole", functi
     end
 end)
 
+-----------
+-- RADAR --
+-----------
+
+AddHook("TTTRadarPlayerRender", "Illusionist_TTTRadarPlayerRender", function(cli, tgt, color, hidden)
+    if hidden then return end
+    if cli == tgt then return end
+    if not GetGlobalBool("ttt_illusionist_alive", false) then return end
+
+    if (cli:IsActiveTraitorTeam() and (TRAITOR_ROLES[tgt.role] or tgt.role == ROLE_GLITCH)) or
+        (cli:IsActiveMonsterTeam() and MONSTER_ROLES[tgt.role] and illusionist_hides_monsters:GetBool()) then
+        return ColorAlpha(ROLE_COLORS_RADAR[ROLE_INNOCENT], color.a)
+    end
+end)
+
 --------------
 -- TUTORIAL --
 --------------
