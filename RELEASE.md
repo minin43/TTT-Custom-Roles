@@ -1,5 +1,15 @@
 # Release Notes
 
+## 2.2.2 (Beta)
+**Released:**
+
+### Fixes
+- Fixed assassin whose target is made their lover by a cupid not being assigned a new lover
+
+### Developer
+- Added `TTTCupidLoverChosen` hook to allow detecting when a lover is hit by cupid's arrow
+- Added `TTTCupidLoversChosen` hook to allow detecting when both of cupid's lovers have been chosen
+
 ## 2.2.1 (Beta)
 **Released: August 24th, 2024**
 
