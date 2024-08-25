@@ -208,7 +208,6 @@ end)
 
 -- Handle an assassin becoming the lover of their target
 hook.Add("TTTCupidLoversChosen", "Assassin_TTTCupidLoversChosen", function(cupid, lover1, lover2)
-    print("TTTCupidLoversChosen", lover1, lover2)
     if not IsPlayer(lover1) then return end
     if not IsPlayer(lover2) then return end
 
