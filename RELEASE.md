@@ -7,6 +7,9 @@
 - Fixed assassin whose target is made their lover by a cupid not being assigned a new lover
 - Fixed illusionist not blocking the radar color for traitors revealing other traitors
 - Fixed error when calling `plymeta:ClearMessageQueue` or `plymeta:PrintMessageQueue` when the player didn't have a message queue created first
+- Fixed player whose role is changed into a beggar with scanning ability being told they need to have their role rescanned
+- Fixed player whose role is changed into an informant being told they need to have their role rescanned
+- Fixed player whose role is changed to a member of the traitor team being told they need to have their role rescanned by the informant
 
 ### Developer
 - Added `TTTCupidLoverChosen` hook to allow detecting when a lover is hit by cupid's arrow

@@ -145,6 +145,8 @@ hook.Add("TTTPlayerRoleChanged", "Informant_TTTPlayerRoleChanged", function(ply,
             for _, v in PlayerIterator() do
                 -- Don't tell people about this role change if we're not revealing them
                 if hideRole then continue end
+                -- We don't need to tell the player who changed roles
+                if ply == v then continue end
 
                 if v:IsActiveInformant() then
                     v:PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has changed roles. You will need to rescan them.")
