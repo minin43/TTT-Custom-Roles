@@ -10,6 +10,7 @@
 - Fixed player whose role is changed into a beggar with scanning ability being told they need to have their role rescanned
 - Fixed player whose role is changed into an informant being told they need to have their role rescanned
 - Fixed player whose role is changed to a member of the traitor team being told they need to have their role rescanned by the informant
+- Fixed killers seeing eachother via vision even though they normally wouldn't know eachothers roles
 - Ported "TTT: fix and optimize traitor button rendering" from base TTT
 
 ### Developer
