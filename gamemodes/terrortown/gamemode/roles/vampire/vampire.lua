@@ -341,7 +341,7 @@ end)
 -- Only allow the vampire to pick up vampire-specific weapons
 hook.Add("PlayerCanPickupWeapon", "Vampire_Weapons_PlayerCanPickupWeapon", function(ply, wep)
     if not IsValid(wep) or not IsValid(ply) then return end
-    if ply:IsSpec() then return false end
+    if ply:IsSpec() then return end
 
     if wep:GetClass() == "weapon_vam_fangs" then
         return ply:IsVampire()

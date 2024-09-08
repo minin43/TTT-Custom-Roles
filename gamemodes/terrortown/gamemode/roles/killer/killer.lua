@@ -267,7 +267,7 @@ end)
 -- Only allow the killer to pick up killer-specific weapons
 hook.Add("PlayerCanPickupWeapon", "Killer_Weapons_PlayerCanPickupWeapon", function(ply, wep)
     if not IsValid(wep) or not IsValid(ply) then return end
-    if ply:IsSpec() then return false end
+    if ply:IsSpec() then return end
 
     if (wep:GetClass() == "weapon_kil_knife" or wep:GetClass() == "weapon_kil_crowbar") then
         return ply:IsKiller()
