@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.2.2 (Beta)
+**Released:**
+
+### Changes
+- Changed the beggar so that they don't change teams if they are given an item with no ammo (can be disabled)
+
 ## 2.2.1 (Beta)
 **Released: August 24th, 2024**
 
