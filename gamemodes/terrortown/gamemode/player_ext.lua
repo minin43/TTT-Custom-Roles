@@ -594,7 +594,7 @@ local messageQueue = {}
 function plymeta:PrintMessageQueue()
     local sid = self:SteamID64()
 
-    if #messageQueue[sid] == 0 then
+    if not messageQueue[sid] or #messageQueue[sid] == 0 then
         self:PrintMessage(HUD_PRINTCENTER, "")
         return
     end
@@ -666,16 +666,18 @@ function plymeta:ClearQueuedMessage(id)
     local sid = self:SteamID64()
 
     local skipCurrent = false
-    if messageQueue[sid] and messageQueue[sid][1] and messageQueue[sid][1].id == id then
-        skipCurrent = true
-    end
+    if messageQueue[sid] then
+        if messageQueue[sid][1] and messageQueue[sid][1].id == id then
+            skipCurrent = true
+        end
 
-    local i = 1
-    while i <= #messageQueue[sid] do
-        if messageQueue[sid][i].id == id then
-            table.remove(messageQueue[sid], i)
-        else
-            i = i + 1
+        local i = 1
+        while i <= #messageQueue[sid] do
+            if messageQueue[sid][i].id == id then
+                table.remove(messageQueue[sid], i)
+            else
+                i = i + 1
+            end
         end
     end
 

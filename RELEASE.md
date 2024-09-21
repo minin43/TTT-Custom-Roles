@@ -1,5 +1,22 @@
 # Release Notes
 
+## 2.2.2 (Beta)
+**Released:**
+
+### Fixes
+- Fixed assassin whose target is made their lover by a cupid not being assigned a new lover
+- Fixed illusionist not blocking the radar color for traitors revealing other traitors
+- Fixed error when calling `plymeta:ClearMessageQueue` or `plymeta:PrintMessageQueue` when the player didn't have a message queue created first
+- Fixed player whose role is changed into a beggar with scanning ability being told they need to have their role rescanned
+- Fixed player whose role is changed into an informant being told they need to have their role rescanned
+- Fixed player whose role is changed to a member of the traitor team being told they need to have their role rescanned by the informant
+- Fixed killers seeing eachother via vision even though they normally wouldn't know eachothers roles
+- Ported "TTT: fix and optimize traitor button rendering" from base TTT
+
+### Developer
+- Added `TTTCupidLoverChosen` hook to allow detecting when a lover is hit by cupid's arrow
+- Added `TTTCupidLoversChosen` hook to allow detecting when both of cupid's lovers have been chosen
+
 ## 2.2.1 (Beta)
 **Released: August 24th, 2024**
 

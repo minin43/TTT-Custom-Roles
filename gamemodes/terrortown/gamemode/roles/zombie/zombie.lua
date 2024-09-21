@@ -278,7 +278,7 @@ end)
 -- Only allow the zombie to pick up zombie-specific weapons
 hook.Add("PlayerCanPickupWeapon", "Zombie_Weapons_PlayerCanPickupWeapon", function(ply, wep)
     if not IsValid(wep) or not IsValid(ply) then return end
-    if ply:IsSpec() then return false end
+    if ply:IsSpec() then return end
 
     if wep:GetClass() == "weapon_zom_claws" then
         return ply:IsZombie()

@@ -59,11 +59,16 @@ local function AssignAssassinTarget(ply, start, delay)
         end
     end
 
+    local assassinLover = ply:GetNWString("TTTCupidLover", "")
     for _, p in PlayerIterator() do
         if p:Alive() and not p:IsSpec() then
+            local pSid64 = p:SteamID64()
+            -- Don't add the assassin's lover as a target, if they have one
+            if #assassinLover > 0 and pSid64 == assassinLover then continue end
+
             -- Include all non-traitor detective-like players
             if p:IsDetectiveLike() and not p:IsTraitorTeam() then
-                table.insert(detectives, p:SteamID64())
+                table.insert(detectives, pSid64)
             -- Exclude Glitch from this list so they don't get discovered immediately
             elseif p:IsInnocentTeam() and not p:IsGlitch() then
                 AddEnemy(p)
@@ -111,7 +116,7 @@ local function AssignAssassinTarget(ply, start, delay)
     end
 end
 
-local function UpdateAssassinTargets(ply)
+local function UpdateAssassinTargets(ply, msgOverride, finalMsgOverride)
     for _, v in PlayerIterator() do
         local assassintarget = v:GetNWString("AssassinTarget", "")
         if v:IsAssassin() and ply:SteamID64() == assassintarget then
@@ -125,7 +130,7 @@ local function UpdateAssassinTargets(ply)
                 if delay > 0 then
                     if v:IsActive() then
                         v:ClearQueuedMessage("asnTarget")
-                        v:QueueMessage(MSG_PRINTBOTH, "Target eliminated. You will receive your next assignment in " .. tostring(delay) .. " seconds.", math.min(delay, 5))
+                        v:QueueMessage(MSG_PRINTBOTH, (msgOverride or "Target eliminated.") .. " You will receive your next assignment in " .. tostring(delay) .. " seconds.", math.min(delay, 5))
                     end
                     timer.Create(v:Nick() .. "AssassinTarget", delay, 1, function()
                         AssignAssassinTarget(v, false, true)
@@ -135,7 +140,7 @@ local function UpdateAssassinTargets(ply)
                 end
             else
                 v:ClearQueuedMessage("asnTarget")
-                v:QueueMessage(MSG_PRINTBOTH, "Final target eliminated.")
+                v:QueueMessage(MSG_PRINTBOTH, finalMsgOverride or "Final target eliminated.")
             end
         end
     end
@@ -199,6 +204,20 @@ hook.Add("TTTTurncoatTeamChanged", "Assassin_TTTTurncoatTeamChanged", function(p
 
     -- Update any assassin targets since this player isn't a threat anymore
     UpdateAssassinTargets(ply)
+end)
+
+-- Handle an assassin becoming the lover of their target
+hook.Add("TTTCupidLoversChosen", "Assassin_TTTCupidLoversChosen", function(cupid, lover1, lover2)
+    if not IsPlayer(lover1) then return end
+    if not IsPlayer(lover2) then return end
+
+    -- If one of the lovers is an assassin and their target is the other lover, reassign
+    if lover1:IsAssassin() and lover1:GetNWString("AssassinTarget", "") == lover2:SteamID64() then
+        UpdateAssassinTargets(lover2, "You fell in love with your target.", "Final target seduced.")
+    end
+    if lover2:IsAssassin() and lover2:GetNWString("AssassinTarget", "") == lover1:SteamID64() then
+        UpdateAssassinTargets(lover1, "You fell in love with your target.", "Final target seduced.")
+    end
 end)
 
 hook.Add("DoPlayerDeath", "Assassin_DoPlayerDeath", function(ply, attacker, dmginfo)
