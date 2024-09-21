@@ -162,6 +162,10 @@ AddHook("PostPlayerDeath", "Plaguemaster_PostPlayerDeath", function(ply)
             end
         end
 
+        if not v.TTTPlaguemasterSpreadStartTimes then
+            v.TTTPlaguemasterSpreadStartTimes = {}
+        end
+
         if v.TTTPlaguemasterSpreadStartTimes[sid64] then
             ClearSpreadStart(v, sid64)
         end
