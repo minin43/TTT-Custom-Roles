@@ -6,6 +6,7 @@
 ### Changes
 - Changed the beggar so that they don't change teams if they are given an item with no ammo (can be disabled)
 
+### Fixes
 - Fixed assassin whose target is made their lover by a cupid not being assigned a new lover
 - Fixed illusionist not blocking the radar color for traitors revealing other traitors
 - Fixed error when calling `plymeta:ClearMessageQueue` or `plymeta:PrintMessageQueue` when the player didn't have a message queue created first
