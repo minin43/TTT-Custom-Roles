@@ -27,6 +27,7 @@ local beggar_scan_float_time = CreateConVar("ttt_beggar_scan_float_time", "1", F
 local beggar_scan_cooldown = CreateConVar("ttt_beggar_scan_cooldown", "3", FCVAR_NONE, "The amount of time (in seconds) the beggar's tracker goes on cooldown for after losing it's target", 0, 60)
 local beggar_scan_distance = CreateConVar("ttt_beggar_scan_distance", "2500", FCVAR_NONE, "The maximum distance away the scanner target can be", 1000, 10000)
 local beggar_transfer_ownership = CreateConVar("ttt_beggar_transfer_ownership", "0", FCVAR_NONE, "Whether the ownership of a shop item should transfer each time its picked up by a non-beggar", 0, 1)
+local beggar_ignore_empty_weapons = CreateConVar("ttt_beggar_ignore_empty_weapons", "1", FCVAR_NONE, "Whether the beggar should not change teams if they are given a weapon with no ammo", 0, 1)
 
 local beggar_respawn = GetConVar("ttt_beggar_respawn")
 local beggar_respawn_limit = GetConVar("ttt_beggar_respawn_limit")
@@ -56,6 +57,8 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
     if wep.BoughtBy and wep.BoughtBy:IsBeggar() then return end -- If a beggar is the owner of this weapon then it should no longer change ownership or convert beggars as it has already been 'used'
 
     if ply:IsBeggar() and wep.BoughtBy and IsPlayer(wep.BoughtBy) and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
+        if beggar_ignore_empty_weapons:GetBool() and wep:GetMaxClip1() > 0 and wep:Clip1() == 0 then return end
+
         local role
         if wep.BoughtBy:IsTraitorTeam() and not TRAITOR_ROLES[ROLE_BEGGAR] then
             role = ROLE_TRAITOR
@@ -295,7 +298,7 @@ hook.Add("TTTPlayerRoleChanged", "Beggar_Informant_TTTPlayerRoleChanged", functi
         -- Only notify if there is an beggar and the player had some info being reset
         if scanStage > BEGGAR_UNSCANNED then
             for _, v in PlayerIterator() do
-                if v:IsActiveBeggar() then
+                if ply ~= v and v:IsActiveBeggar() then
                     v:PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has changed roles. You will need to rescan them.")
                 end
             end

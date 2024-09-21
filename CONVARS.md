@@ -485,7 +485,7 @@ ttt_detectives_glow_enabled                    0       // Whether members of the
 ttt_special_detectives_armor_loadout           1       // Whether special detectives (all detective roles other than the original detective itself) get armor automatically for free
 ttt_all_search_postround                       1       // Whether non-detectives can search bodies post-round or not
 ttt_all_search_binoc                           0       // Whether non-detectives can search bodies if they are using binoculars
-ttt_all_search_dnascanner                      0       // Whether non-detectives can search bodies if they are hold the DNA scanner
+ttt_all_search_dnascanner                      0       // Whether non-detectives can search bodies if they are holding the DNA scanner
 ttt_detectives_credits_timer                   0       // How often in seconds to give members of the detective team a credit. Set to 0 to disable.
 ttt_detectives_search_credits                  0       // How many credits a detective should get for searching a corpse. Set to 0 to disable.
 ttt_detectives_search_credits_friendly         0       // Whether detectives should get credits for searching friendly corpses
@@ -618,6 +618,7 @@ ttt_beggar_can_see_jesters                     0       // Whether jesters are re
 ttt_beggar_update_scoreboard                   0       // Whether the beggar shows dead players as missing in action (Only applies if ttt_beggar_is_independent is enabled)
 ttt_beggar_announce_delay                      0       // How long the delay between role change and announcement should be
 ttt_beggar_keep_begging                        0       // Whether the beggar should be able to keep begging after joining a team and switch teams multiple times
+ttt_beggar_ignore_empty_weapons                1       // Whether the beggar should not change teams if they are given a weapon with no ammo
 
 // Bodysnatcher
 ttt_bodysnatcher_is_independent                0       // Whether bodysnatchers should be treated as members of the independent team (rather than the jester team)
