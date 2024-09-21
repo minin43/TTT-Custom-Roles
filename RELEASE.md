@@ -1,7 +1,10 @@
 # Release Notes
 
 ## 2.2.2 (Beta)
-**Released:**
+**Released: September 21st, 2024**
+
+### Changes
+- Changed the beggar so that they don't change teams if they are given an item with no ammo (can be disabled)
 
 ### Fixes
 - Fixed assassin whose target is made their lover by a cupid not being assigned a new lover
