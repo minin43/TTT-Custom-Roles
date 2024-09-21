@@ -298,7 +298,7 @@ hook.Add("TTTPlayerRoleChanged", "Beggar_Informant_TTTPlayerRoleChanged", functi
         -- Only notify if there is an beggar and the player had some info being reset
         if scanStage > BEGGAR_UNSCANNED then
             for _, v in PlayerIterator() do
-                if v:IsActiveBeggar() then
+                if ply ~= v and v:IsActiveBeggar() then
                     v:PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has changed roles. You will need to rescan them.")
                 end
             end

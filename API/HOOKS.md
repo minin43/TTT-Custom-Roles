@@ -118,6 +118,23 @@ Called before a player is killed because their lover (as set by Cupid's arrows) 
 
 *Return:* If `ply` should not be killed, return `true`. Otherwise do not return anything.
 
+### TTTCupidLoverChosen(cupid, lover)
+Called after a player has been chosen as a cupid's lover.\
+*Realm:* Server\
+*Added in:* 2.2.2\
+*Parameters:*
+- *cupid* - The cupid who has chosen a lover
+- *lover* - The lover that was chosen
+
+### TTTCupidLoversChosen(cupid, lover1, lover2)
+Called after both players have been chosen as a cupid's lovers.\
+*Realm:* Server\
+*Added in:* 2.2.2\
+*Parameters:*
+- *cupid* - The cupid who has chosen both lovers
+- *lover1* - The first lover that was chosen
+- *lover2* - The second lover that was chosen
+
 ### TTTCurePlayer(ply)
 Called when someone uses a cure on a player.\
 *Realm:* Server\

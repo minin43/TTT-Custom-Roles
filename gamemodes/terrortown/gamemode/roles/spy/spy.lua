@@ -26,7 +26,7 @@ local spy_steal_name = GetConVar("ttt_spy_steal_name")
 -- Only allow the spy to pick up spy-specific weapons
 hook.Add("PlayerCanPickupWeapon", "Spy_Weapons_PlayerCanPickupWeapon", function(ply, wep)
     if not IsValid(wep) or not IsValid(ply) then return end
-    if ply:IsSpec() then return false end
+    if ply:IsSpec() then return end
     if wep:GetClass() == "weapon_spy_flaregun" then return ply:IsSpy() end
 end)
 
