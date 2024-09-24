@@ -58,7 +58,7 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
     if wep.BoughtBy and wep.BoughtBy:IsBeggar() then return end -- If a beggar is the owner of this weapon then it should no longer change ownership or convert beggars as it has already been 'used'
 
     if ply:IsBeggar() and wep.BoughtBy and IsPlayer(wep.BoughtBy) and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
-        if beggar_ignore_empty_weapons:GetBool() and wep:GetMaxClip1() > 0 and wep:Clip1() == 0 then 
+        if beggar_ignore_empty_weapons:GetBool() and wep:GetMaxClip1() > 0 and wep:Clip1() == 0 then
             ply:PrintMessage(HUD_PRINTTALK, "Empty weapons don't convert the " .. ROLE_STRINGS[ROLE_BEGGAR])
             return
         end
