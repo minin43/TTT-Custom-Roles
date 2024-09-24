@@ -29,6 +29,7 @@ local beggar_scan_cooldown = CreateConVar("ttt_beggar_scan_cooldown", "3", FCVAR
 local beggar_scan_distance = CreateConVar("ttt_beggar_scan_distance", "2500", FCVAR_NONE, "The maximum distance away the scanner target can be", 1000, 10000)
 local beggar_transfer_ownership = CreateConVar("ttt_beggar_transfer_ownership", "0", FCVAR_NONE, "Whether the ownership of a shop item should transfer each time its picked up by a non-beggar", 0, 1)
 local beggar_ignore_empty_weapons = CreateConVar("ttt_beggar_ignore_empty_weapons", "1", FCVAR_NONE, "Whether the beggar should not change teams if they are given a weapon with no ammo", 0, 1)
+local beggar_ignore_empty_weapons_warning = CreateConVar("ttt_beggar_ignore_empty_weapons_warning", "1", FCVAR_NONE, "Whether the beggar should receive a chat message warning on receiving an empty weapon", 0, 1)
 
 local beggar_respawn = GetConVar("ttt_beggar_respawn")
 local beggar_respawn_limit = GetConVar("ttt_beggar_respawn_limit")
@@ -59,7 +60,9 @@ hook.Add("WeaponEquip", "Beggar_WeaponEquip", function(wep, ply)
 
     if ply:IsBeggar() and wep.BoughtBy and IsPlayer(wep.BoughtBy) and (wep.BoughtBy:IsTraitorTeam() or wep.BoughtBy:IsInnocentTeam()) then
         if beggar_ignore_empty_weapons:GetBool() and wep:GetMaxClip1() > 0 and wep:Clip1() == 0 then
-            ply:PrintMessage(HUD_PRINTTALK, "Empty weapons don't convert the " .. ROLE_STRINGS[ROLE_BEGGAR])
+            if beggar_ignore_empty_weapons_warning:GetBool() then
+                ply:PrintMessage(HUD_PRINTTALK, "Empty weapons don't convert the " .. ROLE_STRINGS[ROLE_BEGGAR])
+            end
             return
         end
 
