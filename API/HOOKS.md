@@ -7,6 +7,16 @@ For example, if there is a hook that returns three parameters: `first`, `second`
 
 ***NOTE:*** Be careful that you only return from a hook when you absolutely want to change something. Due to the way GMod hooks work, whichever hook instance returns first causes the *remaining hook instances to be completely skipped*. This is useful for certain hooks when you want to stop a behavior from happening, but it can also accidentally cause functionality to break because its code is completely ignored.
 
+### TTTBeggarConvert(beggar, wep)
+Called when a beggar is about to have their team changed from receiving an item.\
+*Realm:* Server\
+*Added in:* 2.2.3\
+*Parameters:*
+- *beggar* - The beggar who is about to be converted
+- *wep* - The weapon the beggar received
+
+*Return:* Whether or not the beggar should be converted (Defaults to `true`).
+
 ### TTTBodyCreditsLooted(ply, deadPly, rag, credits)
 Called when a player loots credits off of a dead player's body.\
 *Realm:* Server\

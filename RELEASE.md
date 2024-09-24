@@ -1,5 +1,14 @@
 # Release Notes
 
+## 2.2.3 (Beta)
+**Released:**
+
+### Additions
+- Added a chat message for the beggar when receiving an empty weapon and `ttt_beggar_ignore_empty_weapons` is enabled
+
+### Developer
+- Added `TTTBeggarConvert` hook to allow blocking a beggar from having their team changed after receiving an item
+
 ## 2.2.2 (Beta)
 **Released: September 21st, 2024**
 
