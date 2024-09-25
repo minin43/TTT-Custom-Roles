@@ -4,8 +4,7 @@
 **Released:**
 
 ### Additions
-- Added a chat message for the beggar when receiving an empty weapon and `ttt_beggar_ignore_empty_weapons` is enabled
-- Added `ttt_beggar_ignore_empty_weapons_warning` (enabled by default) to control displaying this chat message
+- Added a chat message for the beggar when receiving an empty weapon and `ttt_beggar_ignore_empty_weapons` is enabled (can be disabled by setting `ttt_beggar_ignore_empty_weapons_warning 0`)
 
 ### Developer
 - Added `TTTBeggarConvert` hook to allow blocking a beggar from having their team changed after receiving an item
