@@ -172,6 +172,10 @@ table.insert(ROLE_CONVARS[ROLE_BEGGAR], {
     cvar = "ttt_beggar_ignore_empty_weapons",
     type = ROLE_CONVAR_TYPE_BOOL
 })
+table.insert(ROLE_CONVARS[ROLE_BEGGAR], {
+    cvar = "ttt_beggar_ignore_empty_weapons_warning",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
 
 -------------------
 -- ROLE FEATURES --
