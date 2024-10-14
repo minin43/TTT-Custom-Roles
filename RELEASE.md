@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2.2.4 (Beta)
+**Released:**
+
+### Fixes
+- Ported "TTT: fix ragdoll not being created if ttt_dyingshot is on"
+
 ## 2.2.3 (Beta)
 **Released: October 5th, 2024**
 
