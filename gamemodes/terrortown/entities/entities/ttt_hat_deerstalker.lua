@@ -40,7 +40,7 @@ end
 
 if SERVER then
     local ttt_hats_reclaim = CreateConVar("ttt_detective_hats_reclaim", "1")
-    local ttt_hats_innocent = CreateConVar("ttt_detective_hats_reclaim_any", "0")
+    local ttt_hats_reclaim_any = CreateConVar("ttt_detective_hats_reclaim_any", "0")
 
     function ENT:OnRemove()
         self:SetBeingWorn(false)
@@ -98,7 +98,7 @@ if SERVER then
 
     local function CanEquipHat(ply)
         return not IsValid(ply.hat) and
-            (ttt_hats_innocent:GetBool() or ply:IsDetectiveLike())
+            (ttt_hats_reclaim_any:GetBool() or ply:IsDetectiveLike())
     end
 
     function ENT:UseOverride(ply)
