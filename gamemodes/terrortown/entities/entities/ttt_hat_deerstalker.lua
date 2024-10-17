@@ -98,7 +98,7 @@ if SERVER then
 
     local function CanEquipHat(ply)
         return not IsValid(ply.hat) and
-            (ttt_hats_innocent:GetBool() or ply:GetRole() == ROLE_DETECTIVE)
+            (ttt_hats_innocent:GetBool() or ply:IsDetectiveLike())
     end
 
     function ENT:UseOverride(ply)

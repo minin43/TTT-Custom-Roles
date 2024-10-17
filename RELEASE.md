@@ -5,6 +5,7 @@
 
 ### Fixes
 - Ported "TTT: fix ragdoll not being created if ttt_dyingshot is on"
+- Fixed detective hat not being wearable by special detectives or detective-like roles
 
 ## 2.2.3 (Beta)
 **Released: October 5th, 2024**
