@@ -3,6 +3,9 @@
 ## 2.2.4 (Beta)
 **Released:**
 
+### Additions
+- Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)
+
 ### Fixes
 - Ported "TTT: fix ragdoll not being created if ttt_dyingshot is on"
 - Fixed detective hat not being wearable by special detectives or detective-like roles

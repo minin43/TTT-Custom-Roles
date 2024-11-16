@@ -191,6 +191,8 @@ local function HandleVindicatorMidRound(ply)
     end
 end
 
+local unkillable_roles = { ROLE_GUESSER }
+
 hook.Add("TTTPlayerRoleChanged", "Vindicator_TTTPlayerRoleChanged", function(ply, oldRole, newRole)
     if oldRole == newRole then return end
 
@@ -201,6 +203,22 @@ hook.Add("TTTPlayerRoleChanged", "Vindicator_TTTPlayerRoleChanged", function(ply
         HandleVindicatorMidRound(vindicator)
     elseif newRole == ROLE_VINDICATOR then
         HandleVindicatorMidRound(ply)
+    -- If the player has changed to an unkillable role
+    elseif table.HasValue(unkillable_roles, newRole) then
+        local plySid64 = ply:SteamID64()
+        -- Find activated vindicators who have this player as their target
+        for _, p in PlayerIterator() do
+            if not p:Alive() or p:IsSpec() then continue end
+            if not p:IsVindicator() or not p:IsRoleActive() then continue end
+
+            local targetSid64 = p:GetNWString("VindicatorTarget", "")
+            -- Then clear their target and swap them back to being innocent
+            if plySid64 == targetSid64 then
+                p:SetNWString("VindicatorTarget", "")
+                SetVindicatorTeam(false)
+                p:QueueMessage(MSG_PRINTBOTH, "Your target has changed to a new role that you cannot kill. You have calmed your need for revenge.")
+            end
+        end
     end
 end)
 
