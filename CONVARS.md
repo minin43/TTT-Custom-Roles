@@ -447,7 +447,8 @@ ttt_vindicator_announcement_mode               1       // Who is notified when t
 ttt_vindicator_prevent_revival                 0       // Whether the vindicator should be killed if they are revived after having died due to failing or succeeding in killing their target
 ttt_vindicator_target_suicide_success          1       // Whether the vindicator's killer killing themselves should count as a win for the vindicator
 ttt_vindicator_kill_on_fail                    1       // Whether the vindicator should be killed if they fail to kill their target
-ttt_vindicator_kill_on_success                 0       // Whether the vindicator should be killed after they kill their target
+ttt_vindicator_kill_on_success                 0       // Whether the vindicator should be killed after they kill their target (Not used when `ttt_vindicator_reset_on_success` is enabled)
+ttt_vindicator_reset_on_success                0       // Whether the vindicator should be reset to the innocent team after they kill their target
 ttt_vindicator_can_see_jesters                 0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to vindicators when they are on the independent team
 ttt_vindicator_update_scoreboard               0       // Whether vindicators show dead players as missing in action when they are on the independent team
 
