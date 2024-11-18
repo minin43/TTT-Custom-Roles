@@ -26,6 +26,7 @@ local vindicator_target_suicide_success = GetConVar("ttt_vindicator_target_suici
 local vindicator_kill_on_fail = GetConVar("ttt_vindicator_kill_on_fail")
 local vindicator_kill_on_success = GetConVar("ttt_vindicator_kill_on_success")
 local vindicator_reset_on_success = GetConVar("ttt_vindicator_reset_on_success")
+local vindicator_reset_win_on_success = GetConVar("ttt_vindicator_reset_win_on_success")
 
 -------------------
 -- ROLE FEATURES --
@@ -93,7 +94,9 @@ local function ActivateVindicator(vindicator, target)
 end
 
 local function OnVindicatorSuccess(vindicator, target, msg)
-    vindicator:SetNWBool("VindicatorSuccess", true)
+    if vindicator_reset_on_success:GetBool() and not vindicator_reset_win_on_success:GetBool() then
+        vindicator:SetNWBool("VindicatorSuccess", true)
+    end
     vindicator:QueueMessage(MSG_PRINTBOTH, msg)
     net.Start("TTT_VindicatorSuccess")
     net.WriteString(vindicator:Nick())

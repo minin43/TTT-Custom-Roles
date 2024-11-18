@@ -4,7 +4,8 @@
 **Released:**
 
 ### Additions
-- Added ability to have the vindicator reset back to the innocent team when the successfully kill their target (disabled by default)
+- Added ability to have the vindicator reset back to the innocent team when they successfully kill their target (disabled by default)
+  - There is also a second configuration to disable the vindicator's secondary win when they reset to the innocent team
 
 ### Changes
 - Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)
