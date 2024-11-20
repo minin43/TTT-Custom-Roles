@@ -9,6 +9,7 @@
 
 ### Changes
 - Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)
+- Change zombie rounds (`ttt_zombie_round_chance`) to obey `ttt_zombie_min_players`
 
 ### Fixes
 - Ported "TTT: fix ragdoll not being created if ttt_dyingshot is on"
