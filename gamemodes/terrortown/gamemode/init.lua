@@ -901,8 +901,8 @@ end
 function PrintResultMessage(type)
     ServerLog("Round ended.\n")
 
-    local overriden = CallHook("TTTPrintResultMessage", nil, type)
-    if overriden then return end
+    local overridden = CallHook("TTTPrintResultMessage", nil, type)
+    if overridden then return end
 
     if type == WIN_TIMELIMIT then
         if GetConVar("ttt_roundtime_win_draw"):GetBool() then

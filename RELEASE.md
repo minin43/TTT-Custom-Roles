@@ -35,10 +35,10 @@
 - Fixed assassin whose target is made their lover by a cupid not being assigned a new lover
 - Fixed illusionist not blocking the radar color for traitors revealing other traitors
 - Fixed error when calling `plymeta:ClearMessageQueue` or `plymeta:PrintMessageQueue` when the player didn't have a message queue created first
-- Fixed player whose role is changed into a beggar with scanning ability being told they need to have their role rescanned
-- Fixed player whose role is changed into an informant being told they need to have their role rescanned
-- Fixed player whose role is changed to a member of the traitor team being told they need to have their role rescanned by the informant
-- Fixed killers seeing eachother via vision even though they normally wouldn't know eachothers roles
+- Fixed player whose role is changed into a beggar with scanning ability being told they need to have their role re-scanned
+- Fixed player whose role is changed into an informant being told they need to have their role re-scanned
+- Fixed player whose role is changed to a member of the traitor team being told they need to have their role re-scanned by the informant
+- Fixed killers seeing each other via vision even though they normally wouldn't know each other's roles
 - Fixed occasional error in Plaguemaster code when a player dies
 - Ported "TTT: fix and optimize traitor button rendering" from base TTT
 
@@ -348,7 +348,7 @@ Includes beta update [2.1.10](#2110-beta).
 
 ### Fixes
 - Fixed rare error in defib-like devices when used on a corpse that doesn't have a Steam ID property set
-- Fixed freeze caused by the spy's flaregun when running CR4TTT alongside wget's TTT Weapons Rework
+- Fixed freeze caused by the spy's flare gun when running CR4TTT alongside wget's TTT Weapons Rework
 - Fixed footprints sometimes being giant and sometimes not showing at all
 - Fixed transferring credits to the glitch as a member of the traitor team not doing anything, revealing the glitch to the traitors
 - Fixed disguised spy or bodysnatcher being revealed by the quickchat radio menu and messages
@@ -2452,7 +2452,7 @@ Includes all beta updates from [1.1.4](#114-beta) to [1.1.11](#1111-beta).
 - Fixed error in round summary caused by a player being an in invalid role state
 - Fixed weapon switch GUI not updating when you picked up a new weapon and ttt_weaponswitcher_stay was enabled
 - Fixed weapon switch GUI closing when you dropped a weapon and ttt_weaponswitcher_stay was enabled
-- Fixed weapon switch GUI closing when you tried to drop an undroppable weapon
+- Fixed weapon switch GUI closing when you tried to drop an un-droppable weapon
 - Fixed player not appearing on the round summary screen if they were idled to spectator last round and only un-spectated during this round's preparation phase
 
 ### Developer

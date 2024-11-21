@@ -48,7 +48,7 @@ end
 
 hook.Add("EntityTakeDamage", "Sponge_EntityTakeDamage", function(target, dmginfo)
     if not IsPlayer(target) then return end
-    -- Don't transfer damage done to sponges, even if two sponges are next to eachother
+    -- Don't transfer damage done to sponges, even if two sponges are next to each other
     -- This prevents an infinite loop of transferring the damage back and forth
     if target:IsSponge() then return end
 
