@@ -15,6 +15,7 @@
 - Ported "TTT: fix ragdoll not being created if ttt_dyingshot is on"
 - Fixed detective hat not being wearable by special detectives or detective-like roles
 - Fixed error loading guesser tutorial
+- Reverted jester and sponge round win logic compatibility change from 2.1.6 that didn't actually added compatibility and did cause jester and sponge wins to not work when certain independent roles (e.g. Arsonist) were in the round
 
 ## 2.2.3 (Beta)
 **Released: October 5th, 2024**

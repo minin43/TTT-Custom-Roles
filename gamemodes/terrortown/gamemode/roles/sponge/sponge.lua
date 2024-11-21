@@ -1,6 +1,8 @@
 AddCSLuaFile()
 
+local hook = hook
 local player = player
+local timer = timer
 
 local PlayerIterator = player.Iterator
 
@@ -185,10 +187,7 @@ local function SpongeKilledNotification(attacker, victim)
         end)
 end
 
-local spongeWinTime = nil
 hook.Add("PlayerDeath", "Sponge_WinCheck_PlayerDeath", function(victim, infl, attacker)
-    if spongeWinTime then return end
-
     local valid_kill = IsPlayer(attacker) and attacker ~= victim and GetRoundState() == ROUND_ACTIVE
     if not valid_kill then return end
 
@@ -201,19 +200,10 @@ hook.Add("PlayerDeath", "Sponge_WinCheck_PlayerDeath", function(victim, infl, at
             return
         end
 
+        -- Stop the win checks so someone else doesn't steal the sponge's win
+        StopWinChecks()
         -- Delay the actual end for a second so the message and sound have a chance to generate a reaction
-        spongeWinTime = CurTime() + 1
-    end
-end)
-
-hook.Add("TTTCheckForWin", "Sponge_TTTCheckForWin", function()
-    if spongeWinTime then
-        if CurTime() > spongeWinTime then
-            spongeWinTime = nil
-            return WIN_SPONGE
-        end
-
-        return WIN_NONE
+        timer.Simple(1, function() EndRound(WIN_SPONGE) end)
     end
 end)
 
@@ -226,8 +216,6 @@ hook.Add("TTTPrintResultMessage", "Sponge_TTTPrintResultMessage", function(type)
 end)
 
 hook.Add("TTTPrepareRound", "Sponge_PrepareRound", function()
-    spongeWinTime = nil
-
     for _, v in PlayerIterator() do
         v:SetNWString("SpongeKiller", "")
         v:SetNWString("SpongeProtecting", "")
