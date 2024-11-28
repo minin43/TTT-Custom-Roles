@@ -28,6 +28,7 @@ local shadow_target_buff = GetConVar("ttt_shadow_target_buff")
 local shadow_target_buff_delay = GetConVar("ttt_shadow_target_buff_delay")
 local shadow_soul_link = GetConVar("ttt_shadow_soul_link")
 local shadow_weaken_health_to = GetConVar("ttt_shadow_weaken_health_to")
+local shadow_weaken_health_to_death = GetConVar("ttt_shadow_weaken_health_to_death")
 local shadow_target_notify_mode = GetConVar("ttt_shadow_target_notify_mode")
 local shadow_speed_mult = GetConVar("ttt_shadow_speed_mult")
 local shadow_sprint_recovery = GetConVar("ttt_shadow_sprint_recovery")
@@ -576,6 +577,9 @@ AddHook("TTTTutorialRoleText", "Shadow_TTTTutorialRoleText", function(role, titl
 
         if shadow_weaken_health_to:GetInt() > 0 then
             html = html .. "has their health temporarily reduced over time. Once they get close to their target again, though, they will start to recover their max health back to normal"
+            if shadow_weaken_health_to_death:GetBool() then
+                html = html .. ". If they stay away for too long, however, the " .. ROLE_STRINGS[ROLE_SHADOW] .. " <span style='color: rgb(" .. roleColor.r .. ", " .. roleColor.g .. ", " .. roleColor.b .. ")'>will die</span>"
+            end
         else
             local failure_mode = shadow_failure_mode:GetInt()
             if failure_mode == SHADOW_FAILURE_JESTER then

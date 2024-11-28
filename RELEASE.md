@@ -6,6 +6,7 @@
 ### Additions
 - Added ability to have the vindicator reset back to the innocent team when they successfully kill their target (disabled by default)
   - There is also a second configuration to disable the vindicator's secondary win when they reset to the innocent team
+- Added ability to have the shadow die one tick after they reach 1HP when `ttt_shadow_weaken_health_to` is set to `1` (disabled by default)
 
 ### Changes
 - Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)

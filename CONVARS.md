@@ -884,6 +884,7 @@ ttt_shadow_target_traitor                      1       // Whether the shadow sho
 ttt_shadow_target_notify_mode                  0       // How the shadow's target should be notified they have a shadow. 0 - Don't notify. 1 - Anonymously notify. 2 - Identify the shadow.
 ttt_shadow_soul_link                           0       // Whether the shadow's soul should be linked to their target. 0 - Disable. 1 - Both shadow and target die if either is killed. 2 - The shadow dies if their target is killed.
 ttt_shadow_weaken_health_to                    0       // How low to reduce the Shadow's health to when they are outside of the target circle instead of their normal punishment. (Setting to 0 will use "ttt_shadow_failure_mode" instead.)
+ttt_shadow_weaken_health_to_death              0       // Whether to kill the shadow one tick after they reach 1HP when "ttt_shadow_weaken_health_to" is set to 1
 ttt_shadow_weaken_timer                        3       // How often (in seconds) to adjust the shadow's health when they are outside of the target circle
 ttt_shadow_failure_mode                        0       // How to handle the shadow failing to stay near their target. 0 - Kill them. 1 - Change them to be a jester. 2 - Change them to be a swapper. Not used when "ttt_shadow_weaken_health_to" is enabled.
 ttt_shadow_can_see_jesters                     0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the shadow
