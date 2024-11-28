@@ -8,6 +8,11 @@
   - There is also a second configuration to disable the vindicator's secondary win when they reset to the innocent team
 - Added ability to have the shadow die one tick after they reach 1HP when `ttt_shadow_weaken_health_to` is set to `1` (disabled by default)
 - Added ability to control whether draining a player or corpse as a vampire drops bones (enabled by default)
+- Added ability to control whether an assassin is penalized for killing a player by their role or team (only for independents, jesters, and monsters)
+  - The following roles have this featured enabled by default: Clown, Loot Goblin, Vampire, Vindicator, Zombie
+  - NOTE: This expands a feature that already existed for the Loot Goblin, Vampire, and Zombie
+  - NOTE: Roles that activate (e.g. Clown, Loot Goblin, Vindicator, etc.) can only bypass the kill penalty when they are active. This keeps the same behavior as before these additional convars were added
+  - NOTE: Any role that can be moved to another team by configuration will only have this convar created if they are an independent, jester, or monster
 
 ### Changes
 - Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)

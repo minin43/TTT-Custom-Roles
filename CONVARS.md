@@ -261,9 +261,27 @@ ttt_assassin_wrong_damage_penalty              0.5     // Damage penalty that th
 ttt_assassin_failed_damage_penalty             0.5     // Damage penalty that the assassin has after they have failed their contract by killing the wrong person (e.g. 0.5 = 50% less damage)
 ttt_assassin_shop_roles_last                   0       // Whether the assassin should target the shop roles right before Detective or not
 ttt_assassin_credits_starting                  1       // The number of credits an assassin should start with
-ttt_assassin_allow_lootgoblin_kill             1       // Whether the assassin can kill a loot goblin without penalty, even if it is not their target
-ttt_assassin_allow_zombie_kill                 1       // Whether the assassin can kill a zombie without penalty, even if it is not their target
-ttt_assassin_allow_vampire_kill                1       // Whether the assassin can kill a vampire without penalty, even if it is not their target
+ttt_assassin_allow_jesters_kill                1       // Whether the assassin can kill a member of the jester team without damage penalty, even if it is not their target
+ttt_assassin_allow_independents_kill           1       // Whether the assassin can kill an independent role without damage penalty, even if it is not their target
+ttt_assassin_allow_monsters_kill               1       // Whether the assassin can kill a member of the monster team without damage penalty, even if it is not their target
+ttt_assassin_allow_jester_kill                 1       // Whether the assassin can kill a jester without damage penalty, even if it is not their target
+ttt_assassin_allow_swapper_kill                1       // Whether the assassin can kill a swapper without damage penalty, even if it is not their target
+ttt_assassin_allow_clown_kill                  1       // Whether the assassin can kill a clown without damage penalty, even if it is not their target
+ttt_assassin_allow_beggar_kill                 1       // Whether the assassin can kill a beggar without damage penalty, even if it is not their target
+ttt_assassin_allow_bodysnatcher_kill           1       // Whether the assassin can kill a bodysnatcher without damage penalty, even if it is not their target
+ttt_assassin_allow_lootgoblin_kill             1       // Whether the assassin can kill a loot goblin without damage penalty, even if it is not their target
+ttt_assassin_allow_cupid_kill                  1       // Whether the assassin can kill a cupid without damage penalty, even if it is not their target
+ttt_assassin_allow_sponge_kill                 1       // Whether the assassin can kill a sponge without damage penalty, even if it is not their target
+ttt_assassin_allow_guesser_kill                1       // Whether the assassin can kill a guesser without damage penalty, even if it is not their target
+ttt_assassin_allow_oldman_kill                 1       // Whether the assassin can kill a oldman without damage penalty, even if it is not their target
+ttt_assassin_allow_killer_kill                 1       // Whether the assassin can kill a killer without damage penalty, even if it is not their target
+ttt_assassin_allow_zombie_kill                 1       // Whether the assassin can kill a zombie without damage penalty, even if it is not their target
+ttt_assassin_allow_madscientist_kill           1       // Whether the assassin can kill a mad scientist without damage penalty, even if it is not their target
+ttt_assassin_allow_shadow_kill                 1       // Whether the assassin can kill a shadow without damage penalty, even if it is not their target
+ttt_assassin_allow_arsonist_kill               1       // Whether the assassin can kill an arsonist without damage penalty, even if it is not their target
+ttt_assassin_allow_hivemind_kill               1       // Whether the assassin can kill a member of the hive mind without damage penalty, even if it is not their target
+ttt_assassin_allow_plaguemaster_kill           1       // Whether the assassin can kill a plaguemaster without damage penalty, even if it is not their target
+ttt_assassin_allow_vindicator_kill             1       // Whether the assassin can kill a vindicator without damage penalty, even if it is not their target
 
 // Vampire
 ttt_vampire_is_monster                         0       // Whether vampires should be treated as members of the monster team (rather than the traitor team)
