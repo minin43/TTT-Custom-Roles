@@ -186,6 +186,24 @@
             <em>Return:</em> The player name to show, if it should be overridden. Otherwise do not return anything.
         </p>
 
+        <h3><a id="tttcheatsheetrolestringoverrideclient-rolestring" href="#tttcheatsheetrolestringoverrideclient-rolestring">TTTCheatSheetRoleStringOverride(client, roleString)</a></h3>
+        <p>
+            Called when the cheat sheet is displayed, allowing the target translation string to be changed.<br>
+            <em>Realm:</em> Client<br>
+            <em>Added in:</em> 2.2.4<br>
+            <em>Parameters:</em>
+        </p>
+        <ul>
+            <li><em>client</em> - The local player</li>
+            <li><em>roleString</em> - The string representing role of the local player. Is normally used to build the role cheat sheet description translation</li>
+        </ul>
+        <p>
+            <em>Return:</em>
+        </p>
+        <ul>
+            <li><em>roleString</em> - The new string to use when building the role cheat sheet description translation</li>
+        </ul>
+
         <h3><a id="tttcupidshouldloversurviveply-lover" href="#tttcupidshouldloversurviveply-lover">TTTCupidShouldLoverSurvive(ply, lover)</a></h3>
         <p>
             Called before a player is killed because their lover (as set by Cupid's arrows) has been killed. Allows developers to prevent the player from being killed.<br>

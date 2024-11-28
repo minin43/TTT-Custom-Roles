@@ -7,6 +7,7 @@
 - Added ability to have the vindicator reset back to the innocent team when they successfully kill their target (disabled by default)
   - There is also a second configuration to disable the vindicator's secondary win when they reset to the innocent team
 - Added ability to have the shadow die one tick after they reach 1HP when `ttt_shadow_weaken_health_to` is set to `1` (disabled by default)
+- Added ability to control whether draining a player or corpse as a vampire drops bones (enabled by default)
 
 ### Changes
 - Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)
@@ -17,6 +18,9 @@
 - Fixed detective hat not being wearable by special detectives or detective-like roles
 - Fixed error loading guesser tutorial
 - Reverted jester and sponge round win logic compatibility change from 2.1.6 that didn't actually added compatibility and did cause jester and sponge wins to not work when certain independent roles (e.g. Arsonist) were in the round
+
+### Developer
+- Added `TTTCheatSheetRoleStringOverride` client hook to allow changing the cheat sheet string based on convar values
 
 ## 2.2.3 (Beta)
 **Released: October 5th, 2024**

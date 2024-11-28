@@ -63,6 +63,7 @@ local vampire_convert_enabled = CreateConVar("ttt_vampire_convert_enabled", "0",
 local vampire_drain_enabled = CreateConVar("ttt_vampire_drain_enabled", "1", FCVAR_REPLICATED, "Whether vampires have the ability to drain a living target's blood using their fangs", 0, 1)
 local vampire_drain_first = CreateConVar("ttt_vampire_drain_first", "0", FCVAR_REPLICATED, "Whether vampires should drain a living target's blood first rather than converting first", 0, 1)
 local vampire_prime_only_convert = CreateConVar("ttt_vampire_prime_only_convert", "1", FCVAR_REPLICATED, "Whether only prime vampires (e.g. players who spawn as vampire originally) are allowed to convert other players", 0, 1)
+local vampire_drop_bones = CreateConVar("ttt_vampire_drop_bones", "1", FCVAR_REPLICATED, "Whether vampires should drop bones when draining a player or a corpse", 0, 1)
 
 if SERVER then
     CreateConVar("ttt_vampire_drain_credits", "0", FCVAR_NONE, "How many credits a vampire should get for draining a living target", 0, 10)
@@ -386,6 +387,8 @@ end
 
 local CreateEntity = ents.Create
 function SWEP:DropBones()
+    if not vampire_drop_bones:GetBool() then return end
+
     local pos = self.TargetEntity:GetPos()
     local fingerprints = { self:GetOwner() }
 

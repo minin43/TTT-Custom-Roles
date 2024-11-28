@@ -274,6 +274,7 @@ ttt_vampire_drain_first                        0       // Whether vampires shoul
 ttt_vampire_drain_credits                      0       // How many credits a vampire should get for draining a living target
 ttt_vampire_drain_mute_target                  0       // Whether players being drained by a vampire should be muted
 ttt_vampire_convert_enabled                    0       // Whether vampires have the ability to convert living targets to a vampire thrall using their fangs
+ttt_vampire_drop_bones                         1       // Whether vampires should drop bones when draining a player or a corpse
 ttt_vampire_show_target_icon                   0       // Whether vampires have an icon over other players' heads showing who to kill. Server or round must be restarted for changes to take effect.
 ttt_vampire_damage_reduction                   0       // The fraction an attacker's bullet damage will be reduced by when they are shooting a vampire
 ttt_vampire_fang_timer                         5       // The amount of time fangs must be used to fully drain a target's blood
