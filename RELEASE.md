@@ -22,6 +22,7 @@
 - Ported "TTT: fix ragdoll not being created if ttt_dyingshot is on"
 - Fixed detective hat not being wearable by special detectives or detective-like roles
 - Fixed error loading guesser tutorial
+- Fixed plaguemaster not being able to see Missing in Action players by default due to a typo
 - Reverted jester and sponge round win logic compatibility change from 2.1.6 that didn't actually added compatibility and did cause jester and sponge wins to not work when certain independent roles (e.g. Arsonist) were in the round
 
 ### Developer
