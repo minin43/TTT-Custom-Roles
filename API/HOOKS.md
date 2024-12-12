@@ -1230,3 +1230,12 @@ Called after a win condition has been set and right before the round eds. Used f
 *Added in:* 1.3.1\
 *Parameters:*
 - *win* - The win type that the round is about to end with
+
+### TTTZombieBodyEaten(ply, ent, healed)
+Called after a zombie eats a body.\
+*Realm:* Server\
+*Added in:* 2.2.4\
+*Parameters:*
+- *ply* - The zombie eating the body
+- *ent* - The target entity. Generally either a player or a ragdoll
+- *healed* - The amount of health the player gained from eating the body

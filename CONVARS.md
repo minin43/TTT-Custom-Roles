@@ -864,6 +864,11 @@ ttt_zombie_prime_convert_chance                1.0     // The chance that a prim
 ttt_zombie_thrall_convert_chance               1.0     // The chance that a zombie thrall (e.g. non-prime zombie) will convert other players who are killed by their claws to be zombies as well. Set to 0 to disable
 ttt_zombie_friendly_fire                       2       // How to handle friendly fire damage between zombies. 0 - Do nothing. 1 - Reflect the damage back to the attacker. 2 - Negate the damage.
 ttt_zombie_respawn_block_win                   0       // Whether a player respawning as a zombie blocks the round from ending, allowing them to join the winning team
+ttt_zombie_eat_enabled                         0       // Whether zombies have the ability to eat a player's corpse
+ttt_zombie_eat_drop_bones                      1       // Whether zombies should drop bones when eating a player's corpse
+ttt_zombie_eat_timer                           5       // The amount of time it takes to consume a player's corpse
+ttt_zombie_eat_heal                            50      // The amount of health a zombie will heal by when they consume a player's corpse
+ttt_zombie_eat_overheal                        25      // The amount over the zombie's normal maximum health (e.g. 100 + this ConVar) that the zombie can heal to by consuming a player's corpse
 ttt_zombie_can_see_jesters                     1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to zombies (Only applies if ttt_zombie_is_monster and ttt_zombie_is_traitor are not enabled)
 ttt_zombie_update_scoreboard                   1       // Whether the zombies show dead players as missing in action (Only applies if ttt_zombie_is_monster and ttt_zombie_is_traitor are not enabled)
 

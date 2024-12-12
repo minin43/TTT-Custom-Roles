@@ -13,6 +13,7 @@
   - NOTE: This expands a feature that already existed for the Loot Goblin, Vampire, and Zombie
   - NOTE: Roles that activate (e.g. Clown, Loot Goblin, Vindicator, etc.) can only bypass the kill penalty when they are active. This keeps the same behavior as before these additional convars were added
   - NOTE: Any role that can be moved to another team by configuration will only have this convar created if they are an independent, jester, or monster
+- Added ability for zombies to consume a player's corpse to heal themselves (disabled by default)
 
 ### Changes
 - Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)
@@ -27,6 +28,7 @@
 
 ### Developer
 - Added `TTTCheatSheetRoleStringOverride` client hook to allow changing the cheat sheet string based on convar values
+- Added `TTTZombieBodyEaten` server hook so addons can tell when a zombie eats a body
 
 ## 2.2.3 (Beta)
 **Released: October 5th, 2024**
