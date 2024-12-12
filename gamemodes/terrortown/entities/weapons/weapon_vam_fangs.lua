@@ -9,6 +9,8 @@ local player = player
 local timer = timer
 local util = util
 
+local CreateEntity = ents.Create
+
 if CLIENT then
     SWEP.PrintName = "Fangs"
     SWEP.EquipMenuData = {
@@ -71,7 +73,7 @@ if SERVER then
     CreateConVar("ttt_vampire_fang_dead_timer", "0", FCVAR_NONE, "The amount of time fangs must be used to fully drain a dead target's blood. Set to 0 to use the same time as \"ttt_vampire_fang_timer\"", 0, 30)
     CreateConVar("ttt_vampire_fang_timer", "5", FCVAR_NONE, "The amount of time fangs must be used to fully drain a target's blood", 0, 30)
     CreateConVar("ttt_vampire_fang_heal", "50", FCVAR_NONE, "The amount of health a vampire will heal by when they fully drain a target's blood", 0, 100)
-    CreateConVar("ttt_vampire_fang_overheal", "25", FCVAR_NONE, "The amount over the vampire's normal maximum health (e.g. 100 + this ConVar) that the vampire can heal to by drinking blood.", 0, 100)
+    CreateConVar("ttt_vampire_fang_overheal", "25", FCVAR_NONE, "The amount over the vampire's normal maximum health (e.g. 100 + this ConVar) that the vampire can heal to by drinking blood", 0, 100)
     CreateConVar("ttt_vampire_fang_overheal_living", "-1", FCVAR_NONE, "The amount of overheal (see \"ttt_vampire_fang_overheal\") to give if the vampire's target is living. Set to -1 to use the same amount as \"ttt_vampire_fang_overheal\" instead", -1, 100)
     CreateConVar("ttt_vampire_fang_unfreeze_delay", "2", FCVAR_NONE, "The number of seconds before players who were frozen in place by the fangs should be released if the vampire stops using the fangs on them", 0, 15)
 end
@@ -385,7 +387,6 @@ function SWEP:FireError()
     self:SetNextPrimaryFire(CurTime() + 0.1)
 end
 
-local CreateEntity = ents.Create
 function SWEP:DropBones()
     if not vampire_drop_bones:GetBool() then return end
 
