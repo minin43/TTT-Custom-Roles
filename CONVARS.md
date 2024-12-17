@@ -261,9 +261,27 @@ ttt_assassin_wrong_damage_penalty              0.5     // Damage penalty that th
 ttt_assassin_failed_damage_penalty             0.5     // Damage penalty that the assassin has after they have failed their contract by killing the wrong person (e.g. 0.5 = 50% less damage)
 ttt_assassin_shop_roles_last                   0       // Whether the assassin should target the shop roles right before Detective or not
 ttt_assassin_credits_starting                  1       // The number of credits an assassin should start with
-ttt_assassin_allow_lootgoblin_kill             1       // Whether the assassin can kill a loot goblin without penalty, even if it is not their target
-ttt_assassin_allow_zombie_kill                 1       // Whether the assassin can kill a zombie without penalty, even if it is not their target
-ttt_assassin_allow_vampire_kill                1       // Whether the assassin can kill a vampire without penalty, even if it is not their target
+ttt_assassin_allow_jesters_kill                1       // Whether the assassin can kill a member of the jester team without damage penalty, even if it is not their target
+ttt_assassin_allow_independents_kill           1       // Whether the assassin can kill an independent role without damage penalty, even if it is not their target
+ttt_assassin_allow_monsters_kill               1       // Whether the assassin can kill a member of the monster team without damage penalty, even if it is not their target
+ttt_assassin_allow_jester_kill                 1       // Whether the assassin can kill a jester without damage penalty, even if it is not their target
+ttt_assassin_allow_swapper_kill                1       // Whether the assassin can kill a swapper without damage penalty, even if it is not their target
+ttt_assassin_allow_clown_kill                  1       // Whether the assassin can kill a clown without damage penalty, even if it is not their target
+ttt_assassin_allow_beggar_kill                 1       // Whether the assassin can kill a beggar without damage penalty, even if it is not their target
+ttt_assassin_allow_bodysnatcher_kill           1       // Whether the assassin can kill a bodysnatcher without damage penalty, even if it is not their target
+ttt_assassin_allow_lootgoblin_kill             1       // Whether the assassin can kill a loot goblin without damage penalty, even if it is not their target
+ttt_assassin_allow_cupid_kill                  1       // Whether the assassin can kill a cupid without damage penalty, even if it is not their target
+ttt_assassin_allow_sponge_kill                 1       // Whether the assassin can kill a sponge without damage penalty, even if it is not their target
+ttt_assassin_allow_guesser_kill                1       // Whether the assassin can kill a guesser without damage penalty, even if it is not their target
+ttt_assassin_allow_oldman_kill                 1       // Whether the assassin can kill a oldman without damage penalty, even if it is not their target
+ttt_assassin_allow_killer_kill                 1       // Whether the assassin can kill a killer without damage penalty, even if it is not their target
+ttt_assassin_allow_zombie_kill                 1       // Whether the assassin can kill a zombie without damage penalty, even if it is not their target
+ttt_assassin_allow_madscientist_kill           1       // Whether the assassin can kill a mad scientist without damage penalty, even if it is not their target
+ttt_assassin_allow_shadow_kill                 1       // Whether the assassin can kill a shadow without damage penalty, even if it is not their target
+ttt_assassin_allow_arsonist_kill               1       // Whether the assassin can kill an arsonist without damage penalty, even if it is not their target
+ttt_assassin_allow_hivemind_kill               1       // Whether the assassin can kill a member of the hive mind without damage penalty, even if it is not their target
+ttt_assassin_allow_plaguemaster_kill           1       // Whether the assassin can kill a plaguemaster without damage penalty, even if it is not their target
+ttt_assassin_allow_vindicator_kill             1       // Whether the assassin can kill a vindicator without damage penalty, even if it is not their target
 
 // Vampire
 ttt_vampire_is_monster                         0       // Whether vampires should be treated as members of the monster team (rather than the traitor team)
@@ -274,6 +292,7 @@ ttt_vampire_drain_first                        0       // Whether vampires shoul
 ttt_vampire_drain_credits                      0       // How many credits a vampire should get for draining a living target
 ttt_vampire_drain_mute_target                  0       // Whether players being drained by a vampire should be muted
 ttt_vampire_convert_enabled                    0       // Whether vampires have the ability to convert living targets to a vampire thrall using their fangs
+ttt_vampire_drop_bones                         1       // Whether vampires should drop bones when draining a player or a corpse
 ttt_vampire_show_target_icon                   0       // Whether vampires have an icon over other players' heads showing who to kill. Server or round must be restarted for changes to take effect.
 ttt_vampire_damage_reduction                   0       // The fraction an attacker's bullet damage will be reduced by when they are shooting a vampire
 ttt_vampire_fang_timer                         5       // The amount of time fangs must be used to fully drain a target's blood
@@ -447,7 +466,9 @@ ttt_vindicator_announcement_mode               1       // Who is notified when t
 ttt_vindicator_prevent_revival                 0       // Whether the vindicator should be killed if they are revived after having died due to failing or succeeding in killing their target
 ttt_vindicator_target_suicide_success          1       // Whether the vindicator's killer killing themselves should count as a win for the vindicator
 ttt_vindicator_kill_on_fail                    1       // Whether the vindicator should be killed if they fail to kill their target
-ttt_vindicator_kill_on_success                 0       // Whether the vindicator should be killed after they kill their target
+ttt_vindicator_kill_on_success                 0       // Whether the vindicator should be killed after they kill their target (Not used when `ttt_vindicator_reset_on_success` is enabled)
+ttt_vindicator_reset_on_success                0       // Whether the vindicator should be reset to the innocent team after they kill their target
+ttt_vindicator_reset_win_on_success            0       // Whether the Vindicator, when they are reset to the innocent team after killing their target, should only win with the innocent team. When disabled, the Vindicator will also have a solo secondary win. (Requires `ttt_vindicator_reset_on_success` to be enabled)
 ttt_vindicator_can_see_jesters                 0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to vindicators when they are on the independent team
 ttt_vindicator_update_scoreboard               0       // Whether vindicators show dead players as missing in action when they are on the independent team
 
@@ -843,6 +864,11 @@ ttt_zombie_prime_convert_chance                1.0     // The chance that a prim
 ttt_zombie_thrall_convert_chance               1.0     // The chance that a zombie thrall (e.g. non-prime zombie) will convert other players who are killed by their claws to be zombies as well. Set to 0 to disable
 ttt_zombie_friendly_fire                       2       // How to handle friendly fire damage between zombies. 0 - Do nothing. 1 - Reflect the damage back to the attacker. 2 - Negate the damage.
 ttt_zombie_respawn_block_win                   0       // Whether a player respawning as a zombie blocks the round from ending, allowing them to join the winning team
+ttt_zombie_eat_enabled                         0       // Whether zombies have the ability to eat a player's corpse
+ttt_zombie_eat_drop_bones                      1       // Whether zombies should drop bones when eating a player's corpse
+ttt_zombie_eat_timer                           5       // The amount of time it takes to consume a player's corpse
+ttt_zombie_eat_heal                            50      // The amount of health a zombie will heal by when they consume a player's corpse
+ttt_zombie_eat_overheal                        25      // The amount over the zombie's normal maximum health (e.g. 100 + this ConVar) that the zombie can heal to by consuming a player's corpse
 ttt_zombie_can_see_jesters                     1       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to zombies (Only applies if ttt_zombie_is_monster and ttt_zombie_is_traitor are not enabled)
 ttt_zombie_update_scoreboard                   1       // Whether the zombies show dead players as missing in action (Only applies if ttt_zombie_is_monster and ttt_zombie_is_traitor are not enabled)
 
@@ -882,6 +908,7 @@ ttt_shadow_target_traitor                      1       // Whether the shadow sho
 ttt_shadow_target_notify_mode                  0       // How the shadow's target should be notified they have a shadow. 0 - Don't notify. 1 - Anonymously notify. 2 - Identify the shadow.
 ttt_shadow_soul_link                           0       // Whether the shadow's soul should be linked to their target. 0 - Disable. 1 - Both shadow and target die if either is killed. 2 - The shadow dies if their target is killed.
 ttt_shadow_weaken_health_to                    0       // How low to reduce the Shadow's health to when they are outside of the target circle instead of their normal punishment. (Setting to 0 will use "ttt_shadow_failure_mode" instead.)
+ttt_shadow_weaken_health_to_death              0       // Whether to kill the shadow one tick after they reach 1HP when "ttt_shadow_weaken_health_to" is set to 1
 ttt_shadow_weaken_timer                        3       // How often (in seconds) to adjust the shadow's health when they are outside of the target circle
 ttt_shadow_failure_mode                        0       // How to handle the shadow failing to stay near their target. 0 - Kill them. 1 - Change them to be a jester. 2 - Change them to be a swapper. Not used when "ttt_shadow_weaken_health_to" is enabled.
 ttt_shadow_can_see_jesters                     0       // Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the shadow

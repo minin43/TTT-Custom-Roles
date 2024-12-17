@@ -1,5 +1,35 @@
 # Release Notes
 
+## 2.2.4 (Beta)
+**Released:**
+
+### Additions
+- Added ability to have the vindicator reset back to the innocent team when they successfully kill their target (disabled by default)
+  - There is also a second configuration to disable the vindicator's secondary win when they reset to the innocent team
+- Added ability to have the shadow die one tick after they reach 1HP when `ttt_shadow_weaken_health_to` is set to `1` (disabled by default)
+- Added ability to control whether draining a player or corpse as a vampire drops bones (enabled by default)
+- Added ability to control whether an assassin is penalized for killing a player by their role or team (only for independents, jesters, and monsters)
+  - The following roles have this featured enabled by default: Clown, Loot Goblin, Vampire, Vindicator, Zombie
+  - NOTE: This expands a feature that already existed for the Loot Goblin, Vampire, and Zombie
+  - NOTE: Roles that activate (e.g. Clown, Loot Goblin, Vindicator, etc.) can only bypass the kill penalty when they are active. This keeps the same behavior as before these additional convars were added
+  - NOTE: Any role that can be moved to another team by configuration will only have this convar created if they are an independent, jester, or monster
+- Added ability for zombies to consume a player's corpse to heal themselves (disabled by default)
+
+### Changes
+- Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)
+- Change zombie rounds (`ttt_zombie_round_chance`) to obey `ttt_zombie_min_players`
+
+### Fixes
+- Ported "TTT: fix ragdoll not being created if ttt_dyingshot is on"
+- Fixed detective hat not being wearable by special detectives or detective-like roles
+- Fixed error loading guesser tutorial
+- Fixed plaguemaster not being able to see Missing in Action players by default due to a typo
+- Reverted jester and sponge round win logic compatibility change from 2.1.6 that didn't actually added compatibility and did cause jester and sponge wins to not work when certain independent roles (e.g. Arsonist) were in the round
+
+### Developer
+- Added `TTTCheatSheetRoleStringOverride` client hook to allow changing the cheat sheet string based on convar values
+- Added `TTTZombieBodyEaten` server hook so addons can tell when a zombie eats a body
+
 ## 2.2.3 (Beta)
 **Released: October 5th, 2024**
 
@@ -19,10 +49,10 @@
 - Fixed assassin whose target is made their lover by a cupid not being assigned a new lover
 - Fixed illusionist not blocking the radar color for traitors revealing other traitors
 - Fixed error when calling `plymeta:ClearMessageQueue` or `plymeta:PrintMessageQueue` when the player didn't have a message queue created first
-- Fixed player whose role is changed into a beggar with scanning ability being told they need to have their role rescanned
-- Fixed player whose role is changed into an informant being told they need to have their role rescanned
-- Fixed player whose role is changed to a member of the traitor team being told they need to have their role rescanned by the informant
-- Fixed killers seeing eachother via vision even though they normally wouldn't know eachothers roles
+- Fixed player whose role is changed into a beggar with scanning ability being told they need to have their role re-scanned
+- Fixed player whose role is changed into an informant being told they need to have their role re-scanned
+- Fixed player whose role is changed to a member of the traitor team being told they need to have their role re-scanned by the informant
+- Fixed killers seeing each other via vision even though they normally wouldn't know each other's roles
 - Fixed occasional error in Plaguemaster code when a player dies
 - Ported "TTT: fix and optimize traitor button rendering" from base TTT
 
@@ -332,7 +362,7 @@ Includes beta update [2.1.10](#2110-beta).
 
 ### Fixes
 - Fixed rare error in defib-like devices when used on a corpse that doesn't have a Steam ID property set
-- Fixed freeze caused by the spy's flaregun when running CR4TTT alongside wget's TTT Weapons Rework
+- Fixed freeze caused by the spy's flare gun when running CR4TTT alongside wget's TTT Weapons Rework
 - Fixed footprints sometimes being giant and sometimes not showing at all
 - Fixed transferring credits to the glitch as a member of the traitor team not doing anything, revealing the glitch to the traitors
 - Fixed disguised spy or bodysnatcher being revealed by the quickchat radio menu and messages
@@ -2436,7 +2466,7 @@ Includes all beta updates from [1.1.4](#114-beta) to [1.1.11](#1111-beta).
 - Fixed error in round summary caused by a player being an in invalid role state
 - Fixed weapon switch GUI not updating when you picked up a new weapon and ttt_weaponswitcher_stay was enabled
 - Fixed weapon switch GUI closing when you dropped a weapon and ttt_weaponswitcher_stay was enabled
-- Fixed weapon switch GUI closing when you tried to drop an undroppable weapon
+- Fixed weapon switch GUI closing when you tried to drop an un-droppable weapon
 - Fixed player not appearing on the round summary screen if they were idled to spectator last round and only un-spectated during this round's preparation phase
 
 ### Developer

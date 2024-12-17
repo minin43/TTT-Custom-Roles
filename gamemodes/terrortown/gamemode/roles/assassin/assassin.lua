@@ -22,6 +22,9 @@ local assassin_target_damage_bonus = GetConVar("ttt_assassin_target_damage_bonus
 local assassin_target_bonus_bought = GetConVar("ttt_assassin_target_bonus_bought")
 local assassin_wrong_damage_penalty = GetConVar("ttt_assassin_wrong_damage_penalty")
 local assassin_failed_damage_penalty = GetConVar("ttt_assassin_failed_damage_penalty")
+local assassin_allow_independents_kill = GetConVar("ttt_assassin_allow_independents_kill")
+local assassin_allow_jesters_kill = GetConVar("ttt_assassin_allow_jesters_kill")
+local assassin_allow_monsters_kill = GetConVar("ttt_assassin_allow_monsters_kill")
 
 -----------------------
 -- TARGET ASSIGNMENT --
@@ -226,8 +229,14 @@ hook.Add("DoPlayerDeath", "Assassin_DoPlayerDeath", function(ply, attacker, dmgi
     local attackertarget = attacker:GetNWString("AssassinTarget", "")
     if IsPlayer(attacker) and attacker:IsAssassin() and ply ~= attacker then
         local wasNotTarget = ply:SteamID64() ~= attackertarget and (#attackertarget > 0 or timer.Exists(attacker:Nick() .. "AssassinTarget"))
-        local convar = "ttt_assassin_allow_" .. ROLE_STRINGS_RAW[ply:GetRole()] .. "_kill"
-        local skipPenalty = cvars.Bool(convar, false) and ply:IsRoleActive()
+        local role = ply:GetRole()
+        -- The extra checks at the beginning are to handle cases of roles switching teams, just in case
+        local allowKill = (INDEPENDENT_ROLES[role] or JESTER_ROLES[role] or MONSTER_ROLES[role]) and
+                            ((INDEPENDENT_ROLES[role] and assassin_allow_independents_kill:GetBool()) or
+                             (JESTER_ROLES[role] and assassin_allow_jesters_kill:GetBool()) or
+                             (MONSTER_ROLES[role] and assassin_allow_monsters_kill:GetBool()) or
+                             cvars.Bool("ttt_assassin_allow_" .. ROLE_STRINGS_RAW[role] .. "_kill", false))
+        local skipPenalty = allowKill and ply:IsRoleActive()
         if wasNotTarget and not skipPenalty then
             timer.Remove(attacker:Nick() .. "AssassinTarget")
             attacker:ClearQueuedMessage("asnTarget")

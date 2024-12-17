@@ -172,7 +172,7 @@ AddHook("PostPlayerDeath", "Plaguemaster_PostPlayerDeath", function(ply)
     end
 
     local dart_replace_timer = plaguemaster_dart_replace_timer:GetInt()
-    -- If nobody has theplague and we're set to replace their dart gun, let them know and start the timer
+    -- If nobody has the plague and we're set to replace their dart gun, let them know and start the timer
     if living_players > 1 and not plague_active and dart_replace_timer > 0 then
         local source = player.GetBySteamID64(original_source)
         if not IsPlayer(source) then return end

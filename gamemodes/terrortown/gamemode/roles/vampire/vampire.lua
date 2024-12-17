@@ -110,7 +110,7 @@ hook.Add("PlayerDeath", "Vampire_PrimeDeath_PlayerDeath", function(victim, infl,
     if victim:IsVampirePrime() and prime_death_mode > VAMPIRE_DEATH_NONE then
         local living_vampire_primes = 0
         local vampires = {}
-        -- Find all the living vampires anmd count the primes
+        -- Find all the living vampires and count the primes
         for _, v in PlayerIterator() do
             if v:IsActiveVampire() then
                 if v:IsVampirePrime() then
