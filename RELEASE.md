@@ -24,6 +24,7 @@
 - Fixed detective hat not being wearable by special detectives or detective-like roles
 - Fixed error loading guesser tutorial
 - Fixed plaguemaster not being able to see Missing in Action players by default due to a typo
+- Fixed corpse role being shown on all player's scoreboards when `ttt_detectives_search_only_role` and `ttt_corpse_search_not_shared` are both enabled
 - Reverted jester and sponge round win logic compatibility change from 2.1.6 that didn't actually added compatibility and did cause jester and sponge wins to not work when certain independent roles (e.g. Arsonist) were in the round
 
 ### Developer
