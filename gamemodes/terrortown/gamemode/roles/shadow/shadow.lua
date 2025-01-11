@@ -154,7 +154,7 @@ local function ClearShadowState(ply)
     timer.Remove("TTTShadowRegenTimer_" .. ply:SteamID64())
 
     -- Remove all buff timers that involve this player
-    for _, timerId in pairs(buffTimers) do
+    for timerId, _ in pairs(buffTimers) do
         if string.find(timerId, "_" .. ply:SteamID64()) then
             timer.Remove(timerId)
             buffTimers[timerId] = false
