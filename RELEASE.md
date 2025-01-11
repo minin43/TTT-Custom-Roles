@@ -17,13 +17,15 @@
 
 ### Changes
 - Changed the vindicator to reset back to the innocent team if their target becomes an unkillable role (like the guesser)
-- Change zombie rounds (`ttt_zombie_round_chance`) to obey `ttt_zombie_min_players`
+- Changed zombie rounds (`ttt_zombie_round_chance`) to obey `ttt_zombie_min_players`
+- Changed how zombie and vampire prime are assigned to hopefully work around a rare issue where they weren't set on round start
 
 ### Fixes
 - Ported "TTT: fix ragdoll not being created if ttt_dyingshot is on"
 - Fixed detective hat not being wearable by special detectives or detective-like roles
 - Fixed error loading guesser tutorial
 - Fixed plaguemaster not being able to see Missing in Action players by default due to a typo
+- Fixed corpse role being shown on all player's scoreboards when `ttt_detectives_search_only_role` and `ttt_corpse_search_not_shared` are both enabled
 - Reverted jester and sponge round win logic compatibility change from 2.1.6 that didn't actually added compatibility and did cause jester and sponge wins to not work when certain independent roles (e.g. Arsonist) were in the round
 
 ### Developer

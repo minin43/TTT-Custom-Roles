@@ -156,7 +156,7 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
     if not IsValid(ply) or GetRoundState() == ROUND_WAIT or GetRoundState() == ROUND_PREP then return defaultcolor end
 
     local client = LocalPlayer()
-    if ShouldSpectatorSeeRoles(client) then
+    if client == ply or ShouldSpectatorSeeRoles(client) then
         return ply:GetRole()
     end
 
@@ -166,8 +166,8 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
         return ply.search_result.role
     end
 
-    if ply == client or
-        (ply:GetNWBool("body_found", false) and GetConVar("ttt_corpse_search_not_shared"):GetBool()) then
+    -- If this client should know the player's role, show it
+    if ply.body_found_role then
         return ply:GetRole()
     end
 
