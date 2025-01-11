@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 2.2.4 (Beta)
-**Released:**
+**Released: January 12th, 2025**
 
 ### Additions
 - Added ability to have the vindicator reset back to the innocent team when they successfully kill their target (disabled by default)
