@@ -118,6 +118,17 @@ Called when a player is using chat. Used to override the name shown.\
 
 *Return:* The player name to show, if it should be overridden. Otherwise do not return anything.
 
+### TTTCheatSheetRoleStringOverride(client, roleString)
+Called when the cheat sheet is displayed, allowing the target translation string to be changed.\
+*Realm:* Client\
+*Added in:* 2.2.4\
+*Parameters:*
+- *client* - The local player
+- *roleString* - The string representing role of the local player. Is normally used to build the role cheat sheet description translation
+
+*Return:*
+- *roleString* - The new string to use when building the role cheat sheet description translation
+
 ### TTTCupidShouldLoverSurvive(ply, lover)
 Called before a player is killed because their lover (as set by Cupid's arrows) has been killed. Allows developers to prevent the player from being killed.\
 *Realm:* Server\
@@ -1219,3 +1230,12 @@ Called after a win condition has been set and right before the round eds. Used f
 *Added in:* 1.3.1\
 *Parameters:*
 - *win* - The win type that the round is about to end with
+
+### TTTZombieBodyEaten(ply, ent, healed)
+Called after a zombie eats a body.\
+*Realm:* Server\
+*Added in:* 2.2.4\
+*Parameters:*
+- *ply* - The zombie eating the body
+- *ent* - The target entity. Generally either a player or a ragdoll
+- *healed* - The amount of health the player gained from eating the body
