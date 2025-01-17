@@ -156,16 +156,18 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
     if not IsValid(ply) or GetRoundState() == ROUND_WAIT or GetRoundState() == ROUND_PREP then return defaultcolor end
 
     local client = LocalPlayer()
-    if ShouldSpectatorSeeRoles(client) then
+    if client == ply or ShouldSpectatorSeeRoles(client) then
         return ply:GetRole()
     end
 
-    if ply.search_result and ply.search_result.role > ROLE_NONE then
+    -- If we have the role saved and it's not restricted to detectives only, show it
+    if ply.search_result and ply.search_result.role > ROLE_NONE and
+        (not cvars.Bool("ttt_detectives_search_only_role", false) or ply:GetNWBool("body_searched_det", false)) then
         return ply.search_result.role
     end
 
-    if ply == client or
-        (ply:GetNWBool("body_found", false) and GetConVar("ttt_corpse_search_not_shared"):GetBool()) then
+    -- If this client should know the player's role, show it
+    if ply.body_found_role then
         return ply:GetRole()
     end
 
@@ -177,11 +179,17 @@ function GM:TTTScoreboardRowColorForPlayer(ply)
 
     local hideBeggar = ply:GetNWBool("WasBeggar", false) and not client:ShouldRevealBeggar(ply)
     local hideBodysnatcher = ply:GetNWBool("WasBodysnatcher", false) and not client:ShouldRevealBodysnatcher(ply)
-    local showJester = (ply:ShouldActLikeJester() or ((ply:IsTraitor() or ply:IsInnocent()) and hideBeggar) or hideBodysnatcher) and not client:ShouldHideJesters()
+    local showJester = (ply:ShouldActLikeJester() or
+                        ((ply:IsTraitor() or ply:IsInnocent()) and hideBeggar and JESTER_ROLES[ROLE_BEGGAR]) or
+                        (hideBodysnatcher and JESTER_ROLES[ROLE_BODYSNATCHER])) and
+                            not client:ShouldHideJesters()
 
     if client:IsTraitorTeam() then
         if showJester then
             return ROLE_JESTER
+        -- Hide these if we're told to but they aren't jesters
+        elseif hideBeggar or hideBodysnatcher then
+            return defaultcolor
         elseif ply:IsTraitorTeam() then
             return ply:GetRole()
         elseif ply:IsGlitch() then
@@ -311,7 +319,8 @@ function PANEL:Paint(width, height)
         -- Allow external addons (like new roles) to manipulate how a player appears on the scoreboard
         local new_color, new_role_str, new_flash_role = CallHook("TTTScoreboardPlayerRole", nil, ply, client, c, roleStr)
         if new_color then c = new_color end
-        if new_role_str then roleStr = new_role_str end
+        if type(new_color) == "boolean" and not new_color then c = defaultcolor end
+        if new_role_str or (type(new_role_str) == "boolean" and not new_role_str) then roleStr = new_role_str end
         if new_flash_role then flash_role = new_flash_role end
     end
 

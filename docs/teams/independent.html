@@ -768,6 +768,98 @@
                 </div>
             </div>
         </div>
+        <div id="plaguemaster" class="collapsible">
+            <button class="header" style="background-color:var(--independent);"><i class="icon-plaguemaster"></i>Plaguemaster</button>
+            <div class="content">
+                <div class="moreless">[more]</div>
+                <p>The <span class="inline-icon" style="color:var(--independent);"><i class="icon-plaguemaster"></i><a href="#plaguemaster">Plaguemaster</a></span> uses their dart gun to start a deadly plague which spreads from player to player.</p>
+                <div class="expansion">
+                    <p>The plague is spread between players when they are within <code>ttt_plaguemaster_spread_distance</code> units of each other for <code>ttt_plaguemaster_spread_time</code> seconds.</p>
+                    <p>A player with the plague will succumb to the plague and die after <code>ttt_plaguemaster_plague_length</code> seconds.</p>
+                    <p><code>ttt_plaguemaster_warning_time</code> seconds before their death, a player with the plague will be warned of their coming demise.</p>
+                    <p>The plague can be removed from a single player if a cure is used on them. Cures can be bought by <span style="color:var(--detective);"><a href="../teams/detective.html">Detectives</a></span> and <span class="inline-icon" style="color:var(--special-innocent);"><i class="icon-doctor"></i><a href="innocent.html#doctor">Doctors</a></span> by default.</p>
+                    <p>By default, the Plaguemaster is immune to the plague, but this can be adjusted with <code>ttt_plaguemaster_immune</code>.</p>
+                    <h3 style="margin: 10px 0; padding: 0;">Role Configuration:</h3>
+                    <table style="width:100%; margin-bottom: 10px;">
+                        <thead>
+                        <tr>
+                            <th>ConVar</th>
+                            <th>Default</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <td>ttt_plaguemaster_body_search_mode</td>
+                        <td>0</td>
+                        <td>Integer (0-2)</td>
+                        <td>Whether dead bodies reveal if they had the plague when searched:
+                            <ol start="0">
+                                <li>Don't show.</li>
+                                <li>Show if died from plague.</li>
+                                <li>Show if infected with plague.</li>
+                            </ol>
+                        </td>
+                        <tr>
+                            <td>ttt_plaguemaster_can_see_jesters</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether jesters are revealed (via head icons, color/icon on the scoreboard, etc.) to the Plaguemaster.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_plaguemaster_dart_replace_timer <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Integer</td>
+                            <td>How long (in seconds) after the plaguemaster's infection dies out before they should receive another dart gun. Set to 0 to disable.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_plaguemaster_immune</td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether the Plaguemaster is immune to the plague.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_plaguemaster_plague_length</td>
+                            <td>180</td>
+                            <td>Integer</td>
+                            <td>How long (in seconds) before a player with the plague dies.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_plaguemaster_spread_distance</td>
+                            <td>500</td>
+                            <td>Integer</td>
+                            <td>The maximum distance away a player can be and still be infected.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_plaguemaster_spread_require_los</td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether players need to be in line-of-sight of a target to spread the plague.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_plaguemaster_spread_time</td>
+                            <td>5</td>
+                            <td>Integer</td>
+                            <td>How long (in seconds) someone with the plague needs to be near someone else before it spreads.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_plaguemaster_update_scoreboard</td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether the Plaguemaster shows dead players as missing in action.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_plaguemaster_warning_time</td>
+                            <td>30</td>
+                            <td>Integer</td>
+                            <td>How long (in seconds) before dying to the plague that the target should be warned. Set to 0 to disable.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p>A list of ConVars shared by every role and instructions for using ConVars can be found on the <a href="../tutorials/configuring_convars.html">Configuring ConVars</a> tutorial page.</p>
+                </div>
+            </div>
+        </div>
         <div id="shadow" class="collapsible">
             <button class="header" style="background-image:linear-gradient(110deg, var(--independent) 0%, var(--independent) 70%, var(--jester) 70%, var(--jester) 100%);"><i class="icon-shadow"></i>Shadow</button>
             <div class="content">
@@ -1000,6 +1092,12 @@
                             <td>How low to reduce the Shadow's health to when they are outside of the target circle instead of their normal punishment. <i>(Setting to 0 will use <code>ttt_shadow_failure_mode</code> instead.)</i></td>
                         </tr>
                         <tr>
+                            <td>ttt_shadow_weaken_health_to_death</td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether to kill the Shadow one tick after they reach 1HP when <code>ttt_shadow_weaken_health_to</code> is set to <code>1</code></td>
+                        </tr>
+                        <tr>
                             <td>ttt_shadow_weaken_timer</td>
                             <td>3</td>
                             <td>Integer</td>
@@ -1054,6 +1152,36 @@
                             <td>0</td>
                             <td>Float (0-1)</td>
                             <td>The fraction an attacker's bullet damage will be reduced by when they are shooting a Zombie. <i>(e.g. 0.5 = 50% less damage.)</i></td>
+                        </tr>
+                        <tr>
+                            <td>ttt_zombie_eat_enabled <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>0</td>
+                            <td>Boolean</td>
+                            <td>Whether Zombies have the ability to eat a player's corpse.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_zombie_eat_drop_bones <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>1</td>
+                            <td>Boolean</td>
+                            <td>Whether Zombies should drop bones when eating a player's corpse.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_zombie_eat_timer <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>5</td>
+                            <td>Integer</td>
+                            <td>The amount of time it takes to consume a player's corpse.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_zombie_eat_heal <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>50</td>
+                            <td>Integer</td>
+                            <td>The amount of health a Zombie will heal by when they consume a player's corpse.</td>
+                        </tr>
+                        <tr>
+                            <td>ttt_zombie_eat_overheal <span data-text="Beta Only" class="betaonly betaicon tooltip">&nbsp;</span></td>
+                            <td>25</td>
+                            <td>Integer</td>
+                            <td>The amount over the Zombie's normal maximum health (e.g. 100 + this ConVar) that the Zombie can heal to by consuming a player's corpse.</td>
                         </tr>
                         <tr>
                             <td>ttt_zombie_friendly_fire</td>

@@ -80,6 +80,7 @@ include("cl_hitmarkers.lua")
 include("cl_deathnotify.lua")
 include("cl_sprint.lua")
 include("cl_cheatsheet.lua")
+include("cl_sync.lua")
 
 local traitor_vision = false
 local jesters_visible_to_traitors = false
@@ -189,6 +190,9 @@ local function RoundStateChange(o, n)
     if n == ROUND_PREP then
         -- can enter PREP from any phase due to ttt_roundrestart
         RunHook("TTTPrepareRound")
+        for role = 0, ROLE_MAX do
+            ROLE_STARTING_TEAM[role] = player.GetRoleTeam(role, false)
+        end
     elseif (o == ROUND_PREP) and (n == ROUND_ACTIVE) then
         RunHook("TTTBeginRound")
     elseif (o == ROUND_ACTIVE) and (n == ROUND_POST) then
@@ -576,11 +580,16 @@ function OnPlayerHighlightEnabled(client, alliedRoles, showJesters, hideEnemies,
         if IsValid(v) and v:Alive() and not v:IsSpec() and v ~= client and not ShouldHideFromHighlight(v, client) then
             local hideBeggar = v:GetNWBool("WasBeggar", false) and not client:ShouldRevealBeggar(v)
             local hideBodysnatcher = v:GetNWBool("WasBodysnatcher", false) and not client:ShouldRevealBodysnatcher(v)
-            if showJesters and (v:ShouldActLikeJester() or hideBeggar or hideBodysnatcher) then
+            local showAsJester = showJesters and (v:ShouldActLikeJester() or
+                                ((v:IsTraitor() or v:IsInnocent()) and hideBeggar and JESTER_ROLES[ROLE_BEGGAR]) or
+                                (hideBodysnatcher and JESTER_ROLES[ROLE_BODYSNATCHER])) and
+                                    not client:ShouldHideJesters()
+            if showAsJester then
                 if not onlyShowEnemies then
                     TableInsert(jesters, v)
                 end
-            elseif TableHasValue(alliedRoles, v:GetRole()) then
+            -- Only show allied roles and hide the beggar/bodysnatcher if we're told to and they aren't jesters
+            elseif not hideBeggar and not hideBodysnatcher and TableHasValue(alliedRoles, v:GetRole()) then
                 if not onlyShowEnemies then
                     TableInsert(friends, v)
                 end
@@ -625,7 +634,7 @@ end
 function HandleRoleHighlights(client)
     if not IsValid(client) then return end
 
-    if traitor_vision and client:IsTraitorTeam() then
+    if traitor_vision and client:IsTraitorTeam() and not GetGlobalBool("ttt_illusionist_alive", false) then
         if not vision_enabled then
             EnableTraitorHighlights(client)
             vision_enabled = true

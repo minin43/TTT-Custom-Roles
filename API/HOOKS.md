@@ -7,6 +7,16 @@ For example, if there is a hook that returns three parameters: `first`, `second`
 
 ***NOTE:*** Be careful that you only return from a hook when you absolutely want to change something. Due to the way GMod hooks work, whichever hook instance returns first causes the *remaining hook instances to be completely skipped*. This is useful for certain hooks when you want to stop a behavior from happening, but it can also accidentally cause functionality to break because its code is completely ignored.
 
+### TTTBeggarConvert(beggar, wep)
+Called when a beggar is about to have their team changed from receiving an item.\
+*Realm:* Server\
+*Added in:* 2.2.3\
+*Parameters:*
+- *beggar* - The beggar who is about to be converted
+- *wep* - The weapon the beggar received
+
+*Return:* Whether or not the beggar should be converted (Defaults to `true`).
+
 ### TTTBodyCreditsLooted(ply, deadPly, rag, credits)
 Called when a player loots credits off of a dead player's body.\
 *Realm:* Server\
@@ -73,6 +83,22 @@ Changed `was_traitor` parameter to be `true` for any member of the traitor team,
 
 *Return:* Whether or not the given player should be able to identify the given corpse (Defaults to `false`).
 
+### TTTCanPlayerBeCured(ply)
+Called when someone is attempting to use a cure on a player.\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *ply* - The target player who is potentially being cured
+
+*Return:* Whether to allow using the cure on this player. (Defaults to `false`)
+
+### TTTCanCureableRoleSpawn()
+Called to determine if a role can spawn that causes a state that can be cured.\
+*Realm:* Client and Server\
+*Added in:* 2.1.18
+
+*Return:* `true` if a role can spawn that causes a state that can be cured. Otherwise do not return anything.
+
 ### TTTCanUseTraitorVoice(ply)
 Called when a player is attempting to use traitor chat, both speaking and listening. Used to change the default behavior.\
 *Realm:* Client and Server\
@@ -92,6 +118,17 @@ Called when a player is using chat. Used to override the name shown.\
 
 *Return:* The player name to show, if it should be overridden. Otherwise do not return anything.
 
+### TTTCheatSheetRoleStringOverride(client, roleString)
+Called when the cheat sheet is displayed, allowing the target translation string to be changed.\
+*Realm:* Client\
+*Added in:* 2.2.4\
+*Parameters:*
+- *client* - The local player
+- *roleString* - The string representing role of the local player. Is normally used to build the role cheat sheet description translation
+
+*Return:*
+- *roleString* - The new string to use when building the role cheat sheet description translation
+
 ### TTTCupidShouldLoverSurvive(ply, lover)
 Called before a player is killed because their lover (as set by Cupid's arrows) has been killed. Allows developers to prevent the player from being killed.\
 *Realm:* Server\
@@ -101,6 +138,30 @@ Called before a player is killed because their lover (as set by Cupid's arrows) 
 - *lover* - The player's lover who is already dead
 
 *Return:* If `ply` should not be killed, return `true`. Otherwise do not return anything.
+
+### TTTCupidLoverChosen(cupid, lover)
+Called after a player has been chosen as a cupid's lover.\
+*Realm:* Server\
+*Added in:* 2.2.2\
+*Parameters:*
+- *cupid* - The cupid who has chosen a lover
+- *lover* - The lover that was chosen
+
+### TTTCupidLoversChosen(cupid, lover1, lover2)
+Called after both players have been chosen as a cupid's lovers.\
+*Realm:* Server\
+*Added in:* 2.2.2\
+*Parameters:*
+- *cupid* - The cupid who has chosen both lovers
+- *lover1* - The first lover that was chosen
+- *lover2* - The second lover that was chosen
+
+### TTTCurePlayer(ply)
+Called when someone uses a cure on a player.\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *ply* - The target player who is being cured
 
 ### TTTDeathNotifyOverride(victim, inflictor, attacker, reason, killerName, role)
 Called before the name and role of a player's killer is shown to the victim. Used to change the death message reason, killer name, and/or killer role.\
@@ -177,6 +238,13 @@ Allows creation of new tabs for the equipment (shop) menu.\
 - *dframe* - The [DFrame](https://wiki.facepunch.com/gmod/DFrame) representing the equipment window *(Added in 1.8.7)*
 
 *Return:* If `true`, the equipment window will show even if the player doesn't have any of the default tabs. *(Added in 1.7.3)*
+
+### TTTFakeCurePlayer(ply)
+Called when someone uses a fake cure on a player.\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *ply* - The target player who is being "cured"
 
 ### TTTHUDInfoPaint(client, labelX, labelY, activeLabels)
 Called after player information such as role, health, and ammo and equipment information such as radar cooldown and disguiser activation are drawn on the screen. Used to write additional persistent text on the screen for player reference.\
@@ -555,8 +623,8 @@ Called before a player's row in the scoreboard (tab menu) is shown, allowing the
 - *roleFileName* - The portion of the scoring icon path that indicates which role it belongs to. Used in one of the following icon path patterns: "vgui/ttt/tab_{roleFileName}.png" (1.1.9+), "vgui/ttt/roles/{roleFileName}/tab_{roleFileName}.png"  (1.3.4+)
 
 *Return:*
-- *color* - The new color value to use or the original passed into the hook
-- *roleFileName* - The new roleFileName value to use or the original passed into the hook
+- *color* - The new color value to use or the original passed into the hook. Starting in version 2.1.19, you can also return `false` to not show color at all
+- *roleFileName* - The new roleFileName value to use or the original passed into the hook. Starting in version 2.1.19, you can also return `false` to not show an icon at all
 - *flashRole* - If a valid role is provided, this will cause the target player's scoreboard role to have a flashing border in the given role's color (see ROLE_* global enumeration)
 
 ### TTTScoringSecondaryWins(wintype, secondaryWins)
@@ -1162,3 +1230,12 @@ Called after a win condition has been set and right before the round eds. Used f
 *Added in:* 1.3.1\
 *Parameters:*
 - *win* - The win type that the round is about to end with
+
+### TTTZombieBodyEaten(ply, ent, healed)
+Called after a zombie eats a body.\
+*Realm:* Server\
+*Added in:* 2.2.4\
+*Parameters:*
+- *ply* - The zombie eating the body
+- *ent* - The target entity. Generally either a player or a ragdoll
+- *healed* - The amount of health the player gained from eating the body

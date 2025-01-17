@@ -47,6 +47,7 @@ AddCSLuaFile("cl_deathnotify.lua")
 AddCSLuaFile("cl_sprint.lua")
 AddCSLuaFile("sprint_shd.lua")
 AddCSLuaFile("cl_cheatsheet.lua")
+AddCSLuaFile("cl_sync.lua")
 
 include("shared.lua")
 include("init_shd.lua")
@@ -72,6 +73,7 @@ include("roleweapons.lua")
 include("sprint_shd.lua")
 include("rolepacks.lua")
 include("roleblocks.lua")
+include("sync.lua")
 
 -- Localise stuff we use often. It's like Lua go-faster stripes.
 local concommand = concommand
@@ -170,22 +172,6 @@ CreateConVar("ttt_deputy_impersonator_promote_any_death", "0")
 CreateConVar("ttt_deputy_impersonator_start_promoted", "0")
 CreateConVar("ttt_single_jester_independent", "1")
 CreateConVar("ttt_single_jester_independent_max_players", "0")
-
--- TODO: Deprecated - Remove after next major update
-local paired_role_blocks = {
-    {ROLE_DEPUTY, ROLE_IMPERSONATOR},
-    {ROLE_DOCTOR, ROLE_QUACK},
-    {ROLE_PARAMEDIC, ROLE_HYPNOTIST},
-    {ROLE_PHANTOM, ROLE_PARASITE},
-    {ROLE_DRUNK, ROLE_CLOWN},
-    {ROLE_JESTER, ROLE_SWAPPER}
-}
-
-for _, r in ipairs(paired_role_blocks) do
-    local cvar_name = "ttt_single_" .. ROLE_STRINGS_RAW[r[1]] .. "_" .. ROLE_STRINGS_RAW[r[2]]
-    CreateConVar(cvar_name, "0")
-    CreateConVar(cvar_name .. "_chance", "0.5")
-end
 
 -- Traitor credits
 CreateConVar("ttt_credits_starting", "2")
@@ -291,6 +277,7 @@ util.AddNetworkString("TTT_LoadMonsterEquipment")
 util.AddNetworkString("TTT_UpdateRoleNames")
 util.AddNetworkString("TTT_ScoreboardUpdate")
 util.AddNetworkString("TTT_QueueMessage")
+util.AddNetworkString("TTT_ClearQueuedMessage")
 
 local function ClearAllFootsteps()
     net.Start("TTT_ClearPlayerFootsteps")
@@ -684,6 +671,9 @@ function PrepareRound()
 
     -- Tell hooks and map we started prep
     RunHook("TTTPrepareRound")
+    for role = 0, ROLE_MAX do
+        ROLE_STARTING_TEAM[role] = player.GetRoleTeam(role, false)
+    end
     ClearAllFootsteps()
     ents.TTT.TriggerRoundStateOutputs(ROUND_PREP)
 end
@@ -911,8 +901,8 @@ end
 function PrintResultMessage(type)
     ServerLog("Round ended.\n")
 
-    local overriden = CallHook("TTTPrintResultMessage", nil, type)
-    if overriden then return end
+    local overridden = CallHook("TTTPrintResultMessage", nil, type)
+    if overridden then return end
 
     if type == WIN_TIMELIMIT then
         if GetConVar("ttt_roundtime_win_draw"):GetBool() then
@@ -1226,12 +1216,12 @@ function SelectRoles()
 
     if choice_count == 0 then return end
 
+    ROLEPACKS.AssignRoles(choices)
+
     local choices_copy = table.Copy(choices)
     local prev_roles_copy = table.Copy(prev_roles)
 
     CallHook("TTTSelectRoles", nil, choices_copy, prev_roles_copy)
-
-    ROLEPACKS.AssignRoles(choices)
 
     for _, v in ipairs(choices) do
         if v.forcedRole and v.forcedRole ~= ROLE_NONE then
@@ -1558,7 +1548,7 @@ function SelectRoles()
         end
     end
 
-    if ((GetConVar("ttt_zombie_enabled"):GetBool() and math.random() <= GetConVar("ttt_zombie_round_chance"):GetFloat() and (forcedTraitorCount <= 0) and (forcedSpecialTraitorCount <= 0)) or hasRole[ROLE_ZOMBIE]) and TRAITOR_ROLES[ROLE_ZOMBIE] then
+    if ((GetConVar("ttt_zombie_enabled"):GetBool() and math.random() <= GetConVar("ttt_zombie_round_chance"):GetFloat() and choice_count >= cvars.Number("ttt_zombie_min_players", 0) and (forcedTraitorCount <= 0) and (forcedSpecialTraitorCount <= 0)) or hasRole[ROLE_ZOMBIE]) and TRAITOR_ROLES[ROLE_ZOMBIE] then
         -- This is a zombie round so all traitors become zombies
         for _, v in pairs(traitors) do
             v:SetRole(ROLE_ZOMBIE)
@@ -1602,7 +1592,6 @@ function SelectRoles()
 
         SetGlobalBool("ttt_zombie_round", false)
     end
-
 
     if multipleJesterIndependent then
         if jester_independent_count > 0 and #choices > 0 then

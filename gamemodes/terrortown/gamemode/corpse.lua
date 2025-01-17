@@ -1,7 +1,9 @@
 ---- Corpse functions
 
+CreateConVar("ttt_corpse_search_not_shared", "0", FCVAR_NONE, "Whether corpse searches are not shared with other players (only affects non-detective-like searchers)", 0, 1)
+
 -- namespaced because we have no ragdoll metatable
-CORPSE = {}
+CORPSE = CORPSE or {}
 
 include("corpse_shd.lua")
 
@@ -188,9 +190,15 @@ local function IdentifyBody(ply, rag)
             -- Otherwise the scoreboard gets updated which reveals their name anyway
             if announceName then
                 deadply:SetNWBool("body_found", true)
+                local search_not_shared = GetConVar("ttt_corpse_search_not_shared"):GetBool()
                 -- Don't set "searched" if we're not sharing this information
-                if ply:IsDetectiveLike() or not GetConVar("ttt_corpse_search_not_shared"):GetBool() then
+                if ply:IsDetectiveLike() or not search_not_shared then
                     deadply:SetNWBool("body_searched", true)
+                end
+
+                -- If this information isn't shared, tell just the searching player that the body's role should be known
+                if search_not_shared then
+                    deadply:SetProperty("body_found_role", true, ply)
                 end
             end
 
@@ -436,7 +444,6 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
 
     local round_state = GetRoundState()
     local sendName = AnnounceBodyName(ply, round_state, ownerEnt)
-    local sendRole = AnnounceBodyRole(ply, round_state, ownerEnt)
 
     -- Send a message with basic info
     net.Start("TTT_RagdollSearch")
@@ -449,7 +456,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
     for _, v in ipairs(eq) do
         net.WriteUInt(v, eq_bits)
     end
-    net.WriteInt(sendRole and role or ROLE_NONE, 8) -- ( 8 bits )
+    net.WriteInt(role, 8) -- ( 8 bits )
     net.WriteUInt(c4, bitsRequired(C4_WIRE_COUNT)) -- 0 -> 2^bits ( default c4: 3 bits )
     net.WriteUInt(dmg, 30) -- DMG_BUCKSHOT is the highest. ( 30 bits )
     net.WriteString(wep)

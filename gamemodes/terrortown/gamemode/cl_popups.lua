@@ -13,6 +13,8 @@ local PlayerIterator = player.Iterator
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 
+local illusionist_hides_monsters = GetConVar("ttt_illusionist_hides_monsters")
+
 ---- Round start
 
 local function GetTextForLocalPlayer()
@@ -32,6 +34,8 @@ local function GetTextForLocalPlayer()
         doctor = ROLE_STRINGS[ROLE_DOCTOR],
         -- "A glitch"
         aglitch = ROLE_STRINGS_EXT[ROLE_GLITCH],
+        -- "An illusionist"
+        anillusionist = ROLE_STRINGS_EXT[ROLE_ILLUSIONIST],
         -- "Your innocent friends"
         innocent = ROLE_STRINGS[ROLE_INNOCENT],
         -- "Your fellow innocents"
@@ -65,14 +69,19 @@ local function GetTextForLocalPlayer()
 
     if client:IsMonsterTeam() then
         local allies = {}
+        local hasIllusionist = false
         for _, ply in PlayerIterator() do
             if ply:IsMonsterTeam() then
                 table.insert(allies, ply)
+            elseif ply:IsIllusionist() then
+                hasIllusionist = true
             end
         end
 
         local comrades
-        if #allies > 1 then
+        if hasIllusionist and illusionist_hides_monsters:GetBool() then
+            comrades = GetPTranslation("info_popup_monster_illusionist", params)
+        elseif #allies > 1 then
             local allylist = ""
 
             for _, ply in ipairs(allies) do
@@ -90,17 +99,22 @@ local function GetTextForLocalPlayer()
     elseif client:IsTraitorTeam() then
         local traitors = {}
         local glitches = {}
+        local hasIllusionist = false
         for _, ply in PlayerIterator() do
             if ply:IsTraitorTeam() then
                 table.insert(traitors, ply)
             elseif ply:IsGlitch() then
                 table.insert(traitors, ply)
                 table.insert(glitches, ply)
+            elseif ply:IsIllusionist() then
+                hasIllusionist = true
             end
         end
 
         local comrades
-        if #traitors > 1 then
+        if hasIllusionist then
+            comrades = GetPTranslation("info_popup_traitor_illusionist", params)
+        elseif #traitors > 1 then
             local traitorlist = ""
 
             for _, ply in ipairs(traitors) do

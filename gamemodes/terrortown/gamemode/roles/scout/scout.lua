@@ -9,6 +9,7 @@ local scout_hidden_roles = CreateConVar("ttt_scout_hidden_roles", "")
 
 local scout_reveal_jesters = GetConVar("ttt_scout_reveal_jesters")
 local scout_reveal_independents = GetConVar("ttt_scout_reveal_independents")
+local scout_reveal_monsters = GetConVar("ttt_scout_reveal_monsters")
 local scout_delay_intel = GetConVar("ttt_scout_delay_intel")
 
 -------------------
@@ -52,7 +53,10 @@ local function GatherIntel(ply)
     for _, p in player.Iterator() do
         local role = p:GetRole()
         if table.HasValue(hiddenRoles, ROLE_STRINGS_RAW[role]) then continue end
-        if (p:IsTraitorTeam() and not p:IsTraitor()) or (scout_reveal_jesters:GetBool() and p:IsJesterTeam()) or (scout_reveal_independents:GetBool() and p:IsIndependentTeam()) then
+        if (p:IsTraitorTeam() and not p:IsTraitor()) or
+            (scout_reveal_jesters:GetBool() and p:IsJesterTeam()) or
+            (scout_reveal_independents:GetBool() and p:IsIndependentTeam()) or
+            (scout_reveal_monsters:GetBool() and p:IsMonsterTeam()) then
             if not table.HasValue(currentRoles, role) then
                 table.insert(currentRoles, role)
             end

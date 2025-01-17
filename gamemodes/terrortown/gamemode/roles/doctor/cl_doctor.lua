@@ -6,6 +6,13 @@ local string = string
 ------------------
 
 hook.Add("Initialize", "Doctor_Translations_Initialize", function()
+    -- Weapons
+    LANG.AddToLanguage("english", "cure_help_pri", "{primaryfire} to cure another player.")
+    LANG.AddToLanguage("english", "cure_help_sec", "{secondaryfire} to cure yourself.")
+    LANG.AddToLanguage("english", "cure_desc", [[Use on a player to cure them.
+
+Using this on a player who is not infected will kill them!]])
+
     -- Cheat Sheet
     LANG.AddToLanguage("english", "cheatsheet_desc_doctor", "Has access to healing items that can help heal themselves and their teammates.")
 

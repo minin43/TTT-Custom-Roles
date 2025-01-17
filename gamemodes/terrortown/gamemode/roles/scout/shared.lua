@@ -8,6 +8,7 @@ local table = table
 
 CreateConVar("ttt_scout_reveal_jesters", "0", FCVAR_REPLICATED)
 CreateConVar("ttt_scout_reveal_independents", "0", FCVAR_REPLICATED)
+CreateConVar("ttt_scout_reveal_monsters", "1", FCVAR_REPLICATED)
 CreateConVar("ttt_scout_delay_intel", "0", FCVAR_REPLICATED, "How long in seconds to delay the information send to the Scout", 0, 150)
 
 ROLE_CONVARS[ROLE_SCOUT] = {}
@@ -17,6 +18,10 @@ table.insert(ROLE_CONVARS[ROLE_SCOUT], {
 })
 table.insert(ROLE_CONVARS[ROLE_SCOUT], {
     cvar = "ttt_scout_reveal_independents",
+    type = ROLE_CONVAR_TYPE_BOOL
+})
+table.insert(ROLE_CONVARS[ROLE_SCOUT], {
+    cvar = "ttt_scout_reveal_monsters",
     type = ROLE_CONVAR_TYPE_BOOL
 })
 table.insert(ROLE_CONVARS[ROLE_SCOUT], {

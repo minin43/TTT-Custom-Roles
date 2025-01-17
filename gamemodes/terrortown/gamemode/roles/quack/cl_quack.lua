@@ -14,7 +14,7 @@ local quack_station_bomb = GetConVar("ttt_quack_station_bomb")
 
 hook.Add("Initialize", "Quack_Translations_Initialize", function()
     -- Weapons
-    LANG.AddToLanguage("english", "fake_cure_desc", "Use on a player to trick them into thinking you cured the {parasite}.")
+    LANG.AddToLanguage("english", "fake_cure_desc", "Use on a player to trick them into thinking you cured them.")
 
     LANG.AddToLanguage("english", "bstation_name", "Bomb Station")
     LANG.AddToLanguage("english", "bstation_hint", "Press {usekey} to fake receiving health. Charge: {num}.")

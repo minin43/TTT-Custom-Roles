@@ -43,6 +43,21 @@ Clears the player's forced role if one was set with `plymeta:ForceRoleNextRound(
 *Realm:* Server\
 *Added in:* 2.0.7
 
+### plymeta:ClearProperty(name, targets)
+Clears the value of the property with the given `name` on this player then synchronizes the clear to all `targets`. Wrapper around [SYNC:ClearPlayerProperty](METHODS_SYNC.md#syncclearplayerpropertyply-propertyname-targets).\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *name* - The name of the property being cleared.
+- *targets* - The targets that should have this value cleared on their clients. *(Defaults to sending to all players)*
+
+### plymeta:ClearQueuedMessage(id)
+Removes queued messages with the given ID from the queue and clears any currently displayed messages with the given ID.\
+*Realm:* Client and Server\
+*Added in:* 2.2.1\
+*Parameters:*
+- *id* - The identifier of the message(s) you want to clear
+
 ### plymeta:DrunkJoinLosingTeam()
 Attempts to find the losing team and calls `self:SoberDrunk(team)` using the losing team as the *team* parameter.\
 *Realm:* Server\
@@ -324,14 +339,15 @@ Begins printing messages from the message queue if it's not already. Automatical
 *Realm:* Server\
 *Added in:* 1.9.4
 
-### plymeta:QueueMessage(message_type, message, time, predicate)
+### plymeta:QueueMessage(message_type, message, time, id, predicate)
 Queues a message to be shown to the player. Useful in situations where multiple center-screen messages could be shown at the same time and overlapped. This ensures each message is shown in order without overlap.\
-*Realm:* Server and Client\
+*Realm:* Client and Server\
 *Added in:* 1.9.4\
 *Parameters:*
 - *message_type* - The [MSG_PRINT*](GLOBAL_ENUMERATIONS.md#msg_print) value representing the display target for this message
 - *message* - The message being shown
-- *time* - The amount of time to display the message in the center of the screen. Only used when *message_type* is *MSG_PRINTBOTH* or *MSG_PRINTCENTER*
+- *time* - The amount of time to display the message in the center of the screen. Only used when *message_type* is *MSG_PRINTBOTH* or *MSG_PRINTCENTER* (Optional. Defaults to 5 seconds if not provided)
+- *id* - An identifier string that can be used to clear the message or remove it from the queue (Optional) *(Added in 2.2.1)*
 - *predicate* - Predicate function called with the player as the sole parameter before the message is sent. Return *true* to allow the message or *false* to prevent it (Optional) *(Added in 2.0.5)* *(Only available on the server realm)*
 
 ### plymeta:RemoveEquipmentItem(item_id)
@@ -379,6 +395,15 @@ Sets the player's size by adjusting models, step sizes, hulls and view offsets.\
 *Added in:* 1.3.1\
 *Parameters:*
 - *scale* - The value with which to scale the players size, relative to their current size.
+
+### plymeta:SetProperty(name, value, targets)
+Sets the value of the property with the given `name` on this player to equal `value` and then synchronizes that value to all `targets`. Wrapper around [SYNC:SetPlayerProperty](METHODS_SYNC.md#syncsetplayerpropertyply-propertyname-propertyvalue-targets).\
+*Realm:* Server\
+*Added in:* 2.1.18\
+*Parameters:*
+- *name* - The name of the property being set.
+- *value* - The value the property is being set to.
+- *targets* - The targets that should have this value available on their clients. *(Defaults to sending to all players)*
 
 ### plymeta:SetRoleAndBroadcast(role)
 Sets the player's role to the given one and (if called on the server) broadcasts the change to all clients for scoreboard tracking.\

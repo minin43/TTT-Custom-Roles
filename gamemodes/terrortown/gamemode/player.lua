@@ -699,22 +699,19 @@ function FindRespawnLocation(pos)
 end
 
 function GM:DoPlayerDeath(ply, attacker, dmginfo)
-    if ply:IsSpec() then return end
+    if ply:IsSpec() or IsValid(ply.dying_wep) then return end
 
     -- Experimental: Fire a last shot if ironsighting and not headshot
     if GetConVar("ttt_dyingshot"):GetBool() then
         local wep = ply:GetActiveWeapon()
         if IsValid(wep) and wep.DyingShot and not ply.was_headshot and dmginfo:IsBulletDamage() then
-            local fired = wep:DyingShot()
-            if fired then
-                return
-            end
+            wep:DyingShot()
         end
 
         -- Note that funny things can happen here because we fire a gun while the
-        -- player is dead. Specifically, this DoPlayerDeath is run twice for
-        -- him. This is ugly, and we have to return the first one to prevent crazy
-        -- shit.
+        -- player is dead. Specifically, this DoPlayerDeath can run twice for
+        -- him. This is ugly, and we have to return if ply.dying_wep is set
+        -- to prevent crazy shit.
     end
 
     -- Store what non-droppable role weapons this player had when they died as this role
@@ -1457,7 +1454,7 @@ concommand.Add("ttt_kill_from_random", function(ply, cmd, args)
     local allow_dead = #args > 1 and tobool(args[2])
     local killer = GetRandomTargetPlayer(ply, allow_dead)
     KillFromPlayer(ply, killer, remove_body)
-end, PlayerAutoComplete, "Kills the local player from a random target", FCVAR_CHEAT)
+end, nil, "Kills the local player from a random target", FCVAR_CHEAT)
 
 concommand.Add("ttt_kill_from_player", function(ply, cmd, args)
     if not IsValid(ply) or not ply:Alive() then return end
@@ -1544,7 +1541,7 @@ concommand.Add("ttt_damage_from_random", function(ply, cmd, args)
     local attacker = GetRandomTargetPlayer(ply, allow_dead)
     local damage = #args > 0 and tonumber(args[1])
     DamageFromPlayer(ply, attacker, damage)
-end, PlayerAutoComplete, "Damages the local player from a random target", FCVAR_CHEAT)
+end, nil, "Damages the local player from a random target", FCVAR_CHEAT)
 
 concommand.Add("ttt_damage_from_player", function(ply, cmd, args)
     if not IsValid(ply) or not ply:Alive() then return end

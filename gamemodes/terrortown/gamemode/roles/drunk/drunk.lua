@@ -189,7 +189,7 @@ function plymeta:DrunkJoinLosingTeam()
                 local rolePackJestersIndependents = 0
 
                 for _, slot in ipairs(rolePackTable.slots) do
-                    -- If the slot is empty then we dont need to do any calculations
+                    -- If the slot is empty then we don't need to do any calculations
                     if #slot == 0 then continue end
 
                     -- If we have already filled enough slots for each player then don't include later slots in the calculation

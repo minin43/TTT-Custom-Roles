@@ -390,7 +390,7 @@ For our example's sake we've taken the phantom implementation and removed half t
 
 ```lua
 ROLE.shouldshowspectatorhud = function(ply)
-    if ply:GetNWBool("Haunting") then
+    if ply:GetNWBool("SummonerHaunting") then
         return true
     end
 end
@@ -422,7 +422,7 @@ if CLIENT then
             [L.summoner_haunt_drop] = summoner_killer_haunt_drop_cost:GetInt()
         }
         local max_power = summoner_killer_haunt_power_max:GetInt()
-        local current_power = cli:GetNWInt("PhantomPossessingPower", 0)
+        local current_power = cli:GetNWInt("SummonerPossessingPower", 0)
 
         CRHUD:PaintPowersHUD(powers, max_power, current_power, willpower_colors, L.summoner_haunt_title)
     end)
@@ -430,7 +430,7 @@ end
 
 if SERVER then
     hook.Add("TTTSpectatorHUDKeyPress", "Summoner_TTTSpectatorHUDKeyPress", function(ply, tgt, powers)
-        if ply:GetNWBool("PhantomHaunting", false) and IsValid(tgt) and tgt:IsActive() then
+        if ply:GetNWBool("SummonerHaunting", false) and IsValid(tgt) and tgt:IsActive() then
             powers[IN_ATTACK2] = {
                 start_command = "+menu",
                 end_command = "-menu",
@@ -444,7 +444,7 @@ if SERVER then
                 cost = summoner_killer_haunt_jump_cost:GetInt()
             }
 
-            return true, "PhantomPossessingPower"
+            return true, "SummonerPossessingPower"
         end
     end)
 end
@@ -894,7 +894,8 @@ end
 
 When working with larger roles, having everything in the one file can easily become messy. In this situation you can ***optionally*** split your code across client, server, and shared files.
 
-To do this first create a folder inside of the 'lua/customroles' folder with the name of your role. *(e.g. lua/customroles/summoner)*
+To do this first create a folder inside of the 'lua/customroles' folder with the name of your role *(e.g. lua/customroles/summoner)*.\
+**NOTE:** All folder names ***must*** be lowercase to avoid load order issues.
 
 Inside this folder you can create three separate files:
 - '**%NAMERAW%.lua**' for any code you want to run server-side only. This should be any code you have inside an `if SERVER then` or similar block.

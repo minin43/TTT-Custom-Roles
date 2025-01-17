@@ -33,7 +33,7 @@ local informant_scanner_monster_mult = GetConVar("ttt_informant_scanner_monster_
 -- Only allow the informant to pick up informant-specific weapons
 hook.Add("PlayerCanPickupWeapon", "Informant_Weapons_PlayerCanPickupWeapon", function(ply, wep)
     if not IsValid(wep) or not IsValid(ply) then return end
-    if ply:IsSpec() then return false end
+    if ply:IsSpec() then return end
 
     if wep:GetClass() == "weapon_inf_scanner" then
         return ply:IsInformant()
@@ -145,6 +145,8 @@ hook.Add("TTTPlayerRoleChanged", "Informant_TTTPlayerRoleChanged", function(ply,
             for _, v in PlayerIterator() do
                 -- Don't tell people about this role change if we're not revealing them
                 if hideRole then continue end
+                -- We don't need to tell the player who changed roles
+                if ply == v then continue end
 
                 if v:IsActiveInformant() then
                     v:PrintMessage(HUD_PRINTTALK, ply:Nick() .. " has changed roles. You will need to rescan them.")
@@ -188,7 +190,7 @@ local function Announce(ply, message)
     if not IsValid(ply) then return end
 
     ply:PrintMessage(HUD_PRINTTALK, "You have " .. message)
-    if not informant_share_scans:GetBool() then return end
+    if not informant_share_scans:GetBool() or not ShouldShowTraitorExtraInfo() then return end
 
     for _, p in PlayerIterator() do
         if p:IsActiveTraitorTeam() and p ~= ply then
